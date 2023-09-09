@@ -58,5 +58,8 @@ class CategoryController extends Controller
     ->delete();
     Session::flash('success','xoa thành công '.$id);
     return redirect()->route('category_index');
+
+
+    
 }
 }
