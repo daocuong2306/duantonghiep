@@ -2,7 +2,7 @@
     <table class="table">
         <tr class="primary">
             <td>ID</td>
-            <td>Loại Phòng</td>
+            <td>Name</td>
             <td>Image</td>
             <td>Thao tác</td>
         </tr>
