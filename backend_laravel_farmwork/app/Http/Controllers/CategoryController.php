@@ -59,7 +59,7 @@ class CategoryController extends Controller
     Session::flash('success','xoa thành công '.$id);
     return redirect()->route('category_index');
 
-
+///alo
     
 }
 }
