@@ -1,4 +1,4 @@
-<form action="{{route('category_edit',['id'=>$categories->id])}}" method="POST">
+<form action="{{route('category_edit',['id'=>$categories->id])}}" method="POST" enctype="multipart/form-data">
     @csrf
      <h1 class="ml-5 mb-3">Edit Category </h1>
     <div class="mb-5 ml-5">

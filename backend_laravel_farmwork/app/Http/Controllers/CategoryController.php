@@ -19,12 +19,13 @@ class CategoryController extends Controller
     }
     public function add(Request $request){
         if($request->isMethod('POST')){
+            $params = $request->except('_token');
             if($request->hasFile('image') && $request->file('image')->isValid()){
                 $params['image']= uploadFile('hinh',$request->file('image'));
             }
-                $params = $request->except('_token');
-                $categories = Category::create($params);
-                if($categories->id){
+            
+            $categories = Category::create($params);
+            if($categories->id){
                 Session::flash('success','them moi thanh cong');
                 return redirect()->route('category_add');
             }
