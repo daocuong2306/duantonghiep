@@ -32,7 +32,7 @@ class CategoryController extends Controller
         }
              return view('category.add');
     }
-     public function edit(Request $request,$id){
+    public function edit(Request $request,$id){
       $categories =Category::find($id);
       if($request->isMethod('post')){
         $params = $request->except('_token');
@@ -52,14 +52,14 @@ class CategoryController extends Controller
       }
       }
       return view('category.edit',compact('categories'));
-  }
+    }
   public function delete($id){
     Category::where('id',$id)
     ->delete();
     Session::flash('success','xoa thành công '.$id);
     return redirect()->route('category_index');
 
+///alo
 
-    
 }
 }
