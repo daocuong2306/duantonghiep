@@ -1,3 +1,5 @@
+@extends('template.category')
+@section('content')
 <form action="{{route('category_edit',['id'=>$categories->id])}}" method="POST" enctype="multipart/form-data">
     @csrf
      <h1 class="ml-5 mb-3">Edit Category </h1>
@@ -11,3 +13,4 @@
     </div>
     <button type="submit" class="btn btn-primary ml-5">Submit</button>
 </form>
+@endsection
