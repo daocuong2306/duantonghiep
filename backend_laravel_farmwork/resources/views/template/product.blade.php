@@ -444,8 +444,12 @@
                                     <span class="menu-arrow"></span>
                                 </a>
                                 <ul class="nav-second-level" aria-expanded="false">
+                                   
                                     <li>
-                                        <a href="">Product</a>
+                                        <a href="/category">Category</a>
+                                    </li>
+                                    <li>
+                                        <a href="/productlist">Product</a>
                                     </li>
                                     <li>
                                         <a href="pages-login.html">Log In</a>
@@ -789,7 +793,7 @@
                                 </div>
                             </div>
                         </div>  
-                        
+                        @include('template.errors')
                         @yield('content')   
                         <!-- end page title --> 
                         

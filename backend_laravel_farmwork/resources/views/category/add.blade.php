@@ -11,7 +11,7 @@
         <input type="file" name="image">
       </div>
     
-      <button  class="btn btn-primary"><a style="text-decoration: none; color: white;" href="">Add</a></button>
+      <button  class="btn btn-primary" type="submit">Add</button>
       <button  class="btn btn-primary"><a style="text-decoration: none; color: white;" href="/category">Category List</a></button>
 </form>
 @endsection
