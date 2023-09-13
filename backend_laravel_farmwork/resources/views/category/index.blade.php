@@ -20,6 +20,6 @@
         </tr>
         @endforeach
     </table>
-    <button  class="btn btn-primary ml-3 "><a style="text-decoration: none; color: white;" href="/add">Add</a></button>
+    <button  class="btn btn-primary ml-3 "><a style="text-decoration: none; color: white;" href="/add_category">Add</a></button>
 </div>
 @endsection

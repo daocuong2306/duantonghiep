@@ -448,6 +448,9 @@
                                         <a href="">Category</a>
                                     </li>
                                     <li>
+                                        <a href="/productlist">Product</a>
+                                    </li>
+                                    <li>
                                         <a href="pages-login.html">Log In</a>
                                     </li>
                                     <li>
@@ -789,7 +792,7 @@
                                 </div>
                             </div>
                         </div>  
-                        
+                        @include('template.errors')
                         @yield('content')   
                         <!-- end page title --> 
                         
