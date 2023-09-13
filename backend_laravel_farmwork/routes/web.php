@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('template/admin');
 });
 
-//Category nè 
+//Category 
 Route::get('/category',[App\Http\Controllers\CategoryController::class,'index'])->name('category_index');
 Route::match(['GET','POST'],'/add',[App\Http\Controllers\CategoryController::class,'add'])->name('category_add');
 Route::match(['GET','POST'],'/edit/{id}',[App\Http\Controllers\CategoryController::class,'edit'])->name('category_edit');
