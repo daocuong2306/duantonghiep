@@ -18,14 +18,14 @@
         </tr>
         @foreach($products as $item)
         <tr>
-            <td>{{$item->id}}</td>
-            <td>{{$item->name}}</td>
+            <td>{{$item->idproduct}}</td>
+            <td>{{$item->nameproduct}}</td>
             <td>{{$item->prices}}</td>
             <td>{{$item->description}}</td>  
             <td>{{$item->status}}</td> 
-            <td><img src="{{ $item->image?''.Storage::url($item->image):''}}" style="width: 100px" /></td>
+            <td><img src="{{ $item->imageproduct?''.Storage::url($item->imageproduct):''}}" style="width: 100px" /></td>
             <td>{{$item->code}}</td> 
-            <td>{{$item->id_category}}</td> 
+            <td>{{$item->name}}</td> 
             {{-- <td>
                 <option value="{{$item->id}}">{{$item->name}}</option>
             </td> --}}

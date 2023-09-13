@@ -11,12 +11,13 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     public function index(Request $request){
-         $products = DB::table('product')
-         ->select('id','name','prices','description','status','image','code','id_category')
-         ->whereNULL('deleted_at')
-        //  ->join('product', 'category.id = product.id_category')
-        //  ->select('category.*','product.id as idproduct','product.name as nameproduct','product.prices as prices','product.description as description','product.status as status','products.image as imageproduct','proudct.code as code')
+         $products = DB::table('category')
+        //  ->select('id','name','prices','description','status','image','code','id_category')
+        //  ->whereNULL('deleted_at')
+         ->join('product', 'category.id', '=', 'product.id_category')
+          ->select('category.*','product.id as idproduct','product.name as nameproduct','product.prices as prices','product.description as description','product.status as status','product.image as imageproduct','product.code as code')
          ->get();
+       
           return view('product.index',compact('products'));
     }
     
