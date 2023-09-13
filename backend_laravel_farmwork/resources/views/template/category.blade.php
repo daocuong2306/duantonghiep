@@ -448,6 +448,7 @@
                                         <a href="">Category</a>
                                     </li>
                                     <li>
+                                        <a href="/productlist">Product</a>
                                         <a href="">Product</a>
                                     </li>
                                     <li>
@@ -795,7 +796,7 @@
                                 </div>
                             </div>
                         </div>  
-                        
+                        @include('template.errors')
                         @yield('content')   
                         <!-- end page title --> 
                         
