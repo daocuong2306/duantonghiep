@@ -454,6 +454,9 @@
                                         <a href="/product">Product</a>
                                     </li>
                                     <li>
+                                        <a href="/product">User</a>
+                                    </li>
+                                    <li>
                                         <a href="pages-login.html">Log In</a>
                                     </li>
                                     <li>

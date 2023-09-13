@@ -448,12 +448,12 @@
                                         <a href="">Category</a>
                                     </li>
                                     <li>
-                                        <a href="/productlist">Product</a>
                                         <a href="">Product</a>
                                     </li>
                                     <li>
                                         <a href="">User</a>
                                     </li>
+                                    
                                     <li>
                                         <a href="pages-login.html">Log In</a>
                                     </li>
@@ -788,15 +788,15 @@
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Upvex</a></li>
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
-                                            <li class="breadcrumb-item active">Category</li>
+                                            <li class="breadcrumb-item active">User</li>
                                         </ol>
                                     </div>
-                                    <h4 class="page-title">Category</h4>
+                                    <h4 class="page-title">User</h4>
                                     
                                 </div>
                             </div>
                         </div>  
-                        @include('template.errors')
+                        
                         @yield('content')   
                         <!-- end page title --> 
                         
