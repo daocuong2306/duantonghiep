@@ -68,6 +68,12 @@
       "phone": "0964495899",
       "address": "37 tran quoc hoan",
       "password": "cuong2003"
+    },
+    {
+      "email": "datnthhc210803@gmail.com",
+      "password": "$2a$10$NhyFrx/n2Pftd/poDtnH0OhDuhpz5uWn5Mjk1mSOQpif2ZHvwjNyy",
+      "role": 1,
+      "id": 2
     }
   ]
 }
