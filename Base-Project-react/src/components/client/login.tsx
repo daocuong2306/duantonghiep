@@ -3,21 +3,28 @@ import { IUser } from "@/interface/user";
 import { useAppDispatch, useAppSelector } from "@/store/hook"
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-
+import bcrypt from "bcryptjs-react";
+var salt = bcrypt.genSaltSync(10);
+var hash = bcrypt.hashSync("B4c0/\/", salt);
 const Login = () => {
     const dispatch = useAppDispatch();
     const { data } = useGetUserQuery();
-
     const { register, handleSubmit } = useForm();
     const url = useNavigate();
     const onHandleSubmit = (dataUser: IUser) => {
-        console.log(data);
-        console.log(dataUser);
+
         for (let user of data) {
-            if (user.email === dataUser.email && user.password === dataUser.password) {
-                localStorage.setItem("user", JSON.stringify(user));
-                url('/admin')
+            if (user.email === dataUser.email) {
+                const isValidate = bcrypt.compareSync(dataUser.password, user.password)
+                if (isValidate) {
+                    localStorage.setItem("user", JSON.stringify(user));
+                    url('/admin')
+                } else {
+                    console.log('Mật khẩu không hợp lệ.');
+                }
+
             }
+
         }
     }
 
