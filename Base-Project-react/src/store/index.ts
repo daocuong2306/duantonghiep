@@ -1,4 +1,5 @@
 import productApi, { productReducer } from '@/api/product';
+import userApi, { userReducer } from '@/api/user';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
     FLUSH,
@@ -19,9 +20,10 @@ const persistConfig = {
     whitelist: ['cart']
 }
 const rootReducer = combineReducers({
-    [productApi.reducerPath]: productReducer
+    [productApi.reducerPath]: productReducer,
+    [userApi.reducerPath]: userReducer
 })
-const middleware = [productApi.middleware]
+const middleware = [productApi.middleware, userApi.middleware]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 export const store = configureStore({
