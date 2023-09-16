@@ -1,0 +1,79 @@
+{
+  "products": [
+    {
+      "name": "123123",
+      "price": 1231,
+      "image": "https://thietkewebchuyen.com/images/mau-banner-thiet-ke-gia-re-dep-tai-tphcm/dich-vu-thiet-ke-hinh-anh-ao-thun-ao-lop-hoi-nhom-dep-tai-tphcm%C2%A0.jpg",
+      "id": 7,
+      "slug": "123123"
+    },
+    {
+      "name": "cuong abc",
+      "price": 123,
+      "image": "https://thietkewebchuyen.com/images/mau-banner-thiet-ke-gia-re-dep-tai-tphcm/dich-vu-thiet-ke-hinh-anh-ao-thun-ao-lop-hoi-nhom-dep-tai-tphcm%C2%A0.jpg",
+      "id": 1,
+      "slug": "cuong-abc"
+    },
+    {
+      "name": "123123213123",
+      "price": 300,
+      "image": "https://thietkewebchuyen.com/images/mau-banner-thiet-ke-gia-re-dep-tai-tphcm/dich-vu-thiet-ke-hinh-anh-ao-thun-ao-lop-hoi-nhom-dep-tai-tphcm%C2%A0.jpg",
+      "id": 2,
+      "slug": "123123213123"
+    },
+    {
+      "name": "dao manh cuong test",
+      "price": "312312",
+      "id": 8
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "productSlug": "123123",
+      "userId": 1,
+      "date": "10/02/2021",
+      "content": "Very straight-to-point article. Really worth time reading. Thank you! But tools are just the instruments for the UX designers. The knowledge of the design tools are as important as the creation of the design strategy."
+    },
+    {
+      "id": 2,
+      "productSlug": "123123",
+      "userId": 2,
+      "date": "10/02/2021",
+      "content": "hasdhasdsad"
+    },
+    {
+      "content": "ewgwegwe",
+      "productSlug": "123123",
+      "userId": 1,
+      "date": "2023-7-30",
+      "id": 3
+    },
+    {
+      "content": "ndnzdn",
+      "productSlug": "123123",
+      "userId": 1,
+      "date": "2023-7-30",
+      "id": 4
+    }
+  ],
+  "carts": [],
+  "users": [
+    {
+      "id": 1,
+      "name": "Cuong",
+      "email": "cuong@gmail.com",
+      "image": "https://th.bing.com/th/id/R.1a605a8103c845656e0c4276506f35ad?rik=jAmto23iQNoGVQ&riu=http%3a%2f%2fanhnendep.net%2fwp-content%2fuploads%2f2017%2f02%2fhinh-anh-gai-xinh-dep-nhat-viet-nam-03.jpg&ehk=pnYOOwy9GMlsQm9NwHg6X3%2fmNZjkzEXjPYMmyqsLYO4%3d&risl=&pid=ImgRaw&r=0",
+      "role": 1,
+      "phone": "0964495899",
+      "address": "37 tran quoc hoan",
+      "password": "$2a$10$NhyFrx/n2Pftd/poDtnH0OhDuhpz5uWn5Mjk1mSOQpif2ZHvwjNyy"
+    },
+    {
+      "email": "datnthhc210803@gmail.com",
+      "password": "$2a$10$NhyFrx/n2Pftd/poDtnH0OhDuhpz5uWn5Mjk1mSOQpif2ZHvwjNyy",
+      "role": 1,
+      "id": 2
+    }
+  ]
+}
