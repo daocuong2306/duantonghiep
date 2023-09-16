@@ -3,11 +3,19 @@ import LayoutAdmin from "./components/layouts/LayoutAdmin";
 import AddProduct from "./components/admin/addProduct";
 import Login from "./components/client/login";
 import Signup from "./components/client/signup";
+import LayoutWebsite from "./components/layouts/LayoutWebsite";
+import Product from "./components/client/product";
 export const router = createBrowserRouter([
 
     {
         path: "/",
-        element: <div>Home page!</div>,
+        element: <LayoutWebsite />,
+        children: [
+            {
+                path: 'products',
+                element: <Product />
+            }
+        ]
     },
     {
         path: "/admin",
