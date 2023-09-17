@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const Product = () => {
     const dispatch = useAppDispatch();
-    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
     const { data: products, error, isLoading } = useGetProductsQuery();
     const { data: categories } = useGetCategoriesQuery();
     const { control, handleSubmit, watch, register } = useForm()
@@ -39,7 +39,7 @@ const Product = () => {
     };
     const handleCheckboxChange = (checkboxData: string) => {
         console.log(checkboxData);
-        
+
         if (checkboxData == "0") {
             setFilteredProducts(products);
         } else if (checkboxData) {
@@ -126,7 +126,7 @@ const Product = () => {
                                                         <input
                                                             type="checkbox"
                                                             value="0" // Đặt giá trị cho tất cả các danh mục thành "0"
-                                                           
+
                                                             onChange={() => handleCheckboxChange('0')} // Truyền '0' khi ô checkbox được chọn
                                                             className="h-5 w-5 rounded border-gray-300"
                                                         />
@@ -144,7 +144,7 @@ const Product = () => {
                                                             <input
                                                                 type="checkbox"
                                                                 value={item.id} // Đặt giá trị cho mỗi danh mục từ mảng categories
-                                                               
+
                                                                 onChange={() => handleCheckboxChange(String(item?.id))} // Truyền cateId khi ô checkbox được chọn
                                                                 className="h-5 w-5 rounded border-gray-300"
                                                             />
