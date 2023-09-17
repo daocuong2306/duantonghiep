@@ -1,13 +1,39 @@
 import { useGetProductsQuery } from "@/api/product";
 import { IProduct } from "@/interface/product";
 import { useAppDispatch } from "@/store/hook"
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 
 const Product = () => {
     const dispatch = useAppDispatch();
+    const [filteredProducts, setFilteredProducts] = useState([]);
     const { data: products, error, isLoading } = useGetProductsQuery();
-
+    const {control, handleSubmit,watch,register}=useForm()
+    const { min }: number = watch(['min']);
+    const { max }: number = watch(['max']);
+    const onSubmit = (formData: any) => {
+        if(Number(formData.min)<0 && Number(formData.max)<0){
+            console.log("giá phải là số dương")
+        }
+        if (Number(formData.min) > Number(formData.max) && Number(formData.max)!=0) {
+            console.log("vui lòng nhập đúng khoảng giá");  
+        }
+        if(Number(formData.min) >0 && Number(formData.max)==0){
+            const filterProduct = products?.filter((item: any) => item?.price >= formData.min)
+            console.log(filterProduct);
+            setFilteredProducts(filterProduct);
+        }
+        if(Number(formData.min)< Number(formData.max)){
+            const filterProduct = products?.filter((item: any) =>item?.price >= formData.min && item?.price <= formData.max)
+            console.log(filterProduct);
+            setFilteredProducts(filterProduct);
+        }
+        if(Number(formData.min)==0 &&  Number(formData.max)==0){
+            setFilteredProducts(products);
+        }
+    };
     return (
         <div>
             <section>
@@ -46,19 +72,6 @@ const Product = () => {
                     </div>
                     <div className="mt-4 lg:mt-8 lg:grid lg:grid-cols-4 lg:items-start lg:gap-8">
                         <div className="hidden space-y-4 lg:block">
-                            <div>
-                                <label htmlFor="SortBy" className="block text-xs font-medium text-gray-700">
-                                    Sort By
-                                </label>
-
-                                <select id="SortBy" className="mt-1 rounded border-gray-300 text-sm">
-                                    <option>Sort By</option>
-                                    <option value="Title, DESC">Title, DESC</option>
-                                    <option value="Title, ASC">Title, ASC</option>
-                                    <option value="Price, DESC">Price, DESC</option>
-                                    <option value="Price, ASC">Price, ASC</option>
-                                </select>
-                            </div>
 
                             <div>
                                 <p className="block text-xs font-medium text-gray-700">Filters</p>
@@ -185,10 +198,10 @@ const Product = () => {
 
                                         <div className="border-t border-gray-200 bg-white">
 
-                                            <form >
+                                            <form onSubmit={handleSubmit(onSubmit)}>
                                                 <div className='flex'>
                                                     <div className='w-[40%]'>
-                                                        {/* <Controller
+                                                        <Controller
                                                             name="min"
                                                             control={control}
                                                             defaultValue="0"
@@ -202,11 +215,11 @@ const Product = () => {
                                                                     />
                                                                 </div>
                                                             )}
-                                                        /> */}
+                                                        />
                                                     </div>
                                                     <div className='w-[20%]'></div>
                                                     <div className='w-[40%]'>
-                                                        {/* <Controller
+                                                        <Controller
                                                             name="max"
                                                             control={control}
                                                             defaultValue="0"
@@ -220,7 +233,7 @@ const Product = () => {
                                                                     />
                                                                 </div>
                                                             )}
-                                                        /> */}
+                                                        />
                                                     </div>
                                                 </div>
                                                 <button type="submit" className='p-[5px] bg-green-500'>Filter</button>
@@ -377,7 +390,7 @@ const Product = () => {
                         </div>
                         <div className="lg:col-span-3">
                             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                                {/* {filteredProducts.length > 0 // Use filteredProducts here instead of products
+                                {filteredProducts.length > 0 // Use filteredProducts here instead of products
                                     ? filteredProducts.map((product: any) => {
                                         return <li key={product.id}>
                                             <Link to={`/details/${product.slug}`} className="group block overflow-hidden">
@@ -454,9 +467,9 @@ const Product = () => {
                                                 </span>
                                             </a>
                                         </li>
-                                    })} */}
+                                    })}
 
-                                {products?.map((product: IProduct) => {
+                                {/* {products?.map((product: IProduct) => {
                                     return (
                                         <li key={product.id}>
                                             <Link to={`/details/${product.id}`} className="group block overflow-hidden">
@@ -496,7 +509,7 @@ const Product = () => {
                                             </a>
                                         </li>
                                     )
-                                })}
+                                })} */}
                             </ul>
                         </div>
                     </div>
