@@ -1,4 +1,6 @@
+import { useGetCategoriesQuery } from "@/api/category";
 import { useGetProductsQuery } from "@/api/product";
+import { ICategory } from "@/interface/category";
 import { IProduct } from "@/interface/product";
 import { useAppDispatch } from "@/store/hook"
 import { useState } from "react";
@@ -10,30 +12,41 @@ const Product = () => {
     const dispatch = useAppDispatch();
     const [filteredProducts, setFilteredProducts] = useState([]);
     const { data: products, error, isLoading } = useGetProductsQuery();
-    const {control, handleSubmit,watch,register}=useForm()
+    const { data: categories } = useGetCategoriesQuery();
+    const { control, handleSubmit, watch, register } = useForm()
     const { min }: number = watch(['min']);
     const { max }: number = watch(['max']);
     const onSubmit = (formData: any) => {
-        if(Number(formData.min)<0 && Number(formData.max)<0){
+        if (Number(formData.min) < 0 && Number(formData.max) < 0) {
             console.log("giá phải là số dương")
         }
-        if (Number(formData.min) > Number(formData.max) && Number(formData.max)!=0) {
-            console.log("vui lòng nhập đúng khoảng giá");  
+        if (Number(formData.min) > Number(formData.max) && Number(formData.max) != 0) {
+            console.log("vui lòng nhập đúng khoảng giá");
         }
-        if(Number(formData.min) >0 && Number(formData.max)==0){
+        if (Number(formData.min) > 0 && Number(formData.max) == 0) {
             const filterProduct = products?.filter((item: any) => item?.price >= formData.min)
             console.log(filterProduct);
             setFilteredProducts(filterProduct);
         }
-        if(Number(formData.min)< Number(formData.max)){
-            const filterProduct = products?.filter((item: any) =>item?.price >= formData.min && item?.price <= formData.max)
+        if (Number(formData.min) < Number(formData.max)) {
+            const filterProduct = products?.filter((item: any) => item?.price >= formData.min && item?.price <= formData.max)
             console.log(filterProduct);
             setFilteredProducts(filterProduct);
         }
-        if(Number(formData.min)==0 &&  Number(formData.max)==0){
+        if (Number(formData.min) == 0 && Number(formData.max) == 0) {
             setFilteredProducts(products);
         }
     };
+    const handleCheckboxChange = (checkboxData: string) => {
+        console.log(checkboxData);
+        
+        if (checkboxData == "0") {
+            setFilteredProducts(products);
+        } else if (checkboxData) {
+            const filteredProducts = products?.filter((item: IProduct) => item?.cateId == checkboxData)
+            setFilteredProducts(filteredProducts)
+        }
+    }
     return (
         <div>
             <section>
@@ -83,7 +96,7 @@ const Product = () => {
                                         <summary
                                             className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition"
                                         >
-                                            <span className="text-sm font-medium"> Availability </span>
+                                            <span className="text-sm font-medium"> Category </span>
 
                                             <span className="transition group-open:-rotate-180">
                                                 <svg
@@ -102,71 +115,47 @@ const Product = () => {
                                                 </svg>
                                             </span>
                                         </summary>
-
                                         <div className="border-t border-gray-200 bg-white">
-                                            <header className="flex items-center justify-between p-4">
-                                                <span className="text-sm text-gray-700"> 0 Selected </span>
 
-                                                <button
-                                                    type="button"
-                                                    className="text-sm text-gray-900 underline underline-offset-4"
-                                                >
-                                                    Reset
-                                                </button>
-                                            </header>
-
-                                            <ul className="space-y-1 border-t border-gray-200 p-4">
-                                                <li>
+                                            <div className="space-y-1 border-t border-gray-200 p-4">
+                                                <div>
                                                     <label
-                                                        htmlFor="FilterInStock"
+                                                        htmlFor="FilterRed"
                                                         className="inline-flex items-center gap-2"
                                                     >
                                                         <input
                                                             type="checkbox"
-                                                            id="FilterInStock"
+                                                            value="0" // Đặt giá trị cho tất cả các danh mục thành "0"
+                                                           
+                                                            onChange={() => handleCheckboxChange('0')} // Truyền '0' khi ô checkbox được chọn
                                                             className="h-5 w-5 rounded border-gray-300"
                                                         />
-
                                                         <span className="text-sm font-medium text-gray-700">
-                                                            In Stock (5+)
+                                                            All categories
                                                         </span>
                                                     </label>
-                                                </li>
+                                                </div>
+                                                {categories?.map((item: ICategory) =>
+                                                    <div key={item.id}>
+                                                        <label
+                                                            htmlFor={`Filter${item.name}`}
+                                                            className="inline-flex items-center gap-2"
+                                                        >
+                                                            <input
+                                                                type="checkbox"
+                                                                value={item.id} // Đặt giá trị cho mỗi danh mục từ mảng categories
+                                                               
+                                                                onChange={() => handleCheckboxChange(String(item?.id))} // Truyền cateId khi ô checkbox được chọn
+                                                                className="h-5 w-5 rounded border-gray-300"
+                                                            />
+                                                            <span className="text-sm font-medium text-gray-700">
+                                                                {item.name}
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                )}
 
-                                                <li>
-                                                    <label
-                                                        htmlFor="FilterPreOrder"
-                                                        className="inline-flex items-center gap-2"
-                                                    >
-                                                        <input
-                                                            type="checkbox"
-                                                            id="FilterPreOrder"
-                                                            className="h-5 w-5 rounded border-gray-300"
-                                                        />
-
-                                                        <span className="text-sm font-medium text-gray-700">
-                                                            Pre Order (3+)
-                                                        </span>
-                                                    </label>
-                                                </li>
-
-                                                <li>
-                                                    <label
-                                                        htmlFor="FilterOutOfStock"
-                                                        className="inline-flex items-center gap-2"
-                                                    >
-                                                        <input
-                                                            type="checkbox"
-                                                            id="FilterOutOfStock"
-                                                            className="h-5 w-5 rounded border-gray-300"
-                                                        />
-
-                                                        <span className="text-sm font-medium text-gray-700">
-                                                            Out of Stock (10+)
-                                                        </span>
-                                                    </label>
-                                                </li>
-                                            </ul>
+                                            </div>
                                         </div>
                                     </details>
 
