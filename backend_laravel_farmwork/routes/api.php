@@ -22,12 +22,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('category',[CategoryController::class,'index']);
 Route::post('category',[CategoryController::class,'store']);
 Route::get('category/{id}',[CategoryController::class,'show']);
-Route::get('category/{id}/edit',[CategoryController::class,'edit']);
-Route::put('category/{id}/edit',[CategoryController::class,'update']);
-Route::delete('category/{id}/delete',[CategoryController::class,'destroy']);
+Route::get('category/edit/{id}',[CategoryController::class,'edit']);
+Route::put('category/edit/{id}',[CategoryController::class,'update']);
+Route::delete('category/delete/{id}',[CategoryController::class,'destroy']);
 
 Route::get('product',[ProductController::class,'index']);
 Route::post('product',[ProductController::class,'store']);
 Route::get('product/{id}',[ProductController::class,'show']);
-Route::put('product/{id}/edit',[ProductController::class,'update']);
-Route::delete('product/{id}/delete',[ProductController::class,'destroy']);
+Route::put('product/edit/{id}',[ProductController::class,'update']);
+Route::delete('product/delete/{id}',[ProductController::class,'destroy']);
