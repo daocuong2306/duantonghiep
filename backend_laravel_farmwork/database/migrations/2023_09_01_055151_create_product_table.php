@@ -18,10 +18,11 @@ return new class extends Migration
             $table->string('name');
             $table->integer('prices');
             $table->string('description');
-            $table->string('status');
+            $table->integer('status');
             $table->string('image');
             $table->string('code');
             $table->integer('id_category');
+            $table->integer('quantity');
             $table->timestamps();
             $table->softDeletes();
         });

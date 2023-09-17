@@ -40,8 +40,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'name'=>'required|string|max:191',
-            'image'=>'required|string|max:191',
+            'name'=>'required',
+            'image'=>'required',
         ]);
         if($validator->fails()){
             return response()->json([
@@ -116,8 +116,8 @@ class CategoryController extends Controller
      */
     public function update(Request $request,int $id){
         $validator = Validator::make($request->all(),[
-            'name'=>'required|string|max:191',
-            'image'=>'required|string|max:191',
+            'name'=>'required',
+            'image'=>'required',
         ]);
         if($validator->fails()){
             return response()->json([
