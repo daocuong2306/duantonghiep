@@ -19,12 +19,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('category',[CategoryController::class,'index']);
-Route::post('category',[CategoryController::class,'store']);
-Route::get('category/{id}',[CategoryController::class,'show']);
-Route::get('category/edit/{id}',[CategoryController::class,'edit']);
-Route::put('category/edit/{id}',[CategoryController::class,'update']);
-Route::delete('category/delete/{id}',[CategoryController::class,'destroy']);
+Route::get('categorys',[CategoryController::class,'index']);
+Route::post('categorys',[CategoryController::class,'store']);
+Route::get('categorys/{id}',[CategoryController::class,'show']);
+Route::get('categorys/edit/{id}',[CategoryController::class,'edit']);
+Route::put('categorys/edit/{id}',[CategoryController::class,'update']);
+Route::delete('categorys/delete/{id}',[CategoryController::class,'destroy']);
 
 Route::get('products',[ProductController::class,'index']);
 Route::post('products',[ProductController::class,'store']);
