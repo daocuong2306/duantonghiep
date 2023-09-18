@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('price');
             $table->string('description');
             $table->integer('status');
-            $table->varchar('image');
+            $table->string('image');
             $table->string('code');
             $table->integer('id_category');
             $table->integer('quantity');
