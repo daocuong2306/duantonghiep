@@ -42,7 +42,7 @@ class ProductController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'name'=>'required',
-            'prices'=>'required',
+            'price'=>'required',
             'description'=>'required',
             'status'=>'required',
             'image'=>'required',
@@ -58,7 +58,7 @@ class ProductController extends Controller
         }else{
             $product=Product::create([
                 'name'=>$request->name,
-                'prices'=>$request->prices,
+                'price'=>$request->price,
                 'description'=>$request->description,
                 'status'=>$request->status,
                 'image'=>$request->image,
@@ -114,7 +114,7 @@ class ProductController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'name'=>'required',
-            'prices'=>'required',
+            'price'=>'required',
             'description'=>'required',
             'status'=>'required',
             'image'=>'required',
@@ -132,7 +132,7 @@ class ProductController extends Controller
             if($product){
                 $product->update([
                 'name'=>$request->name,
-                'prices'=>$request->prices,
+                'price'=>$request->price,
                 'description'=>$request->description,
                 'status'=>$request->status,
                 'image'=>$request->image,
