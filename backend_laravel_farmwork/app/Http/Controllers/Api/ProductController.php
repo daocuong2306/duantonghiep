@@ -41,12 +41,13 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'name'=>'required|string|max:191',
+            'name'=>'required',
             'prices'=>'required',
-            'description'=>'required|string|max:191',
-            'status'=>'required|string|max:191',
-            'image'=>'required|string|max:191',
-            'code'=>'required|string|max:191',
+            'description'=>'required',
+            'status'=>'required',
+            'image'=>'required',
+            'code'=>'required',
+            'quantity'=>'required',
             'id_category'=>'required'
         ]);
         if($validator->fails()){
@@ -62,6 +63,7 @@ class ProductController extends Controller
                 'status'=>$request->status,
                 'image'=>$request->image,
                 'code'=>$request->code,
+                'quantity'=>$request->quantity,
                 'id_category'=>$request->id_category
             ]);
 
@@ -111,12 +113,13 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'name'=>'required|string|max:191',
+            'name'=>'required',
             'prices'=>'required',
-            'description'=>'required|string|max:191',
-            'status'=>'required|string|max:191',
-            'image'=>'required|string|max:191',
-            'code'=>'required|string|max:191',
+            'description'=>'required',
+            'status'=>'required',
+            'image'=>'required',
+            'code'=>'required',
+            'quantity'=>'required',
             'id_category'=>'required'
         ]);
         if($validator->fails()){
@@ -126,26 +129,26 @@ class ProductController extends Controller
             ],422);
         }else{
             $product = Product::find($id);
-            $product=Product::create([
+            if($product){
+                $product->update([
                 'name'=>$request->name,
                 'prices'=>$request->prices,
                 'description'=>$request->description,
                 'status'=>$request->status,
                 'image'=>$request->image,
                 'code'=>$request->code,
+                'quantity'=>$request->quantity,
                 'id_category'=>$request->id_category
-            ]);
-
-            if($product){
+                ]);
                 return response()->json([
                     'status'=>200,
-                    'message'=>'Successfull',
+                    'message'=>'Update Successfull',
                 ],200);
             }else{
                 return response()->json([
-                    'status'=>500,
-                    'message'=>'Wrong',
-                ],500);
+                    'status'=>404,
+                    'message'=>'Not found',
+                ],404);
             }
         }
     }

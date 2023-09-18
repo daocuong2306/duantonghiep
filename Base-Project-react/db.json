@@ -5,27 +5,45 @@
       "price": 1231,
       "image": "https://thietkewebchuyen.com/images/mau-banner-thiet-ke-gia-re-dep-tai-tphcm/dich-vu-thiet-ke-hinh-anh-ao-thun-ao-lop-hoi-nhom-dep-tai-tphcm%C2%A0.jpg",
       "id": 7,
-      "slug": "123123"
+      "slug": "123123",
+      "cateId":"1"
     },
     {
       "name": "cuong abc",
       "price": 123,
       "image": "https://thietkewebchuyen.com/images/mau-banner-thiet-ke-gia-re-dep-tai-tphcm/dich-vu-thiet-ke-hinh-anh-ao-thun-ao-lop-hoi-nhom-dep-tai-tphcm%C2%A0.jpg",
       "id": 1,
-      "slug": "cuong-abc"
+      "slug": "cuong-abc",
+      "cateId":"2"
     },
     {
       "name": "123123213123",
       "price": 300,
       "image": "https://thietkewebchuyen.com/images/mau-banner-thiet-ke-gia-re-dep-tai-tphcm/dich-vu-thiet-ke-hinh-anh-ao-thun-ao-lop-hoi-nhom-dep-tai-tphcm%C2%A0.jpg",
       "id": 2,
-      "slug": "123123213123"
+      "slug": "123123213123",
+      "cateId":"1"
     },
     {
       "name": "dao manh cuong test",
       "price": "312312",
       "id": 8
     }
+  ],
+  "categories":[
+    {
+      "id":"1",
+      "name":"Áo"
+    },
+    {
+      "id":"2",
+      "name":"Quần"
+    },
+    {
+      "id":"3",
+      "name":"Mũ"
+    }
+    
   ],
   "comments": [
     {

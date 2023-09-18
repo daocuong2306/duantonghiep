@@ -1,5 +1,7 @@
+import categoryApi,{categoryReducer} from '@/api/category';
 import productApi, { productReducer } from '@/api/product';
 import userApi, { userReducer } from '@/api/user';
+
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
     FLUSH,
@@ -21,9 +23,10 @@ const persistConfig = {
 }
 const rootReducer = combineReducers({
     [productApi.reducerPath]: productReducer,
-    [userApi.reducerPath]: userReducer
+    [userApi.reducerPath]: userReducer,
+    [categoryApi.reducerPath]:categoryReducer
 })
-const middleware = [productApi.middleware, userApi.middleware]
+const middleware = [productApi.middleware, userApi.middleware,categoryApi.middleware]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 export const store = configureStore({
