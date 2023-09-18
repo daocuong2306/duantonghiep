@@ -4,7 +4,7 @@ import Footer from "../component/footer";
 
 const LayoutWebsite = () => {
     return <div>
-        <Header />
+        <Header/>
         <Outlet />
         <Footer />
     </div>;

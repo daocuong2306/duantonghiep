@@ -6,7 +6,7 @@ const productApi = createApi({
     reducerPath: "product",
     tagTypes: ['Product'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000",
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("access_token");
             headers.set("authorization", `Bearer ${token}`)
@@ -19,7 +19,7 @@ const productApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getProducts: builder.query<IProduct, void>({
+        getProducts: builder.query<IProduct[], void>({
             query: () => `/products`,
             providesTags: ['Product']
         }),
