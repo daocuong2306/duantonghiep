@@ -1,11 +1,11 @@
 import { createBrowserRouter, Outlet, Navigate } from "react-router-dom";
 import LayoutAdmin from "./components/layouts/LayoutAdmin";
-import AddProduct from "./components/admin/addProduct";
 import Login from "./components/client/login";
 import Signup from "./components/client/signup";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
 import Product from "./components/client/product";
 import Dashboard from "./components/admin/Dashboard";
+import AddProduct from "./components/admin/addProduct";
 export const router = createBrowserRouter([
 
     {
