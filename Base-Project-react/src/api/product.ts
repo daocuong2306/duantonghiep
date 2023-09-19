@@ -1,5 +1,5 @@
-import { IProduct } from '@/interface/product';
-import { pause } from '@/utils/pause';
+import { IProduct } from '../interface/product';
+import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const productApi = createApi({

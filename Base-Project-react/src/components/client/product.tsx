@@ -1,8 +1,8 @@
-import { useGetCategoriesQuery } from "@/api/category";
-import { useGetProductsQuery } from "@/api/product";
-import { ICategory } from "@/interface/category";
-import { IProduct } from "@/interface/product";
-import { useAppDispatch } from "@/store/hook"
+import { useGetCategoriesQuery } from "../../api/category";
+import { useGetProductsQuery } from "../../api/product";
+import { ICategory } from "../../interface/category";
+import { IProduct } from "../../interface/product";
+import { useAppDispatch } from "../../store/hook"
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";

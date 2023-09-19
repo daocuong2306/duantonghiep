@@ -1,17 +1,16 @@
 
-import { IProduct } from "@/interface/product";
-import { useAppDispatch } from "@/store/hook"
+import { useAppDispatch } from "../../../store/hook"
 import { useForm, Controller } from "react-hook-form";
 import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useAddCategoryMutation } from "@/api/category";
-import { ICategory } from "@/interface/category";
+import { useAddCategoryMutation } from "../../../api/category";
+import { ICategory } from "../../../interface/category";
 
 const AddCategory = () => {
     const dispatch = useAppDispatch();
     // Xử lý sự kiện khi người dùng chọn tệp
     const [selectedFile, setSelectedFile] = useState(null);
-
+s
     const readerRef = useRef<any>(null);
     const url = useNavigate()
     const handleFileChange = (event: any) => {

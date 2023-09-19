@@ -1,11 +1,15 @@
-import { useGetProductsQuery } from '@/api/product'
-import { IProduct } from '@/interface/product'
-import { useAppDispatch } from '@/store/hook'
-
-
+import { useGetCategoriesQuery } from '../../../api/category'
+import { useGetProductsQuery } from '../../../api/product'
+import { ICategory } from '../../../interface/category'
+import { IProduct } from '../../../interface/product'
+import { useAppDispatch } from '../../../store/hook'
+import { Link } from 'react-router-dom'
+import { FcFullTrash, FcSupport } from 'react-icons/fc'
 const Dashboard = () => {
     const dispatch = useAppDispatch()
     const { data: products, error, isLoading } = useGetProductsQuery();
+    console.log(products, isLoading);
+    const { data: categories } = useGetCategoriesQuery();
     return (<div>
         {isLoading && <div
             className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
@@ -17,15 +21,20 @@ const Dashboard = () => {
         </div>}
         {!isLoading && <div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <div className="pb-4 bg-white dark:bg-white-900">
-                    <label htmlFor="table-search" className="sr-only">Search</label>
-                    <div className="relative mt-1">
-                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg className="w-4 h-4 text-white-500 dark:text-white-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                            </svg>
+                <div className='flex justify-between justify-center'>
+                    <div className="pb-4 bg-white dark:bg-white-900">
+                        <label htmlFor="table-search" className="sr-only">Search</label>
+                        <div className="relative mt-1">
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg className="w-4 h-4 text-white-500 dark:text-white-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                                </svg>
+                            </div>
+                            <input type="text" id="table-search" className="block p-2 pl-10 text-sm text-white-900 border border-white-300 rounded-lg w-80 bg-white-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-while-700 dark:border-white-600 dark:placeholder-white-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items" />
                         </div>
-                        <input type="text" id="table-search" className="block p-2 pl-10 text-sm text-white-900 border border-white-300 rounded-lg w-80 bg-white-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-while-700 dark:border-white-600 dark:placeholder-white-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items" />
+                    </div>
+                    <div >
+                        <Link to="/admin/product/add"><button className="bg-blue-400 p-[10px] rounded-lg text-bold text-white">Add new product</button></Link>
                     </div>
                 </div>
                 <table className="w-full text-sm text-left text-white-500 dark:text-white-400">
@@ -41,13 +50,25 @@ const Dashboard = () => {
                                 Product name
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Color
+                                Image
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Product Code
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Price
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Description
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 Category
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Price
+                                Size
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                                Color
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 Action
@@ -56,7 +77,7 @@ const Dashboard = () => {
                     </thead>
                     <tbody>
                         {
-                            products.product?.map((product: IProduct, index: number) => (
+                            products?.product.map((product: IProduct, index: number) => (
                                 <tr
                                     key={index}
                                     className={`bg-white border-b ${index % 2 === 0 ? 'dark:bg-white-800 dark:border-white-700' : 'dark:bg-white-700 dark:border-white-600'}`}
@@ -77,14 +98,27 @@ const Dashboard = () => {
                                         {product.name}
                                     </th>
                                     <td className="px-6 py-4">
-                                        <img className="h-40 w-80 rounded-lg" src={product.image} alt="image description" />
+                                        <img className="h-20 w-50 rounded-lg" src={product.image} alt="image description" />
                                     </td>
                                     <td className="px-6 py-4">{product.code}</td>
                                     <td className="px-6 py-4">{product.price}</td>
-                                    <td className="px-6 py-4">
-                                        <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                            Edit
-                                        </a>
+                                    <td className="px-6 py-4">{product.description}</td>
+                                    {categories?.categories.map((category: ICategory) => {
+                                        if (category.id == product.id_category) {
+                                            return <td className="px-6 py-4">{category.name}</td>
+                                        }
+                                    })}
+                                    <td className="px-6 py-4">XS</td>
+                                    <td className="px-6 py-4">White</td>
+                                    <td className="px-6 py-4 ">
+                                        <div className="flex ">
+                                            <Link to="">
+                                                <FcSupport className='w-6 h-6 blue mr-2' />
+                                            </Link>
+                                            <Link to="">
+                                                <FcFullTrash className='w-6 h-6' />
+                                            </Link>
+                                        </div>
                                     </td>
                                 </tr>
                             ))
@@ -95,7 +129,7 @@ const Dashboard = () => {
 
 
         </div>}
-    </div>
+    </div >
     )
 }
 
