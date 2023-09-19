@@ -6,6 +6,9 @@ import LayoutWebsite from "./components/layouts/LayoutWebsite";
 import Product from "./components/client/product";
 import Dashboard from "./components/admin/Products/Dashboard";
 import AddProduct from "./components/admin/Products/addProduct";
+import CategoryDashboard from "./components/admin/categories/categoryDashboard";
+import AddCategory from "./components/admin/categories/addCategory";
+
 
 export const router = createBrowserRouter([
 
@@ -44,13 +47,15 @@ export const router = createBrowserRouter([
 
             {
                 path: "categories",
-
+                element:<CategoryDashboard/>
             },
             {
-                path: "categories/add"
+                path: "categories/add",
+                element:<AddCategory/>
             },
             {
-                path: "categories/update/:id"
+                path: "categories/update/:id",
+               
             }
 
         ],
