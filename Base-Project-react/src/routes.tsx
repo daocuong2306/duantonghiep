@@ -4,8 +4,8 @@ import Login from "./components/client/login";
 import Signup from "./components/client/signup";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
 import Product from "./components/client/product";
-import Dashboard from "./components/admin/Dashboard";
-import AddProduct from "./components/admin/addProduct";
+import Dashboard from "./components/admin/Products/Dashboard";
+import AddProduct from "./components/admin/Products/addProduct";
 
 export const router = createBrowserRouter([
 
@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
                 element: (
                     <div>
                         <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
-                        <Dashboard />
+                        < Dashboard />
                     </div>
                 ),
             },
