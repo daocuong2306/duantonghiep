@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\OptionController;
+use App\Http\Controllers\Api\OptionValueController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
@@ -45,3 +47,15 @@ Route::post('products',[ProductController::class,'store']);
 Route::get('products/{id}',[ProductController::class,'show']);
 Route::put('products/edit/{id}',[ProductController::class,'update']);
 Route::delete('products/delete/{id}',[ProductController::class,'destroy']);
+
+Route::get('options',[OptionController::class,'index']);
+Route::post('options',[OptionController::class,'store']);
+Route::get('options/{id}',[OptionController::class,'show']);
+Route::put('options/edit/{id}',[OptionController::class,'update']);
+Route::delete('options/delete/{id}',[OptionController::class,'destroy']);
+
+Route::get('optionvalues',[OptionValueController::class,'index']);
+Route::post('optionvalues',[OptionValueController::class,'store']);
+Route::get('optionvalues/{id}',[OptionValueController::class,'show']);
+Route::put('optionvalues/edit/{id}',[OptionValueController::class,'update']);
+Route::delete('optionvalues/delete/{id}',[OptionValueController::class,'destroy']);
