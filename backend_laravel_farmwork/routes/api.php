@@ -33,12 +33,12 @@ Route::group([
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('categorys',[CategoryController::class,'index']);
-Route::post('categorys',[CategoryController::class,'store']);
-Route::get('categorys/{id}',[CategoryController::class,'show']);
-Route::get('categorys/edit/{id}',[CategoryController::class,'edit']);
-Route::put('categorys/edit/{id}',[CategoryController::class,'update']);
-Route::delete('categorys/delete/{id}',[CategoryController::class,'destroy']);
+Route::get('categories',[CategoryController::class,'index']);
+Route::post('categories',[CategoryController::class,'store']);
+Route::get('categories/{id}',[CategoryController::class,'show']);
+Route::get('categories/edit/{id}',[CategoryController::class,'edit']);
+Route::put('categories/edit/{id}',[CategoryController::class,'update']);
+Route::delete('categories/delete/{id}',[CategoryController::class,'destroy']);
 
 Route::get('products',[ProductController::class,'index']);
 Route::post('products',[ProductController::class,'store']);
