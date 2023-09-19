@@ -1,5 +1,5 @@
-import { IUser } from '@/interface/user';
-import { pause } from '@/utils/pause';
+import { IUser } from '../interface/user';
+import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const userApi = createApi({

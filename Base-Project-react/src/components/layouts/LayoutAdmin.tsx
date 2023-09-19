@@ -5,7 +5,9 @@ import {
     AiOutlineMenuUnfold,
     AiOutlineUser,
     AiOutlineVideoCamera,
+    AiFillFolder
 } from "react-icons/ai";
+
 import { Link, Outlet } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
@@ -17,7 +19,7 @@ const LayoutAdmin = () => {
     } = theme.useToken();
 
     return (
-        <Layout className="h-auto">
+        <Layout className="h-screen">
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="demo-logo-vertical" />
                 <Menu
@@ -28,16 +30,17 @@ const LayoutAdmin = () => {
                         {
                             key: "1",
                             icon: <AiOutlineUser />,
-                            label: <Link to="/admin/dashboard">Thống kê</Link>,
+                            label: <Link to="/admin">Thống kê</Link>,
                         },
                         {
                             key: "2",
                             icon: <AiOutlineVideoCamera />,
-                            label: <Link to="/admin/product">Sản phẩm</Link>,
+                            label: <Link to="/admin/dashboard">Sản phẩm</Link>,
                         },
                         {
-                            key:"3",
-                            label:<Link to="/admin/categories">Danh mục</Link>
+                            key: "3",
+                            icon: <AiFillFolder />,
+                            label: <Link to="/admin/categories">Danh mục</Link>
                         }
                     ]}
                 />

@@ -1,6 +1,6 @@
 
-import { ICategory } from '@/interface/category';
-import { pause } from '@/utils/pause';
+import { ICategory } from '../interface/category';
+import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const categoryApi = createApi({

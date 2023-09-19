@@ -1,6 +1,6 @@
-import { useAddUserMutation, useGetUserQuery } from "@/api/user"
-import { IUser } from "@/interface/user"
-import { useAppDispatch } from "@/store/hook"
+import { useAddUserMutation, useGetUserQuery } from "../../api/user"
+import { IUser } from "../../interface/user"
+import { useAppDispatch } from "../../store/hook"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
 type signUpForm = {

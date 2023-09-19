@@ -1,11 +1,11 @@
-import { useAddProductMutation } from "@/api/product";
-import { IProduct } from "@/interface/product";
-import { useAppDispatch } from "@/store/hook"
+import { useAddProductMutation } from "../../../api/product";
+import { IProduct } from "../../../interface/product";
+import { useAppDispatch } from "../../../store/hook"
 import { useForm, Controller } from "react-hook-form";
 import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useGetCategoriesQuery } from "@/api/category";
-import { ICategory } from "@/interface/category";
+import { useGetCategoriesQuery } from "../../../api/category";
+import { ICategory } from "../../../interface/category";
 
 const AddProduct = () => {
     const dispatch = useAppDispatch();
@@ -108,7 +108,7 @@ const AddProduct = () => {
                             <fieldset>
                                 <legend className="sr-only">id_category</legend>
                                 {
-                                    categories?.map((category: ICategory) => {
+                                    categories?.categories.map((category: ICategory) => {
                                         return (
                                             <div className="flex items-center mb-4" key={category.id}>
                                                 <Controller
