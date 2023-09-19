@@ -4,14 +4,18 @@ import { useAppDispatch } from "@/store/hook"
 import { useForm, Controller } from "react-hook-form";
 import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useGetCategoriesQuery } from "@/api/category";
+import { ICategory } from "@/interface/category";
 
 const AddProduct = () => {
     const dispatch = useAppDispatch();
     // Xử lý sự kiện khi người dùng chọn tệp
     const [selectedFile, setSelectedFile] = useState(null);
-
+    const { data: categories } = useGetCategoriesQuery();
     const readerRef = useRef<any>(null);
     const url = useNavigate()
+    console.log(categories);
+
     const handleFileChange = (event: any) => {
         const file = event.target.files[0];
         setSelectedFile(file);
@@ -103,42 +107,31 @@ const AddProduct = () => {
                         <div className="grid md:grid-cols-2 md:gap-6">
                             <fieldset>
                                 <legend className="sr-only">id_category</legend>
-                                <div className="flex items-center mb-4">
-                                    <Controller
-                                        name="id_category"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <input
-                                                {...field}
-                                                id="country-option-1"
-                                                type="radio"
-                                                value="2"
-                                                className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                                            />
-                                        )}
-                                    />
-                                    <label htmlFor="country-option-1" className="block ml-2 text-sm font-medium text-gray-900 dark:text-black-500">
-                                        United States
-                                    </label>
-                                </div>
-                                <div className="flex items-center mb-4">
-                                    <Controller
-                                        name="id_category"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <input
-                                                {...field}
-                                                id="country-option-2"
-                                                type="radio"
-                                                value='1'
-                                                className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                                            />
-                                        )}
-                                    />
-                                    <label htmlFor="country-option-2" className="block ml-2 text-sm font-medium text-gray-900 dark:text-black-500">
-                                        Pháp
-                                    </label>
-                                </div>
+                                {
+                                    categories?.map((category: ICategory) => {
+                                        return (
+                                            <div className="flex items-center mb-4" key={category.id}>
+                                                <Controller
+                                                    name="id_category"
+                                                    control={control}
+                                                    render={({ field }) => (
+                                                        <input
+                                                            {...field}
+                                                            id="country-option-2"
+                                                            type="radio"
+                                                            value={category.id}
+                                                            className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                                                        />
+                                                    )}
+                                                />
+                                                <label htmlFor="country-option-2" className="block ml-2 text-sm font-medium text-gray-900 dark:text-black-500">
+                                                    {category.name}
+                                                </label>
+                                            </div>
+                                        )
+                                    })
+                                }
+
                                 <button type="submit">Submit</button>
                             </fieldset>
                         </div>
