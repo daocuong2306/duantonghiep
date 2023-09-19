@@ -1,17 +1,21 @@
 import { useGetProductsQuery } from '@/api/product'
 import { IProduct } from '@/interface/product'
 import { useAppDispatch } from '@/store/hook'
-import React from 'react'
 
-type Props = {}
 
-const Dashboard = (props: Props) => {
+const Dashboard = () => {
     const dispatch = useAppDispatch()
     const { data: products, error, isLoading } = useGetProductsQuery();
-    console.log(products);
-
-    return (
-        <div>
+    return (<div>
+        {isLoading && <div
+            className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+            role="status">
+            <span
+                className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+            >Loading...</span
+            >
+        </div>}
+        {!isLoading && <div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <div className="pb-4 bg-white dark:bg-white-900">
                     <label htmlFor="table-search" className="sr-only">Search</label>
@@ -85,13 +89,13 @@ const Dashboard = (props: Props) => {
                                 </tr>
                             ))
                         }
-
                     </tbody>
                 </table>
             </div>
 
 
-        </div>
+        </div>}
+    </div>
     )
 }
 
