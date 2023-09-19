@@ -3,22 +3,24 @@ import { IProduct } from "@/interface/product";
 import { useAppDispatch } from "@/store/hook"
 import { useForm, Controller } from "react-hook-form";
 import React, { useState, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
     const dispatch = useAppDispatch();
     // Xử lý sự kiện khi người dùng chọn tệp
     const [selectedFile, setSelectedFile] = useState(null);
-    const readerRef = useRef<any>(null);
 
-    const handleFileChange = (event:any) => {
+    const readerRef = useRef<any>(null);
+    const url = useNavigate()
+    const handleFileChange = (event: any) => {
         const file = event.target.files[0];
         setSelectedFile(file);
 
         if (file) {
             const reader = new FileReader();
-            reader.onload = (e:any) => {
+            reader.onload = (e: any) => {
                 const fileData = e.target.result;
-                console.log('File Data:', fileData);
+
             };
 
             // Lưu trữ biến reader vào useRef
@@ -26,7 +28,6 @@ const AddProduct = () => {
 
             reader.readAsDataURL(file);
             setSelectedFile(reader);
-
         }
     };
     const [addProduct] = useAddProductMutation();
@@ -53,15 +54,18 @@ const AddProduct = () => {
             image: selectedFile['result']
         }
         addProduct(newData)
-        console.log("thành công", newData);
-
+        url('/admin/dashboard')
     }
 
     return <div>
         <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Add Product</h2>
         <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-2 ml-200 mr-200 ">
             <div className="col-span-1">
-                <img className="h-40 w-80 rounded-lg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCLs3s-DKPsQYMxVOJnqHnBzM4KhkkG9D6I7HZFw1Qcg&s" alt="image description" />
+                {selectedFile === null ? (
+                    <img className="h-40 w-80 rounded-lg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCLs3s-DKPsQYMxVOJnqHnBzM4KhkkG9D6I7HZFw1Qcg&s" alt="image description" />
+                ) : (
+                    <img className="h-40 w-80 rounded-lg" src={selectedFile['result']} alt="image description" />
+                )}
             </div>
             <div>
                 <div className="col-span-2">
