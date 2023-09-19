@@ -7,7 +7,7 @@ const categoryApi = createApi({
     reducerPath: "category",
     tagTypes: ['Category'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://localhost:8000/api",
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("access_token");
             headers.set("authorization", `Bearer ${token}`)
@@ -29,18 +29,18 @@ const categoryApi = createApi({
             providesTags: ['Category']
         }),
         addCategory: builder.mutation({
-            query: (product: ICategory) => ({
+            query: (category: ICategory) => ({
                 url: `/categories`,
                 method: "POST",
-                body: product
+                body: category
             }),
             invalidatesTags: ['Category']
         }),
         updateCategory: builder.mutation<ICategory, ICategory>({
-            query: (product) => ({
-                url: `/categories/${product.id}`,
+            query: (category) => ({
+                url: `/categories/${category.id}`,
                 method: "PATCH",
-                body: product
+                body: category
             }),
             invalidatesTags: ['Category']
         }),
