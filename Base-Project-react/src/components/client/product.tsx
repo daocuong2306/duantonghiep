@@ -144,7 +144,6 @@ const Product = () => {
                                                             <input
                                                                 type="checkbox"
                                                                 value={item.id} // Đặt giá trị cho mỗi danh mục từ mảng categories
-
                                                                 onChange={() => handleCheckboxChange(String(item?.id))} // Truyền cateId khi ô checkbox được chọn
                                                                 className="h-5 w-5 rounded border-gray-300"
                                                             />
