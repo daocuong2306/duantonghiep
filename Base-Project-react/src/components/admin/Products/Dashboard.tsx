@@ -1,12 +1,17 @@
+import { useGetProductsQuery } from '@/api/product'
+import { IProduct } from '@/interface/product'
+import { useAppDispatch } from '@/store/hook'
 import React from 'react'
 
 type Props = {}
 
 const Dashboard = (props: Props) => {
+    const dispatch = useAppDispatch()
+    const { data: products, error, isLoading } = useGetProductsQuery();
+    console.log(products);
+
     return (
         <div>
-
-
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <div className="pb-4 bg-white dark:bg-white-900">
                     <label htmlFor="table-search" className="sr-only">Search</label>
@@ -46,29 +51,40 @@ const Dashboard = (props: Props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="bg-white border-b dark:bg-white-800 dark:border-white-700  ">
-                            <td className="w-4 p-4">
-                                <div className="flex items-center">
-                                    <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-white-100 border-white-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-white-800 dark:focus:ring-offset-white-800 focus:ring-2 dark:bg-white-700 dark:border-white-600" />
-                                    <label htmlFor="checkbox-table-search-1" className="sr-only">checkbox</label>
-                                </div>
-                            </td>
-                            <th scope="row" className="px-6 py-4 font-medium text-black-900 whitespace-nowrap dark:text-black hover:text-blue-500">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td className="px-6 py-4">
-                                Silver
-                            </td>
-                            <td className="px-6 py-4">
-                                Laptop
-                            </td>
-                            <td className="px-6 py-4">
-                                $2999
-                            </td>
-                            <td className="px-6 py-4">
-                                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            </td>
-                        </tr>
+                        {
+                            products.product?.map((product: IProduct, index: number) => (
+                                <tr
+                                    key={index}
+                                    className={`bg-white border-b ${index % 2 === 0 ? 'dark:bg-white-800 dark:border-white-700' : 'dark:bg-white-700 dark:border-white-600'}`}
+                                >
+                                    <td className="w-4 p-4">
+                                        <div className="flex items-center">
+                                            <input
+                                                id={`checkbox-table-search-${index}`}
+                                                type="checkbox"
+                                                className="w-4 h-4 text-blue-600 bg-white-100 border-white-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-white-800 dark:focus:ring-offset-white-800 focus:ring-2 dark:bg-white-700 dark:border-white-600"
+                                            />
+                                            <label htmlFor={`checkbox-table-search-${index}`} className="sr-only">
+                                                checkbox
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <th scope="row" className="px-6 py-4 font-medium text-black-900 whitespace-nowrap dark:text-black hover:text-blue-500">
+                                        {product.name}
+                                    </th>
+                                    <td className="px-6 py-4">
+                                        <img className="h-40 w-80 rounded-lg" src={product.image} alt="image description" />
+                                    </td>
+                                    <td className="px-6 py-4">{product.code}</td>
+                                    <td className="px-6 py-4">{product.price}</td>
+                                    <td className="px-6 py-4">
+                                        <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                            Edit
+                                        </a>
+                                    </td>
+                                </tr>
+                            ))
+                        }
 
                     </tbody>
                 </table>
