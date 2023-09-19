@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Models\OptionValue;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
-
-class ProductController extends Controller
+class OptionValueController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,18 +16,18 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-        if($products->count()>0){
-            return response()->json([
-                'status'=>200,
-                'product'=>$products,
-            ],200);
-        }else{
-            return response()->json([
-                'status'=>200,
-                'message'=>'not found'
-            ],400);
-        }
+        $option_values = OptionValue::all();
+       if($option_values->count()>0){
+        return response()->json([
+           "status" => 200,
+           "option_values" => $option_values,
+        ],200);      
+       }else{
+        return response()->json([
+            'status'=>200,
+            'message'=>'not found'
+        ],400);
+       }
     }
 
     /**
@@ -41,14 +39,9 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'name'=>'required',
-            'price'=>'required',
-            'description'=>'required',
-            'status'=>'required',
-            'image'=>'required',
-            'code'=>'required',
-            'quantity'=>'required',
-            'id_category'=>'required'
+            'product_id'=>'required',
+            'option_id'=>'required',
+            'value'=>'required',
         ]);
         if($validator->fails()){
             return response()->json([
@@ -56,18 +49,13 @@ class ProductController extends Controller
                 'errors'=>$validator->messages(),
             ],422);
         }else{
-            $product=Product::create([
-                'name'=>$request->name,
-                'price'=>$request->price,
-                'description'=>$request->description,
-                'status'=>$request->status,
-                'image'=>$request->image,
-                'code'=>$request->code,
-                'quantity'=>$request->quantity,
-                'id_category'=>$request->id_category
+            $option_values = OptionValue::create([
+                'product_id'=>$request->product_id,
+                 'option_id'=>$request-> option_id,
+                'value'=>$request->value,
             ]);
 
-            if($product){
+            if($option_values){
                 return response()->json([
                     'status'=>200,
                     'message'=>'Successfull',
@@ -89,11 +77,11 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::find($id);
-        if($product){
+        $option_values = OptionValue::find($id);
+        if($option_values){
             return response()->json([
                 'status'=>200,
-                'product'=>$product,
+                "option_values" => $option_values,
             ],200);
         }else{
             return response()->json([
@@ -113,14 +101,9 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'name'=>'required',
-            'price'=>'required',
-            'description'=>'required',
-            'status'=>'required',
-            'image'=>'required',
-            'code'=>'required',
-            'quantity'=>'required',
-            'id_category'=>'required'
+            'product_id'=>'required',
+            'option_id'=>'required',
+            'value'=>'required',
         ]);
         if($validator->fails()){
             return response()->json([
@@ -128,17 +111,12 @@ class ProductController extends Controller
                 'errors'=>$validator->messages(),
             ],422);
         }else{
-            $product = Product::find($id);
-            if($product){
-                $product->update([
-                'name'=>$request->name,
-                'price'=>$request->price,
-                'description'=>$request->description,
-                'status'=>$request->status,
-                'image'=>$request->image,
-                'code'=>$request->code,
-                'quantity'=>$request->quantity,
-                'id_category'=>$request->id_category
+            $option_values = OptionValue::find($id);
+            if($option_values){
+                $option_values->update([
+                    'product_id'=>$request->product_id,
+                    'option_id'=>$request-> option_id,
+                   'value'=>$request->value,
                 ]);
                 return response()->json([
                     'status'=>200,
@@ -161,9 +139,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
-        if($product){
-            $product ->delete();
+        $option_values = OptionValue::find($id);
+        if($option_values){
+            $option_values ->delete();
             return response()->json([
                 'status'=>200,
                 'message'=>'Delete Successfull',
@@ -174,5 +152,5 @@ class ProductController extends Controller
                 'message'=>'Not found',
             ],404);
         }
+     }
     }
-}
