@@ -1,5 +1,5 @@
 import { useGetCategoriesQuery } from '../../../api/category'
-import { useGetProductsQuery } from '../../../api/product'
+import { useGetProductsQuery, useRemoveProductMutation } from '../../../api/product'
 import { ICategory } from '../../../interface/category'
 import { IProduct } from '../../../interface/product'
 import { useAppDispatch } from '../../../store/hook'
@@ -8,8 +8,15 @@ import { FcFullTrash, FcSupport } from 'react-icons/fc'
 const Dashboard = () => {
     const dispatch = useAppDispatch()
     const { data: products, error, isLoading } = useGetProductsQuery();
-    console.log(products, isLoading);
     const { data: categories } = useGetCategoriesQuery();
+    const [deleteProduct] = useRemoveProductMutation()
+    const deleteP = (id: number | string) => {
+        const check = window.confirm("Are you sure you want to delete");
+        if (check) {
+            deleteProduct(id);
+            alert("da xoa")
+        }
+    }
     return (<div>
         {isLoading && <div
             className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
@@ -113,7 +120,7 @@ const Dashboard = () => {
                                     <td className="px-6 py-4 ">
                                         <div className="flex ">
                                             <Link to="">
-                                                <FcSupport className='w-6 h-6 blue mr-2' />
+                                                <FcSupport className='w-6 h-6 blue mr-2' onClick={() => { deleteP(Number(product.id)) }} />
                                             </Link>
                                             <Link to="">
                                                 <FcFullTrash className='w-6 h-6' />
