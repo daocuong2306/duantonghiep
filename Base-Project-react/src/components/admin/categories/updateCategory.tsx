@@ -5,14 +5,15 @@ import React, { useState, useRef } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 
 import { ICategory } from "@/interface/category";
-import { useGetCategoryByIdQuery } from "@/api/category";
+import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from "@/api/category";
 
 const UpdateCategory = () => {
     const {id}=useParams()
     const dispatch = useAppDispatch();
     // Xử lý sự kiện khi người dùng chọn tệp
     const [selectedFile, setSelectedFile] = useState(null);
-    const {data:category}=useGetCategoryByIdQuery(String(id))
+    const {data:category}=useGetCategoryByIdQuery(Number(id))
+    const [updateCategory]=useUpdateCategoryMutation()
     const readerRef = useRef<any>(null);
     const url = useNavigate()
     const handleFileChange = (event: any) => {
@@ -33,11 +34,11 @@ const UpdateCategory = () => {
             setSelectedFile(reader);
         }
     };
-    const [updateCategory] = useUpdateCategoryMutation();
     const { control, handleSubmit, setValue, getValues, register } = useForm();
     const onHandleSubmit = () => {
         const name = getValues('name');
         const newData = {
+            id,
             name,
             image: selectedFile['result']
         }
@@ -51,7 +52,7 @@ const UpdateCategory = () => {
         <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-2 ml-200 mr-200 ">
             <div className="col-span-1">
                 {selectedFile === null ? (
-                    <img className="h-40 w-80 rounded-lg" src={category?.image} alt="image description" />
+                    <img className="h-40 w-80 rounded-lg" src={category?.categories.image} alt="image description" />
                 ) : (
                     <img className="h-40 w-80 rounded-lg" src={selectedFile['result']} alt="image description" />
                 )}
@@ -66,7 +67,7 @@ const UpdateCategory = () => {
                             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                             placeholder="Product Name"
                             required
-                            defaultValue={category?.name}
+                            defaultValue={category?.categories.name}
                             {...register('name')}
                         />
                         <div className="relative z-0 w-full mb-6 group">

@@ -8,7 +8,6 @@ import Dashboard from "./components/admin/Products/Dashboard";
 import AddProduct from "./components/admin/Products/addProduct";
 import CategoryDashboard from "./components/admin/categories/categoryDashboard";
 import AddCategory from "./components/admin/categories/addCategory";
-import ImageUpload from "./components/admin/Products/test";
 
 
 export const router = createBrowserRouter([
@@ -65,7 +64,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "categories/update/:id",
-
+               
             }
 
         ],
