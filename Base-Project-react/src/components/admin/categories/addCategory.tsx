@@ -10,7 +10,6 @@ const AddCategory = () => {
     const dispatch = useAppDispatch();
     // Xử lý sự kiện khi người dùng chọn tệp
     const [selectedFile, setSelectedFile] = useState(null);
-s
     const readerRef = useRef<any>(null);
     const url = useNavigate()
     const handleFileChange = (event: any) => {

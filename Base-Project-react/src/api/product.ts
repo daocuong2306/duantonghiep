@@ -37,7 +37,7 @@ const productApi = createApi({
         }),
         updateProduct: builder.mutation<IProduct, IProduct>({
             query: (product) => ({
-                url: `/products/${product.id}`,
+                url: `/products/edit/${product.id}`,
                 method: "PATCH",
                 body: product
             }),
@@ -45,7 +45,7 @@ const productApi = createApi({
         }),
         removeProduct: builder.mutation<void, number>({
             query: (id) => ({
-                url: `/products/${id}`,
+                url: `/products/delete/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ['Product']

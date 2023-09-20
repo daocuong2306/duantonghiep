@@ -58,6 +58,8 @@ const AddProduct = () => {
             image: selectedFile['result']
         }
         addProduct(newData)
+        console.log(newData);
+        
         url('/admin/dashboard')
     }
 
