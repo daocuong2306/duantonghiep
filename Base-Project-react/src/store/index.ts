@@ -1,7 +1,7 @@
 import categoryApi, { categoryReducer } from '../api/category';
 import productApi, { productReducer } from '../api/product';
 import userApi, { userReducer } from '../api/user';
-
+import { cloudinaryReducer } from '../cloudinary/cloudinarySlice'
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
     FLUSH,
@@ -22,6 +22,7 @@ const persistConfig = {
     whitelist: ['cart']
 }
 const rootReducer = combineReducers({
+    cloudinary: cloudinaryReducer,
     [productApi.reducerPath]: productReducer,
     [userApi.reducerPath]: userReducer,
     [categoryApi.reducerPath]: categoryReducer
