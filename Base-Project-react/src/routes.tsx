@@ -8,12 +8,7 @@ import Dashboard from "./components/admin/Products/Dashboard";
 import AddProduct from "./components/admin/Products/addProduct";
 import CategoryDashboard from "./components/admin/categories/categoryDashboard";
 import AddCategory from "./components/admin/categories/addCategory";
-<<<<<<< HEAD
-import ImageUpload from "./components/admin/Products/test";
-=======
 import UpdateCategory from "./components/admin/categories/updateCategory";
-
->>>>>>> 56891ddb8721a5883be79d6e6ee920aad3ee10c8
 
 
 export const router = createBrowserRouter([
@@ -60,14 +55,8 @@ export const router = createBrowserRouter([
                 element: <AddCategory />
             },
             {
-<<<<<<< HEAD
                 path: "categories/update/:id",
-=======
-                path: "categories/update/:id",    
-              element:<UpdateCategory/>
-
->>>>>>> 56891ddb8721a5883be79d6e6ee920aad3ee10c8
-
+                element: <UpdateCategory />
             }
 
         ],
