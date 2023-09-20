@@ -38,15 +38,15 @@ const categoryApi = createApi({
         }),
         updateCategory: builder.mutation<ICategory, ICategory>({
             query: (category) => ({
-                url: `/categories/${category.id}`,
-                method: "PATCH",
+                url: `/categories/edit/${category.id}`,
+                method: "PUT",
                 body: category
             }),
             invalidatesTags: ['Category']
         }),
         removeCategory: builder.mutation<void, number>({
             query: (id) => ({
-                url: `/categories/${id}`,
+                url: `/categories/delete/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ['Category']
