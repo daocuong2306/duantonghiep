@@ -8,7 +8,8 @@ import Dashboard from "./components/admin/Products/Dashboard";
 import AddProduct from "./components/admin/Products/addProduct";
 import CategoryDashboard from "./components/admin/categories/categoryDashboard";
 import AddCategory from "./components/admin/categories/addCategory";
-import ImageUpload from "./components/admin/Products/test";
+import UpdateCategory from "./components/admin/categories/updateCategory";
+
 
 
 export const router = createBrowserRouter([
@@ -64,7 +65,9 @@ export const router = createBrowserRouter([
                 element: <AddCategory />
             },
             {
-                path: "categories/update/:id",
+                path: "categories/update/:id",    
+              element:<UpdateCategory/>
+
 
             }
 
