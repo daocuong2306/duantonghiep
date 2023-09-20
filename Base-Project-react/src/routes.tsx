@@ -11,7 +11,6 @@ import AddCategory from "./components/admin/categories/addCategory";
 import UpdateCategory from "./components/admin/categories/updateCategory";
 
 
-
 export const router = createBrowserRouter([
 
     {
@@ -42,15 +41,6 @@ export const router = createBrowserRouter([
                 ),
             },
             {
-                path: "test",
-                element: (
-                    <div>
-                        <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
-                        < ImageUpload />
-                    </div>
-                ),
-            },
-            {
                 path: "product/add",
                 element: <AddProduct />,
             },
@@ -65,10 +55,8 @@ export const router = createBrowserRouter([
                 element: <AddCategory />
             },
             {
-                path: "categories/update/:id",    
-              element:<UpdateCategory/>
-
-
+                path: "categories/update/:id",
+                element: <UpdateCategory />
             }
 
         ],
