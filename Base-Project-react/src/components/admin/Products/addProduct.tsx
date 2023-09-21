@@ -59,7 +59,6 @@ const AddProduct = () => {
         }
         addProduct(newData)
         console.log(newData);
-        
         url('/admin/dashboard')
     }
 
@@ -133,8 +132,6 @@ const AddProduct = () => {
                                         )
                                     })
                                 }
-
-                                <button type="submit">Submit</button>
                             </fieldset>
                         </div>
                         <div className="grid md:grid-cols-2 md:gap-6">
