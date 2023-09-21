@@ -17,6 +17,8 @@ const Dashboard = () => {
             alert("da xoa")
         }
     }
+    console.log(isLoading);
+    
     return (<div>
         {isLoading && <div
             className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
@@ -120,10 +122,10 @@ const Dashboard = () => {
                                     <td className="px-6 py-4 ">
                                         <div className="flex ">
                                             <Link to="">
-                                                <FcSupport className='w-6 h-6 blue mr-2' onClick={() => { deleteP(Number(product.id)) }} />
+                                                <FcSupport className='w-6 h-6 blue mr-2' />
                                             </Link>
                                             <Link to="">
-                                                <FcFullTrash className='w-6 h-6' />
+                                                <FcFullTrash className='w-6 h-6' onClick={() => { deleteP(Number(product.id)) }} />
                                             </Link>
                                         </div>
                                     </td>

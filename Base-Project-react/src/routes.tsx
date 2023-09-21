@@ -9,6 +9,7 @@ import AddProduct from "./components/admin/Products/addProduct";
 import CategoryDashboard from "./components/admin/categories/categoryDashboard";
 import AddCategory from "./components/admin/categories/addCategory";
 import UpdateCategory from "./components/admin/categories/updateCategory";
+import ImageUpload from "./components/admin/Products/test";
 
 
 export const router = createBrowserRouter([
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
             {
                 path: "categories/update/:id",
                 element: <UpdateCategory />
+            },
+            {
+                path: 'test',
+                element: <ImageUpload />
             }
 
         ],

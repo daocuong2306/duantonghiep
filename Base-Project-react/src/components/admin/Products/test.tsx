@@ -33,7 +33,7 @@ function ImageUpload() {
                 <div>
                     <p>Uploaded Image:</p>
                     <AdvancedImage
-                        cloudName="your_cloud_name" // Thay thế bằng tên Cloud của bạn
+                        cloudName="dfkkezs8a" // Thay thế bằng tên Cloud của bạn
                         cldImg={imageUrl}
                         width="300"
                         height="200"
