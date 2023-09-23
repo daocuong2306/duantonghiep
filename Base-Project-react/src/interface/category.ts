@@ -1,5 +1,6 @@
-export interface ICategory {
-    id?: string | number;
-    name: string;
-    image: string
+export interface ICategory{
+        id?: string | number;
+        name: string;
+        image: string
+    
 }

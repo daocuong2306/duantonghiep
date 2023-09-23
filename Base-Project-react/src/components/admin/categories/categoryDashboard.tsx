@@ -5,8 +5,8 @@ import { Link } from "react-router-dom"
 
 const CategoryDashboard = () => {
     const { data: categories, error, isLoading } = useGetCategoriesQuery()
-    const [deleteCate]=useRemoveCategoryMutation()
-    const deleteCategory=(id:Number)=>{
+    const [deleteCate] = useRemoveCategoryMutation()
+    const deleteCategory = (id: Number) => {
         deleteCate(Number(id))
     }
     return (
@@ -55,19 +55,19 @@ const CategoryDashboard = () => {
                                         <label htmlFor="checkbox-table-search-1" className="sr-only">checkbox</label>
                                     </div>
                                 </td>
-                                <th scope="row" className="px-6 py-4 font-medium text-black-900 whitespace-nowrap dark:text-black hover:text-blue-500">
+                                <th scope="row" className="px-6 py-4 font-medium text-black-900 text-xl-10 whitespace-nowrap dark:text-black hover:text-blue-500">
                                     {category?.name}
                                 </th>
                                 <th scope="row" className="px-6 py-4 font-medium text-black-900 whitespace-nowrap dark:text-black hover:text-blue-500">
-                                    <img src={category?.image} className="m-auto w-10 h-10"/>
+                                    <img src={category?.image} className="h-20 w-50 rounded-lg m-auto" />
                                 </th>
-                                <th scope="row" className="px-6 py-4 font-medium text-black-900 whitespace-nowrap dark:text-black hover:text-blue-500">
-                                    <div className="flex ">
+                                <th scope="row" className="px-6 py-4 font-medium text-black-900 whitespace-nowrap dark:text-black hover:text-blue-500 m-auto">
+                                    <div className="flex m-auto w-12">
                                         <Link to={`/admin/categories/update/${category?.id}`}>
-                                            <FcSupport className='w-6 h-6 blue mr-2'/>
+                                            <FcSupport className='w-6 h-6 blue mr-2' />
                                         </Link>
                                         <Link to="">
-                                            <FcFullTrash className='w-6 h-6' onClick={()=>deleteCategory(Number(category?.id))} />
+                                            <FcFullTrash className='w-6 h-6' onClick={() => deleteCategory(Number(category?.id))} />
                                         </Link>
                                     </div>
                                 </th>
