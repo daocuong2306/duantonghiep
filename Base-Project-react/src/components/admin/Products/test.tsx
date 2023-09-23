@@ -5,9 +5,9 @@ import { setImageUrl } from '../../../cloudinary/cloudinarySlice'; // Thay đổ
 
 function ImageUpload() {
     const dispatch = useDispatch();
-    const imageUrl = useSelector((state) => state.cloudinary.imageUrl);
+    const imageUrl = useSelector((state:any) => state.cloudinary.imageUrl);
 
-    const handleUpload = async (e) => {
+    const handleUpload = async (e:any) => {
         const file = e.target.files[0];
         const formData = new FormData();
         formData.append('file', file);
