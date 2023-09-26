@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\OptionController;
 use App\Http\Controllers\Api\OptionValueController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,9 +29,13 @@ Route::group([
     ], function() {
         Route::delete('logout', [AuthController::class, 'logout']);
         Route::get('user', [AuthController::class, 'user']);
+        
+        
     });
 });
 
+Route::get('user/listAll', [UserController::class, 'index']);
+Route::post('user/edit/{id}', [UserController::class, 'edit']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
