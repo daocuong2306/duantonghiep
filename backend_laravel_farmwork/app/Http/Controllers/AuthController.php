@@ -66,6 +66,7 @@ class AuthController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
         }
         $token->save();
+        // dd(Auth::user());
         return response()->json([
             'status' => 'success',
             'access_token' => $tokenResult->accessToken,
@@ -92,6 +93,7 @@ class AuthController extends Controller
      */
     public function user(Request $request)
     {
+        // dd(Auth::user());
         return response()->json($request->user());
     }
     
