@@ -48,6 +48,11 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/check', function () {//
+    return response()->json([
+        'message' => 'Bạn Phải Đăng nhập'
+    ]);
+})->name('check');
 // Categories
 Route::get('categories', [CategoryController::class, 'index']);
 Route::post('categories', [CategoryController::class, 'store']);
