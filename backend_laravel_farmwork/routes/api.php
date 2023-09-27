@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\OptionController;
 use App\Http\Controllers\Api\OptionValueController;
 use App\Http\Controllers\Api\ProductController;
@@ -28,27 +29,41 @@ Route::group([
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('register', [AuthController::class, 'register']);
 });
-//Check Role..............(muốn check role router nào thì cho vào function của group route này nhé !)
+//Check Role...... chỉ có admin ........(Chức năng nào của Admin thì cho vào function của group route này nhé !)
 Route::group(['middleware' => ['auth:api', 'role']], function () {
 
-    Route::get('/who', function () {//
+    Route::get('/who', function () { //
         return response()->json([
             'message' => 'You are Admin.'
         ]);
     });
-
+    
     Route::get('user/show_one/{id}', [UserController::class, 'show']);
     Route::delete('auth/logout', [AuthController::class, 'logout']);
-    Route::get('auth/user', [AuthController::class, 'user']);
+    
     Route::get('user/listAll', [UserController::class, 'index']);
     Route::post('user/edit/{id}', [UserController::class, 'edit']);
+    //Comment.................
+    Route::get('comment/listAll', [CommentController::class, 'listcomment']);
+    Route::get('comment/findbyuser/{id}', [CommentController::class, 'findCommentbyUser']);
+    Route::get('comment/findbyproduct/{id}', [CommentController::class, 'findCommentbyProduct']);
+    Route::delete('comment/deletebyadmin/{id}', [CommentController::class, 'deleteByAmin']);
+});
+// ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
+Route::group(['middleware' => 'auth:api'], function () {
+
+    Route::get('auth/user', [AuthController::class, 'user']);
+    
+    Route::post('comment/add', [CommentController::class, 'addcomment']);
+    Route::delete('comment/deletebyuser/{id}', [CommentController::class, 'deleteByUser']);
 });
 
 // Sanctum---------------------------------------------------
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+    
 });
-Route::get('/check', function () {//
+Route::get('/check', function () { //
     return response()->json([
         'message' => 'Bạn Phải Đăng nhập'
     ]);
