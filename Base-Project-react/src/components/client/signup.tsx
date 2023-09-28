@@ -18,25 +18,14 @@ const Signup = () => {
     const [addUser] = useAddUserMutation()
     const dispatch = useAppDispatch()
     const url = useNavigate()
-    const { data } = useGetUserQuery()
     const { register, handleSubmit } = useForm()
     const onHandleSubmit = (dataUser: signUpForm) => {
-        if (dataUser.password !== dataUser.confirmPassword) {
-            console.log("lỗi confirm");
-        } else {
-            for (let user of data) {
-                if (user.email === dataUser.email) {
-                    console.log("email đã tồn tại");
-                } else {
-                    const { confirmPassword, ...newUser } = dataUser
-                    const newUserData = { ...newUser, role: 1 }
-                    addUser(newUserData)
-                    console.log(newUserData);
-                    url('/login')
-                }
-            }
-        }
-
+        addUser({
+            "email": "afbi1w@gmail.com",
+            "password": "123456",
+            "password_confirmation": "123456",
+            "name": "abfi1w"
+        })
     }
     return (
         <div>

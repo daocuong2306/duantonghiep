@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\OptionValueController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BannerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -94,3 +95,9 @@ Route::post('optionvalues', [OptionValueController::class, 'store']);
 Route::get('optionvalues/{id}', [OptionValueController::class, 'show']);
 Route::put('optionvalues/edit/{id}', [OptionValueController::class, 'update']);
 Route::delete('optionvalues/delete/{id}', [OptionValueController::class, 'destroy']);
+//Banner
+Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
+Route::post('banner/add', [BannerController::class, 'addBanner']);
+Route::delete('banner/delete/{id}', [BannerController::class, 'deleteBanner']);
+
+
