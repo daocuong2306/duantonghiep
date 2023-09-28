@@ -72,9 +72,8 @@ Route::get('/check', function () { //
 })->name('check');
 // Categories
 Route::get('categories', [CategoryController::class, 'index']);
-Route::post('categories', [CategoryController::class, 'store']);
+Route::post('categories/add', [CategoryController::class, 'store']);
 Route::get('categories/{id}', [CategoryController::class, 'show']);
-Route::get('categories/edit/{id}', [CategoryController::class, 'edit']);
 Route::put('categories/edit/{id}', [CategoryController::class, 'update']);
 Route::delete('categories/delete/{id}', [CategoryController::class, 'destroy']);
 //Products
