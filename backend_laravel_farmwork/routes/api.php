@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::delete('auth/logout', [AuthController::class, 'logout']);
     
     Route::get('user/listAll', [UserController::class, 'index']);
-    Route::post('user/edit/{id}', [UserController::class, 'edit']);
+    
     //Comment.................
     Route::get('comment/listAll', [CommentController::class, 'listcomment']);
     Route::get('comment/findbyuser/{id}', [CommentController::class, 'findCommentbyUser']);
@@ -51,9 +51,11 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
 });
 // ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
 Route::group(['middleware' => 'auth:api'], function () {
-
+    //User
     Route::get('auth/user', [AuthController::class, 'user']);
-    
+    Route::post('user/edit/{id}', [UserController::class, 'edit']);
+    Route::get('user/show_one/{id}', [UserController::class, 'show']);
+    //Comment
     Route::post('comment/add', [CommentController::class, 'addcomment']);
     Route::delete('comment/deletebyuser/{id}', [CommentController::class, 'deleteByUser']);
 });
