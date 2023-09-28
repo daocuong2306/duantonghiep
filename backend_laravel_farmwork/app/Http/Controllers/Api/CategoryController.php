@@ -115,7 +115,6 @@ class CategoryController extends Controller
             'name' => 'required',
             'image' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
         ]);
-
         if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
