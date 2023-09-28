@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -49,15 +50,23 @@ class CategoryController extends Controller
                 'errors'=>$validator->messages(),
             ],422);
         }else{
-            $categories=Category::create([
-                'name'=>$request->name,
-                'image'=>$request->image,
-            ]);
+            // $categories=Category::create([
+            //     'name'=>$request->name,
+            //     'image'=>$request->image,
+            // ]);
+            $categories = new Category();
+            $categories->name = $request->name;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
-                $imageUrl = asset('storage/images/' . basename($imagePath));
+                $imageUrl = Storage::url($imagePath);
                 $categories->image = $imageUrl;
             }
+            $categories->save();
+            // if ($request->hasFile('image')) {
+            //     $imagePath = $request->file('image')->store('public/images');
+            //     $imageUrl = asset('storage/images/' . basename($imagePath));
+            //     $categories->image = $imageUrl;
+            // }
 
             if($categories){
                 return response()->json([
@@ -94,24 +103,6 @@ class CategoryController extends Controller
             ],404);
         }
     }
-
-  
-    public function edit($id)
-    {
-        $categories = Category::find($id);
-        if($categories){
-            return response()->json([
-                'status'=>200,
-                'categories'=>$categories,
-            ],200);
-        }else{
-            return response()->json([
-                'status'=>404,
-                'message'=>'Not found',
-            ],404);
-        }
-    }
-
       /**
      * Update the specified resource in storage.
      *
@@ -120,40 +111,36 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request,int $id){
-        $validator = Validator::make($request->all(),[
-            'name'=>'required',
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'image' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
         ]);
-        if($validator->fails()){
+
+        if ($validator->fails()) {
             return response()->json([
-                'status'=>422,
-                'errors'=>$validator->messages(),
-            ],422);
-        }else{
-            $categories=Category::find($id);
+                'status' => 422,
+               'errors' => $validator->messages(),
+            ], 422);
+        } else {
+            $categories = Category::find($id);
+            $categories->name = $request->name;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
-                $imageUrl = asset('storage/images/' . basename($imagePath));
+                $imageUrl = Storage::url($imagePath);
                 $categories->image = $imageUrl;
             }
-            if($categories){
-                $categories->update([
-                    'name'=>$request->name,
-                    'image'=>$request->image,
-                ]);
+            $categories->save();
+            if (!$categories) {
                 return response()->json([
-                    'status'=>200,
-                    'message'=>'Update Successfull',
-                ],200);
-            }else{
-                return response()->json([
-                    'status'=>404,
-                    'message'=>'Not found',
-                ],404);
+                    'status' => 404,
+                    'message' => 'Not found',
+                ], 404);
             }
-           
+            return response()->json([
+                'status' => 200,
+                'message' => 'Successfull',
+            ], 200);
         }
-        
     }
 
     /**
