@@ -41,7 +41,7 @@ class CategoryController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'name'=>'required',
-            'image'=>'required',
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
         ]);
         if($validator->fails()){
             return response()->json([
@@ -53,6 +53,11 @@ class CategoryController extends Controller
                 'name'=>$request->name,
                 'image'=>$request->image,
             ]);
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('public/images');
+                $imageUrl = asset('storage/images/' . basename($imagePath));
+                $categories->image = $imageUrl;
+            }
 
             if($categories){
                 return response()->json([
@@ -117,7 +122,7 @@ class CategoryController extends Controller
     public function update(Request $request,int $id){
         $validator = Validator::make($request->all(),[
             'name'=>'required',
-            'image'=>'required',
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
         ]);
         if($validator->fails()){
             return response()->json([
@@ -126,6 +131,11 @@ class CategoryController extends Controller
             ],422);
         }else{
             $categories=Category::find($id);
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('public/images');
+                $imageUrl = asset('storage/images/' . basename($imagePath));
+                $categories->image = $imageUrl;
+            }
             if($categories){
                 $categories->update([
                     'name'=>$request->name,
@@ -141,7 +151,9 @@ class CategoryController extends Controller
                     'message'=>'Not found',
                 ],404);
             }
+           
         }
+        
     }
 
     /**
