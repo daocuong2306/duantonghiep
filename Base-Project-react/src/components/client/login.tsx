@@ -1,6 +1,5 @@
 import { useGetUserQuery, useLoginMutation } from "../../api/user";
-import { IUser } from "../../interface/user";
-import { useAppDispatch, useAppSelector } from "../../store/hook"
+import { IUserLogin } from "../../interface/user";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs-react";
@@ -8,18 +7,21 @@ var salt = bcrypt.genSaltSync(10);
 var hash = bcrypt.hashSync("B4c0/\/", salt);
 const Login = () => {
     const { register, handleSubmit } = useForm();
-    const [login] = useLoginMutation()
-    const { data: user } = useGetUserQuery()
+    const [login, { data, isLoading }] = useLoginMutation()
     const url = useNavigate();
-    const onHandleSubmit = (dataUser: IUser) => {
+    const onHandleSubmit = (dataUser: IUserLogin) => {
+        console.log(dataUser.email, dataUser.password);
+
         login({
-            "email": "abcd@gmail.com",
-            "password": "123456",
-            "name": "abcd"
+            "email": dataUser.email,
+            "password": dataUser.password
         })
-        
     }
-   
+    console.log(data);
+    console.log(isLoading)
+    if (isLoading == false) {
+        // url('/admin');
+    }
     return (
         <div>
             <section className="bg-gray-50 dark:bg-gray-900">
