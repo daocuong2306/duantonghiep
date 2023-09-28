@@ -3,10 +3,10 @@ import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const userApi = createApi({
-    reducerPath: "login",
+    reducerPath: "user",
     tagTypes: ['user'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://127.0.0.1:8000",
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("access_token");
             headers.set("authorization", `Bearer ${token}`)
@@ -28,8 +28,8 @@ const userApi = createApi({
             providesTags: ['user']
         }),
         addUser: builder.mutation({
-            query: (product: IUser) => ({
-                url: `/users`,
+            query: (product: any) => ({
+                url: `/api/auth/register`,
                 method: "POST",
                 body: product
             }),
