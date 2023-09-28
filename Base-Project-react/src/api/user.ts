@@ -19,46 +19,35 @@ const userApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getUser: builder.query<IUser, void>({
-            query: () => `/users`,
+        getUser: builder.query<any, void>({
+            query: () => `/api/auth/user`,
             providesTags: ['user']
         }),
-        getUserById: builder.query<IUser, number | string>({
-            query: (id) => `/users/${id}`,
-            providesTags: ['user']
-        }),
-        addUser: builder.mutation({
-            query: (product: any) => ({
+        register: builder.mutation({
+            query: (product: {name:string, email:string, password:string, password_confirmation:string}) => ({
                 url: `/api/auth/register`,
                 method: "POST",
                 body: product
             }),
             invalidatesTags: ['user']
         }),
-        updateUser: builder.mutation<IUser, IUser>({
-            query: (product) => ({
-                url: `/users/${product.id}`,
-                method: "PATCH",
+        login: builder.mutation({
+            query: (product: any) => ({
+                url: `/api/auth/login`,
+                method: "POST",
                 body: product
             }),
             invalidatesTags: ['user']
         }),
-        removeUser: builder.mutation<void, number>({
-            query: (id) => ({
-                url: `/users/${id}`,
-                method: "DELETE"
-            }),
-            invalidatesTags: ['user']
-        })
+        
     })
 });
 
 export const {
-    useAddUserMutation,
-    useGetUserByIdQuery,
+    useRegisterMutation,
+    useLoginMutation,
     useGetUserQuery,
-    useUpdateUserMutation,
-    useRemoveUserMutation
+    
 } = userApi;
 export const userReducer = userApi.reducer;
 
