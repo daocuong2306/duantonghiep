@@ -8,7 +8,7 @@ const userApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: "http://127.0.0.1:8000",
         prepareHeaders: (headers) => {
-            const token = localStorage.getItem("access_token");
+            const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)
             // modify header theo từng request
             return headers;
@@ -20,7 +20,7 @@ const userApi = createApi({
     }),
     endpoints: (builder) => ({
         getUser: builder.query<any, void>({
-            query: () => `/api/auth/user`,
+            query: (token) => `/api/auth/user`,
             providesTags: ['user']
         }),
         register: builder.mutation({
