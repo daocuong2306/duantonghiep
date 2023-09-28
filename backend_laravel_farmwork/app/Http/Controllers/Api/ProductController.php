@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -45,7 +46,7 @@ class ProductController extends Controller
             'price'=>'required',
             'description'=>'required',
             'status'=>'required',
-            'image'=>'required',
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
             'code'=>'required',
             'quantity'=>'required',
             'id_category'=>'required'
@@ -56,18 +57,33 @@ class ProductController extends Controller
                 'errors'=>$validator->messages(),
             ],422);
         }else{
-            $product=Product::create([
-                'name'=>$request->name,
-                'price'=>$request->price,
-                'description'=>$request->description,
-                'status'=>$request->status,
-                'image'=>$request->image,
-                'code'=>$request->code,
-                'quantity'=>$request->quantity,
-                'id_category'=>$request->id_category
-            ]);
+            // $product=Product::create([
+            //     'name'=>$request->name,
+            //     'price'=>$request->price,
+            //     'description'=>$request->description,
+            //     'status'=>$request->status,
+            //     'image'=>$request->image,
+            //     'code'=>$request->code,
+            //     'quantity'=>$request->quantity,
+            //     'id_category'=>$request->id_category
+            // ]);
+            $products = new Product();
+            $products -> name = $request->name;
+            $products -> price = $request->price;
+            $products -> description = $request->description;
+            $products -> status = $request->status;
+            $products-> code = $request->code;
+            $products-> quantity = $request->quantity;
+            $products -> id_category = $request->id_category;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('public/images');
+                $imageUrl = Storage::url($imagePath);
+                $products->image = $imageUrl;
+            }
 
-            if($product){
+            $products->save();
+
+            if($products){
                 return response()->json([
                     'status'=>200,
                     'message'=>'Successfull',
@@ -117,7 +133,7 @@ class ProductController extends Controller
             'price'=>'required',
             'description'=>'required',
             'status'=>'required',
-            'image'=>'required',
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
             'code'=>'required',
             'quantity'=>'required',
             'id_category'=>'required'
@@ -127,29 +143,30 @@ class ProductController extends Controller
                 'status'=>422,
                 'errors'=>$validator->messages(),
             ],422);
-        }else{
-            $product = Product::find($id);
-            if($product){
-                $product->update([
-                'name'=>$request->name,
-                'price'=>$request->price,
-                'description'=>$request->description,
-                'status'=>$request->status,
-                'image'=>$request->image,
-                'code'=>$request->code,
-                'quantity'=>$request->quantity,
-                'id_category'=>$request->id_category
-                ]);
-                return response()->json([
-                    'status'=>200,
-                    'message'=>'Update Successfull',
-                ],200);
-            }else{
+         }else{
+            $products = Product::find($id);
+            $products -> name = $request->name;
+            $products -> price = $request->price;
+            $products -> description = $request->description;
+            $products -> status = $request->status;
+            $products-> code = $request->code;
+            $products-> quantity = $request->quantity;
+            $products -> id_category = $request->id_category;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('public/images');
+                $imageUrl = Storage::url($imagePath);
+                $products->image = $imageUrl;
+            }
+            $products->save();
+            if(!$products){
                 return response()->json([
                     'status'=>404,
                     'message'=>'Not found',
                 ],404);
-            }
+            } return response()->json([
+                'status' => 200,
+                'message' => 'Successfull',
+            ], 200);
         }
     }
 
