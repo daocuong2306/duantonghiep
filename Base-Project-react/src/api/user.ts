@@ -1,4 +1,4 @@
-import { IUser } from '../interface/user';
+import { IUser, IUserLogin } from '../interface/user';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -24,7 +24,7 @@ const userApi = createApi({
             providesTags: ['user']
         }),
         register: builder.mutation({
-            query: (product: {name:string, email:string, password:string, password_confirmation:string}) => ({
+            query: (product:IUser) => ({
                 url: `/api/auth/register`,
                 method: "POST",
                 body: product
@@ -32,7 +32,7 @@ const userApi = createApi({
             invalidatesTags: ['user']
         }),
         login: builder.mutation({
-            query: (product: any) => ({
+            query: (product: IUserLogin) => ({
                 url: `/api/auth/login`,
                 method: "POST",
                 body: product
