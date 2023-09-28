@@ -1,4 +1,4 @@
-import { useAddUserMutation, useGetUserQuery } from "../../api/user"
+import { useGetUserQuery, useRegisterMutation } from "../../api/user"
 import { IUser } from "../../interface/user"
 import { useAppDispatch } from "../../store/hook"
 import { useForm } from "react-hook-form"
@@ -15,16 +15,16 @@ type signUpForm = {
     confirmPassword: string
 }
 const Signup = () => {
-    const [addUser] = useAddUserMutation()
+    const [addUser] = useRegisterMutation()
     const dispatch = useAppDispatch()
     const url = useNavigate()
     const { register, handleSubmit } = useForm()
     const onHandleSubmit = (dataUser: signUpForm) => {
         addUser({
-            "email": "afbi1w@gmail.com",
+            "email": "abcd@gmail.com",
             "password": "123456",
-            "password_confirmation": "123456",
-            "name": "abfi1w"
+            "password_confirmation":"123456",
+            "name": "abcd"
         })
     }
     return (
