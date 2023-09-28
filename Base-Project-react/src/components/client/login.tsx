@@ -10,17 +10,15 @@ const Login = () => {
     const [login, { data, isLoading }] = useLoginMutation()
     const url = useNavigate();
     const onHandleSubmit = (dataUser: IUserLogin) => {
-        console.log(dataUser.email, dataUser.password);
-
         login({
             "email": dataUser.email,
             "password": dataUser.password
         })
     }
-    console.log(data);
-    console.log(isLoading)
-    if (isLoading == false) {
-        // url('/admin');
+    
+    if (!isLoading) {
+        localStorage.setItem("header",data?.access_token)
+     
     }
     return (
         <div>
