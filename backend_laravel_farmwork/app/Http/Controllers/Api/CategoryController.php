@@ -122,6 +122,10 @@ class CategoryController extends Controller
             ], 422);
         } else {
             $categories = Category::find($id);
+            $oldImagePath = $categories->image;
+            if ($oldImagePath) {
+                Storage::delete($oldImagePath);
+            }
             $categories->name = $request->name;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');

@@ -75,7 +75,7 @@ Route::get('/check', function () { //
 Route::get('categories', [CategoryController::class, 'index']);
 Route::post('categories/add', [CategoryController::class, 'store']);
 Route::get('categories/{id}', [CategoryController::class, 'show']);
-Route::put('categories/edit/{id}', [CategoryController::class, 'update']);
+Route::post('categories/edit/{id}', [CategoryController::class, 'update']);
 Route::delete('categories/delete/{id}', [CategoryController::class, 'destroy']);
 //Products
 Route::get('products', [ProductController::class, 'index']);
