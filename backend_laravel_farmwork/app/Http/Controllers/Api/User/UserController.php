@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -66,12 +65,15 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $oldImagePath = $user->image;
-        // dd(Storage::files('public/images'));
-
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'image' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
         ]);
+
+        if ($oldImagePath) {
+            Storage::delete($oldImagePath);
+        }
+
         if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
@@ -79,11 +81,8 @@ class UserController extends Controller
             ], 422);
         }
         if ($request->hasFile('image')) {
-            if (File::exists($oldImagePath)) {
-                File::delete($oldImagePath);
-            }
             $imagePath = $request->file('image')->store('public/images');
-            $imageUrl = 'storage/images/' . basename($imagePath);
+            $imageUrl = asset('storage/images/' . basename($imagePath));
             $user->image = $imageUrl;
         }
         $user->name = $request->input('name');

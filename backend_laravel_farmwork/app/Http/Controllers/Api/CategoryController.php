@@ -115,7 +115,6 @@ class CategoryController extends Controller
             'name' => 'required',
             'image' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
         ]);
-
         if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
@@ -123,6 +122,10 @@ class CategoryController extends Controller
             ], 422);
         } else {
             $categories = Category::find($id);
+            $oldImagePath = $categories->image;
+            if ($oldImagePath) {
+                Storage::delete($oldImagePath);
+            }
             $categories->name = $request->name;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
