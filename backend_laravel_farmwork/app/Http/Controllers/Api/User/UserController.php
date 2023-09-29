@@ -13,22 +13,21 @@ use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = User::all();
-        if ($user->count() > 0) {
-            return response()->json([
-                'status' => 200,
-                'user' => $user,
-                'isOke' => 'true'
-            ], 200);
+        $keyword = $request->query('key');
+        if ($keyword != '') {
+            $user = User::where('name', 'like', "%$keyword%")
+                ->orWhere('email', 'like', "%$keyword%")
+                ->get();
         } else {
-            return response()->json([
-                'status' => 200,
-                'message' => 'not found',
-                'isOke' => 'false'
-            ], 400);
+            $user = User::get();
         }
+        return response()->json([
+            'status' => 200,
+            'user' => $user,
+            'isOke' => 'true'
+        ], 200);
     }
 
     public function show($id)

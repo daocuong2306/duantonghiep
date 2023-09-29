@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -87,6 +87,7 @@ class AuthController extends Controller
             'status' => 'success',
         ]);
     }
+    
     /**
      * @param Request $request
      * @return JsonResponse

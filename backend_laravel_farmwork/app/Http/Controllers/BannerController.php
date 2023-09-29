@@ -15,11 +15,11 @@ class BannerController extends Controller
             ->limit(3)
             ->get();
         // dd($newestProducts);
-        if($newestProducts->count() > 0){
+        if ($newestProducts->count() > 0) {
             return response()->json([
                 'status' => 200,
                 'message' => 'Successfull',
-                'banner'=>$newestProducts,
+                'banner' => $newestProducts,
                 'isOke' => 'true'
             ]);
         }
@@ -31,7 +31,7 @@ class BannerController extends Controller
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
         ]);
 
-        if ($validator->failed()) {
+        if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
                 'errors' => $validator->messages(),
@@ -43,7 +43,7 @@ class BannerController extends Controller
                 $imageUrl = asset('storage/images/' . basename($imagePath));
                 $banner->image = $imageUrl;
             }
-            $banner->content=$request->content;
+            $banner->content = $request->content;
             $banner->save();
         }
         if ($banner) {
@@ -58,19 +58,20 @@ class BannerController extends Controller
             ], 500);
         }
     }
-    public function deleteBanner($id){
+    public function deleteBanner($id)
+    {
         $banner = Banner::find($id);
-        if($banner){
-            $banner ->delete();
+        if ($banner) {
+            $banner->delete();
             return response()->json([
-                'status'=>200,
-                'message'=>'Delete Successfull',
-            ],200);
-        }else{
+                'status' => 200,
+                'message' => 'Delete Successfull',
+            ], 200);
+        } else {
             return response()->json([
-                'status'=>404,
-                'message'=>'Not found',
-            ],404);
+                'status' => 404,
+                'message' => 'Not found',
+            ], 404);
         }
     }
 }
