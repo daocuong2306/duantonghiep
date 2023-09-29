@@ -19,6 +19,7 @@ class CommentController extends Controller
             ->join('product', 'product.id', '=', 'comments.id_product')
             ->select('comments.*', 'product.name as nameProduct', 'users.name as userName', 'users.image as userImage')
             ->get();
+            
         // dd($comment);
         if ($comment->count() > 0) {
             return response()->json([
@@ -90,7 +91,7 @@ class CommentController extends Controller
             } else {
                 return response()->json([
                     'status' => 404,
-                    'message' => 'Not found',
+                    'message' => 'Không có bình luận này',
                 ], 404);
             }
         } else {
@@ -100,7 +101,7 @@ class CommentController extends Controller
             ], 401);
         }
     }
-
+    
     public function findCommentbyUser($id)
     {
         $comments = DB::table('comments')

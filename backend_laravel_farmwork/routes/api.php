@@ -8,6 +8,9 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\EvaluateController;
+use App\Models\Evaluate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +52,8 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::get('comment/findbyuser/{id}', [CommentController::class, 'findCommentbyUser']);
     Route::get('comment/findbyproduct/{id}', [CommentController::class, 'findCommentbyProduct']);
     Route::delete('comment/deletebyadmin/{id}', [CommentController::class, 'deleteByAmin']);
+    //Evaluate
+    Route::get('evaluate/listAll', [EvaluateController::class, 'showAll']);
 });
 // ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
 Route::group(['middleware' => 'auth:api'], function () {
@@ -59,6 +64,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     //Comment
     Route::post('comment/add', [CommentController::class, 'addcomment']);
     Route::delete('comment/deletebyuser/{id}', [CommentController::class, 'deleteByUser']);
+    //Evaluate
+    Route::post('evaluate/add', [EvaluateController::class, 'addEvaluate']);
+    Route::get('evaluate/list', [EvaluateController::class, 'showEvaoluateWithUser']);
+    Route::get('evaluate/listbyuser', [EvaluateController::class, 'getEvalueByUser']);
+    
 });
 
 // Sanctum---------------------------------------------------
@@ -99,5 +109,7 @@ Route::delete('optionvalues/delete/{id}', [OptionValueController::class, 'destro
 Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
 Route::post('banner/add', [BannerController::class, 'addBanner']);
 Route::delete('banner/delete/{id}', [BannerController::class, 'deleteBanner']);
+// Home
+Route::post('home', [HomeController::class, 'home']);
 
 
