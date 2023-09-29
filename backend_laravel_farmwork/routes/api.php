@@ -10,7 +10,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\EvaluateController;
-use App\Models\Evaluate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,7 +44,7 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::get('user/show_one/{id}', [UserController::class, 'show']);
     Route::delete('auth/logout', [AuthController::class, 'logout']);
     
-    Route::get('user/listAll', [UserController::class, 'index']);
+    Route::post('user/listAll', [UserController::class, 'index']);
     
     //Comment.................
     Route::get('comment/listAll', [CommentController::class, 'listcomment']);
@@ -54,6 +53,7 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::delete('comment/deletebyadmin/{id}', [CommentController::class, 'deleteByAmin']);
     //Evaluate
     Route::get('evaluate/listAll', [EvaluateController::class, 'showAll']);
+    Route::delete('evaluate/delete/{id}', [EvaluateController::class, 'delete']);
 });
 // ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
 Route::group(['middleware' => 'auth:api'], function () {
@@ -81,6 +81,7 @@ Route::get('/check', function () { //
         'message' => 'Bạn Phải Đăng nhập'
     ]);
 })->name('check');
+
 // Categories
 Route::get('categories', [CategoryController::class, 'index']);
 Route::post('categories/add', [CategoryController::class, 'store']);
@@ -109,6 +110,7 @@ Route::delete('optionvalues/delete/{id}', [OptionValueController::class, 'destro
 Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
 Route::post('banner/add', [BannerController::class, 'addBanner']);
 Route::delete('banner/delete/{id}', [BannerController::class, 'deleteBanner']);
+
 // Home
 Route::post('home', [HomeController::class, 'home']);
 

@@ -13,7 +13,6 @@ class HomeController extends Controller
     public function home(Request $request)
     {
         $keyword = $request->query('key');
-        // dd($keyword);
         $data = [];
         $evaluate = DB::table('evaluate')
             ->join('users', 'evaluate.id_user', '=', 'users.id')
@@ -49,7 +48,7 @@ class HomeController extends Controller
         } else {
             return response()->json([
                 'status' => 404,
-                'message' => 'null',
+                'data' => 'null',
                 'isOke' => 'false'
             ]);
         }

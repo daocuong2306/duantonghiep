@@ -102,7 +102,7 @@ class EvaluateController extends Controller
                 'evaluate' => $evaluate,
                 'isOke' => 'true',
             ], 200);
-        }else{
+        } else {
             return response()->json([
                 'status' => 404,
                 // 'evaluate' => $evaluate,
@@ -140,6 +140,22 @@ class EvaluateController extends Controller
                     'message' => 'Không có bình luận này',
                 ], 404);
             }
+        }
+    }
+    public function  delete($id)
+    {
+        $evaluate = Evaluate::find($id);
+        if ($evaluate) {
+            $evaluate->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Delete Successfull',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Not found',
+            ], 404);
         }
     }
 }
