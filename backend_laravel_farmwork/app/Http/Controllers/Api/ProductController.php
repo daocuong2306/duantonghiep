@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,6 +21,18 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
+
+        // cách 1 
+        // $categories = 'Electronics';
+        // $products = DB::table('products')
+        //     ->join('categories', 'products.category_id', '=', 'categories.id')
+        //     ->select('products.id')
+        //     ->get();
+
+        //cách 2 
+        //$products = Product::with('category')->get();
+
+
         if($products->count()>0){
             return response()->json([
                 'status'=>200,
