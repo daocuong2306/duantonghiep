@@ -1,4 +1,4 @@
-import { IUser } from '../interface/user';
+import { IUser, IUserLogin } from '../interface/user';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -8,7 +8,7 @@ const userApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: "http://127.0.0.1:8000",
         prepareHeaders: (headers) => {
-            const token = localStorage.getItem("access_token");
+            const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)
             // modify header theo từng request
             return headers;
@@ -19,46 +19,35 @@ const userApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getUser: builder.query<IUser, void>({
-            query: () => `/users`,
+        getUser: builder.query<any, void>({
+            query: (token) => `/api/auth/user`,
             providesTags: ['user']
         }),
-        getUserById: builder.query<IUser, number | string>({
-            query: (id) => `/users/${id}`,
-            providesTags: ['user']
-        }),
-        addUser: builder.mutation({
-            query: (product: any) => ({
+        register: builder.mutation({
+            query: (product:IUser) => ({
                 url: `/api/auth/register`,
                 method: "POST",
                 body: product
             }),
             invalidatesTags: ['user']
         }),
-        updateUser: builder.mutation<IUser, IUser>({
-            query: (product) => ({
-                url: `/users/${product.id}`,
-                method: "PATCH",
+        login: builder.mutation({
+            query: (product: IUserLogin) => ({
+                url: `/api/auth/login`,
+                method: "POST",
                 body: product
             }),
             invalidatesTags: ['user']
         }),
-        removeUser: builder.mutation<void, number>({
-            query: (id) => ({
-                url: `/users/${id}`,
-                method: "DELETE"
-            }),
-            invalidatesTags: ['user']
-        })
+        
     })
 });
 
 export const {
-    useAddUserMutation,
-    useGetUserByIdQuery,
+    useRegisterMutation,
+    useLoginMutation,
     useGetUserQuery,
-    useUpdateUserMutation,
-    useRemoveUserMutation
+    
 } = userApi;
 export const userReducer = userApi.reducer;
 

@@ -5,7 +5,12 @@ import { IProduct } from '../../../interface/product'
 import { useAppDispatch } from '../../../store/hook'
 import { Link } from 'react-router-dom'
 import { FcFullTrash, FcSupport } from 'react-icons/fc'
+import { useGetUserQuery } from '@/api/user'
 const Dashboard = () => {
+   
+    const {data:user}=useGetUserQuery()
+    console.log(user);
+    
     const dispatch = useAppDispatch()
     const { data: products, error, isLoading } = useGetProductsQuery();
     const { data: categories } = useGetCategoriesQuery();

@@ -1,10 +1,11 @@
 export interface IUser {
     id?: number;
-    name: string;
+    name: null;
     email: string;
-    image: string;
-    role: number;
-    phone: string;
-    address: string;
+    password: string;
+    password_confirmation: string
+}
+export interface IUserLogin {
+    email: string;
     password: string;
 }

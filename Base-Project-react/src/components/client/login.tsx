@@ -1,33 +1,25 @@
-import { useGetUserQuery } from "../../api/user";
-import { IUser } from "../../interface/user";
-import { useAppDispatch, useAppSelector } from "../../store/hook"
+import { useGetUserQuery, useLoginMutation } from "../../api/user";
+import { IUserLogin } from "../../interface/user";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs-react";
 var salt = bcrypt.genSaltSync(10);
 var hash = bcrypt.hashSync("B4c0/\/", salt);
 const Login = () => {
-    const dispatch = useAppDispatch();
-    const { data } = useGetUserQuery();
     const { register, handleSubmit } = useForm();
+    const [login, { data, isLoading }] = useLoginMutation()
     const url = useNavigate();
-    const onHandleSubmit = (dataUser: IUser) => {
-
-        for (let user of data) {
-            if (user.email === dataUser.email) {
-                const isValidate = bcrypt.compareSync(dataUser.password, user.password)
-                if (isValidate) {
-                    localStorage.setItem("user", JSON.stringify(user));
-                    url('/admin')
-                } else {
-                    console.log('Mật khẩu không hợp lệ.');
-                }
-
-            }
-
-        }
+    const onHandleSubmit = (dataUser: IUserLogin) => {
+        login({
+            "email": dataUser.email,
+            "password": dataUser.password
+        })
     }
-
+    
+    if (!isLoading) {
+        localStorage.setItem("header",data?.access_token)
+     
+    }
     return (
         <div>
             <section className="bg-gray-50 dark:bg-gray-900">
