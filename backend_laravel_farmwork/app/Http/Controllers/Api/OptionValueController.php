@@ -16,6 +16,7 @@ class OptionValueController extends Controller
      */
     public function index()
     {
+
         $option_values = OptionValue::all();
        if($option_values->count()>0){
         return response()->json([
