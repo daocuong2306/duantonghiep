@@ -98,7 +98,6 @@ class OptionController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'product_id'=>'required',
             'name'=>'required',
         ]);
         if($validator->fails()){
@@ -110,7 +109,6 @@ class OptionController extends Controller
             $options = Option::find($id);
             if($options){
                 $options->update([
-                    'product_id'=>$request->product_id,
                     'name'=>$request->name,
                 ]);
                 return response()->json([
