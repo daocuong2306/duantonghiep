@@ -18,31 +18,55 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
-
-        // cách 1 
-        // $categories = 'Electronics';
-        // $products = DB::table('products')
-        //     ->join('categories', 'products.category_id', '=', 'categories.id')
-        //     ->select('products.id')
-        //     ->get();
-
-        //cách 2 
-        //$products = Product::with('category')->get();
+        $id = $request->query('id');
+        $keyword = $request->query('keyword');
+        if ($id) {
+            $products = DB::table('product')
+                ->where('id_category', $id)
+                ->get();
 
 
-        if($products->count()>0){
             return response()->json([
-                'status'=>200,
-                'product'=>$products,
-            ],200);
-        }else{
+                'status' => 200,
+                'product' => $products,
+                'isOke' => 'true',
+                'message' =>'find by category'
+            ], 200);
+        }
+        if ($keyword) {
+            $products = Product::where('name', 'like', "%$keyword%")
+                ->orWhere('code', 'like', "%$keyword%")
+                ->get();
+
             return response()->json([
-                'status'=>200,
-                'message'=>'not found'
-            ],400);
+                'status' => 200,
+                'product' => $products,
+                'isOke' => 'true',
+                'message' =>'find by name or code',
+            ], 200);
+        }
+
+        if (!$id && !$keyword) {
+            $products = DB::table('product')
+                ->join('category', 'product.id_category', '=', 'category.id')
+                ->select('product.*', 'category.name as category_name')
+                ->get();
+
+            if ($products->count() > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'product' => $products,
+                    'message' =>'dont find',
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'not found'
+                    
+                ], 400);
+            }
         }
     }
 
@@ -54,40 +78,31 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
-            'name'=>'required',
-            'price'=>'required',
-            'description'=>'required',
-            'status'=>'required',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'price' => 'required',
+            'description' => 'required',
+            'status' => 'required',
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
-            'code'=>'required',
-            'quantity'=>'required',
-            'id_category'=>'required'
+            'code' => 'required',
+            'quantity' => 'required',
+            'id_category' => 'required'
         ]);
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
-                'status'=>422,
-                'errors'=>$validator->messages(),
-            ],422);
-        }else{
-            // $product=Product::create([
-            //     'name'=>$request->name,
-            //     'price'=>$request->price,
-            //     'description'=>$request->description,
-            //     'status'=>$request->status,
-            //     'image'=>$request->image,
-            //     'code'=>$request->code,
-            //     'quantity'=>$request->quantity,
-            //     'id_category'=>$request->id_category
-            // ]);
+                'status' => 422,
+                'errors' => $validator->messages(),
+            ], 422);
+        } else {
+
             $products = new Product();
-            $products -> name = $request->name;
-            $products -> price = $request->price;
-            $products -> description = $request->description;
-            $products -> status = $request->status;
-            $products-> code = $request->code;
-            $products-> quantity = $request->quantity;
-            $products -> id_category = $request->id_category;
+            $products->name = $request->name;
+            $products->price = $request->price;
+            $products->description = $request->description;
+            $products->status = $request->status;
+            $products->code = $request->code;
+            $products->quantity = $request->quantity;
+            $products->id_category = $request->id_category;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
                 $imageUrl = Storage::url($imagePath);
@@ -96,16 +111,16 @@ class ProductController extends Controller
 
             $products->save();
 
-            if($products){
+            if ($products) {
                 return response()->json([
-                    'status'=>200,
-                    'message'=>'Successfull',
-                ],200);
-            }else{
+                    'status' => 200,
+                    'message' => 'Successfull',
+                ], 200);
+            } else {
                 return response()->json([
-                    'status'=>500,
-                    'message'=>'Wrong',
-                ],500);
+                    'status' => 500,
+                    'message' => 'Wrong',
+                ], 500);
             }
         }
     }
@@ -119,16 +134,16 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        if($product){
+        if ($product) {
             return response()->json([
-                'status'=>200,
-                'product'=>$product,
-            ],200);
-        }else{
+                'status' => 200,
+                'product' => $product,
+            ], 200);
+        } else {
             return response()->json([
-                'status'=>404,
-                'message'=>'Not found',
-            ],404);
+                'status' => 404,
+                'message' => 'Not found',
+            ], 404);
         }
     }
 
@@ -141,42 +156,43 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),[
-            'name'=>'required',
-            'price'=>'required',
-            'description'=>'required',
-            'status'=>'required',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'price' => 'required',
+            'description' => 'required',
+            'status' => 'required',
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
-            'code'=>'required',
-            'quantity'=>'required',
-            'id_category'=>'required'
+            'code' => 'required',
+            'quantity' => 'required',
+            'id_category' => 'required'
         ]);
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
-                'status'=>422,
-                'errors'=>$validator->messages(),
-            ],422);
-         }else{
+                'status' => 422,
+                'errors' => $validator->messages(),
+            ], 422);
+        } else {
             $products = Product::find($id);
-            $products -> name = $request->name;
-            $products -> price = $request->price;
-            $products -> description = $request->description;
-            $products -> status = $request->status;
-            $products-> code = $request->code;
-            $products-> quantity = $request->quantity;
-            $products -> id_category = $request->id_category;
+            $products->name = $request->name;
+            $products->price = $request->price;
+            $products->description = $request->description;
+            $products->status = $request->status;
+            $products->code = $request->code;
+            $products->quantity = $request->quantity;
+            $products->id_category = $request->id_category;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
                 $imageUrl = Storage::url($imagePath);
                 $products->image = $imageUrl;
             }
             $products->save();
-            if(!$products){
+            if (!$products) {
                 return response()->json([
-                    'status'=>404,
-                    'message'=>'Not found',
-                ],404);
-            } return response()->json([
+                    'status' => 404,
+                    'message' => 'Not found',
+                ], 404);
+            }
+            return response()->json([
                 'status' => 200,
                 'message' => 'Successfull',
             ], 200);
@@ -192,17 +208,57 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
-        if($product){
-            $product ->delete();
+        if ($product) {
+            $product->delete();
             return response()->json([
-                'status'=>200,
-                'message'=>'Delete Successfull',
-            ],200);
-        }else{
+                'status' => 200,
+                'message' => 'Delete Successfull',
+            ], 200);
+        } else {
             return response()->json([
-                'status'=>404,
-                'message'=>'Not found',
-            ],404);
+                'status' => 404,
+                'message' => 'Not found',
+            ], 404);
         }
     }
+    // public function findByCategory(Request $request){
+    //     $id = $request->query('id');
+    //    $products = DB:: table('product')
+    //    ->where('id_category', $id)
+    //    ->get();
+
+    //    if($id){
+    //     return response()->json([
+    //         'status'=>200,
+    //         'product'=>$products,
+    //         'isOke'=>'true',
+    //     ],200);
+    //   }else{
+    //     return response()->json([
+    //         'status'=>200,
+    //         'message'=>'not category',
+    //         'isOke'=>'false',
+    //     ],400);
+    //    }
+    // }
+    // public function findByKeyword(Request $request){
+    //     $keyword = $request->query('keyword');
+    //     $products = Product::where('name', 'like', "%$keyword%")
+    //     ->orWhere('code', 'like', "%$keyword%")
+    //     ->get();
+    //     if($keyword){
+    //         return response()->json([
+    //             'status'=>200,
+    //             'product'=>$products,
+    //             'isOke'=>'true',
+    //         ],200);
+    //       }else{
+    //         return response()->json([
+    //             'status'=>200,
+    //             'message'=>'not category',
+    //             'isOke'=>'false',
+    //         ],400);
+    //        }
+    // }
+
 }
