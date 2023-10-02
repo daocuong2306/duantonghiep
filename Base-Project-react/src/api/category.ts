@@ -30,7 +30,7 @@ const categoryApi = createApi({
         }),
         addCategory: builder.mutation({
             query: (category: ICategory) => ({
-                url: `/categories`,
+                url: `/categories/add`,
                 method: "POST",
                 body: category
             }),
