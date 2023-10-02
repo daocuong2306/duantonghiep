@@ -18,9 +18,9 @@ const Login = () => {
     
     if (!isLoading) {
         localStorage.setItem("header",data?.access_token)
-        console.log(data);
-        
+        url("/products")
     }
+
     return (
         <div>
             <section className="bg-gray-50 dark:bg-gray-900">
