@@ -15,27 +15,58 @@ class OptionValueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
-        $option_values = OptionValue::all();
-
-        $option_values = DB::table('option_values')
-        ->join('options', 'option_values.option_id', '=', 'options.id')
-        ->select('option_values.*', 'options.name as options_name')
+        $keyword = $request->query('keyword');
+      if($keyword){
+        $option_values = OptionValue::where('value',$keyword)
         ->get();
+        return response()->json([
+            'status' => 200,
+            'option_values' => $option_values,
+            'isOke' => 'true',
+            'message' =>'find by value '
+        ], 200);
+      }
+        if(!$keyword){
+            $option_values = DB::table('option_values')
+            ->join('options', 'option_values.option_id', '=', 'options.id')
+            ->select('option_values.*', 'options.name as options_name')
+            ->get();
+    
+           if($option_values->count()>0){
+            return response()->json([
+               "status" => 200,
+               "option_values" => $option_values,
+               'message' =>'dont find',
+            ],200);      
+           }else{
+            return response()->json([
+                'status'=>200,
+                'message'=>'not found'
+            ],400);
+           }
+        }
 
-       if($option_values->count()>0){
-        return response()->json([
-           "status" => 200,
-           "option_values" => $option_values,
-        ],200);      
-       }else{
-        return response()->json([
-            'status'=>200,
-            'message'=>'not found'
-        ],400);
-       }
+
+        // $option_values = OptionValue::all();
+
+    //     $option_values = DB::table('option_values')
+    //     ->join('options', 'option_values.option_id', '=', 'options.id')
+    //     ->select('option_values.*', 'options.name as options_name')
+    //     ->get();
+
+    //    if($option_values->count()>0){
+    //     return response()->json([
+    //        "status" => 200,
+    //        "option_values" => $option_values,
+    //     ],200);      
+    //    }else{
+    //     return response()->json([
+    //         'status'=>200,
+    //         'message'=>'not found'
+    //     ],400);
+    //    }
     }
 
     /**
