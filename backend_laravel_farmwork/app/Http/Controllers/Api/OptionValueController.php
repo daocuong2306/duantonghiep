@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\OptionValue;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class OptionValueController extends Controller
@@ -16,7 +17,14 @@ class OptionValueController extends Controller
      */
     public function index()
     {
+
         $option_values = OptionValue::all();
+
+        $option_values = DB::table('option_values')
+        ->join('options', 'option_values.option_id', '=', 'options.id')
+        ->select('option_values.*', 'options.name as options_name')
+        ->get();
+
        if($option_values->count()>0){
         return response()->json([
            "status" => 200,
@@ -39,7 +47,6 @@ class OptionValueController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'product_id'=>'required',
             'option_id'=>'required',
             'value'=>'required',
         ]);
@@ -50,7 +57,6 @@ class OptionValueController extends Controller
             ],422);
         }else{
             $option_values = OptionValue::create([
-                'product_id'=>$request->product_id,
                  'option_id'=>$request-> option_id,
                 'value'=>$request->value,
             ]);
@@ -101,7 +107,6 @@ class OptionValueController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
-            'product_id'=>'required',
             'option_id'=>'required',
             'value'=>'required',
         ]);
@@ -114,7 +119,6 @@ class OptionValueController extends Controller
             $option_values = OptionValue::find($id);
             if($option_values){
                 $option_values->update([
-                    'product_id'=>$request->product_id,
                     'option_id'=>$request-> option_id,
                    'value'=>$request->value,
                 ]);

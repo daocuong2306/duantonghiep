@@ -9,7 +9,7 @@ class Option extends Model
 {
     use HasFactory;
     protected $table = 'options';
-    protected $fillable=['id','product_id','name']; 
+    protected $fillable=['id','name']; 
 
     public function variants(){
         return $this->hasMany(Variant::class);

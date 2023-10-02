@@ -89,22 +89,24 @@ Route::get('categories/{id}', [CategoryController::class, 'show']);
 Route::post('categories/edit/{id}', [CategoryController::class, 'update']);
 Route::delete('categories/delete/{id}', [CategoryController::class, 'destroy']);
 //Products
-Route::get('products', [ProductController::class, 'index']);
+Route::post('products', [ProductController::class, 'index']);
 Route::post('products/add', [ProductController::class, 'store']);
 Route::get('products/{id}', [ProductController::class, 'show']);
 Route::post('products/edit/{id}', [ProductController::class, 'update']);
 Route::delete('products/delete/{id}', [ProductController::class, 'destroy']);
+// Route::post('products/findByCategory', [ProductController::class, 'findByCategory']);
+// Route::post('products/findByKeyword', [ProductController::class, 'findByKeyword']);
 //Options
 Route::get('options', [OptionController::class, 'index']);
-Route::post('options', [OptionController::class, 'store']);
+Route::post('options/add', [OptionController::class, 'store']);
 Route::get('options/{id}', [OptionController::class, 'show']);
-Route::put('options/edit/{id}', [OptionController::class, 'update']);
+Route::post('options/edit/{id}', [OptionController::class, 'update']);
 Route::delete('options/delete/{id}', [OptionController::class, 'destroy']);
 //Option Value
 Route::get('optionvalues', [OptionValueController::class, 'index']);
-Route::post('optionvalues', [OptionValueController::class, 'store']);
+Route::post('optionvalues/add', [OptionValueController::class, 'store']);
 Route::get('optionvalues/{id}', [OptionValueController::class, 'show']);
-Route::put('optionvalues/edit/{id}', [OptionValueController::class, 'update']);
+Route::post('optionvalues/edit/{id}', [OptionValueController::class, 'update']);
 Route::delete('optionvalues/delete/{id}', [OptionValueController::class, 'destroy']);
 //Banner
 Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
