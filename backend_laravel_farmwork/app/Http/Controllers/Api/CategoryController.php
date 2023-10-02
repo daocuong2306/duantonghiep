@@ -42,7 +42,8 @@ class CategoryController extends Controller
     {
         $validator = Validator::make($request->all(),[
             'name'=>'required',
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
+            // 'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
+            'image'=>'required',
         ]);
         if($validator->fails()){
             return response()->json([
@@ -113,7 +114,8 @@ class CategoryController extends Controller
     public function update(Request $request,int $id){
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'image' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
+            // 'image' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
+            'image'=>'required'
         ]);
         if ($validator->fails()) {
             return response()->json([
