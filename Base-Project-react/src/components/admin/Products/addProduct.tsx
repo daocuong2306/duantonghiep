@@ -23,13 +23,13 @@ const AddProduct = () => {
         if (file) {
             const reader = new FileReader();
             reader.onload = (e: any) => {
-                const fileData = e.target.result;
+                const fileData = e.target.result; 
 
             };
 
             // Lưu trữ biến reader vào useRef
             readerRef.current = reader;
-
+            
             reader.readAsDataURL(file);
             setSelectedFile(reader);
         }
