@@ -18,7 +18,8 @@ const Login = () => {
     
     if (!isLoading) {
         localStorage.setItem("header",data?.access_token)
-     
+        console.log(data);
+        
     }
     return (
         <div>
