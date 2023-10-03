@@ -24,7 +24,6 @@ const AddCategory = () => {
         if (selectedFile) {
             formData.append('image', selectedFile);
         }
-
         try {
             const response = await addCategory(formData);
 
@@ -33,7 +32,7 @@ const AddCategory = () => {
             console.log(response);
 
             // Redirect to another page after successful form submission
-            url("/admin/categories");
+            // url("/admin/categories");
         } catch (error) {
             // Handle any errors that occurred during form submission
             console.error(error);

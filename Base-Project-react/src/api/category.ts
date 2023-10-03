@@ -29,7 +29,7 @@ const categoryApi = createApi({
             providesTags: ['Category']
         }),
         addCategory: builder.mutation({
-            query: (category:any) => ({
+            query: (category: any) => ({
                 url: `/categories/add`,
                 method: "POST",
                 body: category
@@ -37,7 +37,7 @@ const categoryApi = createApi({
             invalidatesTags: ['Category']
         }),
         updateCategory: builder.mutation<any, any>({
-            query: (id:any,category:any) => ({
+            query: (id: any, category: any) => ({
                 url: `/categories/edit/${id}`,
                 method: "POST",
                 body: category
