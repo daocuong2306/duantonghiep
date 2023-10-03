@@ -29,17 +29,17 @@ const categoryApi = createApi({
             providesTags: ['Category']
         }),
         addCategory: builder.mutation({
-            query: (category: ICategory) => ({
+            query: (category:any) => ({
                 url: `/categories/add`,
                 method: "POST",
                 body: category
             }),
             invalidatesTags: ['Category']
         }),
-        updateCategory: builder.mutation<ICategory, ICategory>({
-            query: (category) => ({
-                url: `/categories/edit/${category.id}`,
-                method: "PUT",
+        updateCategory: builder.mutation<any, any>({
+            query: (id:any,category:any) => ({
+                url: `/categories/edit/${id}`,
+                method: "POST",
                 body: category
             }),
             invalidatesTags: ['Category']
