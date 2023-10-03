@@ -49,13 +49,13 @@ const Update = () => {
             status = 1;
         }
         // Append form fields to formData
-        formData.append('name', name);
-        formData.append('code', code);
-        formData.append('description', description);
-        formData.append('id_category', String(id_category));
-        formData.append('price', String(price));
-        formData.append('quantity', String(quantity));
-        formData.append('status', String(status));
+        formData.append('name', "product");
+        formData.append('code', 'ma');
+        formData.append('description', 'haha');
+        formData.append('id_category', String( 1));
+        formData.append('price', String(1000));
+        formData.append('quantity', String(100));
+        formData.append('status', String(1));
         // Append form fields to formData
         // Append the selected file to formData (if available)
         if (selectedFile) {
@@ -64,10 +64,7 @@ const Update = () => {
             // Use the existing image URL from category data
             formData.append('image', product?.product.image);
         }
-
-
         try {
-
             const response = await updateProduct(id, formData);
             console.log(formData);
 
