@@ -1,39 +1,46 @@
-import { useAddProductMutation } from "../../../api/product";
-import { IProduct } from "../../../interface/product";
-import { useAppDispatch } from "../../../store/hook"
+import { useAppDispatch } from "@/store/hook"
 import { useForm, Controller } from "react-hook-form";
-import React, { useState, useRef } from 'react';
-import { useNavigate } from "react-router-dom";
-import { useGetCategoriesQuery } from "../../../api/category";
-import { ICategory } from "../../../interface/category";
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
+import { ICategory } from "@/interface/category";
+import { useGetCategoriesQuery, useGetCategoryByIdQuery, useUpdateCategoryMutation } from "@/api/category";
+import { useGetProductByIdQuery, useUpdateProductMutation } from "@/api/product";
 
-const AddProduct = () => {
+const Update = () => {
+    const { id } = useParams();
     const dispatch = useAppDispatch();
-    // Xử lý sự kiện khi người dùng chọn tệp
     const [selectedFile, setSelectedFile] = useState(null);
-    const { data: categories } = useGetCategoriesQuery();
+    const { data: product } = useGetProductByIdQuery(Number(id));
+    const [updateProduct] = useUpdateProductMutation();
+    const { data: categories, error, isLoading } = useGetCategoriesQuery()
     const readerRef = useRef<any>(null);
-    const url = useNavigate()
+    const url = useNavigate();
+    const { control, handleSubmit, setValue, getValues, register, reset } = useForm({
+        defaultValues: {
+            name: product?.product.name || ""
+        }
+    });
     const handleFileChange = (event: any) => {
         const file = event.target.files[0];
         setSelectedFile(file);
+
         if (file) {
             const reader = new FileReader();
             reader.onload = (e: any) => {
                 const fileData = e.target.result;
             };
             readerRef.current = reader;
+
             reader.readAsDataURL(file);
         }
     };
-    const [addProduct] = useAddProductMutation();
-    const { control, handleSubmit, setValue, getValues, register } = useForm();
 
-    const onHandleSubmit = async (data: ICategory) => {
+
+    const onHandleSubmit = async (data) => {
+        const name = getValues('name');
         const code = getValues('code');
         const description = getValues('description');
         const id_category = parseInt(getValues('id_category'));
-        const name = getValues('name');
         const price = parseInt(getValues('price'));
         const quantity = parseInt(getValues('quantity'));
         let status = 0;
@@ -49,35 +56,44 @@ const AddProduct = () => {
         formData.append('price', String(price));
         formData.append('quantity', String(quantity));
         formData.append('status', String(status));
+        // Append form fields to formData
         // Append the selected file to formData (if available)
         if (selectedFile) {
             formData.append('image', selectedFile);
+        } else {
+            // Use the existing image URL from category data
+            formData.append('image', product?.product.image);
         }
+
+
         try {
-            const response = await addProduct(formData);
+
+            const response = await updateProduct(id, formData);
+            console.log(formData);
 
             // Handle the response here if needed
 
             console.log(response);
 
             // Redirect to another page after successful form submission
-            // url('/admin/dashboard')
+            // url("/admin/categories");
         } catch (error) {
             // Handle any errors that occurred during form submission
             console.error(error);
         }
     };
 
-
     return <div>
         <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Add Product</h2>
         <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-2 ml-200 mr-200 ">
             <div className="col-span-1">
-                {selectedFile === null ? (
-                    <img className="h-40 w-80 rounded-lg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCLs3s-DKPsQYMxVOJnqHnBzM4KhkkG9D6I7HZFw1Qcg&s" alt="image description" />
-                ) : (
-                    <img className="h-40 w-80 rounded-lg" src={selectedFile['result']} alt="image description" />
-                )}
+                <div className="col-span-1">
+                    {selectedFile === null ? (
+                        <img className="h-40 w-80 rounded-lg" src={`http://127.0.0.1:8000${product?.product.image}`} alt="image description" />
+                    ) : (
+                        <img className="h-40 w-80 rounded-lg" src={selectedFile['result']} alt="image description" />
+                    )}
+                </div>
             </div>
             <div>
                 <div className="col-span-2">
@@ -90,6 +106,7 @@ const AddProduct = () => {
                             placeholder="Product Name"
                             required
                             {...register('name')}
+                            defaultValue={product?.product.name}
                         />
                         <div className="relative z-0 w-full mb-6 group">
                             <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Price</label>
@@ -100,6 +117,7 @@ const AddProduct = () => {
                                 placeholder="Price"
                                 required
                                 {...register('price')}
+                                defaultValue={product?.product.price}
                             />
                         </div>
                         <div className="relative z-0 w-full mb-6 group">
@@ -110,6 +128,7 @@ const AddProduct = () => {
                                 class="block p-2.5 w-full text-sm text-white-900 bg-white-50 border border-white-300 focus:ring-white-500 focus:border-white-500 dark:bg-white-700 dark:border-white-600 dark:placeholder-white-400 dark:text-gray dark:focus:ring-white-500 dark:focus:border-white-500"
                                 placeholder="Leave a description..."
                                 {...register('description')}
+                                defaultValue={product?.product.description}
                             ></textarea>
                         </div>
                         <div className="grid md:grid-cols-2 md:gap-6">
@@ -151,6 +170,7 @@ const AddProduct = () => {
                                     placeholder="Product Code"
                                     required
                                     {...register('code')}
+                                    defaultValue={product?.product.code}
                                 />
                             </div>
                             <div className="relative z-0 w-full mb-6 group">
@@ -162,6 +182,7 @@ const AddProduct = () => {
                                     placeholder="Quantity"
                                     required
                                     {...register('quantity')}
+                                    defaultValue={product?.product.quantity}
                                 />
                             </div>
                         </div>
@@ -187,14 +208,6 @@ const AddProduct = () => {
 
     </div>
 
+};
 
-
-
-
-}
-
-
-export default AddProduct
-
-
-
+export default Update;
