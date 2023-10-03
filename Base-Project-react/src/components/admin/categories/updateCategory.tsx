@@ -1,6 +1,6 @@
 import { useAppDispatch } from "@/store/hook"
 import { useForm, Controller } from "react-hook-form";
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { ICategory } from "@/interface/category";
 import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from "@/api/category";
@@ -14,6 +14,11 @@ const UpdateCategory = () => {
     const readerRef = useRef<any>(null);
     const url = useNavigate();
 
+    const { control, handleSubmit, setValue, getValues, register, reset } = useForm({
+        defaultValues: {
+            name: category?.categories.name || ""
+        }
+    });
     const handleFileChange = (event: any) => {
         const file = event.target.files[0];
         setSelectedFile(file);
@@ -29,15 +34,11 @@ const UpdateCategory = () => {
         }
     };
 
-    const { control, handleSubmit, setValue, getValues, register } = useForm();
-    const onHandleSubmit = async () => {
+    const onHandleSubmit = async (data) => {
         const name = getValues('name');
         const formData = new FormData();
-        console.log(id);
         // Append form fields to formData
-        // formData.append('id', String(id));
         formData.append('name', name);
-
         // Append the selected file to formData (if available)
         if (selectedFile) {
             formData.append('image', selectedFile);
@@ -45,13 +46,13 @@ const UpdateCategory = () => {
             // Use the existing image URL from category data
             formData.append('image', category?.categories.image);
         }
-        for (const [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-        }
+
+
         try {
-            const response = await updateCategory(id,formData);
+
+            const response = await updateCategory(id, formData);
             console.log(formData);
-            
+
             // Handle the response here if needed
 
             console.log(response);
@@ -85,7 +86,6 @@ const UpdateCategory = () => {
                                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                                 placeholder="Product Name"
                                 required
-                                defaultValue={category?.categories.name}
                                 {...register('name')}
                             />
                             <div className="relative z-0 w-full mb-6 group">
