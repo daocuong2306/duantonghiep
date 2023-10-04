@@ -9,8 +9,9 @@ import AddProduct from "./components/admin/Products/addProduct";
 import CategoryDashboard from "./components/admin/categories/categoryDashboard";
 import AddCategory from "./components/admin/categories/addCategory";
 import UpdateCategory from "./components/admin/categories/updateCategory";
-import ImageUpload from "./components/admin/Products/test";
+import ImageUpload from "./components/admin/Products/Update";
 import Home from "./components/component/check/home";
+import Update from "./components/admin/Products/Update";
 
 
 export const router = createBrowserRouter([
@@ -50,7 +51,10 @@ export const router = createBrowserRouter([
                 path: "product/add",
                 element: <AddProduct />,
             },
-
+            {
+                path: "product/update/:id",
+                element: <Update />,
+            },
 
             {
                 path: "categories",

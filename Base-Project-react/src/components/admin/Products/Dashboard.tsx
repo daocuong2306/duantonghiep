@@ -7,15 +7,12 @@ import { Link } from 'react-router-dom'
 import { FcFullTrash, FcSupport } from 'react-icons/fc'
 import { useGetUserQuery } from '@/api/user'
 const Dashboard = () => {
-   
-    const {data:user}=useGetUserQuery()
-    console.log(user);
-    
     const dispatch = useAppDispatch()
-    const { data: products, error, isLoading } = useGetProductsQuery();
+    const { data: products, isLoading } = useGetProductsQuery();
+    console.log(products);
+
     const { data: categories } = useGetCategoriesQuery();
     const [deleteProduct] = useRemoveProductMutation()
-
     const deleteP = (id: number) => {
         const check = window.confirm("Are you sure you want to delete");
         if (check) {
@@ -24,7 +21,6 @@ const Dashboard = () => {
         }
     }
     console.log(isLoading);
-
     return (<div>
         {isLoading && <div
             className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
@@ -112,7 +108,7 @@ const Dashboard = () => {
                                         {product.name}
                                     </th>
                                     <td className="px-6 py-4">
-                                        <img className="h-20 w-50 rounded-lg" src={product.image} alt="image description" />
+                                        <img className="h-20 w-50 rounded-lg" src={`http://127.0.0.1:8000${product?.image}`} alt="image description" />
                                     </td>
                                     <td className="px-6 py-4">{product.code}</td>
                                     <td className="px-6 py-4">{product.price}</td>
@@ -126,7 +122,7 @@ const Dashboard = () => {
                                     <td className="px-6 py-4">White</td>
                                     <td className="px-6 py-4 ">
                                         <div className="flex ">
-                                            <Link to="">
+                                            <Link to={`/admin/product/update/${product?.id}`}>
                                                 <FcSupport className='w-6 h-6 blue mr-2' />
                                             </Link>
                                             <Link to="">

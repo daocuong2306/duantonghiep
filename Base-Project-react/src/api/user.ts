@@ -20,8 +20,14 @@ const userApi = createApi({
     }),
     endpoints: (builder) => ({
         getUser: builder.query<any, void>({
-            query: (token) => `/api/auth/user`,
-            providesTags: ['user']
+            query: (token:any) => ({
+                url: `/api/auth/user`,
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }),
+            providesTags: ['user'],
         }),
         register: builder.mutation({
             query: (product:IUser) => ({

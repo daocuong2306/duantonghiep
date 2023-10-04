@@ -15,7 +15,7 @@ class OptionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+      {         
         $options = Option::all();
        if($options->count()>0){
         return response()->json([
