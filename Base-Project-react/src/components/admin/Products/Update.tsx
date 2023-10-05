@@ -52,7 +52,7 @@ const Update = () => {
         formData.append('name', "product");
         formData.append('code', 'ma');
         formData.append('description', 'haha');
-        formData.append('id_category', String( 1));
+        formData.append('id_category', String(1));
         formData.append('price', String(1000));
         formData.append('quantity', String(100));
         formData.append('status', String(1));
@@ -67,7 +67,6 @@ const Update = () => {
         try {
             const response = await updateProduct(id, formData);
             console.log(formData);
-
             // Handle the response here if needed
 
             console.log(response);

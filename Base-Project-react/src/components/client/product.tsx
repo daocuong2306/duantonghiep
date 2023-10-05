@@ -140,7 +140,7 @@ const Product = () => {
                                                         </span>
                                                     </label>
                                                 </div>
-                                                {categories?.map((item: ICategory) =>
+                                                {categories?.categories.map((item: ICategory) =>
                                                     <div key={item.id}>
                                                         <label
                                                             htmlFor={`Filter${item.name}`}
@@ -423,7 +423,7 @@ const Product = () => {
                                             </a>
                                         </li>
                                     })
-                                    : products?.map((product: any) => {
+                                    : products?.products.map((product: any) => {
                                         return <li key={product.id}>
                                             <Link to={`/details/${product.slug}`} className="group block overflow-hidden">
                                                 <img
