@@ -14,11 +14,7 @@ const UpdateCategory = () => {
     const readerRef = useRef<any>(null);
     const url = useNavigate();
 
-    const { control, handleSubmit, setValue, getValues, register, reset } = useForm({
-        defaultValues: {
-            name: category?.categories.name || ""
-        }
-    });
+    const { control, handleSubmit, setValue, getValues, register, reset } = useForm();
     const handleFileChange = (event: any) => {
         const file = event.target.files[0];
         setSelectedFile(file);
@@ -38,7 +34,7 @@ const UpdateCategory = () => {
         const name = getValues('name');
         const formData = new FormData();
         // Append form fields to formData
-        formData.append('name', name);
+        formData.append('name', data.name);
         // Append the selected file to formData (if available)
         if (selectedFile) {
             formData.append('image', selectedFile);
@@ -51,7 +47,6 @@ const UpdateCategory = () => {
         try {
 
             const response = await updateCategory(id, formData);
-            console.log(formData);
 
             // Handle the response here if needed
 
@@ -87,6 +82,7 @@ const UpdateCategory = () => {
                                 placeholder="Product Name"
                                 required
                                 {...register('name')}
+                                defaultValue={category?.categories.name}
                             />
                             <div className="relative z-0 w-full mb-6 group">
                                 <div>
