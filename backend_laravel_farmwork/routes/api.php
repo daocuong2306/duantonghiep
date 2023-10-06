@@ -35,18 +35,14 @@ Route::group([
 });
 //Check Role...... chỉ có ADMIN ........(Chức năng nào của Admin thì cho vào function của group route này nhé !)
 Route::group(['middleware' => ['auth:api', 'role']], function () {
-
     Route::get('/who', function () { //
         return response()->json([
             'message' => 'You are Admin.'
         ]);
     });
-
     Route::get('user/show_one/{id}', [UserController::class, 'show']);
     Route::delete('auth/logout', [AuthController::class, 'logout']);
-
     Route::get('user/listAll', [UserController::class, 'index']);
-
     //Comment.................
     Route::get('comment/listAll', [CommentController::class, 'listcomment']);
     Route::get('comment/findbyuser/{id}', [CommentController::class, 'findCommentbyUser']);
@@ -74,13 +70,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     //Images
     Route::post('image/addimagecomment', [ImageController::class, 'addImageComment']);
 });
-
 // Sanctum---------------------------------------------------
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
 // Categories
 Route::get('categories', [CategoryController::class, 'index']);
 Route::post('categories/add', [CategoryController::class, 'store']);
@@ -111,13 +104,10 @@ Route::delete('optionvalues/delete/{id}', [OptionValueController::class, 'destro
 Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
 Route::post('banner/add', [BannerController::class, 'addBanner']);
 Route::delete('banner/delete/{id}', [BannerController::class, 'deleteBanner']);
-
-
 // Home
 Route::get('home', [HomeController::class, 'home']);
-
 // Check nếu chưa đăng nhập sẽ nhảy vào route này
-Route::get('/check', function () { 
+Route::get('/check', function () {
     return response()->json([
         'message' => 'Bạn Phải Đăng nhập'
     ]);

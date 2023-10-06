@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('code');
             $table->integer('id_category');
             $table->integer('quantity');
+            $table->integer('discount_id');
             $table->timestamps();
             $table->softDeletes();
         });
