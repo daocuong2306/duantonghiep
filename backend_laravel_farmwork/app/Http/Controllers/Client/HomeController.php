@@ -33,8 +33,7 @@ class HomeController extends Controller
         } else {
             $products = DB::table('product')->get();
         }
-
-        $data['ealuate'] = $evaluate;
+        $data['evaluate'] = $evaluate;
         $data['products'] = $products;
         $data['categories'] = $categories;
         $data['banner'] = $banner;
