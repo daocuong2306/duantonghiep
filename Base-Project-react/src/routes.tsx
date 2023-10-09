@@ -11,6 +11,8 @@ import AddCategory from "./components/admin/categories/addCategory";
 import UpdateCategory from "./components/admin/categories/updateCategory";
 import ImageUpload from "./components/admin/Products/test";
 import Home from "./components/component/check/home";
+import InforAdmin from "./components/admin/InforAdmin/infor";
+import InForAdmin from "./components/admin/InforAdmin/infor";
 
 
 export const router = createBrowserRouter([
@@ -50,7 +52,10 @@ export const router = createBrowserRouter([
                 path: "product/add",
                 element: <AddProduct />,
             },
-
+            {
+                path: "profile",
+                element: <InForAdmin />,
+            },
 
             {
                 path: "categories",
