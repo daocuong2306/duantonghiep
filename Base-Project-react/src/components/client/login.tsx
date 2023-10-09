@@ -2,9 +2,7 @@ import { useGetUserQuery, useLoginMutation } from "../../api/user";
 import { IUserLogin } from "../../interface/user";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import bcrypt from "bcryptjs-react";
-var salt = bcrypt.genSaltSync(10);
-var hash = bcrypt.hashSync("B4c0/\/", salt);
+
 const Login = () => {
     const { register, handleSubmit } = useForm();
     const [login, { data, isLoading }] = useLoginMutation()
@@ -14,11 +12,14 @@ const Login = () => {
             "email": dataUser.email,
             "password": dataUser.password
         })
+        console.log(data);
+
     }
-    
     if (!isLoading) {
-        localStorage.setItem("header",data?.access_token)
-        url("/products")
+        console.log(data);
+        localStorage.setItem("header", data?.access_token)
+        localStorage.setItem("role", "0")
+        url("/")
     }
 
     return (

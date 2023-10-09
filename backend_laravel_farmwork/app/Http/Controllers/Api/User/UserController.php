@@ -22,11 +22,19 @@ class UserController extends Controller
         } else {
             $user = User::get();
         }
-        return response()->json([
-            'status' => 200,
-            'user' => $user,
-            'isOke' => 'true'
-        ], 200);
+        if ($user->count() > 0) {
+            return response()->json([
+                'status' => 200,
+                'user' => $user,
+                'isOke' => 'true'
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 200,
+                'user' => 'null',
+                'isOke' => 'false'
+            ], 200);
+        }
     }
 
     public function show($id)

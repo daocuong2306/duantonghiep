@@ -106,6 +106,7 @@ Route::post('banner/add', [BannerController::class, 'addBanner']);
 Route::delete('banner/delete/{id}', [BannerController::class, 'deleteBanner']);
 // Home
 Route::get('home', [HomeController::class, 'home']);
+
 // Check nếu chưa đăng nhập sẽ nhảy vào route này
 Route::get('/check', function () {
     return response()->json([
