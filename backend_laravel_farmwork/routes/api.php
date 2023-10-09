@@ -82,12 +82,13 @@ Route::post('categories/edit/{id}', [CategoryController::class, 'update']);
 Route::delete('categories/delete/{id}', [CategoryController::class, 'destroy']);
 //Products
 Route::get('products', [ProductController::class, 'index']);
+
 Route::post('products/add', [ProductController::class, 'store']);
 Route::get('products/{id}', [ProductController::class, 'show']);
 Route::post('products/edit/{id}', [ProductController::class, 'update']);
 Route::delete('products/delete/{id}', [ProductController::class, 'destroy']);
-Route::post('products/findByCategory', [ProductController::class, 'findByCategory']);
-Route::post('products/findByKeyword', [ProductController::class, 'findByKeyword']);
+// Route::post('products/findByCategory', [ProductController::class, 'findByCategory']);
+// Route::post('products/findByKeyword', [ProductController::class, 'findByKeyword']);
 //Options
 Route::get('options', [OptionController::class, 'index']);
 Route::post('options/add', [OptionController::class, 'store']);
