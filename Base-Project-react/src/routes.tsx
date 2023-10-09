@@ -16,7 +16,7 @@ import NotFound from "./components/component/layout/NotFound";
 
 
 
-const token = localStorage.getItem('header');
+const role = localStorage.getItem('role');
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
     },
     {
         path: "/admin",
-        element: token ? <LayoutAdmin /> : <NotFound />,
+        element: role != "0" ? <LayoutAdmin /> : <NotFound />,
         children: [
             {
                 index: true,

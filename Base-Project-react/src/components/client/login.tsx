@@ -18,6 +18,7 @@ const Login = () => {
     if (!isLoading) {
         console.log(data);
         localStorage.setItem("header", data?.access_token)
+        localStorage.setItem("role", "0")
         url("/products")
     }
 
