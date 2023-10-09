@@ -1,3 +1,4 @@
+import { useGetUserQuery } from "@/api/user";
 import { useGetCategoriesQuery } from "../../api/category";
 import { useGetProductsQuery } from "../../api/product";
 import { ICategory } from "../../interface/category";
@@ -9,6 +10,10 @@ import { Link } from "react-router-dom";
 
 
 const Product = () => {
+    const token=localStorage.getItem("header")
+    const {data}=useGetUserQuery(`${token}`)
+    console.log(data);
+    
     const dispatch = useAppDispatch();
     const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
     const { data: products, error, isLoading } = useGetProductsQuery();
@@ -135,7 +140,7 @@ const Product = () => {
                                                         </span>
                                                     </label>
                                                 </div>
-                                                {categories?.map((item: ICategory) =>
+                                                {categories?.categories.map((item: ICategory) =>
                                                     <div key={item.id}>
                                                         <label
                                                             htmlFor={`Filter${item.name}`}
@@ -418,7 +423,7 @@ const Product = () => {
                                             </a>
                                         </li>
                                     })
-                                    : products?.map((product: any) => {
+                                    : products?.products.map((product: any) => {
                                         return <li key={product.id}>
                                             <Link to={`/details/${product.slug}`} className="group block overflow-hidden">
                                                 <img

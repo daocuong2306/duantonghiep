@@ -9,11 +9,10 @@ import AddProduct from "./components/admin/Products/addProduct";
 import CategoryDashboard from "./components/admin/categories/categoryDashboard";
 import AddCategory from "./components/admin/categories/addCategory";
 import UpdateCategory from "./components/admin/categories/updateCategory";
-import ImageUpload from "./components/admin/Products/test";
+import ImageUpload from "./components/admin/Products/Update";
 import Home from "./components/component/check/home";
-import InforAdmin from "./components/admin/InforAdmin/infor";
 import InForAdmin from "./components/admin/InforAdmin/infor";
-
+import Update from "./components/admin/Products/Update";
 
 export const router = createBrowserRouter([
 
@@ -55,6 +54,10 @@ export const router = createBrowserRouter([
             {
                 path: "profile",
                 element: <InForAdmin />,
+            },
+            {
+                path: "product/update/:id",
+                element: <Update />,
             },
 
             {

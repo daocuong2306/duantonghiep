@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\EvaluateController;
+use App\Http\Controllers\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,18 +33,16 @@ Route::group([
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('register', [AuthController::class, 'register']);
 });
-//Check Role...... chỉ có admin ........(Chức năng nào của Admin thì cho vào function của group route này nhé !)
+//Check Role...... chỉ có ADMIN ........(Chức năng nào của Admin thì cho vào function của group route này nhé !)
 Route::group(['middleware' => ['auth:api', 'role']], function () {
-
     Route::get('/who', function () { //
         return response()->json([
             'message' => 'You are Admin.'
         ]);
     });
-    
     Route::get('user/show_one/{id}', [UserController::class, 'show']);
     Route::delete('auth/logout', [AuthController::class, 'logout']);
-    Route::post('user/listAll', [UserController::class, 'index']);
+    Route::get('user/listAll', [UserController::class, 'index']);
     //Comment.................
     Route::get('comment/listAll', [CommentController::class, 'listcomment']);
     Route::get('comment/findbyuser/{id}', [CommentController::class, 'findCommentbyUser']);
@@ -52,6 +51,8 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     //Evaluate
     Route::get('evaluate/listAll', [EvaluateController::class, 'showAll']);
     Route::delete('evaluate/delete/{id}', [EvaluateController::class, 'delete']);
+    //Image
+    Route::post('image/addimageproduct', [ImageController::class, 'addImageProduct']);
 });
 // ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
 Route::group(['middleware' => 'auth:api'], function () {
@@ -66,20 +67,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('evaluate/add', [EvaluateController::class, 'addEvaluate']);
     Route::get('evaluate/list', [EvaluateController::class, 'showEvaoluateWithUser']);
     Route::get('evaluate/listbyuser', [EvaluateController::class, 'getEvalueByUser']);
-    
+    //Images
+    Route::post('image/addimagecomment', [ImageController::class, 'addImageComment']);
 });
-
 // Sanctum---------------------------------------------------
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-    
 });
-Route::get('/check', function () { //
-    return response()->json([
-        'message' => 'Bạn Phải Đăng nhập'
-    ]);
-})->name('check');
-
 // Categories
 Route::get('categories', [CategoryController::class, 'index']);
 Route::post('categories/add', [CategoryController::class, 'store']);
@@ -92,8 +86,8 @@ Route::post('products/add', [ProductController::class, 'store']);
 Route::get('products/{id}', [ProductController::class, 'show']);
 Route::post('products/edit/{id}', [ProductController::class, 'update']);
 Route::delete('products/delete/{id}', [ProductController::class, 'destroy']);
-// Route::post('products/findByCategory', [ProductController::class, 'findByCategory']);
-// Route::post('products/findByKeyword', [ProductController::class, 'findByKeyword']);
+Route::post('products/findByCategory', [ProductController::class, 'findByCategory']);
+Route::post('products/findByKeyword', [ProductController::class, 'findByKeyword']);
 //Options
 Route::get('options', [OptionController::class, 'index']);
 Route::post('options/add', [OptionController::class, 'store']);
@@ -101,7 +95,7 @@ Route::get('options/{id}', [OptionController::class, 'show']);
 Route::post('options/edit/{id}', [OptionController::class, 'update']);
 Route::delete('options/delete/{id}', [OptionController::class, 'destroy']);
 //Option Value
-Route::get('optionvalues', [OptionValueController::class, 'index']);
+Route::post('optionvalues', [OptionValueController::class, 'index']);
 Route::post('optionvalues/add', [OptionValueController::class, 'store']);
 Route::get('optionvalues/{id}', [OptionValueController::class, 'show']);
 Route::post('optionvalues/edit/{id}', [OptionValueController::class, 'update']);
@@ -110,8 +104,12 @@ Route::delete('optionvalues/delete/{id}', [OptionValueController::class, 'destro
 Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
 Route::post('banner/add', [BannerController::class, 'addBanner']);
 Route::delete('banner/delete/{id}', [BannerController::class, 'deleteBanner']);
-
 // Home
-Route::post('home', [HomeController::class, 'home']);
+Route::get('home', [HomeController::class, 'home']);
 
-
+// Check nếu chưa đăng nhập sẽ nhảy vào route này
+Route::get('/check', function () {
+    return response()->json([
+        'message' => 'Bạn Phải Đăng nhập'
+    ]);
+})->name('check');

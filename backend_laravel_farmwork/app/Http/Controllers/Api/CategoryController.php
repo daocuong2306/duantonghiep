@@ -50,10 +50,6 @@ class CategoryController extends Controller
                 'errors'=>$validator->messages(),
             ],422);
         }else{
-            // $categories=Category::create([
-            //     'name'=>$request->name,
-            //     'image'=>$request->image,
-            // ]);
             $categories = new Category();
             $categories->name = $request->name;
             if ($request->hasFile('image')) {
@@ -62,12 +58,6 @@ class CategoryController extends Controller
                 $categories->image = $imageUrl;
             }
             $categories->save();
-            // if ($request->hasFile('image')) {
-            //     $imagePath = $request->file('image')->store('public/images');
-            //     $imageUrl = asset('storage/images/' . basename($imagePath));
-            //     $categories->image = $imageUrl;
-            // }
-
             if($categories){
                 return response()->json([
                     'status'=>200,
@@ -114,6 +104,7 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'image' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
+            
         ]);
         if ($validator->fails()) {
             return response()->json([

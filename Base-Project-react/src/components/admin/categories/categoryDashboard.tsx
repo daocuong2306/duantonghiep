@@ -59,7 +59,7 @@ const CategoryDashboard = () => {
                                     {category?.name}
                                 </th>
                                 <th scope="row" className="px-6 py-4 font-medium text-black-900 whitespace-nowrap dark:text-black hover:text-blue-500">
-                                    <img src={category?.image} className="h-20 w-50 rounded-lg m-auto" />
+                                    <img src={`http://127.0.0.1:8000${category?.image}`} className="h-20 w-50 rounded-lg m-auto" />
                                 </th>
                                 <th scope="row" className="px-6 py-4 font-medium text-black-900 whitespace-nowrap dark:text-black hover:text-blue-500 m-auto">
                                     <div className="flex m-auto w-12">

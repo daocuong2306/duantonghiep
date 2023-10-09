@@ -28,9 +28,12 @@ const Signup = () => {
         })
     }
     if (isLoading == false) {
-        url('/login');
+        if (!data?.message) {
+           url('/login');
+        } else {
+            console.log(data?.message);
+        }
     }
-
     return (
         <div>
             {isLoading && <div
