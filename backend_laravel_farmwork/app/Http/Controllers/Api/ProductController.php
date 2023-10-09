@@ -22,12 +22,14 @@ class ProductController extends Controller
     {
         $id = $request->query('id');
         $keyword = $request->query('keyword');
-        if ($id ) {
+        if ($id || $keyword) {
             $products = DB::table('product')
                 ->where('id_category', $id)
                 ->get();
 
-
+            $products = Product::where('name', 'like', "%$keyword%")
+                ->orWhere('code', 'like', "%$keyword%")
+                ->get();
             return response()->json([
                 'status' => 200,
                 'product' => $products,
@@ -35,18 +37,18 @@ class ProductController extends Controller
                 'message' =>'find by category'
             ], 200);
         }
-        if ($keyword) {
-            $products = Product::where('name', 'like', "%$keyword%")
-                ->orWhere('code', 'like', "%$keyword%")
-                ->get();
+        // if ($keyword) {
+        //     $products = Product::where('name', 'like', "%$keyword%")
+        //         ->orWhere('code', 'like', "%$keyword%")
+        //         ->get();
 
-            return response()->json([
-                'status' => 200,
-                'product' => $products,
-                'isOke' => 'true',
-                'message' =>'find by name or code',
-            ], 200);
-        }
+        //     return response()->json([
+        //         'status' => 200,
+        //         'product' => $products,
+        //         'isOke' => 'true',
+        //         'message' =>'find by name or code',
+        //     ], 200);
+        // }
 
         if (!$id && !$keyword) {
             $products = DB::table('product')
@@ -86,7 +88,8 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
             'code' => 'required',
             'quantity' => 'required',
-            'id_category' => 'required'
+            'id_category' => 'required',
+            'discount_id' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -103,6 +106,7 @@ class ProductController extends Controller
             $products->code = $request->code;
             $products->quantity = $request->quantity;
             $products->id_category = $request->id_category;
+            $products->discount_id = $request->discount_id;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
                 $imageUrl = Storage::url($imagePath);
@@ -164,7 +168,8 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
             'code' => 'required',
             'quantity' => 'required',
-            'id_category' => 'required'
+            'id_category' => 'required', 
+            'discount_id' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -180,6 +185,7 @@ class ProductController extends Controller
             $products->code = $request->code;
             $products->quantity = $request->quantity;
             $products->id_category = $request->id_category;
+            $products->discount_id = $request->discount_id;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
                 $imageUrl = Storage::url($imagePath);
