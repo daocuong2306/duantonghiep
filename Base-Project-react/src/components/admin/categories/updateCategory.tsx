@@ -45,8 +45,8 @@ const UpdateCategory = () => {
 
 
         try {
-
-            const response = await updateCategory(id, formData);
+            const category1={id,formData};
+            const response = await updateCategory(category1);
 
             // Handle the response here if needed
 

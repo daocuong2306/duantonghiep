@@ -35,7 +35,7 @@ export const router = createBrowserRouter([
     },
     {
         path: "/admin",
-        element: role != "0" ? <LayoutAdmin /> : <NotFound />,
+        element: role != "0" ? <NotFound /> : <LayoutAdmin />,
         children: [
             {
                 index: true,
