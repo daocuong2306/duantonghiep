@@ -14,11 +14,13 @@ const Login = () => {
             "email": dataUser.email,
             "password": dataUser.password
         })
+        console.log(data);
+
     }
-    
     if (!isLoading) {
-        localStorage.setItem("header",data?.access_token)
-        url("/products")
+        console.log(data);
+        localStorage.setItem("header", data?.access_token)
+        // url("/products")
     }
 
     return (

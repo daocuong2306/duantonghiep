@@ -26,8 +26,7 @@ const rootReducer = combineReducers({
     cloudinary: cloudinaryReducer,
     [productApi.reducerPath]: productReducer,
     [userApi.reducerPath]: userReducer,
-    [categoryApi.reducerPath]: categoryReducer,
-   
+    [categoryApi.reducerPath]: categoryReducer
 })
 const middleware = [productApi.middleware, userApi.middleware, categoryApi.middleware]
 
