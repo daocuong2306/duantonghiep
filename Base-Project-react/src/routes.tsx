@@ -1,3 +1,4 @@
+
 import { createBrowserRouter, Outlet, Navigate } from "react-router-dom";
 import LayoutAdmin from "./components/layouts/LayoutAdmin";
 import Login from "./components/client/login";
@@ -11,11 +12,13 @@ import AddCategory from "./components/admin/categories/addCategory";
 import UpdateCategory from "./components/admin/categories/updateCategory";
 import ImageUpload from "./components/admin/Products/Update";
 import Home from "./components/component/check/home";
-import InForAdmin from "./components/admin/InforAdmin/infor";
 import Update from "./components/admin/Products/Update";
+import InForAdmin from "./components/admin/InforAdmin/infor";
+import NotFound from "./components/component/layout/NotFound";
 
+
+const role = localStorage.getItem('role');
 export const router = createBrowserRouter([
-
     {
         path: "/",
         element: <LayoutWebsite />,
@@ -26,13 +29,13 @@ export const router = createBrowserRouter([
             },
             {
                 index: true,
-                element: <Home />
+                element: <Home />,
             }
         ]
     },
     {
         path: "/admin",
-        element: <LayoutAdmin />,
+        element: role != "0" ? <LayoutAdmin /> : <NotFound />,
         children: [
             {
                 index: true,
@@ -50,10 +53,15 @@ export const router = createBrowserRouter([
             {
                 path: "product/add",
                 element: <AddProduct />,
-            },
+            }
+            ,
             {
                 path: "profile",
                 element: <InForAdmin />,
+            },
+            {
+                path: "product/update/:id",
+                element: <Update />,
             },
             {
                 path: "product/update/:id",
@@ -88,3 +96,4 @@ export const router = createBrowserRouter([
         element: <Signup />,
     },
 ]);
+
