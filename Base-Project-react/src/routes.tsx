@@ -12,10 +12,12 @@ import UpdateCategory from "./components/admin/categories/updateCategory";
 import ImageUpload from "./components/admin/Products/Update";
 import Home from "./components/component/check/home";
 import Update from "./components/admin/Products/Update";
+import NotFound from "./components/component/layout/NotFound";
 
 
+
+const role = localStorage.getItem('role');
 export const router = createBrowserRouter([
-
     {
         path: "/",
         element: <LayoutWebsite />,
@@ -26,13 +28,13 @@ export const router = createBrowserRouter([
             },
             {
                 index: true,
-                element: <Home />
+                element: <Home />,
             }
         ]
     },
     {
         path: "/admin",
-        element: <LayoutAdmin />,
+        element: role != "0" ? <LayoutAdmin /> : <NotFound />,
         children: [
             {
                 index: true,
