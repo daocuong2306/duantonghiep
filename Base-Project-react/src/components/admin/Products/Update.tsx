@@ -65,7 +65,8 @@ const Update = () => {
             formData.append('image', product?.product.image);
         }
         try {
-            const response = await updateProduct(id, formData);
+            const param = {id , formData}
+            const response = await updateProduct(param);
             console.log(formData);
             // Handle the response here if needed
 

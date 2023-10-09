@@ -37,10 +37,10 @@ const categoryApi = createApi({
             invalidatesTags: ['Category']
         }),
         updateCategory: builder.mutation<any, any>({
-            query: (id: any, category: any) => ({
-                url: `/categories/edit/${id}`,
+            query: (category: any) => ({
+                url: `/categories/edit/${category.id}`,
                 method: "POST",
-                body: category
+                body: category.formData
             }),
             invalidatesTags: ['Category']
         }),
