@@ -20,7 +20,7 @@ const userApi = createApi({
     }),
     endpoints: (builder) => ({
         getUser: builder.query<any, void>({
-            query: (token:any) => ({
+            query: (token:string) => ({
                 url: `/api/auth/user`,
                 method: "GET",
                 headers: {
