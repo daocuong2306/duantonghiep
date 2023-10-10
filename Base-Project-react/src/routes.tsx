@@ -14,6 +14,7 @@ import ImageUpload from "./components/admin/Products/Update";
 import Home from "./components/component/check/home";
 import Update from "./components/admin/Products/Update";
 import InForAdmin from "./components/admin/InforAdmin/infor";
+import Statistical from "./components/admin/InforAdmin/statistical";
 import NotFound from "./components/component/layout/NotFound";
 
 
@@ -35,7 +36,7 @@ export const router = createBrowserRouter([
     },
     {
         path: "/admin",
-        element: role != "0" ? <NotFound /> : <LayoutAdmin />,
+        element: role != "1" ? <NotFound /> : <LayoutAdmin />,
         children: [
             {
                 index: true,
@@ -59,6 +60,11 @@ export const router = createBrowserRouter([
                 path: "profile",
                 element: <InForAdmin />,
             },
+            {
+                path: "statistical",
+                element: <Statistical />,
+            },
+            
             {
                 path: "product/update/:id",
                 element: <Update />,
