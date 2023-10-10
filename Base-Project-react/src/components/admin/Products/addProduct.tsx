@@ -49,6 +49,7 @@ const AddProduct = () => {
         formData.append('price', String(price));
         formData.append('quantity', String(quantity));
         formData.append('status', String(status));
+        formData.append('discount_id', Number(1));
         // Append the selected file to formData (if available)
         if (selectedFile) {
             formData.append('image', selectedFile);
@@ -61,7 +62,7 @@ const AddProduct = () => {
             console.log(response);
 
             // Redirect to another page after successful form submission
-            // url('/admin/dashboard')
+            url('/admin/dashboard')
         } catch (error) {
             // Handle any errors that occurred during form submission
             console.error(error);

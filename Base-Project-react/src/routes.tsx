@@ -36,7 +36,7 @@ export const router = createBrowserRouter([
     },
     {
         path: "/admin",
-        element: role != "1" ? <NotFound /> : <LayoutAdmin />,
+        element: role != "0" ? <NotFound /> : <LayoutAdmin />,
         children: [
             {
                 index: true,
@@ -64,7 +64,7 @@ export const router = createBrowserRouter([
                 path: "statistical",
                 element: <Statistical />,
             },
-            
+
             {
                 path: "product/update/:id",
                 element: <Update />,

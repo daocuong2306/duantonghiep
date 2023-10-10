@@ -13,7 +13,7 @@ const Login = () => {
             "password": dataUser.password
         })
     }
-    if (!isLoading && user?.status) {
+    if (!isLoading) {
         localStorage.setItem("header", data?.access_token)
         if (user?.role < 3) {
             localStorage.setItem("role", user?.role)
