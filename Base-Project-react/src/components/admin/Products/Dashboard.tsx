@@ -1,17 +1,16 @@
-import { useGetCategoriesQuery } from '../../../api/category'
 import { useGetProductsQuery, useRemoveProductMutation } from '../../../api/product'
 import { ICategory } from '../../../interface/category'
 import { IProduct } from '../../../interface/product'
 import { useAppDispatch } from '../../../store/hook'
 import { Link } from 'react-router-dom'
 import { FcFullTrash, FcSupport } from 'react-icons/fc'
-import { useGetUserQuery } from '@/api/user'
+import { useForm } from 'react-hook-form'
+import { useState } from 'react'
 const Dashboard = () => {
-    const dispatch = useAppDispatch()
-    const { data: products, isLoading } = useGetProductsQuery();
+    const [find, setFind] = useState({})
+    const { data: products, isLoading } = useGetProductsQuery(find);
+    console.log(isLoading);
     console.log(products);
-
-    const { data: categories } = useGetCategoriesQuery();
     const [deleteProduct] = useRemoveProductMutation()
     const deleteP = (id: number) => {
         const check = window.confirm("Are you sure you want to delete");
@@ -20,7 +19,13 @@ const Dashboard = () => {
             alert("da xoa")
         }
     }
-    console.log(isLoading);
+
+    const selectProduct = (event: string) => {
+        const newValue = event.target.value;
+        console.log(newValue);
+
+        setFind({ keyword: newValue });
+    }
     return (<div>
         {isLoading && <div
             className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
@@ -34,13 +39,19 @@ const Dashboard = () => {
                 <div className='flex justify-between justify-center'>
                     <div className="pb-4 bg-white dark:bg-white-900">
                         <label htmlFor="table-search" className="sr-only">Search</label>
-                        <div className="relative mt-1">
+                        <div className="relative mt-1 static ">
                             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg className="w-4 h-4 text-white-500 dark:text-white-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
-                            <input type="text" id="table-search" className="block p-2 pl-10 text-sm text-white-900 border border-white-300 rounded-lg w-80 bg-white-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-while-700 dark:border-white-600 dark:placeholder-white-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for items" />
+                            <input
+                                type="text"
+                                id="table-search"
+                                className="block p-2 pl-10 text-sm text-gray-900 border border-white-300 rounded-lg w-80 bg-white-50 focus:ring-blue-500 focus:border-blue-500 "
+                                placeholder="Search for items"
+                                onChange={selectProduct}
+                            />
                         </div>
                     </div>
                     <div >
@@ -113,11 +124,7 @@ const Dashboard = () => {
                                     <td className="px-6 py-4">{product.code}</td>
                                     <td className="px-6 py-4">{product.price}</td>
                                     <td className="px-6 py-4">{product.description}</td>
-                                    {categories?.categories.map((category: ICategory) => {
-                                        if (category.id == product.id_category) {
-                                            return <td className="px-6 py-4">{category.name}</td>
-                                        }
-                                    })}
+                                    <td className="px-6 py-4">{product.category_name}</td>
                                     <td className="px-6 py-4">XS</td>
                                     <td className="px-6 py-4">White</td>
                                     <td className="px-6 py-4 ">
