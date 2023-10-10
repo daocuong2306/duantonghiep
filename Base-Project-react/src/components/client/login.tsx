@@ -2,24 +2,24 @@ import { useGetUserQuery, useLoginMutation } from "../../api/user";
 import { IUserLogin } from "../../interface/user";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-
 const Login = () => {
     const { register, handleSubmit } = useForm();
     const [login, { data, isLoading }] = useLoginMutation()
+    const { data: user } = useGetUserQuery(data?.access_token)
     const url = useNavigate();
     const onHandleSubmit = (dataUser: IUserLogin) => {
         login({
             "email": dataUser.email,
             "password": dataUser.password
         })
-        console.log(data);
-
     }
-    if (!isLoading) {
-        console.log(data);
+    if (!isLoading && user?.status) {
         localStorage.setItem("header", data?.access_token)
-        localStorage.setItem("role", "0")
-        url("/")
+        if (user?.role < 3) {
+            localStorage.setItem("role", user?.role)
+            console.log(user)
+            url("/")
+        }
     }
 
     return (
