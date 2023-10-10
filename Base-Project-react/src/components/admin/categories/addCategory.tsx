@@ -30,7 +30,7 @@ const AddCategory = () => {
             // Handle the response here if needed
 
             console.log(response);
-
+            
             // Redirect to another page after successful form submission
             // url("/admin/categories");
         } catch (error) {

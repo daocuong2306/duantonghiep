@@ -13,7 +13,6 @@ const Product = () => {
     const token=localStorage.getItem("header")
     const {data}=useGetUserQuery(`${token}`)
     console.log(data);
-    
     const dispatch = useAppDispatch();
     const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
     const { data: products, error, isLoading } = useGetProductsQuery();
