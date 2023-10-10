@@ -23,18 +23,23 @@ class ProductController extends Controller
         $id = $request->query('id');
         $keyword = $request->query('keyword');
         if ($id || $keyword) {
-            $products = DB::table('product')
-                ->where('id_category', $id)
-                ->get();
-
-            $products = Product::where('name', 'like', "%$keyword%")
-                ->orWhere('code', 'like', "%$keyword%")
-                ->get();
+            $products = Product::where(function ($query) use ($id, $keyword) {
+                if ($id) {
+                    $query->where('id_category', $id);
+                }
+            
+                if ($keyword) {
+                    $query->where(function ($query) use ($keyword) {
+                        $query->where('name', 'like', "%$keyword%")
+                            ->orWhere('code', 'like', "%$keyword%");
+                    });
+                }
+            })->get();
             return response()->json([
                 'status' => 200,
                 'product' => $products,
                 'isOke' => 'true',
-                'message' =>'find by category'
+                'message' =>'find by category and keywords'
             ], 200);
         }
         // if ($keyword) {
