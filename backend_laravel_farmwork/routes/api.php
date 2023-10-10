@@ -11,6 +11,8 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\EvaluateController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\Variant\VariantController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -82,7 +84,6 @@ Route::post('categories/edit/{id}', [CategoryController::class, 'update']);
 Route::delete('categories/delete/{id}', [CategoryController::class, 'destroy']);
 //Products
 Route::get('products', [ProductController::class, 'index']);
-
 Route::post('products/add', [ProductController::class, 'store']);
 Route::get('products/{id}', [ProductController::class, 'show']);
 Route::post('products/edit/{id}', [ProductController::class, 'update']);
@@ -101,6 +102,8 @@ Route::post('optionvalues/add', [OptionValueController::class, 'store']);
 Route::get('optionvalues/{id}', [OptionValueController::class, 'show']);
 Route::post('optionvalues/edit/{id}', [OptionValueController::class, 'update']);
 Route::delete('optionvalues/delete/{id}', [OptionValueController::class, 'destroy']);
+//Variant
+Route::get('variants', [VariantController::class, 'index']);
 //Banner
 Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
 Route::post('banner/add', [BannerController::class, 'addBanner']);
