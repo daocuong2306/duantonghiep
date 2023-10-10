@@ -97,11 +97,12 @@ Route::get('options/{id}', [OptionController::class, 'show']);
 Route::post('options/edit/{id}', [OptionController::class, 'update']);
 Route::delete('options/delete/{id}', [OptionController::class, 'destroy']);
 //Option Value
-Route::post('optionvalues', [OptionValueController::class, 'index']);
+Route::get('optionvalues', [OptionValueController::class, 'index']);
 Route::post('optionvalues/add', [OptionValueController::class, 'store']);
 Route::get('optionvalues/{id}', [OptionValueController::class, 'show']);
 Route::post('optionvalues/edit/{id}', [OptionValueController::class, 'update']);
 Route::delete('optionvalues/delete/{id}', [OptionValueController::class, 'destroy']);
+Route::get('optionvalue/array1', [OptionValueController::class, 'properties']);
 //Variant
 Route::get('variants', [VariantController::class, 'index']);
 //Banner

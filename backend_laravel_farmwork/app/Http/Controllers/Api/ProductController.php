@@ -27,19 +27,22 @@ class ProductController extends Controller
                 if ($id) {
                     $query->where('id_category', $id);
                 }
-            
+
                 if ($keyword) {
                     $query->where(function ($query) use ($keyword) {
                         $query->where('name', 'like', "%$keyword%")
                             ->orWhere('code', 'like', "%$keyword%");
                     });
                 }
-            })->get();
+            })
+                ->join('category', 'product.id_category', '=', 'category.id')
+                ->select('product.*', 'category.name as category_name')               
+                ->get();
             return response()->json([
                 'status' => 200,
                 'product' => $products,
                 'isOke' => 'true',
-                'message' =>'find by category and keywords'
+                'message' => 'find by category and keywords'
             ], 200);
         }
         // if ($keyword) {
@@ -65,13 +68,13 @@ class ProductController extends Controller
                 return response()->json([
                     'status' => 200,
                     'product' => $products,
-                    'message' =>'dont find',
+                    'message' => 'dont find',
                 ], 200);
             } else {
                 return response()->json([
                     'status' => 200,
                     'message' => 'not found'
-                    
+
                 ], 400);
             }
         }
@@ -173,7 +176,7 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
             'code' => 'required',
             'quantity' => 'required',
-            'id_category' => 'required', 
+            'id_category' => 'required',
             'discount_id' => 'required'
         ]);
         if ($validator->fails()) {
