@@ -2,14 +2,10 @@ import { useGetUserQuery, useLoginMutation } from "../../api/user";
 import { IUserLogin } from "../../interface/user";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
 const Login = () => {
     const { register, handleSubmit } = useForm();
     const [login, { data, isLoading }] = useLoginMutation()
     const { data: user } = useGetUserQuery(data?.access_token)
-    console.log(data);
-
-
     const url = useNavigate();
     const onHandleSubmit = (dataUser: IUserLogin) => {
         login({
@@ -17,23 +13,17 @@ const Login = () => {
             "password": dataUser.password
         })
     }
-    console.log(isLoading);
-
-    if (!isLoading && user) {
+    if (!isLoading && user?.status) {
         localStorage.setItem("header", data?.access_token)
         if (user?.role < 3) {
             localStorage.setItem("role", user?.role)
-            // url("/")
+            console.log(user)
+            url("/")
         }
     }
 
     return (
-
         <div>
-            <div>
-
-                <ToastContainer />
-            </div>
             <section className="bg-gray-50 dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
