@@ -6,7 +6,7 @@ import { FaInternetExplorer, FaFacebookF,FaTwitter,FaInstagram } from 'react-ico
 const InForAdmin = () => {
     return (
         <div>
-            {/* <BaseBreadcrumb title='Profile Admin And Shop'/> */}
+            <BaseBreadcrumb title='Profile Admin And Shop'/>
             <div className="flex">
                 <div className=" w-1/2  ">
                     <div className='w-11/12 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5 m-auto'>
