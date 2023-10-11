@@ -11,6 +11,9 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\EvaluateController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\Variant\VariantController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,15 +47,18 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::delete('auth/logout', [AuthController::class, 'logout']);
     Route::get('user/listAll', [UserController::class, 'index']);
     //Comment.................
-    Route::get('comment/listAll', [CommentController::class, 'listcomment']);
-    Route::get('comment/findbyuser/{id}', [CommentController::class, 'findCommentbyUser']);
-    Route::get('comment/findbyproduct/{id}', [CommentController::class, 'findCommentbyProduct']);
+    Route::get('admin/comment/listAll', [CommentController::class, 'listcomment']);
+    Route::get('admin/comment/findbyuser/{id}', [CommentController::class, 'findCommentbyUser']);
+    Route::get('admin/comment/findbyproduct/{id}', [CommentController::class, 'findCommentbyProduct']);
     Route::delete('comment/deletebyadmin/{id}', [CommentController::class, 'deleteByAmin']);
     //Evaluate
-    Route::get('evaluate/listAll', [EvaluateController::class, 'showAll']);
-    Route::delete('evaluate/delete/{id}', [EvaluateController::class, 'delete']);
+    Route::get('admin/evaluate/listAll', [EvaluateController::class, 'showAll']);
+    Route::delete('admin/evaluate/delete/{id}', [EvaluateController::class, 'delete']);
     //Image
-    Route::post('image/addimageproduct', [ImageController::class, 'addImageProduct']);
+    Route::post('admin/image/addimageproduct', [ImageController::class, 'addImageProduct']);
+    //Setting
+    Route::post('admin/settingshop', [SettingController::class, 'setingshope']);
+    Route::post('admin/editinforshop', [SettingController::class, 'InforShop']);
 });
 // ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
 Route::group(['middleware' => 'auth:api'], function () {
@@ -82,7 +88,6 @@ Route::post('categories/edit/{id}', [CategoryController::class, 'update']);
 Route::delete('categories/delete/{id}', [CategoryController::class, 'destroy']);
 //Products
 Route::get('products', [ProductController::class, 'index']);
-
 Route::post('products/add', [ProductController::class, 'store']);
 Route::get('products/{id}', [ProductController::class, 'show']);
 Route::post('products/edit/{id}', [ProductController::class, 'update']);
@@ -96,11 +101,14 @@ Route::get('options/{id}', [OptionController::class, 'show']);
 Route::post('options/edit/{id}', [OptionController::class, 'update']);
 Route::delete('options/delete/{id}', [OptionController::class, 'destroy']);
 //Option Value
-Route::post('optionvalues', [OptionValueController::class, 'index']);
+Route::get('optionvalues', [OptionValueController::class, 'index']);
 Route::post('optionvalues/add', [OptionValueController::class, 'store']);
 Route::get('optionvalues/{id}', [OptionValueController::class, 'show']);
 Route::post('optionvalues/edit/{id}', [OptionValueController::class, 'update']);
 Route::delete('optionvalues/delete/{id}', [OptionValueController::class, 'destroy']);
+Route::get('optionvalue/array1', [OptionValueController::class, 'properties']);
+//Variant
+Route::get('variants', [VariantController::class, 'index']);
 //Banner
 Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
 Route::post('banner/add', [BannerController::class, 'addBanner']);

@@ -20,9 +20,13 @@ const productApi = createApi({
     }),
     endpoints: (builder) => ({
         getProducts: builder.query<IProduct[], void>({
-            query: () => `/products`,
+            query: (key: any) => ({
+                url: `/products`,
+                method: "GET",
+                params: { id: key.id , keyword: key.keyword }
+            }),
             providesTags: ['Product']
-        }),
+        }), 
         getProductById: builder.query<IProduct, number | string>({
             query: (id) => `/products/${id}`,
             providesTags: ['Product']
@@ -36,7 +40,7 @@ const productApi = createApi({
             invalidatesTags: ['Product']
         }),
         updateProduct: builder.mutation({
-            query: (product:any) => ({
+            query: (product: any) => ({
                 url: `/products/edit/${product.id}`,
                 method: "POST",
                 body: product.formData
