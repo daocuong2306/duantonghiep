@@ -11,6 +11,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\EvaluateController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Variant\VariantController;
 
 use Illuminate\Http\Request;
@@ -46,15 +47,18 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::delete('auth/logout', [AuthController::class, 'logout']);
     Route::get('user/listAll', [UserController::class, 'index']);
     //Comment.................
-    Route::get('comment/listAll', [CommentController::class, 'listcomment']);
-    Route::get('comment/findbyuser/{id}', [CommentController::class, 'findCommentbyUser']);
-    Route::get('comment/findbyproduct/{id}', [CommentController::class, 'findCommentbyProduct']);
+    Route::get('admin/comment/listAll', [CommentController::class, 'listcomment']);
+    Route::get('admin/comment/findbyuser/{id}', [CommentController::class, 'findCommentbyUser']);
+    Route::get('admin/comment/findbyproduct/{id}', [CommentController::class, 'findCommentbyProduct']);
     Route::delete('comment/deletebyadmin/{id}', [CommentController::class, 'deleteByAmin']);
     //Evaluate
-    Route::get('evaluate/listAll', [EvaluateController::class, 'showAll']);
-    Route::delete('evaluate/delete/{id}', [EvaluateController::class, 'delete']);
+    Route::get('admin/evaluate/listAll', [EvaluateController::class, 'showAll']);
+    Route::delete('admin/evaluate/delete/{id}', [EvaluateController::class, 'delete']);
     //Image
-    Route::post('image/addimageproduct', [ImageController::class, 'addImageProduct']);
+    Route::post('admin/image/addimageproduct', [ImageController::class, 'addImageProduct']);
+    //Setting
+    Route::post('admin/settingshop', [SettingController::class, 'setingshope']);
+    Route::post('admin/editinforshop', [SettingController::class, 'InforShop']);
 });
 // ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
 Route::group(['middleware' => 'auth:api'], function () {

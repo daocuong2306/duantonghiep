@@ -2,8 +2,12 @@ import BaseBreadcrumb from '../../shared/BaseBreadcrumb';
 import Image from "../../../assets/assets/images/logo-dark.png";
 import Avatar from "../../../assets/assets/images/th.jpg"
 import { FaInternetExplorer, FaFacebookF,FaTwitter,FaInstagram } from 'react-icons/fa';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query'
 
 const InForAdmin = () => {
+    const api =fetchBaseQuery({ baseUrl: 'http://127.0.0.1:8000/api/admin/editinforshop' });
+    console.log(api);
+    
     return (
         <div>
             {/* <BaseBreadcrumb title='Profile Admin And Shop'/> */}
