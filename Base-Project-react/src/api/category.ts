@@ -7,7 +7,7 @@ const categoryApi = createApi({
     reducerPath: "category",
     tagTypes: ['Category'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api",
+        baseUrl: "http://localhost:8000/api/categories",
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("access_token");
             headers.set("authorization", `Bearer ${token}`)
@@ -15,22 +15,22 @@ const categoryApi = createApi({
             return headers;
         },
         fetchFn: async (...args) => {
-            await pause(1000);
+            await pause(500);
             return fetch(...args);
         }
     }),
     endpoints: (builder) => ({
         getCategories: builder.query<ICategory[], void>({
-            query: () => `/categories`,
+            query: () => `/`,
             providesTags: ['Category']
         }),
         getCategoryById: builder.query<ICategory, number | string>({
-            query: (id) => `/categories/${id}`,
+            query: (id) => `/${id}`,
             providesTags: ['Category']
         }),
         addCategory: builder.mutation({
             query: (category: any) => ({
-                url: `/categories/add`,
+                url: `/add`,
                 method: "POST",
                 body: category
             }),
@@ -38,7 +38,7 @@ const categoryApi = createApi({
         }),
         updateCategory: builder.mutation<any, any>({
             query: (category: any) => ({
-                url: `/categories/edit/${category.id}`,
+                url: `/edit/${category.id}`,
                 method: "POST",
                 body: category.formData
             }),
@@ -46,7 +46,7 @@ const categoryApi = createApi({
         }),
         removeCategory: builder.mutation<void, number>({
             query: (id) => ({
-                url: `/categories/delete/${id}`,
+                url: `/delete/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ['Category']
