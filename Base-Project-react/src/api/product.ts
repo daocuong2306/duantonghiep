@@ -6,7 +6,7 @@ const productApi = createApi({
     reducerPath: "product",
     tagTypes: ['Product'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api",
+        baseUrl: "http://127.0.0.1:8000/api/products",
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("access_token");
             headers.set("authorization", `Bearer ${token}`)
@@ -14,26 +14,26 @@ const productApi = createApi({
             return headers;
         },
         fetchFn: async (...args) => {
-            await pause(2000);
+            await pause(500);
             return fetch(...args);
         }
     }),
     endpoints: (builder) => ({
         getProducts: builder.query<IProduct[], void>({
             query: (key: any) => ({
-                url: `/products`,
+                url: `/`,
                 method: "GET",
-                params: { id: key.id , keyword: key.keyword }
+                params: { id: key.id, keyword: key.keyword }
             }),
             providesTags: ['Product']
-        }), 
+        }),
         getProductById: builder.query<IProduct, number | string>({
-            query: (id) => `/products/${id}`,
+            query: (id) => `/${id}`,
             providesTags: ['Product']
         }),
         addProduct: builder.mutation({
             query: (product: IProduct) => ({
-                url: `/products/add`,
+                url: `/add`,
                 method: "POST",
                 body: product
             }),
@@ -41,7 +41,7 @@ const productApi = createApi({
         }),
         updateProduct: builder.mutation({
             query: (product: any) => ({
-                url: `/products/edit/${product.id}`,
+                url: `/edit/${product.id}`,
                 method: "POST",
                 body: product.formData
             }),
@@ -49,7 +49,7 @@ const productApi = createApi({
         }),
         removeProduct: builder.mutation<void, number>({
             query: (id) => ({
-                url: `/products/delete/${id}`,
+                url: `/delete/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ['Product']
