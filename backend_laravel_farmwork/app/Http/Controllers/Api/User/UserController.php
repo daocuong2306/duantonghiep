@@ -7,6 +7,7 @@ use App\Http\Resources\UserResources;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -79,7 +80,7 @@ class UserController extends Controller
         ]);
 
         if ($oldImagePath) {
-            Storage::delete($oldImagePath);
+            File::delete(public_path($oldImagePath));
         }
 
         if ($validator->fails()) {

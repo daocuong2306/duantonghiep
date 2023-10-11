@@ -18,11 +18,36 @@ class AuthController extends Controller
             'password' => 'required|string|confirmed'
         ]);
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 'fails',
-                'message' => $validator->errors()->first(),
-                'errors' => $validator->errors()->toArray(),
-            ]);
+            $errors = $validator->errors();
+
+            if ($errors->has('name')) {
+                $nameError = $errors->first('name');
+                return response()->json([
+                    'errors' => $nameError,
+                    'errors_code' => 1
+                ]);
+            }
+            $emailError = $errors->get('email');
+            if ($errors->has('email')) {
+                
+                return response()->json([
+                    'errors' => $emailError,
+                    'errors_code' => 2
+                ]);
+            }
+            if (in_array('The email has already been taken.', $emailError)) {
+                return response()->json([
+                    'errors' => $emailError,
+                    'errors_code' => 3
+                ]);
+            }
+            if ($errors->has('password')) {
+                $passwordError = $errors->first('password');
+                return response()->json([
+                    'errors' => $passwordError,
+                    'errors_code' => 4
+                ]);
+            }
         }
         $user = new User([
             'name' => $request->input('name'),
@@ -49,14 +74,16 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 'fails',
                 'message' => $validator->errors()->first(),
-                'errors' => $validator->errors()->toArray(),
+                'errors_code' => 5
+
             ]);
         }
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials)) {
             return response()->json([
                 'status' => 'fails',
-                'message' => 'Unauthorized'
+                'message' => 'Sai Mật Khẩu or Password',
+                'code_error' => 6
             ], 401);
         }
         $user = $request->user();
@@ -87,7 +114,7 @@ class AuthController extends Controller
             'status' => 'success',
         ]);
     }
-    
+
     /**
      * @param Request $request
      * @return JsonResponse
@@ -97,5 +124,4 @@ class AuthController extends Controller
         // dd(Auth::user());
         return response()->json($request->user());
     }
-    
 }
