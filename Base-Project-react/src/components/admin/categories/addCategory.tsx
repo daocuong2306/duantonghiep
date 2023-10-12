@@ -13,7 +13,7 @@ const AddCategory = () => {
     const [addCategory] = useAddCategoryMutation();
 
     const { control, handleSubmit, setValue, getValues, register } = useForm();
-    const onHandleSubmit = async (data: ICategory) => {
+    const onHandleSubmit = async (data: any) => {
         const name = getValues('name');
         const formData = new FormData();
 
@@ -30,7 +30,7 @@ const AddCategory = () => {
             // Handle the response here if needed
 
             console.log(response);
-            
+
             // Redirect to another page after successful form submission
             // url("/admin/categories");
         } catch (error) {
