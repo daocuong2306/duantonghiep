@@ -34,15 +34,6 @@ class OptionValueController extends Controller
                 ->join('options', 'option_values.option_id', '=', 'options.id')
                 ->select('option_values.*', 'options.name as options_name')
                 ->get();
-
-            // $newArray = collect($option_values)->groupBy('option_id')->map(function ($item){
-            //     return [
-            //         "option_id" => $item->first()['option_id'],
-            //         "value" => $item->pluck('value')->toArray()
-            //     ];
-            //    })->values()->toArray();;
-            //    print_r($newArray);
-
             if ($option_values->count() > 0) {
                 return response()->json([
                     "status" => 200,
@@ -88,31 +79,28 @@ class OptionValueController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'option_id' => 'required',
-            'value' => 'required',
+            'values' => 'required', // Thêm kiểm tra value là một mảng
         ]);
+            // dd($request);
         if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
                 'errors' => $validator->messages(),
             ], 422);
-        } else {
-            $option_values = OptionValue::create([
-                'option_id' => $request->option_id,
-                'value' => $request->value,
-            ]);
-
-            if ($option_values) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Successfull',
-                ], 200);
-            } else {
-                return response()->json([
-                    'status' => 500,
-                    'message' => 'Wrong',
-                ], 500);
-            }
         }
+        $values = $request->values;
+        foreach ($values as $value) {
+            $option_value = new OptionValue();
+            $option_value->value = $value;
+            $option_value->option_id = $request->option_id;
+            $option_value->save();
+        }
+         $all=OptionValue::all();
+        return response()->json([
+            'status' => 200,
+            'option_value' => $all,
+            'message' => 'Successful',
+        ], 200);
     }
 
     /**
@@ -197,33 +185,39 @@ class OptionValueController extends Controller
             ], 404);
         }
     }
+    // public function properties(Request $request)
+    // {
+    //     $option_id = $request->input('option_id');
+    //     $values[] = $request->input('values');
+    //     return response()->json([
+    //         'option_id' => $option_id,
+    //         'values' => $values
+
+    //     ]);
+    // }
     public function properties()
     {
-        $option_values = DB::table('option_values')
-            ->join('options', 'option_values.option_id', '=', 'options.id')
-            ->select('option_values.*', 'options.name as options_name')
-            ->get();
-        // dd($option_values);
-        //  $option_values = DB::table('option_values')->get();
+        // $option_id = $request->input('option_id');
+        // $values = $request->input('value');
+        // return response()->json([
+        //     'option_id' => $option_id,
+        //     'value' => $values,
+        // ]);
 
-        $newArray = collect($option_values)->groupBy('option_id')->map(function ($option) {
-            return [
-                "option_id" => $option->first()['option_id'],
-                "value" => $option->pluck('value')->toArray()
-            ];
-        })->values()->toArray();;
-        dd($newArray);
-        //    if($newArray){
-        //     return response()->json([
-        //        "status" => 200,
-        //        "option_values" => $newArray,
-        //        'message' =>'dont find',
-        //     ],200);      
-        //    }else{
-        //     return response()->json([
-        //         'status'=>200,
-        //         'message'=>'not found'
-        //     ],400);
-        //    }
+        //     $option_values = OptionValue::all();
+        //     $values = $option_values->map(function ($option_value) {
+        //     return json_decode($option_value->value);
+        // });
+
+        // return response()->json([
+        //     'status' => 200,       
+        //     'values' => $values,
+        // ], 200);
+        // $values = json_decode($option_value->value, true);
+        //  return response()->json([
+        //     'option_id' => $option_value,
+        //     'value' => $values,
+        // ]);
+
     }
 }
