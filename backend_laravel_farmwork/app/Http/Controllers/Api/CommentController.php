@@ -36,6 +36,7 @@ class CommentController extends Controller
     }
     public function addcomment(Request $request)
     {
+            //   [[1,[1,2,3]],[2,[2,3,4]]];
         $validator = Validator::make($request->all(), [
             'comments' => 'required|string',
             'evaluate' => 'required',
@@ -101,7 +102,6 @@ class CommentController extends Controller
             ], 401);
         }
     }
-    
     public function findCommentbyUser($id)
     {
         $comments = DB::table('comments')

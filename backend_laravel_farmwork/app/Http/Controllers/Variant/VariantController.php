@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Variant;
 
 use App\Http\Controllers\Controller;
+use App\Models\OptionValue;
 use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -10,81 +11,57 @@ use Illuminate\Support\Facades\Validator;
 
 class VariantController extends Controller
 {
-  
-    public function index()
+    public function getOptionValue(Request $request)
     {
-        $variants = Variant::all();
+        $arrays = $request->arrayValue;
 
-        $variants = DB::table('variants')
-        ->join('product', 'variants.product_id', '=', 'products.id')
-        ->join('skus', 'variants.skus_id', '=', 'skus.id')
-        ->join('options', 'variants.option_id', '=', 'options.id')
-        ->join('option_values', 'variants.option_value_id', '=', 'option_values.id')
-        ->select('variants.*', 'product.name as product_name', 'skus.name as skus_name', 'options.name as option_name', 'option_values.value as option_value_name')
-        ->get();
+        $result = [[]];
+        // [
+        //     [
+        //         1,
+        //         2,
+        //         3
+        //     ],
+        //     [
+        //         7,
+        //         8,
+        //         9
+        //     ]
+        //     ];
+        if (!empty($arrays)) {
+            foreach ($arrays as $key => $values) {
+                $append = [];
+                foreach ($values as $value) {
+                    foreach ($result as $data) {
+                        $append[] = $data + [$key => $value];
+                    }
+                }
+                $result = $append;
+            }
+            $variant = [];
+            foreach ($result as  $key => $option_value) {
+                for ($i = 0; $i < count($option_value); $i++) {
+                    $option = OptionValue::find($option_value[$i])->value;
+                    $option_value[$i] = $option;
+                }
+                $variant[] = $option_value;
+            }
+            return response()->json(
+                [
+                    'variant' => $variant
+                ],200
 
-       if($variants->count()>0){
-        return response()->json([
-           "status" => 200,
-           "option_values" => $variants,
-           'isOke'=>'true',
-        ],200);      
-        
-       }else{
-        return response()->json([
-            'status'=>200,
-            'message'=>'not found'       
-        ],400);
-       }
+            );
+        }else{
+            return response()->json(
+                [
+                    'error' =>" Request truyền vào phải là một mảng"
+                ],422
+            );
+        }
     }
-   
-    public function store(Request $request)
-    {
-        // $validator = Validator::make($request->all(),[
-        //     'products_id'=>'required',
-        //     'skus_id'=>'required',
-        //     'option_id'=>'required',
-        //     'option_values_id'=>'required', 
-        // ]);
-        // if($validator->fails()){
-        //     return response()->json([
-        //         'status'=>422,
-        //         'errors'=>$validator->messages(),
-        //     ],422);
-        // }else{
-        //     $option_values = Variant::create([
-        //          'option_id'=>$request-> option_id,
-        //         'value'=>$request->value,
-        //     ]);
-
-        //     if($option_values){
-        //         return response()->json([
-        //             'status'=>200,
-        //             'message'=>'Successfull',
-        //         ],200);
-        //     }else{
-        //         return response()->json([
-        //             'status'=>500,
-        //             'message'=>'Wrong',
-        //         ],500);
-        //     }
-        // }
-    }
+    public function addVariant(Request $request){
 
 
-    public function show($id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 }
