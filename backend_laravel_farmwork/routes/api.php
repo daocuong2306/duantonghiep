@@ -58,7 +58,7 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::post('admin/image/addimageproduct', [ImageController::class, 'addImageProduct']);
     //Setting
     Route::post('admin/settingshop', [SettingController::class, 'setingshope']);
-    Route::post('admin/editinforshop', [SettingController::class, 'InforShop']);
+    Route::get('admin/editinforshop', [SettingController::class, 'InforShop']);
 });
 // ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
 Route::group(['middleware' => 'auth:api'], function () {
