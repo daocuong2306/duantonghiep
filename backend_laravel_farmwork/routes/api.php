@@ -46,6 +46,8 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::get('user/show_one/{id}', [UserController::class, 'show']);
     Route::delete('auth/logout', [AuthController::class, 'logout']);
     Route::get('user/listAll', [UserController::class, 'index']);
+    Route::get('user/banUser/{id}', [UserController::class, 'banUser']);
+    Route::get('user/unBanUser/{id}', [UserController::class, 'unBanUser']);
     //Comment.................
     Route::get('admin/comment/listAll', [CommentController::class, 'listcomment']);
     Route::get('admin/comment/findbyuser/{id}', [CommentController::class, 'findCommentbyUser']);
@@ -109,6 +111,7 @@ Route::delete('optionvalues/delete/{id}', [OptionValueController::class, 'destro
 Route::get('optionvalues/properties', [OptionValueController::class, 'properties']);
 //Variant
 Route::get('variants', [VariantController::class, 'index']);
+Route::post('variants/getvalue', [VariantController::class, 'getOptionValue']);
 //Banner
 Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
 Route::post('banner/add', [BannerController::class, 'addBanner']);
