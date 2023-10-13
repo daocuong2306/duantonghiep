@@ -91,15 +91,15 @@ const Statistical = () => {
     return (
 
         <div>
-            {/* <BaseBreadcrumb title='Statistical'/> */}
+            <BaseBreadcrumb title='Statistical'/>
             <div className="flex">
                 <div className=" w-1/2  ">
-                    <div className=' w-11/12 rounded bg-slate-300 p-10 m-auto '>
+                    <div className=' w-11/12 rounded bg-sky-200 p-10 m-auto '>
                         <div className="card-box">
                             <div className="row">
                                 <div className="col-6">
                                     <div className="avatar-sm bg-light rounded">
-                                        <CiShoppingCart className="text-3xl bg-sky-100 w-100 text-green-700 rounded" />
+                                        <CiShoppingCart className="text-3xl w-100 text-green-700 rounded" />
                                     </div>
                                 </div>
                                 <div className="col-6">
@@ -121,17 +121,17 @@ const Statistical = () => {
                     </div>
                 </div>
                 <div className=" w-1/2  ">
-                    <div className=' w-11/12 rounded bg-slate-300 p-10 m-auto '>
+                    <div className=' w-11/12 rounded bg-sky-200 p-10 m-auto '>
                         <div className="card-box">
                             <div className="row">
                                 <div className="col-6">
                                     <div className="avatar-sm bg-light rounded">
-                                        <FaCoins className="text-3xl bg-sky-100 w-100 text-fuchsia-700 rounded" />
+                                        <FaCoins className="text-3xl w-100 text-fuchsia-700 rounded" />
                                     </div>
                                 </div>
                                 <div className="col-6">
                                     <div className="text-right">
-                                        <h3 className="text-dark my-1 "><span data-plugin="counterup" className='text-zinc-500 text-5xl font-bold '><CountUp end={12145} /></span></h3>
+                                        <h3 className="text-dark my-1 "><span data-plugin="counterup" className='text-zinc-500 text-5xl font-bold '>$<CountUp end={12145} /></span></h3>
                                         <p className="text-zinc-500 text-xl">Income status</p>
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@ const Statistical = () => {
                 </div>
             </div>
 
-            <div className='w-7/12 h-1/4'> <Chart options={options} series={series } /></div>
+            <div className='w-8/12 h-1/4 p-5'> <Chart options={options} series={series } /></div>
         </div>
     )
 }
