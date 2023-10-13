@@ -103,7 +103,7 @@ Route::get('options/{id}', [OptionController::class, 'show']);
 Route::post('options/edit/{id}', [OptionController::class, 'update']);
 Route::delete('options/delete/{id}', [OptionController::class, 'destroy']);
 //Option Value
-Route::get('optionvalues', [OptionValueController::class, 'index']);
+Route::get('optionvalues/{id}', [OptionValueController::class, 'index']);
 Route::post('optionvalues/add', [OptionValueController::class, 'store']);
 Route::get('optionvalues/show/{id}', [OptionValueController::class, 'show']);
 Route::post('optionvalues/edit/{id}', [OptionValueController::class, 'update']);
