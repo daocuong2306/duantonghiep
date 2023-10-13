@@ -35,14 +35,6 @@ class OptionValueController extends Controller
                 ->select('option_values.*', 'options.name as options_name')
                 ->get();
 
-            // $newArray = collect($option_values)->groupBy('option_id')->map(function ($item){
-            //     return [
-            //         "option_id" => $item->first()['option_id'],
-            //         "value" => $item->pluck('value')->toArray()
-            //     ];
-            //    })->values()->toArray();;
-            //    print_r($newArray);
-
             if ($option_values->count() > 0) {
                 return response()->json([
                     "status" => 200,
