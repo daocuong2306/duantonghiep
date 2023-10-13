@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('skus', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id');
-            $table->string('name')->unique()->nullable();
-            $table->string('barcode')->unique()->nullable();
+            $table->string('sku')->nullable();
+            $table->string('barcode')->nullable();
             $table->integer('price')->default(0);
             $table->integer('stoke')->default(0);
             $table->timestamps();

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->integer('product_id');
             $table->integer('sku_id');
-            $table->integer('option_id');
             $table->integer('option_value_id');
             $table->timestamps();
         });

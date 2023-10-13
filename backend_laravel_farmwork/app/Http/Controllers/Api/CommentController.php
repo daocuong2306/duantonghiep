@@ -19,7 +19,7 @@ class CommentController extends Controller
             ->join('product', 'product.id', '=', 'comments.id_product')
             ->select('comments.*', 'product.name as nameProduct', 'users.name as userName', 'users.image as userImage')
             ->get();
-            
+
         // dd($comment);
         if ($comment->count() > 0) {
             return response()->json([
@@ -36,7 +36,7 @@ class CommentController extends Controller
     }
     public function addcomment(Request $request)
     {
-            //   [[1,[1,2,3]],[2,[2,3,4]]];
+        //   [[1,[1,2,3]],[2,[2,3,4]]];
         $validator = Validator::make($request->all(), [
             'comments' => 'required|string',
             'evaluate' => 'required',
@@ -49,17 +49,27 @@ class CommentController extends Controller
                 'errors' => $validator->errors()->toArray(),
             ]);
         }
-        $comment = new Comment([
-            'comments' => $request->comments,
-            'evaluate' => $request->evaluate,
-            'id_user' => Auth::user()->id,
-            'id_product' => $request->id_product
+        $user = Auth::user();
+        $existingComment = Comment::where('id_user', $user->id)->where('id_product',$request->id_product)->first();
+        // dd($existingComment);
 
-        ]);
-        $comment->save();
-        return response()->json([
-            'status' => 'success',
-        ]);
+        if ($existingComment) {
+            return response()->json([
+                'error' => 'Bạn đã bình luận về sản phẩm này',
+            ]);
+            
+        } else {
+            $comment = new Comment([
+                'comments' => $request->comments,
+                'evaluate' => $request->evaluate,
+                'id_user' => Auth::user()->id,
+                'id_product' => $request->id_product
+            ]);
+            $comment->save();
+            return response()->json([
+                'status' => 'success',
+            ],200);
+        }
     }
     public function deleteByAmin($id)
     {
