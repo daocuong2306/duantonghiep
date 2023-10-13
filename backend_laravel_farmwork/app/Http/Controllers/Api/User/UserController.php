@@ -37,7 +37,74 @@ class UserController extends Controller
             ], 200);
         }
     }
-
+    public function banUser($id)
+    {
+        if ($id) {
+            if ($id == Auth::user()->id) {
+                return response()->json([
+                    'status' => 422,
+                    'msg' => ' tài khoản của admin không thể khóa',
+                ], 422);
+            } else {
+                $user = User::find($id);
+                if ($user) {
+                    if ($user->status == 1) {
+                        return response()->json([
+                            'status' => 200,
+                            'msg' => 'Tài khoản đang bị khóa',
+                            'user' => $user,
+                            'isOke' => 'true'
+                        ], 200);
+                    } else {
+                        $user->status = 1;
+                        $user->save();
+                        return response()->json([
+                            'status' => 200,
+                            'msg' => 'Khóa thành công tài khoản',
+                            'user' => $user,
+                            'isOke' => 'true'
+                        ], 200);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 404,
+                        'msg' => 'User not found',
+                        'isOke' => false
+                    ], 404);
+                }
+            }
+        }
+    }
+    public function unBanUser($id)
+    {
+        if ($id) {
+            $user = User::find($id);
+            if ($user) {
+                if ($user->status == 0) {
+                    return response()->json([
+                        'status' => 200,
+                        'msg' => 'Tài khoảng đang không bị khóa',
+                        'user' => $user,
+                    ], 200);
+                } else {
+                    $user->status = 0;
+                    $user->save();
+                    return response()->json([
+                        'status' => 200,
+                        'msg' => 'Mở khóa thành công tài khoản',
+                        'user' => $user,
+                        'isOke' => 'true'
+                    ], 200);
+                }
+            } else {
+                return response()->json([
+                    'status' => 404,
+                    'msg' => 'User not found',
+                    'isOke' => false
+                ], 404);
+            }
+        }
+    }
     public function show($id)
     {
         $user = User::find($id);

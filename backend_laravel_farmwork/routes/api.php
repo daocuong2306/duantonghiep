@@ -46,6 +46,8 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::get('user/show_one/{id}', [UserController::class, 'show']);
     Route::delete('auth/logout', [AuthController::class, 'logout']);
     Route::get('user/listAll', [UserController::class, 'index']);
+    Route::get('user/banUser/{id}', [UserController::class, 'banUser']);
+    Route::get('user/unBanUser/{id}', [UserController::class, 'unBanUser']);
     //Comment.................
     Route::get('admin/comment/listAll', [CommentController::class, 'listcomment']);
     Route::get('admin/comment/findbyuser/{id}', [CommentController::class, 'findCommentbyUser']);
@@ -58,7 +60,7 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::post('admin/image/addimageproduct', [ImageController::class, 'addImageProduct']);
     //Setting
     Route::post('admin/settingshop', [SettingController::class, 'setingshope']);
-    Route::post('admin/editinforshop', [SettingController::class, 'InforShop']);
+    Route::get('admin/editinforshop', [SettingController::class, 'InforShop']);
 });
 // ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
 Route::group(['middleware' => 'auth:api'], function () {
@@ -110,6 +112,10 @@ Route::get('optionvalues/properties', [OptionValueController::class, 'properties
 Route::post('optionvalues/khanh', [OptionValueController::class, 'store']);
 //Variant
 Route::get('variants', [VariantController::class, 'index']);
+Route::post('variants/getvalue', [VariantController::class, 'getOptionValue']);
+Route::post('variants/addvariant', [VariantController::class, 'addVariant']);
+Route::get('variants/listvariant/{id}', [VariantController::class, 'listVariant']);
+
 //Banner
 Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
 Route::post('banner/add', [BannerController::class, 'addBanner']);
