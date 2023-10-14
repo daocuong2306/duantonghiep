@@ -16,6 +16,8 @@ import Update from "./components/admin/Products/Update";
 import InForAdmin from "./components/admin/InforAdmin/infor";
 import Statistical from "./components/admin/InforAdmin/statistical";
 import NotFound from "./components/component/layout/NotFound";
+import DashboardUser from "./components/admin/user/dashboard";
+
 
 
 const role = localStorage.getItem('role');
@@ -87,8 +89,8 @@ export const router = createBrowserRouter([
                 element: <UpdateCategory />
             },
             {
-                path: 'test',
-                element: <ImageUpload />
+                path: 'user',
+                element: <DashboardUser />
             }
 
         ],
