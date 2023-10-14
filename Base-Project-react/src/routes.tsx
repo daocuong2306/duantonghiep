@@ -10,13 +10,14 @@ import AddProduct from "./components/admin/Products/addProduct";
 import CategoryDashboard from "./components/admin/categories/categoryDashboard";
 import AddCategory from "./components/admin/categories/addCategory";
 import UpdateCategory from "./components/admin/categories/updateCategory";
-import ImageUpload from "./components/admin/Products/Update";
+import uploadImg from "../src/components/component/check/test";
 import Home from "./components/component/check/home";
 import Update from "./components/admin/Products/Update";
 import InForAdmin from "./components/admin/InforAdmin/infor";
 import Statistical from "./components/admin/InforAdmin/statistical";
 import NotFound from "./components/component/layout/NotFound";
 import DashboardUser from "./components/admin/user/dashboard";
+import App from "../src/components/component/check/test";
 
 
 
