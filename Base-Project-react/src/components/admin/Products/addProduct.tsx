@@ -76,17 +76,18 @@ const AddProduct = () => {
     //end img table
     //img avatar product
     const [loading, setLoading] = useState(false);
+    const [loadingAvatar, setLoadingAvatar] = useState(false);
     const [imageUrl, setImageUrl] = useState();
     const [selectedFile, setSelectedFile] = useState(null);
     const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
         if (info.file.status === 'uploading') {
-            setLoading(true);
+            setLoadingAvatar(true);
             return;
         }
         if (info.file.status === 'done') {
             // Get this url from response in real world.
             getBase64(info.file.originFileObj as RcFile, (url) => {
-                setLoading(false);
+                setLoadingAvatar(false);
                 setImageUrl(url);
             });
         }
@@ -111,7 +112,7 @@ const AddProduct = () => {
     }
     const uploadButton = (
         <div>
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
+            {loadingAvatar ? <LoadingOutlined /> : <PlusOutlined />}
             <div style={{ marginTop: 8 }}>Upload</div>
         </div>
     );
@@ -177,7 +178,7 @@ const AddProduct = () => {
                     action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
                     onChange={twoFunctions}
                 >
-                    {imageUrl ? <img src={imageUrl.uid} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                    {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
                 </Upload>
             </div>
             <div>
