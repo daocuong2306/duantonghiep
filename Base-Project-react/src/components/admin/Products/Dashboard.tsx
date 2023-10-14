@@ -1,10 +1,7 @@
 import { useGetProductsQuery, useRemoveProductMutation } from '../../../api/product'
-import { ICategory } from '../../../interface/category'
 import { IProduct } from '../../../interface/product'
-import { useAppDispatch } from '../../../store/hook'
 import { Link } from 'react-router-dom'
 import { FcFullTrash, FcSupport } from 'react-icons/fc'
-import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 const Dashboard = () => {
     const [find, setFind] = useState({})
@@ -19,14 +16,14 @@ const Dashboard = () => {
             alert("da xoa")
         }
     }
-
     const selectProduct = (event: string) => {
         const newValue = event.target.value;
         console.log(newValue);
 
         setFind({ keyword: newValue });
     }
-    return (<div>
+    return (
+    <div>
         {isLoading && <div
             className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
             role="status">

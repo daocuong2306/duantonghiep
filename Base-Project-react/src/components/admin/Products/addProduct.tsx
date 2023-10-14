@@ -6,33 +6,112 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../../api/category";
 import { ICategory } from "../../../interface/category";
+import { Select } from 'antd';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { message, Upload, Modal } from 'antd';
+import type { UploadChangeParam } from 'antd/es/upload';
+import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+
 
 const AddProduct = () => {
     const dispatch = useAppDispatch();
     // Xử lý sự kiện khi người dùng chọn tệp
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedCate, setselectedCate] = useState(null);
     const { data: categories } = useGetCategoriesQuery();
     const readerRef = useRef<any>(null);
     const url = useNavigate()
-    const handleFileChange = (event: any) => {
-        const file = event.target.files[0];
-        setSelectedFile(file);
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e: any) => {
-                const fileData = e.target.result;
-            };
-            readerRef.current = reader;
-            reader.readAsDataURL(file);
-        }
-    };
     const [addProduct] = useAddProductMutation();
     const { control, handleSubmit, setValue, getValues, register } = useForm();
+    //tìm và chọn select
+    const onChange = (value: any) => {
+        console.log(`selected ${value}`);
+        setselectedCate(value)
+    };
+
+    const onSearch = (value: any) => {
+        console.log('search:', value);
+    };
+    //img table
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+    });
+    const [previewOpen, setPreviewOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const [previewTitle, setPreviewTitle] = useState('');
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+    const handleCancel = () => setPreviewOpen(false);
+
+    const handlePreview = async (file: UploadFile) => {
+        if (!file.url && !file.preview) {
+            file.preview = await getBase64(file.originFileObj as RcFile);
+        }
+
+        setPreviewImage(file.url || (file.preview as string));
+        setPreviewOpen(true);
+        setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+    };
+
+    const handleChangeTable: UploadProps['onChange'] = ({ fileList: newFileList }) =>
+        setFileList(newFileList);
+    const uploadButtonTable = (
+        <div>
+            <PlusOutlined />
+            <div style={{ marginTop: 8 }}>Upload</div>
+        </div>
+    );
+    //end img table
+    //img avatar product
+    const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result as string));
+        reader.readAsDataURL(img);
+    };
+
+    const beforeUpload = (file: RcFile) => {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        if (!isJpgOrPng) {
+            message.error('You can only upload JPG/PNG file!');
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('Image must smaller than 2MB!');
+        }
+        return isJpgOrPng && isLt2M;
+    };
+    const [loading, setLoading] = useState(false);
+    const [imageUrl, setImageUrl] = useState();
+
+    const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
+        if (info.file.status === 'uploading') {
+            setLoading(true);
+            return;
+        }
+        if (info.file.status === 'done') {
+            // Get this url from response in real world.
+            getBase64(info.file.originFileObj as RcFile, (url) => {
+                setLoading(false);
+                setImageUrl(url);
+            });
+        }
+    };
+    const uploadButton = (
+        <div>
+            {loading ? <LoadingOutlined /> : <PlusOutlined />}
+            <div style={{ marginTop: 8 }}>Upload</div>
+        </div>
+    );
+    //end img product 
+    // Filter `option.label` match the user type `input`
+    const filterOption = (input: string, option?: { label: string; value: string }) =>
+        (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
     const onHandleSubmit = async (data: ICategory) => {
         const code = getValues('code');
         const description = getValues('description');
-        const id_category = parseInt(getValues('id_category'));
         const name = getValues('name');
         const price = parseInt(getValues('price'));
         const quantity = parseInt(getValues('quantity'));
@@ -45,15 +124,13 @@ const AddProduct = () => {
         formData.append('name', name);
         formData.append('code', code);
         formData.append('description', description);
-        formData.append('id_category', String(id_category));
+        formData.append('id_category', String(selectedCate));
         formData.append('price', String(price));
         formData.append('quantity', String(quantity));
         formData.append('status', String(status));
         formData.append('discount_id', Number(1));
         // Append the selected file to formData (if available)
-        if (selectedFile) {
-            formData.append('image', selectedFile);
-        }
+        formData.append('image', imageUrl);
         try {
             const response = await addProduct(formData);
 
@@ -62,23 +139,29 @@ const AddProduct = () => {
             console.log(response);
 
             // Redirect to another page after successful form submission
-            url('/admin/dashboard')
+            // url('/admin/dashboard')
         } catch (error) {
             // Handle any errors that occurred during form submission
             console.error(error);
         }
     };
-
+    const optionId = categories?.categories.map((item: any) => ({ value: item.id, label: item.name }));
 
     return <div>
         <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Thêm sản phẩm</h2>
         <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-2 ml-200 mr-200 ">
             <div className="col-span-1">
-                {selectedFile === null ? (
-                    <img className="h-40 w-80 rounded-lg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCLs3s-DKPsQYMxVOJnqHnBzM4KhkkG9D6I7HZFw1Qcg&s" alt="image description" />
-                ) : (
-                    <img className="h-40 w-80 rounded-lg" src={selectedFile['result']} alt="image description" />
-                )}
+                <Upload
+                    name="avatar"
+                    listType="picture-card"
+                    className="avatar-uploader"
+                    showUploadList={false}
+                    action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                    beforeUpload={beforeUpload}
+                    onChange={handleChange}
+                >
+                    {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                </Upload>
             </div>
             <div>
                 <div className="col-span-2">
@@ -113,34 +196,16 @@ const AddProduct = () => {
                                 {...register('description')}
                             ></textarea>
                         </div>
-                        <div className="grid md:grid-cols-2 md:gap-6">
-                            <fieldset>
-                                <legend className="sr-only">id_category</legend>
-                                {
-                                    categories?.categories.map((category: ICategory) => {
-                                        return (
-                                            <div className="flex items-center mb-4" key={category.id}>
-                                                <Controller
-                                                    name="id_category"
-                                                    control={control}
-                                                    render={({ field }) => (
-                                                        <input
-                                                            {...field}
-                                                            id="country-option-2"
-                                                            type="radio"
-                                                            value={category.id}
-                                                            className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                                                        />
-                                                    )}
-                                                />
-                                                <label htmlFor="country-option-2" className="block ml-2 text-sm font-medium text-gray-900 dark:text-black-500">
-                                                    {category.name}
-                                                </label>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </fieldset>
+                        <div className="grid">
+                            <Select
+                                showSearch
+                                placeholder="Select a person"
+                                optionFilterProp="children"
+                                onChange={onChange}
+                                onSearch={onSearch}
+                                filterOption={filterOption}
+                                options={optionId}
+                            />
                         </div>
                         <div className="grid md:grid-cols-2 md:gap-6">
                             <div className="relative z-0 w-full mb-6 group">
@@ -168,16 +233,20 @@ const AddProduct = () => {
                         </div>
                         <div className="relative z-0 w-full mb-6 group">
                             <div>
-                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray" htmlFor="user_avatar">
-                                   Thêm ảnh
-                                </label>
-                                <input
-                                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white-50 dark:text-gray-400 focus:outline-none dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400"
-                                    aria-describedby="user_avatar_help"
-                                    id="user_avatar"
-                                    type="file"
-                                    onChange={handleFileChange}
-                                />
+                                <>
+                                    <Upload
+                                        action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                                        listType="picture-card"
+                                        fileList={fileList}
+                                        onPreview={handlePreview}
+                                        onChange={handleChangeTable}
+                                    >
+                                        {fileList.length >= 8 ? null : uploadButtonTable}
+                                    </Upload>
+                                    <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+                                        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                                    </Modal>
+                                </>
                             </div>
                         </div>
                         <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
@@ -185,13 +254,7 @@ const AddProduct = () => {
                 </div>
             </div>
         </div>
-
     </div>
-
-
-
-
-
 }
 
 

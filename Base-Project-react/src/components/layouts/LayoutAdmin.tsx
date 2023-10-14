@@ -1,5 +1,3 @@
-import { Button, Layout, Menu, theme } from "antd";
-import { useState } from "react";
 import {
     AiOutlineMenuFold,
     AiOutlineMenuUnfold,
@@ -7,21 +5,26 @@ import {
     AiOutlineVideoCamera,
     AiFillFolder
 } from "react-icons/ai";
-
-import { Link, Outlet } from "react-router-dom";
-
-const { Header, Sider, Content } = Layout;
-
-const LayoutAdmin = () => {
-    const [collapsed, setCollapsed] = useState(false);
+import React from 'react';
+import { Layout, Menu, theme } from 'antd';
+import { Link, Outlet } from 'react-router-dom';
+const { Header, Content, Sider } = Layout;
+const LayoutAdmin: React.FC = () => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();
-
     return (
-        <Layout className="h-full">
-            <Sider trigger={null} collapsible collapsed={collapsed}>
-                <div className="demo-logo-vertical" />
+        <Layout hasSider>
+            <Sider
+                style={{
+                    overflow: 'auto',
+                    height: '100vh',
+                    position: 'fixed',
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                }}
+            >
                 <Menu
                     theme="dark"
                     mode="inline"
@@ -30,7 +33,7 @@ const LayoutAdmin = () => {
                         {
                             key: "1",
                             icon: <AiOutlineUser />,
-                            label: <Link to="/admin">Thống kê</Link>,
+                            label: <Link to="/admin/user">Người dùng</Link>,
                         },
                         {
                             key: "2",
@@ -45,30 +48,14 @@ const LayoutAdmin = () => {
                     ]}
                 />
             </Sider>
-            <Layout>
-                <Header style={{ padding: 0, background: colorBgContainer }}>
-                    <Button
-                        type="text"
-                        icon={collapsed ? <AiOutlineMenuUnfold /> : <AiOutlineMenuFold />}
-                        onClick={() => setCollapsed(!collapsed)}
-                        style={{
-                            fontSize: "16px",
-                            width: 64,
-                            height: 64,
-                        }}
-                    />
-                </Header>
-                <Content
-                    style={{
-                        margin: "24px 16px",
-                        padding: 24,
-                        minHeight: 280,
-                        background: colorBgContainer,
-                    }}
-                >
-                    <Outlet />
+            <Layout className="site-layout" style={{ marginLeft: 200 }}>
+                <Header style={{ padding: 0, background: colorBgContainer }} />
+                <Content style={{ margin: '24px 16px 0' }}>
+                    <div style={{ padding: 24, background: colorBgContainer }}>
+                        <Outlet />
+                    </div>
                 </Content>
-            </Layout>
+            </Layout>  
         </Layout>
     );
 };
