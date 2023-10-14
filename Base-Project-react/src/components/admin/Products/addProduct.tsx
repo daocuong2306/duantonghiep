@@ -71,7 +71,7 @@ const AddProduct = () => {
 
 
     return <div>
-        <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Add Product</h2>
+        <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Thêm sản phẩm</h2>
         <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-2 ml-200 mr-200 ">
             <div className="col-span-1">
                 {selectedFile === null ? (
@@ -83,7 +83,7 @@ const AddProduct = () => {
             <div>
                 <div className="col-span-2">
                     <form onSubmit={handleSubmit(onHandleSubmit)}>
-                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Product Name</label>
+                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Tên sản phẩm</label>
                         <input
                             type="text"
                             id="name"
@@ -93,7 +93,7 @@ const AddProduct = () => {
                             {...register('name')}
                         />
                         <div className="relative z-0 w-full mb-6 group">
-                            <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Price</label>
+                            <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Giá</label>
                             <input
                                 type="number"
                                 id="price"
@@ -104,7 +104,7 @@ const AddProduct = () => {
                             />
                         </div>
                         <div className="relative z-0 w-full mb-6 group">
-                            <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Description</label>
+                            <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Mô tả</label>
                             <textarea
                                 id="description"
                                 rows="4"
@@ -144,7 +144,7 @@ const AddProduct = () => {
                         </div>
                         <div className="grid md:grid-cols-2 md:gap-6">
                             <div className="relative z-0 w-full mb-6 group">
-                                <label htmlFor="code" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Product Code</label>
+                                <label htmlFor="code" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Mã sản phẩm</label>
                                 <input
                                     type="text"
                                     id="code"
@@ -155,7 +155,7 @@ const AddProduct = () => {
                                 />
                             </div>
                             <div className="relative z-0 w-full mb-6 group">
-                                <label htmlFor="quantity" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Quantity</label>
+                                <label htmlFor="quantity" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Số lượng</label>
                                 <input
                                     type="number"
                                     id="quantity"
@@ -169,7 +169,7 @@ const AddProduct = () => {
                         <div className="relative z-0 w-full mb-6 group">
                             <div>
                                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray" htmlFor="user_avatar">
-                                    Upload file
+                                   Thêm ảnh
                                 </label>
                                 <input
                                     className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white-50 dark:text-gray-400 focus:outline-none dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400"
