@@ -42,7 +42,8 @@ const AddCategory = () => {
     const handleFileChange = (event: any) => {
         const file = event.target.files[0];
         setSelectedFile(file);
-
+        console.log(file);
+        
         if (file) {
             const reader = new FileReader();
             reader.onload = (e: any) => {
