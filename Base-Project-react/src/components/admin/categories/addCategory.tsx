@@ -57,7 +57,7 @@ const AddCategory = () => {
 
     return (
         <div>
-            <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Add Category</h2>
+            <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Thêm Loại</h2>
             <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-2 ml-200 mr-200">
                 <div className="col-span-1">
                     {selectedFile === null ? (
@@ -69,7 +69,7 @@ const AddCategory = () => {
                 <div>
                     <div className="col-span-2">
                         <form onSubmit={handleSubmit(onHandleSubmit)}>
-                            <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Product Name</label>
+                            <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Tên Loại</label>
                             <input
                                 type="text"
                                 id="name"
@@ -81,7 +81,7 @@ const AddCategory = () => {
                             <div className="relative z-0 w-full mb-6 group">
                                 <div>
                                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray" htmlFor="user_avatar">
-                                        Upload file
+                                        Ảnh
                                     </label>
                                     <input
                                         className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white-50 dark:text-gray-400 focus:outline-none dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400"

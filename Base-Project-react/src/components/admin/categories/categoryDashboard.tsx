@@ -13,7 +13,7 @@ const CategoryDashboard = () => {
         <div>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <div className="pb-4 bg-white dark:bg-white-900">
-                    <label htmlFor="table-search" className="sr-only">Search</label>
+                    <label htmlFor="table-search" className="sr-only">Tìm kiếm</label>
                     <div className="relative mt-1">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg className="w-4 h-4 text-white-500 dark:text-white-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -36,13 +36,13 @@ const CategoryDashboard = () => {
                                 </div>
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Category name
+                                Tên thể loại
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Image
+                                Ảnh
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Action
+                                Hành động
                             </th>
                         </tr>
                     </thead>
