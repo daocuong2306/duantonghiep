@@ -92,6 +92,10 @@ export const router = createBrowserRouter([
             {
                 path: 'user',
                 element: <DashboardUser />
+            },
+            {
+                path: 'test',
+                element: <App />
             }
 
         ],

@@ -1,8 +1,6 @@
 import { useAddProductMutation } from "../../../api/product";
-import { IProduct } from "../../../interface/product";
-import { useAppDispatch } from "../../../store/hook"
-import { useForm, Controller } from "react-hook-form";
-import React, { useState, useRef } from 'react';
+import { useForm } from "react-hook-form";
+import { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../../api/category";
 import { ICategory } from "../../../interface/category";
@@ -12,14 +10,31 @@ import { message, Upload, Modal } from 'antd';
 import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 
+//load img avatar product
+const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result as string));
+    reader.readAsDataURL(img);
+};
 
+const beforeUpload = (file: RcFile) => {
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+        message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+        message.error('Image must smaller than 2MB!');
+    }
+    return isJpgOrPng && isLt2M;
+};
+//end img avatar
 const AddProduct = () => {
-    const dispatch = useAppDispatch();
     // Xử lý sự kiện khi người dùng chọn tệp
     const [selectedCate, setselectedCate] = useState(null);
     const { data: categories } = useGetCategoriesQuery();
-    const readerRef = useRef<any>(null);
     const url = useNavigate()
+    const readerRef = useRef<any>(null);
     const [addProduct] = useAddProductMutation();
     const { control, handleSubmit, setValue, getValues, register } = useForm();
     //tìm và chọn select
@@ -57,34 +72,12 @@ const AddProduct = () => {
 
     const handleChangeTable: UploadProps['onChange'] = ({ fileList: newFileList }) =>
         setFileList(newFileList);
-    const uploadButtonTable = (
-        <div>
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </div>
-    );
+
     //end img table
     //img avatar product
-    const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => callback(reader.result as string));
-        reader.readAsDataURL(img);
-    };
-
-    const beforeUpload = (file: RcFile) => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isJpgOrPng) {
-            message.error('You can only upload JPG/PNG file!');
-        }
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
-        }
-        return isJpgOrPng && isLt2M;
-    };
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
-
+    const [selectedFile, setSelectedFile] = useState(null);
     const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
         if (info.file.status === 'uploading') {
             setLoading(true);
@@ -98,7 +91,31 @@ const AddProduct = () => {
             });
         }
     };
+    const handleFileChange = (event: any) => {
+        console.log(event);
+        const file = event.fileList[0].originFileObj;
+        setSelectedFile(file);
+        console.log(imageUrl);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e: any) => {
+                const fileData = e.target.result;
+            };
+            readerRef.current = reader;
+            reader.readAsDataURL(file);
+        }
+    };
+    const twoFunctions = (event: any) => {
+        handleFileChange(event)
+        handleChange(event)
+    }
     const uploadButton = (
+        <div>
+            {loading ? <LoadingOutlined /> : <PlusOutlined />}
+            <div style={{ marginTop: 8 }}>Upload</div>
+        </div>
+    );
+    const uploadButtonTable = (
         <div>
             {loading ? <LoadingOutlined /> : <PlusOutlined />}
             <div style={{ marginTop: 8 }}>Upload</div>
@@ -130,7 +147,8 @@ const AddProduct = () => {
         formData.append('status', String(status));
         formData.append('discount_id', Number(1));
         // Append the selected file to formData (if available)
-        formData.append('image', imageUrl);
+        formData.append('image', selectedFile);
+
         try {
             const response = await addProduct(formData);
 
@@ -157,10 +175,9 @@ const AddProduct = () => {
                     className="avatar-uploader"
                     showUploadList={false}
                     action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                    beforeUpload={beforeUpload}
-                    onChange={handleChange}
+                    onChange={twoFunctions}
                 >
-                    {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                    {imageUrl ? <img src={imageUrl.uid} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
                 </Upload>
             </div>
             <div>
