@@ -1,10 +1,7 @@
 import { useGetProductsQuery, useRemoveProductMutation } from '../../../api/product'
-import { ICategory } from '../../../interface/category'
 import { IProduct } from '../../../interface/product'
-import { useAppDispatch } from '../../../store/hook'
 import { Link } from 'react-router-dom'
 import { FcFullTrash, FcSupport } from 'react-icons/fc'
-import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 const Dashboard = () => {
     const [find, setFind] = useState({})
@@ -19,14 +16,14 @@ const Dashboard = () => {
             alert("da xoa")
         }
     }
-
     const selectProduct = (event: string) => {
         const newValue = event.target.value;
         console.log(newValue);
 
         setFind({ keyword: newValue });
     }
-    return (<div>
+    return (
+    <div>
         {isLoading && <div
             className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
             role="status">
@@ -38,7 +35,7 @@ const Dashboard = () => {
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <div className='flex justify-between justify-center'>
                     <div className="pb-4 bg-white dark:bg-white-900">
-                        <label htmlFor="table-search" className="sr-only">Search</label>
+                        <label htmlFor="table-search" className="sr-only">Tìm kiếm</label>
                         <div className="relative mt-1 static ">
                             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg className="w-4 h-4 text-white-500 dark:text-white-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -55,7 +52,7 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <div >
-                        <Link to="/admin/product/add"><button className="bg-blue-400 p-[10px] rounded-lg text-bold text-white">Add new product</button></Link>
+                        <Link to="/admin/product/add"><button className="bg-blue-400 p-[10px] rounded-lg text-bold text-white">Thêm sản phẩm mới</button></Link>
                     </div>
                 </div>
                 <table className="w-full text-sm text-left text-white-500 dark:text-white-400">
@@ -68,31 +65,31 @@ const Dashboard = () => {
                                 </div>
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Product name
+                                Tên sản phẩm
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Image
+                                Ảnh
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Product Code
+                                Mã sản phẩm
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Price
+                                Giá
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Description
+                                Mô tả
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Category
+                                Loại
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Size
+                                Kích cỡ
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Color
+                                Màu sắc
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Action
+                                Hành động
                             </th>
                         </tr>
                     </thead>
