@@ -82,7 +82,7 @@ class AuthController extends Controller
         if (!Auth::attempt($credentials)) {
             return response()->json([
                 'status' => 'fails',
-                'message' => 'Sai Mật Khẩu or Password',
+                'message' => 'Sai Email hoặc Mật khẩu',
                 'code_error' => 6
             ], 401);
         }
