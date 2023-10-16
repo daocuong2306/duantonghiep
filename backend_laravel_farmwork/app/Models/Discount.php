@@ -9,5 +9,5 @@ class Discount extends Model
 {
     use HasFactory;
     protected $table='discount';
-    protected $fillable=['id','id_product','discount_code','value','type'];
+    protected $fillable=['id','discount_code','percentage','expiry_date'];
 }
