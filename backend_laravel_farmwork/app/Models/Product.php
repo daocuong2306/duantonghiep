@@ -9,7 +9,7 @@ class Product extends Model
 {
        use HasFactory;
        protected $table = 'product';
-       protected $fillable = ['id', 'name', 'price', 'description', 'status', 'image', 'code', 'id_category', 'quantity','discount_id'];
+       protected $fillable = ['id', 'name', 'price', 'description', 'status', 'image', 'code', 'id_category', 'quantity'];
 
        public function skus()
        {

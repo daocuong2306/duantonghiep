@@ -45,25 +45,12 @@ class ProductController extends Controller
                 'message' => 'find by category and keywords'
             ], 200);
         }
-        // if ($keyword) {
-        //     $products = Product::where('name', 'like', "%$keyword%")
-        //         ->orWhere('code', 'like', "%$keyword%")
-        //         ->get();
-
-        //     return response()->json([
-        //         'status' => 200,
-        //         'product' => $products,
-        //         'isOke' => 'true',
-        //         'message' =>'find by name or code',
-        //     ], 200);
-        // }
 
         if (!$id && !$keyword) {
             $products = DB::table('product')
                 ->join('category', 'product.id_category', '=', 'category.id')
                 ->select('product.*', 'category.name as category_name')
                 ->get();
-
             if ($products->count() > 0) {
                 return response()->json([
                     'status' => 200,
@@ -72,10 +59,10 @@ class ProductController extends Controller
                 ], 200);
             } else {
                 return response()->json([
-                    'status' => 200,
+                    'status' => 404,
                     'message' => 'not found'
 
-                ], 400);
+                ], 404);
             }
         }
     }
@@ -97,7 +84,6 @@ class ProductController extends Controller
             'code' => 'required',
             'quantity' => 'required',
             'id_category' => 'required',
-            'discount_id' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -114,7 +100,6 @@ class ProductController extends Controller
             $products->code = $request->code;
             $products->quantity = $request->quantity;
             $products->id_category = $request->id_category;
-            $products->discount_id = $request->discount_id;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
                 $imageUrl = Storage::url($imagePath);
@@ -177,7 +162,7 @@ class ProductController extends Controller
             'code' => 'required',
             'quantity' => 'required',
             'id_category' => 'required',
-            'discount_id' => 'required'
+          
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -193,7 +178,7 @@ class ProductController extends Controller
             $products->code = $request->code;
             $products->quantity = $request->quantity;
             $products->id_category = $request->id_category;
-            $products->discount_id = $request->discount_id;
+       
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
                 $imageUrl = Storage::url($imagePath);
@@ -235,44 +220,4 @@ class ProductController extends Controller
             ], 404);
         }
     }
-    // public function findByCategory(Request $request){
-    //     $id = $request->query('id');
-    //    $products = DB:: table('product')
-    //    ->where('id_category', $id)
-    //    ->get();
-
-    //    if($id){
-    //     return response()->json([
-    //         'status'=>200,
-    //         'product'=>$products,
-    //         'isOke'=>'true',
-    //     ],200);
-    //   }else{
-    //     return response()->json([
-    //         'status'=>200,
-    //         'message'=>'not category',
-    //         'isOke'=>'false',
-    //     ],400);
-    //    }
-    // }
-    // public function findByKeyword(Request $request){
-    //     $keyword = $request->query('keyword');
-    //     $products = Product::where('name', 'like', "%$keyword%")
-    //     ->orWhere('code', 'like', "%$keyword%")
-    //     ->get();
-    //     if($keyword){
-    //         return response()->json([
-    //             'status'=>200,
-    //             'product'=>$products,
-    //             'isOke'=>'true',
-    //         ],200);
-    //       }else{
-    //         return response()->json([
-    //             'status'=>200,
-    //             'message'=>'not category',
-    //             'isOke'=>'false',
-    //         ],400);
-    //        }
-    // }
-
 }
