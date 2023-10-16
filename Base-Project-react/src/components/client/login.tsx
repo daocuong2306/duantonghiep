@@ -2,9 +2,10 @@ import { useGetUserQuery, useLoginMutation } from "../../api/user";
 import { IUserLogin } from "../../interface/user";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { Button, notification } from 'antd';
 const Login = () => {
     const { register, handleSubmit } = useForm();
-    const [login, { data, isLoading }] = useLoginMutation()
+    const [login, { data, isLoading, error }] = useLoginMutation()
     const { data: user } = useGetUserQuery(data?.access_token)
     const url = useNavigate();
     const onHandleSubmit = (dataUser: IUserLogin) => {
@@ -13,7 +14,20 @@ const Login = () => {
             "password": dataUser.password
         })
     }
-    if (!isLoading) {
+    ///Notification
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = () => {
+        api.open({
+            message: 'Sai Email hoặc Mật khẩu',
+            description:
+                'Bạn vui lòng nhập đúng lại tài khoản hoặc mật khẩu'
+        });
+    };
+    if (error) {
+        openNotification()
+    }
+
+    if (!isLoading && !error) {
         localStorage.setItem("header", data?.access_token)
         if (user?.role < 3) {
             localStorage.setItem("role", user?.role)
@@ -24,6 +38,7 @@ const Login = () => {
 
     return (
         <div>
+            {contextHolder}
             <section className="bg-gray-50 dark:bg-gray-900">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
@@ -76,7 +91,10 @@ const Login = () => {
                                     </div>
                                     <a href="#" className="text-sm font-medium text-gray-600 hover:underline dark:text-gray-500">Forgot password?</a>
                                 </div>
-                                <button type="submit" className="w-full text-white bg-green-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+                                <button
+                                    type="submit"
+                                    className="w-full text-white bg-green-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                                >Sign in</button>
                                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                     Don’t have an account yet?
                                     <Link to={'/signup'} className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>

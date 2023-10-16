@@ -3,6 +3,7 @@ import { IUser } from "../../interface/user"
 import { useAppDispatch } from "../../store/hook"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
+import { Button, notification } from 'antd';
 type signUpForm = {
     id?: number;
     name: null;
@@ -15,7 +16,7 @@ type signUpForm = {
     confirmPassword: string
 }
 const Signup = () => {
-    const [registerUser, { data, isLoading }] = useRegisterMutation()
+    const [registerUser, { data, isLoading, error }] = useRegisterMutation()
     const dispatch = useAppDispatch()
     const url = useNavigate()
     const { register, handleSubmit } = useForm()
@@ -27,12 +28,21 @@ const Signup = () => {
             "name": dataUser.name
         })
     }
-    if (isLoading == false) {
-        if (!data?.message) {
-           url('/login');
-        } else {
-            console.log(data?.message);
-        }
+    ///Notification
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = () => {
+        api.open({
+            message: 'Email đã tồn tại',
+            description:
+                'Bạn vui lòng chọn lại email khác'
+        });
+    };
+    if (error) {
+        openNotification()
+    }
+    if (!isLoading && !error) {
+        url('/login');
+        console.log(data?.message);
     }
     return (
         <div>
@@ -44,6 +54,7 @@ const Signup = () => {
                 >Loading...</span>
             </div>}
             {!isLoading && <div>
+                {contextHolder}
                 <section className="bg-gray-50 dark:bg-gray-900">
                     <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                         <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
