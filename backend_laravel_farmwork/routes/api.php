@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\EvaluateController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\SettingController;
@@ -106,13 +107,15 @@ Route::post('optionvalues/add', [OptionValueController::class, 'store']);
 Route::get('optionvalues/show/{id}', [OptionValueController::class, 'show']);
 Route::post('optionvalues/edit/{id}', [OptionValueController::class, 'update']);
 Route::delete('optionvalues/delete/{id}', [OptionValueController::class, 'destroy']);
-Route::get('optionvalues/properties', [OptionValueController::class, 'properties']);
 //Variant
 Route::get('variants', [VariantController::class, 'index']);
 Route::post('variants/getvalue', [VariantController::class, 'getOptionValue']);
 Route::post('variants/addvariant', [VariantController::class, 'addVariant']);
 Route::get('variants/listvariant/{id}', [VariantController::class, 'listVariant']);
-
+//Discount
+Route::get('discounts/', [DiscountController::class, 'index']);
+Route::post('discounts/add', [DiscountController::class, 'store']);
+Route::delete('discounts/delete/{id}', [DiscountController::class, 'destroy']);
 //Banner
 Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
 Route::post('banner/add', [BannerController::class, 'addBanner']);
