@@ -11,6 +11,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\Client\DetailedProductController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EvaluateController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\SettingController;
@@ -125,6 +126,8 @@ Route::post('banner/add', [BannerController::class, 'addBanner']);
 Route::delete('banner/delete/{id}', [BannerController::class, 'deleteBanner']);
 // Home
 Route::get('home', [HomeController::class, 'home']);
+Route::post('sendWelcomeEmail', [EmailController::class, 'sendEmail']);
+
 
 // Check nếu chưa đăng nhập sẽ nhảy vào route này
 Route::get('/check', function () {
