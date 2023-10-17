@@ -3,6 +3,7 @@ import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Button, Space } from 'antd';
 import { Link } from 'react-router-dom';
+import { useGetOptionsQuery, useRemoveOptionMutation } from '@/api/option';
 interface DataType {
     key: React.Key;
     name: string;
@@ -11,64 +12,45 @@ interface DataType {
     description: string;
 }
 
-const columns: ColumnsType<DataType> = [
-    { title: 'Name', dataIndex: 'name', key: 'name' },
-    { title: 'Age', dataIndex: 'age', key: 'age' },
-    { title: 'Address', dataIndex: 'address', key: 'address' },
-    {
-        title: 'Action',
-        dataIndex: '',
-        key: 'x',
-        render: () => <a>Delete</a>,
-    },
-];
 
-const data: DataType[] = [
-    {
-        key: 1,
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-        description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
-    },
-    {
-        key: 2,
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        description: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.',
-    },
-    {
-        key: 3,
-        name: 'Not Expandable',
-        age: 29,
-        address: 'Jiangsu No. 1 Lake Park',
-        description: 'This not expandable',
-    },
-    {
-        key: 4,
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sydney No. 1 Lake Park',
-        description: 'My name is Joe Black, I am 32 years old, living in Sydney No. 1 Lake Park.',
-    },
-];
 
-const DashboardOptions: React.FC = () => (
-    <>
-        <Space>
-            <Link to="add">  <Button primary>Thêm Options</Button></Link>
-        </Space>
-        <Table
-            columns={columns}
-            expandable={{
-                expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.description}</p>,
-                rowExpandable: (record) => record.name !== 'Not Expandable',
-            }}
-            dataSource={data}
-        />
-    </>
+const DashboardOptions: React.FC = () => {
+    const { data: options, isLoading, error } = useGetOptionsQuery();
+    console.log(options);
+    const [deleteOptions] = useRemoveOptionMutation();
+    const data: DataType[] = options?.options;
+    const columns: ColumnsType<DataType> = [
+        { title: 'Name', dataIndex: 'name', key: 'name' },
+        {
+            title: 'Chức năng',
+            dataIndex: '',
+            key: 'id',
+            render: (key) => {
+                return <div>
+                    <Button danger onClick={() => dele(key.id)}>Xóa</Button>
+                </div>
+            },
+        },
+    ];
+    const dele = (id: string) => {
+        const check = window.confirm("bạn có muốn xóa");
+        if (check) {
+            deleteOptions(id)
+        }
+    }
+    return (
+        <>
+            <Space>
+                <Link to="add">  <Button primary>Thêm Options</Button></Link>
+                <Link to='OptionsValue/add'> <Button primary>Thêm giá trị</Button></Link>
+            </Space>
+            <Table
+                columns={columns}
+                dataSource={data}
+            />
+        </>
 
-);
+    )
+};
 
 export default DashboardOptions;

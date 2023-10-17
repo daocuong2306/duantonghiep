@@ -20,6 +20,7 @@ import DashboardUser from "./components/admin/user/dashboard";
 import App from "../src/components/component/check/test";
 import AddOptions from "./components/admin/Options/addOptions";
 import DashboardOptions from "./components/admin/Options/dashboard";
+import AddValueOptions from "./components/admin/Options/addValues";
 
 
 
@@ -105,7 +106,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: 'Options',
-                element: <DashboardOptions />
+                element: <DashboardOptions />,
+            },
+            {
+                path: 'Options/OptionsValue/add',
+                element: <AddValueOptions />
             },
         ],
     },

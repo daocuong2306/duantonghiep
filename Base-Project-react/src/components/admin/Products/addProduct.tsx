@@ -72,7 +72,7 @@ const AddProduct = () => {
     console.log(fileList);
 
     const handleChangeTable: UploadProps['onChange'] = ({ fileList: newFileList }) =>
-        setFileList(newFileList);
+        console.log(fileList);
 
     //end img table
     //img avatar product
@@ -82,7 +82,10 @@ const AddProduct = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
         if (info.file.status === 'uploading') {
-            setLoadingAvatar(true);
+            getBase64(info.file.originFileObj as RcFile, (url) => {
+                setLoadingAvatar(true);
+                setImageUrl(url);
+            });
             return;
         }
         if (info.file.status === 'done') {

@@ -1,19 +1,21 @@
 import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Input, Space, Typography } from 'antd';
-import { useAddOptionMutation, useAddOptionValueMutation } from '@/api/option';
+import { Button, Card, Form, Input, Space, Typography, Select } from 'antd';
+import { useAddOptionMutation, useAddOptionValueMutation, useGetOptionsQuery } from '@/api/option';
 
-const AddOptions: React.FC = () => {
+const AddValueOptions: React.FC = () => {
+    const { data: options, isLoading, error } = useGetOptionsQuery();
     const [form] = Form.useForm();
     console.log(form.getFieldsValue());
-    const [AddOptions] = useAddOptionMutation();
     const [addValueOptions] = useAddOptionValueMutation()
     const onFinish = (values: any) => {
         console.log(values);
         for (let item of values.items) {
             console.log(item.name);
-            AddOptions({
-                name: item.name
+            const list = item.list.map(subItem => subItem.first);
+            addValueOptions({
+                option_id: item.name,
+                values: list
             })
         }
     };
@@ -44,12 +46,14 @@ const AddOptions: React.FC = () => {
                                     />
                                 }
                             >
-                                <Form.Item label="Name" name={[field.name, 'name']}>
-                                    <Input />
+                                <Form.Item label="Select" name={[field.name, 'name']}>
+                                    <Select>
+                                        {options?.options.map(option => <Select.Option value={option.id}>{option.name}</Select.Option>)}
+                                    </Select>
                                 </Form.Item>
 
                                 {/* value option */}
-                                {/* <Form.Item label="List">
+                                <Form.Item label="List">
                                     <Form.List name={[field.name, 'list']}>
                                         {(subFields, subOpt) => (
                                             <div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
@@ -72,7 +76,7 @@ const AddOptions: React.FC = () => {
                                             </div>
                                         )}
                                     </Form.List>
-                                </Form.Item> */}
+                                </Form.Item>
                             </Card>
                         ))}
 
@@ -89,4 +93,4 @@ const AddOptions: React.FC = () => {
     );
 };
 
-export default AddOptions;
+export default AddValueOptions;
