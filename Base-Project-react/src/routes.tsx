@@ -18,6 +18,8 @@ import Statistical from "./components/admin/InforAdmin/statistical";
 import NotFound from "./components/component/layout/NotFound";
 import DashboardUser from "./components/admin/user/dashboard";
 import App from "../src/components/component/check/test";
+import AddOptions from "./components/admin/Options/addOptions";
+import DashboardOptions from "./components/admin/Options/dashboard";
 
 
 
@@ -96,8 +98,15 @@ export const router = createBrowserRouter([
             {
                 path: 'test',
                 element: <App />
-            }
-
+            },
+            {
+                path: 'Options/add',
+                element: <AddOptions />
+            },
+            {
+                path: 'Options',
+                element: <DashboardOptions />
+            },
         ],
     },
     {

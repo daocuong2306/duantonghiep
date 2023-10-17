@@ -2,7 +2,7 @@ import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Input, Space, Typography } from 'antd';
 
-const App: React.FC = () => {
+const AddOptions: React.FC = () => {
     const [form] = Form.useForm();
     console.log(form.getFieldsValue());
     const onFinish = (values: any) => {
@@ -80,4 +80,4 @@ const App: React.FC = () => {
     );
 };
 
-export default App;
+export default AddOptions;

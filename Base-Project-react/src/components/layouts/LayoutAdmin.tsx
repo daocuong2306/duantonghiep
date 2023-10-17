@@ -44,6 +44,11 @@ const LayoutAdmin: React.FC = () => {
                             key: "3",
                             icon: <AiFillFolder />,
                             label: <Link to="/admin/categories">Danh mục</Link>
+                        },
+                        {
+                            key: "4",
+                            icon: <AiFillFolder />,
+                            label: <Link to="/admin/Options">Tùy chọn</Link>
                         }
                     ]}
                 />
@@ -55,7 +60,7 @@ const LayoutAdmin: React.FC = () => {
                         <Outlet />
                     </div>
                 </Content>
-            </Layout>  
+            </Layout>
         </Layout>
     );
 };
