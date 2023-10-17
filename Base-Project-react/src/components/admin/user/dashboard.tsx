@@ -51,31 +51,34 @@ const DashboardUser: React.FC = () => {
             title: 'Tuổi',
             dataIndex: 'age',
             key: 'age',
-            width: '12%',
+            width: '5%',
         },
         {
             title: 'Địa chỉ',
-            dataIndex: 'address',
-            width: '20%',
-            key: 'address',
-        },
-        {
-            title: 'Số điện thoại',
             dataIndex: 'address',
             width: '15%',
             key: 'address',
         },
         {
+            title: 'Số điện thoại',
+            dataIndex: 'address',
+            width: '10%',
+            key: 'address',
+        },
+        {
             title: 'Email',
             dataIndex: 'email',
-            width: '30%',
+            width: '20%',
             key: 'email',
         },
         {
-            title: 'Quền',
+            title: 'Quyền',
             dataIndex: 'role',
-            width: '5%',
+            width: '10%',
             key: 'role',
+            render: (dataIndex: number) => {
+                return dataIndex == 0 ? <p>Admin</p> : <p>Người dùng</p>
+            }
         },
         {
             title: 'Chức năng',
