@@ -44,8 +44,9 @@ class DiscountController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'discount_code' => 'required',
-            'percentage' => 'required|numeric',
-            'expiry_date' => 'required|date',
+            'type' => 'required|in:1,2',  //chọn 1 hoặc 2
+            'amount' => 'required|numeric', //nhập số 
+            'expiry_date' => 'required|date', //ngày hết hạn 
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -55,32 +56,40 @@ class DiscountController extends Controller
         } else {
             $discounts = Discount::create([
                 'discount_code' => $request->discount_code,
-                'percentage' => $request->percentage,
+                'type' => $request->type,
+                'amount' => $request->amount,
                 'expiry_date' => $request->expiry_date,
             ]);
             $expiryDate = $request->expiry_date;
             if (strtotime($expiryDate) < time()) {
                 return response()->json([
-                    'message' => 'Mã hết hạn ',
-                ], 400);
-            }
-            if ($discounts) {
-                return response()->json([
                     'status' => 200,
-                    'discount' => $discounts,
-                    'message' => 'Successfull',
+                    'message' => 'Mã đã lưu nhưng hết hạn ',
                 ], 200);
             }
+            $discountAmount = 0;
+            if ($request->type == 1) {
+                // Giảm theo phần trăm
+                $discountAmount = $request->amount / 100;
+            } elseif ($request->type == 2) {
+                // Giảm theo số tiền
+                $discountAmount = $request->amount;
+            }
+            return response()->json([
+                'status' => 200,
+                'discount' => $discounts,
+                'discount_amount' => $discountAmount,
+                'message' => 'Thêm thành công',
+            ], 200);
         }
     }
-    public function destroy($id)
+    public function show($id)
     {
         $discounts = Discount::find($id);
         if($discounts){
-            $discounts ->delete();
             return response()->json([
                 'status'=>200,
-                'message'=>'Delete Successfull',
+                'discount'=>$discounts,
             ],200);
         }else{
             return response()->json([
@@ -88,5 +97,67 @@ class DiscountController extends Controller
                 'message'=>'Not found',
             ],404);
         }
-     }
+    }
+    public function update(Request $request,int $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'discount_code' => 'required',
+            'type' => 'required|in:1,2',  //chọn 1 hoặc 2
+            'amount' => 'required|numeric', //nhập số 
+            'expiry_date' => 'required|date', //ngày hết hạn 
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->messages(),
+            ], 422);
+        } else {
+            $discounts = Discount::find($id);
+            if($discounts){
+            $discounts->update([
+                'discount_code' => $request->discount_code,
+                'type' => $request->type,
+                'amount' => $request->amount,
+                'expiry_date' => $request->expiry_date,
+            ]);
+            $expiryDate = $request->expiry_date;
+            if (strtotime($expiryDate) < time()) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Mã đã lưu nhưng hết hạn ',
+                ], 200);
+            }
+            $discountAmount = 0;
+            if ($request->type == 1) {
+                // Giảm theo phần trăm
+                $discountAmount = $request->amount / 100;
+            } elseif ($request->type == 2) {
+                // Giảm theo số tiền
+                $discountAmount = $request->amount;
+            }
+            return response()->json([
+                'status' => 200,
+                'discount' => $discounts,
+                'discount_amount' => $discountAmount,
+                'message' => 'Thêm thành công',
+            ], 200);
+        }
+    }
+    }
+    public function destroy($id)
+    {
+        $discounts = Discount::find($id);
+        if ($discounts) {
+            $discounts->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Xóa thành công',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Not found',
+            ], 404);
+        }
+    }
 }
