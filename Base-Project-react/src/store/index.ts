@@ -1,4 +1,4 @@
-
+import optionsApi, { optionsReducer } from '@/api/option';
 import categoryApi, { categoryReducer } from '../api/category';
 import productApi, { productReducer } from '../api/product';
 import userApi, { userReducer } from '../api/user';
@@ -26,9 +26,10 @@ const rootReducer = combineReducers({
     cloudinary: cloudinaryReducer,
     [productApi.reducerPath]: productReducer,
     [userApi.reducerPath]: userReducer,
-    [categoryApi.reducerPath]: categoryReducer
+    [categoryApi.reducerPath]: categoryReducer,
+    [optionsApi.reducerPath]: optionsReducer
 })
-const middleware = [productApi.middleware, userApi.middleware, categoryApi.middleware]
+const middleware = [productApi.middleware, userApi.middleware, categoryApi.middleware , optionsApi.middleware ]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 export const store = configureStore({
