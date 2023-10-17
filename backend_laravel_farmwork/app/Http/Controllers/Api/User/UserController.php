@@ -73,6 +73,12 @@ class UserController extends Controller
                     ], 404);
                 }
             }
+        }else{
+            return response()->json([
+                'status' => 404,
+                'msg' => 'Not Found',
+                'isOke' => false
+            ], 404);
         }
     }
     public function unBanUser($id)
@@ -103,6 +109,12 @@ class UserController extends Controller
                     'isOke' => false
                 ], 404);
             }
+        }else{
+            return response()->json([
+                'status' => 404,
+                'msg' => 'Not Found',
+                'isOke' => false
+            ], 404);
         }
     }
     public function show($id)

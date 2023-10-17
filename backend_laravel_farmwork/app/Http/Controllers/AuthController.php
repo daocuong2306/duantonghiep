@@ -25,28 +25,28 @@ class AuthController extends Controller
                 return response()->json([
                     'errors' => $nameError,
                     'errors_code' => 1
-                ]);
+                ], 401);
             }
             $emailError = $errors->get('email');
             if ($errors->has('email')) {
-                
+
                 return response()->json([
                     'errors' => $emailError,
                     'errors_code' => 2
-                ]);
+                ], 401);
             }
             if (in_array('The email has already been taken.', $emailError)) {
                 return response()->json([
                     'errors' => $emailError,
                     'errors_code' => 3
-                ]);
+                ], 401);
             }
             if ($errors->has('password')) {
                 $passwordError = $errors->first('password');
                 return response()->json([
                     'errors' => $passwordError,
                     'errors_code' => 4
-                ]);
+                ], 401);
             }
         }
         $user = new User([
@@ -57,7 +57,7 @@ class AuthController extends Controller
         $user->save();
         return response()->json([
             'status' => 'success',
-        ]);
+        ],200);
     }
     /**
      * @param Request $request
@@ -76,7 +76,7 @@ class AuthController extends Controller
                 'message' => $validator->errors()->first(),
                 'errors_code' => 5
 
-            ]);
+            ], 401);
         }
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials)) {
