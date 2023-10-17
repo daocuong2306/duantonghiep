@@ -1,5 +1,5 @@
 import { useBanUserMutation, useListUserQuery, useUnBanUserMutation } from '@/api/user';
-import { Space, Switch, Table, Image, Button } from 'antd';
+import { Space, Switch, Table, Image, Button, notification } from 'antd';
 import { blue } from '@ant-design/colors';
 import type { ColumnsType } from 'antd/es/table';
 import type { TableRowSelection } from 'antd/es/table/interface';
@@ -80,28 +80,61 @@ const DashboardUser: React.FC = () => {
         {
             title: 'Chức năng',
             dataIndex: 'status',
-            key: 'status',
+            key: 'id',
             width: '10%',
-            render: (dataIndex, record) => {
+            render: (dataIndex, key) => {
                 return (
-                    dataIndex == 0 ? <Button danger onClick={() => banUser(dataIndex)}>
+                    dataIndex == 0 ? <Button danger onClick={() => handBanUser(key.id)}>
                         Khóa tài khoản
-                    </Button> : <Button primary onClick={() => unbanUser(dataIndex)}>
+                    </Button> : <Button primary onClick={() => handUnBanUser(key.id)}>
                         Mở tài khoản
                     </Button>
                 );
             },
         },
     ];
-    const [banUser] = useBanUserMutation();
-    const [unbanUser] = useUnBanUserMutation();
+
+
     const { data: user } = useListUserQuery()
     console.log(user);
-
+    ///Notification
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (text: string) => {
+        api.open({
+            message: text
+        });
+    };
+    //banUser 
+    const [banUser, { error: banError }] = useBanUserMutation();
+    const handBanUser = (id: any) => {
+        const check = window.confirm("Bạn có muốn khóa tài khoản không ?");
+        if (check) {
+            banUser(id)
+            if (!banError) {
+                openNotification("Khóa tài khoản thành công")
+            } else {
+                openNotification("Khóa tài khoản thất bại")
+            }
+        }
+    }
+    //unBanUser 
+    const [unbanUser, { error: unBanError }] = useUnBanUserMutation();
+    const handUnBanUser = (id: any) => {
+        const check = window.confirm("Bạn có muốn mở khóa tài khoản không ?");
+        if (check) {
+            unbanUser(id)
+            if (!unBanError) {
+                openNotification("Mở tài khoản thành công")
+            } else {
+                openNotification("Mở tài khoản thất bại")
+            }
+        }
+    }
     const [checkStrictly, setCheckStrictly] = useState(false);
     const data: DataType[] = user?.user;
     return (
         <>
+            {contextHolder}
             <Space align="center" style={{ marginBottom: 16 }}>
                 CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />
             </Space>
