@@ -118,6 +118,8 @@ Route::get('detail/getone/{id}', [DetailedProductController::class, 'getOneProdu
 //Discount
 Route::get('discounts/', [DiscountController::class, 'index']);
 Route::post('discounts/add', [DiscountController::class, 'store']);
+Route::get('discounts/show/{id}', [DiscountController::class, 'show']);
+Route::post('discounts/update/{id}', [DiscountController::class, 'update']);
 Route::delete('discounts/delete/{id}', [DiscountController::class, 'destroy']);
 //Banner
 Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
