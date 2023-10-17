@@ -87,11 +87,12 @@ const DashboardUser: React.FC = () => {
             width: '10%',
             render: (dataIndex, key) => {
                 return (
-                    dataIndex == 0 ? <Button danger onClick={() => handBanUser(key.id)}>
-                        Khóa tài khoản
-                    </Button> : <Button primary onClick={() => handUnBanUser(key.id)}>
-                        Mở tài khoản
-                    </Button>
+                    key.id == 1 ? <></> :
+                        dataIndex == 0 ? <Button danger onClick={() => handBanUser(key.id)}>
+                            Khóa tài khoản
+                        </Button> : <Button primary onClick={() => handUnBanUser(key.id)}>
+                            Mở tài khoản
+                        </Button>
                 );
             },
         },
@@ -133,17 +134,12 @@ const DashboardUser: React.FC = () => {
             }
         }
     }
-    const [checkStrictly, setCheckStrictly] = useState(false);
     const data: DataType[] = user?.user;
     return (
         <>
             {contextHolder}
-            <Space align="center" style={{ marginBottom: 16 }}>
-                CheckStrictly: <Switch checked={checkStrictly} onChange={setCheckStrictly} />
-            </Space>
             <Table
                 columns={columns}
-                rowSelection={{ ...rowSelection, checkStrictly }}
                 dataSource={data}
             />
         </>
