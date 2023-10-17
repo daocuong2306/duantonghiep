@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Option;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class OptionController extends Controller
@@ -16,7 +17,11 @@ class OptionController extends Controller
      */
     public function index()
       {         
-        $options = Option::all();
+        $options = DB::table('options')
+        ->join('option_values', 'option_values.option_id','=','options.id')
+        ->select("options.*",'option_values.value as option_value_name')
+        ->get();
+     
        if($options->count()>0){
         return response()->json([
            "status" => 200,
@@ -39,7 +44,7 @@ class OptionController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'name'=>'required',
+            'name' => 'required|unique:options', 
         ]);
         if($validator->fails()){
             return response()->json([
