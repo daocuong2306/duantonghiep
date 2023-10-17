@@ -72,7 +72,7 @@ const AddProduct = () => {
     console.log(fileList);
 
     const handleChangeTable: UploadProps['onChange'] = ({ fileList: newFileList }) =>
-        console.log(fileList);
+        setFileList(newFileList);
 
     //end img table
     //img avatar product
