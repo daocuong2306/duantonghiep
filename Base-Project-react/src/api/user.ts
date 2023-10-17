@@ -52,6 +52,20 @@ const userApi = createApi({
             }),
             providesTags: ['user'],
         }),
+        banUser: builder.mutation({
+            query: (id: string) => ({
+                url: `/user/banUser/${id}`,
+                method: "GET"
+            }),
+            invalidatesTags: ['user']
+        }),
+        unBanUser: builder.mutation({
+            query: (id: string) => ({
+                url: `/user/unBanUser/${id}`,
+                method: "GET"
+            }),
+            invalidatesTags: ['user']
+        }),
     })
 });
 
@@ -59,7 +73,9 @@ export const {
     useRegisterMutation,
     useLoginMutation,
     useGetUserQuery,
-    useListUserQuery
+    useListUserQuery,
+    useBanUserMutation,
+    useUnBanUserMutation
 } = userApi;
 export const userReducer = userApi.reducer;
 

@@ -49,7 +49,7 @@ const AddProduct = () => {
     //img table
     new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.readAsDataURL(file);
+        // reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result as string);
         reader.onerror = (error) => reject(error);
     });
@@ -69,6 +69,7 @@ const AddProduct = () => {
         setPreviewOpen(true);
         setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
     };
+    console.log(fileList);
 
     const handleChangeTable: UploadProps['onChange'] = ({ fileList: newFileList }) =>
         setFileList(newFileList);
@@ -77,7 +78,7 @@ const AddProduct = () => {
     //img avatar product
     const [loading, setLoading] = useState(false);
     const [loadingAvatar, setLoadingAvatar] = useState(false);
-    const [imageUrl, setImageUrl] = useState();
+    const [imageUrl, setImageUrl] = useState<string>();
     const [selectedFile, setSelectedFile] = useState(null);
     const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
         if (info.file.status === 'uploading') {
@@ -93,10 +94,8 @@ const AddProduct = () => {
         }
     };
     const handleFileChange = (event: any) => {
-        console.log(event);
         const file = event.fileList[0].originFileObj;
         setSelectedFile(file);
-        console.log(imageUrl);
         if (file) {
             const reader = new FileReader();
             reader.onload = (e: any) => {
@@ -105,6 +104,7 @@ const AddProduct = () => {
             readerRef.current = reader;
             reader.readAsDataURL(file);
         }
+        console.log(selectedFile);
     };
     const twoFunctions = (event: any) => {
         handleFileChange(event)
@@ -149,7 +149,6 @@ const AddProduct = () => {
         formData.append('discount_id', Number(1));
         // Append the selected file to formData (if available)
         formData.append('image', selectedFile);
-
         try {
             const response = await addProduct(formData);
 
@@ -176,6 +175,7 @@ const AddProduct = () => {
                     className="avatar-uploader"
                     showUploadList={false}
                     action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                    beforeUpload={beforeUpload}
                     onChange={twoFunctions}
                 >
                     {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
