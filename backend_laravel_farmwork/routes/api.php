@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\Client\DetailedProductController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\UserSettingController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EvaluateController;
@@ -51,6 +52,7 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::get('user/listAll', [UserController::class, 'index']);
     Route::get('user/banUser/{id}', [UserController::class, 'banUser']);
     Route::get('user/unBanUser/{id}', [UserController::class, 'unBanUser']);
+    Route::get('user/show_one/{id}', [UserController::class, 'show']);
     //Comment.................
     Route::get('admin/comment/listAll', [CommentController::class, 'listcomment']);
     Route::get('admin/comment/findbyuser/{id}', [CommentController::class, 'findCommentbyUser']);
@@ -64,13 +66,16 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     //Setting
     Route::post('admin/settingshop', [SettingController::class, 'setingshope']);
     Route::get('admin/editinforshop', [SettingController::class, 'InforShop']);
+    
 });
 // ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
 Route::group(['middleware' => 'auth:api'], function () {
     //User
     Route::get('auth/user', [AuthController::class, 'user']);
     Route::post('user/edit/{id}', [UserController::class, 'edit']);
-    Route::get('user/show_one/{id}', [UserController::class, 'show']);
+    
+    Route::get('user/inforuser', [UserSettingController::class, 'inforUsser']);
+    Route::post('user/eidtuser', [UserSettingController::class, 'editUser']);
     //Comment
     Route::post('comment/add', [CommentController::class, 'addcomment']);
     Route::delete('comment/deletebyuser/{id}', [CommentController::class, 'deleteByUser']);
