@@ -17,7 +17,7 @@ use App\Http\Controllers\EvaluateController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Variant\VariantController;
-
+use App\Http\Controllers\VNP_PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -135,7 +135,9 @@ Route::delete('banner/delete/{id}', [BannerController::class, 'deleteBanner']);
 Route::get('home', [HomeController::class, 'home']);
 Route::post('sendWelcomeEmail', [EmailController::class, 'sendEmail']);
 
-
+//VNP
+Route::post('createPayment', [VNP_PaymentController::class, 'CreatePayment']);
+Route::get('returnPayment', [VNP_PaymentController::class, 'VNP_Return']);
 // Check nếu chưa đăng nhập sẽ nhảy vào route này
 Route::get('/check', function () {
     return response()->json([
