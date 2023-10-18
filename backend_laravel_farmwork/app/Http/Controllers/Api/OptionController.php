@@ -16,23 +16,21 @@ class OptionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-      {         
+    {
         $options = DB::table('options')
-        ->join('option_values', 'option_values.option_id','=','options.id')
-        ->select("options.*",'option_values.value as option_value_name')
-        ->get();
-     
-       if($options->count()>0){
-        return response()->json([
-           "status" => 200,
-           "options" => $options,
-        ],200);      
-       }else{
-        return response()->json([
-            'status'=>200,
-            'message'=>'not found'
-        ],400);
-       }
+            ->get();
+
+        if ($options->count() > 0) {
+            return response()->json([
+                "status" => 200,
+                "options" => $options,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 200,
+                'message' => 'not found'
+            ], 400);
+        }
     }
 
     /**
@@ -43,32 +41,31 @@ class OptionController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
-            'name' => 'required|unique:options', 
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:options',
         ]);
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
-                'status'=>422,
-                'errors'=>$validator->messages(),
-            ],422);
-        }else{
+                'status' => 422,
+                'errors' => $validator->messages(),
+            ], 422);
+        } else {
             $options = Option::create([
-                'name'=>$request->name,
+                'name' => $request->name,
             ]);
 
-            if($options){
+            if ($options) {
                 return response()->json([
-                    'status'=>200,
-                    'message'=>'Successfull',
-                ],200);
-            }else{
+                    'status' => 200,
+                    'message' => 'Successfull',
+                ], 200);
+            } else {
                 return response()->json([
-                    'status'=>500,
-                    'message'=>'Wrong',
-                ],500);
+                    'status' => 500,
+                    'message' => 'Wrong',
+                ], 500);
             }
         }
-
     }
 
     /**
@@ -80,16 +77,16 @@ class OptionController extends Controller
     public function show($id)
     {
         $options = Option::find($id);
-        if($options){
+        if ($options) {
             return response()->json([
-                'status'=>200,
+                'status' => 200,
                 "options" => $options,
-            ],200);
-        }else{
+            ], 200);
+        } else {
             return response()->json([
-                'status'=>404,
-                'message'=>'Not found',
-            ],404);
+                'status' => 404,
+                'message' => 'Not found',
+            ], 404);
         }
     }
 
@@ -102,29 +99,29 @@ class OptionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),[
-            'name'=>'required',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
         ]);
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
-                'status'=>422,
-                'errors'=>$validator->messages(),
-            ],422);
-        }else{
+                'status' => 422,
+                'errors' => $validator->messages(),
+            ], 422);
+        } else {
             $options = Option::find($id);
-            if($options){
+            if ($options) {
                 $options->update([
-                    'name'=>$request->name,
+                    'name' => $request->name,
                 ]);
                 return response()->json([
-                    'status'=>200,
-                    'message'=>'Update Successfull',
-                ],200);
-            }else{
+                    'status' => 200,
+                    'message' => 'Update Successfull',
+                ], 200);
+            } else {
                 return response()->json([
-                    'status'=>404,
-                    'message'=>'Not found',
-                ],404);
+                    'status' => 404,
+                    'message' => 'Not found',
+                ], 404);
             }
         }
     }
@@ -138,18 +135,17 @@ class OptionController extends Controller
     public function destroy($id)
     {
         $options = Option::find($id);
-        if($options){
-            $options ->delete();
+        if ($options) {
+            $options->delete();
             return response()->json([
-                'status'=>200,
-                'message'=>'Delete Successfull',
-            ],200);
-        }else{
+                'status' => 200,
+                'message' => 'Delete Successfull',
+            ], 200);
+        } else {
             return response()->json([
-                'status'=>404,
-                'message'=>'Not found',
-            ],404);
+                'status' => 404,
+                'message' => 'Not found',
+            ], 404);
         }
-     }
     }
-
+}

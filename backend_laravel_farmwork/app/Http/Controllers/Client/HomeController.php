@@ -14,12 +14,12 @@ class HomeController extends Controller
     {
         $keyword = $request->query('key');
         $data = [];
-        $evaluate = DB::table('evaluate')
-            ->join('users', 'evaluate.id_user', '=', 'users.id')
-            ->select('evaluate.*', 'users.name', 'users.image')
-            ->orderBy('created_at', 'desc')
-            ->limit(8)
-            ->get();
+        // $evaluate = DB::table('evaluate')
+        //     ->join('users', 'evaluate.id_user', '=', 'users.id')
+        //     ->select('evaluate.*', 'users.name', 'users.image')
+        //     ->orderBy('created_at', 'desc')
+        //     ->limit(8)
+        //     ->get();
         $banner = Banner::orderBy('created_at', 'desc')
             ->limit(3)
             ->get();
@@ -33,7 +33,7 @@ class HomeController extends Controller
         } else {
             $products = DB::table('product')->get();
         }
-        $data['evaluate'] = $evaluate;
+        // $data['evaluate'] = $evaluate;
         $data['products'] = $products;
         $data['categories'] = $categories;
         $data['banner'] = $banner;
