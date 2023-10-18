@@ -39,7 +39,7 @@ const Login = () => {
         localStorage.setItem("header", data?.access_token);
         if (user?.role < 3) {
             localStorage.setItem("role", user?.role);
-            setLoading(false); // Corrected line
+            setLoading(false);
             url("/");
         }
     }
