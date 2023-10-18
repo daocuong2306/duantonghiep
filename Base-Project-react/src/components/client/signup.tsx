@@ -36,7 +36,6 @@ const Signup = () => {
     const openNotification = (text: string) => {
         api.open({
             message: text,
-
         });
     };
     if (error) {
