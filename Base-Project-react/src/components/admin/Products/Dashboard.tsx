@@ -16,10 +16,9 @@ const Dashboard = () => {
             alert("da xoa")
         }
     }
-    const selectProduct = (event: string) => {
+    const selectProduct = (event: any) => {
         const newValue = event.target.value;
         console.log(newValue);
-
         setFind({ keyword: newValue });
     }
     return (

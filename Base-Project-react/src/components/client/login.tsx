@@ -33,7 +33,7 @@ const Login = () => {
             setLoading(false);
             window.location.reload();
         },
-            1000);
+            2000);
     }
     if (!isLoading && !error) {
         localStorage.setItem("header", data?.access_token);
