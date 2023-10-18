@@ -75,7 +75,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('user/edit/{id}', [UserController::class, 'edit']);
     
     Route::get('user/inforuser', [UserSettingController::class, 'inforUsser']);
-    Route::post('user/eidtuser', [UserSettingController::class, 'editUser']);
+    Route::post('user/edituser', [UserSettingController::class, 'editUser']);
     //Comment
     Route::post('comment/add', [CommentController::class, 'addcomment']);
     Route::delete('comment/deletebyuser/{id}', [CommentController::class, 'deleteByUser']);
