@@ -41,7 +41,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'name'=>'required',
+            'name'=>'required|unique:category',
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
         ]);
         if($validator->fails()){
@@ -102,7 +102,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request,int $id){
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|unique:category',
             'image' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
             
         ]);

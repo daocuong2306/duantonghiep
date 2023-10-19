@@ -17,31 +17,17 @@ class OptionController extends Controller
      */
     public function index()
     {
-        // $options = DB::table('options')  
-        //    ->join('option_values','options.id', '=','option_values.option_id')
-        //    ->select('options.*','option_values.id as ','option_values.value as values')  
-        //     ->get();
 
-        // if ($options->count() > 0) {
-        //     return response()->json([
-        //         "status" => 200,
-        //         "options" => $options,
-        //     ], 200);
-        // } else {
-        //     return response()->json([
-        //         'status' => 200,
-        //         'message' => 'not found'
-        //     ], 400);
-        // }
         $options = DB::table('options')
         ->leftJoin('option_values', 'options.id', '=', 'option_values.option_id')
-        ->select('options.id as option_id', 'options.name as option_name', 'option_values.value as value_name')
+        ->select('options.id as option_id', 'option_values.id as value_id','options.name as option_name', 'option_values.value as value_name')
         ->get();
 
     $result = [];
     foreach ($options as $option) {
         $optionId = $option->option_id;
         $optionName = $option->option_name;
+        $valueId = $option->value_id;
         $valueName = $option->value_name;
 
         // Check if the option exists in the result array
@@ -54,8 +40,9 @@ class OptionController extends Controller
         }
 
         // Add the value to the option's value array if it exists
-        if ($valueName) {
+        if ($valueId && $valueName) {
             $result[$optionId]['value'][] = [
+                'id' => $valueId,
                 'name' => $valueName,
             ];
         }
@@ -68,7 +55,7 @@ class OptionController extends Controller
         ], 200);
     } else {
         return response()->json([
-            'status' => 200,
+            'status' => 400,
             'message' => 'not found',
         ], 400);
     }
@@ -140,7 +127,7 @@ class OptionController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|unique:options',
         ]);
         if ($validator->fails()) {
             return response()->json([

@@ -76,7 +76,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|unique:product',
             'price' => 'required',
             'description' => 'required',
             'status' => 'required',
@@ -130,7 +130,10 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::find($id);
+        $product = Product::join('category', 'product.id_category', '=', 'category.id')
+            ->select('product.*', 'category.name as category_name')
+            ->find($id);
+    
         if ($product) {
             return response()->json([
                 'status' => 200,
@@ -139,10 +142,11 @@ class ProductController extends Controller
         } else {
             return response()->json([
                 'status' => 404,
-                'message' => 'Not found',
+                'message' => 'Không tìm thấy sản phẩm',
             ], 404);
         }
     }
+    
 
     /**
      * Update the specified resource in storage.
@@ -154,7 +158,7 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|unique:product',
             'price' => 'required',
             'description' => 'required',
             'status' => 'required',
