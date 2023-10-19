@@ -82,7 +82,7 @@ class ProductController extends Controller
             'status' => 'required',
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
             'code' => 'required',
-            'quantity' => 'required',
+            // 'quantity' => 'required',
             'id_category' => 'required',
         ]);
         if ($validator->fails()) {
@@ -98,7 +98,7 @@ class ProductController extends Controller
             $products->description = $request->description;
             $products->status = $request->status;
             $products->code = $request->code;
-            $products->quantity = $request->quantity;
+            // $products->quantity = $request->quantity;
             $products->id_category = $request->id_category;
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
@@ -160,7 +160,7 @@ class ProductController extends Controller
             'status' => 'required',
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
             'code' => 'required',
-            'quantity' => 'required',
+            // 'quantity' => 'required',
             'id_category' => 'required',
           
         ]);
@@ -176,7 +176,7 @@ class ProductController extends Controller
             $products->description = $request->description;
             $products->status = $request->status;
             $products->code = $request->code;
-            $products->quantity = $request->quantity;
+            // $products->quantity = $request->quantity;
             $products->id_category = $request->id_category;
        
             if ($request->hasFile('image')) {
