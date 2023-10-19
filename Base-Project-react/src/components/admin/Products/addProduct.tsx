@@ -147,9 +147,7 @@ const AddProduct = () => {
         formData.append('description', description);
         formData.append('id_category', String(selectedCate));
         formData.append('price', String(price));
-        formData.append('quantity', String(quantity));
         formData.append('status', String(status));
-        formData.append('discount_id', Number(1));
         // Append the selected file to formData (if available)
         formData.append('image', selectedFile);
         try {

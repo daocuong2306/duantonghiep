@@ -1,9 +1,8 @@
 import React from 'react';
-import { Table } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import { Button, Space } from 'antd';
+import type { TableColumnsType } from 'antd';
+import { Button, Table, Space } from 'antd';
 import { Link } from 'react-router-dom';
-import { useGetOptionsQuery, useRemoveOptionMutation } from '@/api/option';
+import { useGetOptionsQuery } from '@/api/option';
 interface DataType {
     key: React.Key;
     name: string;
@@ -12,32 +11,25 @@ interface DataType {
     description: string;
 }
 
-
-
 const DashboardOptions: React.FC = () => {
-    const { data: options, isLoading, error } = useGetOptionsQuery();
-    console.log(options);
-    const [deleteOptions] = useRemoveOptionMutation();
-    const data: DataType[] = options?.options;
-    const columns: ColumnsType<DataType> = [
+    const { data: options } = useGetOptionsQuery();
+    const expandedRowRender = (e) => {
+        console.log(e);
+        const columns: TableColumnsType<any> = [
+            { title: 'Name', dataIndex: 'name', key: 'name' },
+        ];
+        return <Table columns={columns} dataSource={e.value} pagination={false} />;
+    };
+    const columns: TableColumnsType<DataType> = [
         { title: 'Name', dataIndex: 'name', key: 'name' },
-        {
-            title: 'Chức năng',
-            dataIndex: '',
-            key: 'id',
-            render: (key) => {
-                return <div>
-                    <Button danger onClick={() => dele(key.id)}>Xóa</Button>
-                </div>
-            },
-        },
+        { title: 'Action', key: 'operation', render: () => <a>Xoa</a> },
     ];
-    const dele = (id: string) => {
-        const check = window.confirm("bạn có muốn xóa");
-        if (check) {
-            deleteOptions(id)
-        }
-    }
+    const newData = options?.options.map(item => ({
+        ...item,
+        key: item.optionId
+    }));
+    const data: DataType[] = newData;
+    console.log(options?.options);
     return (
         <>
             <Space>
@@ -46,11 +38,11 @@ const DashboardOptions: React.FC = () => {
             </Space>
             <Table
                 columns={columns}
+                expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
                 dataSource={data}
             />
         </>
-
-    )
+    );
 };
 
 export default DashboardOptions;
