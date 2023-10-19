@@ -47,6 +47,7 @@ class OptionController extends Controller
         // Check if the option exists in the result array
         if (!isset($result[$optionId])) {
             $result[$optionId] = [
+                'optionId' => $optionId,
                 'name' => $optionName,
                 'value' => null,
             ];
