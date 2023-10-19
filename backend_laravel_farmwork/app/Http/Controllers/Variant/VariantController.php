@@ -1,0 +1,108 @@
+<?php
+
+namespace App\Http\Controllers\Variant;
+
+use App\Http\Controllers\Controller;
+use App\Models\OptionValue;
+use App\Models\SKU;
+use App\Models\Variant;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
+class VariantController extends Controller
+{
+    public function getOptionValue(Request $request)
+    {
+        $arrays = $request->arrayValue;
+
+        $result = [[]];
+        if (!empty($arrays)) {
+            foreach ($arrays as $key => $values) {
+                $append = [];
+                foreach ($values as $value) {
+                    foreach ($result as $data) {
+                        $append[] = $data + [$key => $value];
+                    }
+                }
+                $result = $append;
+            }
+            $variant = [];
+            foreach ($result as  $key => $option_value) {
+                for ($i = 0; $i < count($option_value); $i++) {
+                    $option = OptionValue::find($option_value[$i]);
+                    $option_value[$i] = $option;
+                }
+                $variant[] = $option_value;
+            }
+            return response()->json(
+                [
+                    'variant' => $variant
+                ],
+                200
+
+            );
+        } else {
+            return response()->json(
+                [
+                    'error' => " Request truyền vào phải là một mảng"
+                ],
+                422
+            );
+        }
+    }
+    public function addVariant(Request $request)
+    {
+        $varants = $request->variants;
+        foreach ($varants as $item) {
+            $sku = new SKU();
+            $sku->price = $item['price'];
+            $sku->stoke = $item['stock'];
+            $sku->sku = $item['sku'];
+            $sku->save();
+            foreach ($item['option_value'] as $option) {
+                // dd($item['option_value']);
+                $result[] = [
+                    'option_value_id' => $option,
+                    'product_id' => $item['product_id'],
+                    'sku_id' => $sku->id
+                ];
+            }
+        }
+        Variant::insert($result);
+        $listAll = Variant::all();
+        return response()->json([
+            'listAll' => $listAll,
+            'isOke' => 'true',
+        ]);
+    }
+    public function listVariant($id)
+    {
+        if ($id) {
+            $variant = DB::table('variants')
+                ->where('product_id', $id)
+                ->join('skus', 'sku_id', '=', 'skus.id')
+                ->join('option_values', 'option_value_id', '=', 'option_values.id')
+                ->select(
+                    'variants.id',
+                    'variants.product_id',
+                    'variants.sku_id',
+                    'variants.option_value_id',
+                    'skus.price AS skus_price',
+                    'skus.sku AS sku',
+                    'skus.barcode AS sku_code',
+                    'option_values.value AS option_value'
+                )
+                ->get();
+            $handleVariant = collect($variant)->groupBy('sku_id');
+            return response()->json([
+                'handleVariant' => $handleVariant,
+                'isOk' => 'true',
+            ], 200);
+        } else {
+            return response()->json([
+                'error' => 'Không có sản phẩm này'
+            ], 404);
+        }
+    }
+}
