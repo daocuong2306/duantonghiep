@@ -3,6 +3,8 @@ import { IProduct } from '../../../interface/product'
 import { Link } from 'react-router-dom'
 import { FcFullTrash, FcSupport } from 'react-icons/fc'
 import { useState } from 'react'
+import update from '../Products/Update'
+import Update from '../Products/Update'
 const Dashboard = () => {
     const [find, setFind] = useState({})
     const { data: products, isLoading } = useGetProductsQuery(find);
@@ -125,9 +127,7 @@ const Dashboard = () => {
                                         <td className="px-6 py-4">White</td>
                                         <td className="px-6 py-4 ">
                                             <div className="flex ">
-                                                <Link to={`/admin/product/update/${product?.id}`}>
-                                                    <FcSupport className='w-6 h-6 blue mr-2' />
-                                                </Link>
+                                                <Update id={product.id} />
                                                 <Link to="">
                                                     <FcFullTrash className='w-6 h-6' onClick={() => { deleteP(Number(product.id)) }} />
                                                 </Link>

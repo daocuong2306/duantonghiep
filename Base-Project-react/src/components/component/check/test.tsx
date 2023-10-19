@@ -1,87 +1,142 @@
-import React from 'react';
-import {
-    Button,
-    Form,
-    Select,
-    Space,
-} from 'antd';
+import React, { useState } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from 'antd';
 
 const { Option } = Select;
 
-const formItemLayout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
+const App: React.FC = () => {
+    const [open, setOpen] = useState(false);
+
+    const showDrawer = () => {
+        setOpen(true);
+    };
+
+    const onClose = () => {
+        setOpen(false);
+    };
+
+    return (
+        <>
+            <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
+                Sửa
+            </Button>
+            <Drawer
+                title="Create a new account"
+                width={720}
+                onClose={onClose}
+                open={open}
+                styles={{
+                    body: {
+                        paddingBottom: 80,
+                    },
+                }}
+                extra={
+                    <Space>
+                        <Button onClick={onClose}>Cancel</Button>
+                        <Button onClick={onClose} type="primary">
+                            Submit
+                        </Button>
+                    </Space>
+                }
+            >
+                <Form layout="vertical" hideRequiredMark>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                name="name"
+                                label="Name"
+                                rules={[{ required: true, message: 'Please enter user name' }]}
+                            >
+                                <Input placeholder="Please enter user name" />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                name="url"
+                                label="Url"
+                                rules={[{ required: true, message: 'Please enter url' }]}
+                            >
+                                <Input
+                                    style={{ width: '100%' }}
+                                    addonBefore="http://"
+                                    addonAfter=".com"
+                                    placeholder="Please enter url"
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                name="owner"
+                                label="Owner"
+                                rules={[{ required: true, message: 'Please select an owner' }]}
+                            >
+                                <Select placeholder="Please select an owner">
+                                    <Option value="xiao">Xiaoxiao Fu</Option>
+                                    <Option value="mao">Maomao Zhou</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                name="type"
+                                label="Type"
+                                rules={[{ required: true, message: 'Please choose the type' }]}
+                            >
+                                <Select placeholder="Please choose the type">
+                                    <Option value="private">Private</Option>
+                                    <Option value="public">Public</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                name="approver"
+                                label="Approver"
+                                rules={[{ required: true, message: 'Please choose the approver' }]}
+                            >
+                                <Select placeholder="Please choose the approver">
+                                    <Option value="jack">Jack Ma</Option>
+                                    <Option value="tom">Tom Liu</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                name="dateTime"
+                                label="DateTime"
+                                rules={[{ required: true, message: 'Please choose the dateTime' }]}
+                            >
+                                <DatePicker.RangePicker
+                                    style={{ width: '100%' }}
+                                    getPopupContainer={(trigger) => trigger.parentElement!}
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <Form.Item
+                                name="description"
+                                label="Description"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'please enter url description',
+                                    },
+                                ]}
+                            >
+                                <Input.TextArea rows={4} placeholder="please enter url description" />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form>
+            </Drawer>
+        </>
+    );
 };
-
-const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
-};
-
-const App: React.FC = () => (
-    <Form
-        name="validate_other"
-        {...formItemLayout}
-        onFinish={onFinish}
-        style={{ maxWidth: 600 }}
-    >
-        <Form.Item label="Plain Text">
-            <span className="ant-form-text">Áo PoLo</span>
-        </Form.Item>
-        <Form.Item
-            name="select"
-            label="Select"
-            hasFeedback
-            rules={[{ required: true, message: 'Please select your country!' }]}
-        >
-            <Select placeholder="Please select a country">
-                <Option value="china">Màu</Option>
-                <Option value="usa">Size</Option>
-            </Select>
-        </Form.Item>
-
-        <Form.Item
-            name="select-multiple-1"
-            label="Select[multiple]"
-            rules={[{ required: true, message: 'Please select your favourite colors!', type: 'array' }]}
-        >
-            <Select mode="multiple" placeholder="Please select favourite colors">
-                <Option value="10">Red</Option>
-                <Option value="13">Green</Option>
-                <Option value="14">Blue</Option>
-            </Select>
-        </Form.Item>
-        <Form.Item
-            name="select-1"
-            label="Select-1"
-            hasFeedback
-            rules={[{ required: true, message: 'Please select your country!' }]}
-        >
-            <Select placeholder="Please select a country">
-                <Option value="china">Màu</Option>
-                <Option value="usa">Size</Option>
-            </Select>
-        </Form.Item>
-
-        <Form.Item
-            name="select-multiple"
-            label="Select[multiple]"
-            rules={[{ required: true, message: 'Please select your favourite colors!', type: 'array' }]}
-        >
-            <Select mode="multiple" placeholder="Please select favourite colors">
-                <Option value="1">XL</Option>
-                <Option value="2">M</Option>
-                <Option value="3">L</Option>
-            </Select>
-        </Form.Item>
-        <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
-            <Space>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-                <Button htmlType="reset">reset</Button>
-            </Space>
-        </Form.Item>
-    </Form>
-);
 
 export default App;
