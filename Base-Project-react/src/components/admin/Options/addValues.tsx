@@ -8,15 +8,21 @@ const AddValueOptions: React.FC = () => {
     const [form] = Form.useForm();
     console.log(form.getFieldsValue());
     const [addValueOptions] = useAddOptionValueMutation()
+    console.log(options);
     const onFinish = (values: any) => {
-        console.log(values);
+        console.log('Form values:', values);
+
+
+
         for (let item of values.items) {
-            console.log(item.name);
+            const selectedValue = item.name; // Access the selected value
+            console.log('Selected value:', selectedValue);
             const list = item.list.map(subItem => subItem.first);
+            console.log(item.name, list);
             addValueOptions({
                 option_id: item.name,
                 values: list
-            })
+            });
         }
     };
     return (
@@ -46,14 +52,18 @@ const AddValueOptions: React.FC = () => {
                                     />
                                 }
                             >
-                                <Form.Item label="Select" name={[field.name, 'name']}>
+                                {/* <Form.Item label="Select" name={[field.name, 'name']}>
                                     <Select>
                                         {options?.options.map(option => <Select.Option value={option.id}>{option.name}</Select.Option>)}
                                     </Select>
+                                </Form.Item> */}
+                                <Form.Item label="Select" name={[field.name, 'name']}>
+                                    <Select>
+                                        {options?.options.map(option => <Option value={option.id}>{option.name}</Option>)}
+                                    </Select>
                                 </Form.Item>
-
                                 {/* value option */}
-                                <Form.Item label="List">
+                                < Form.Item label="List" >
                                     <Form.List name={[field.name, 'list']}>
                                         {(subFields, subOpt) => (
                                             <div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
@@ -87,9 +97,10 @@ const AddValueOptions: React.FC = () => {
                             Submit
                         </Button>
                     </div>
-                )}
-            </Form.List>
-        </Form>
+                )
+                }
+            </Form.List >
+        </Form >
     );
 };
 

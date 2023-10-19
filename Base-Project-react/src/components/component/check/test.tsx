@@ -1,83 +1,89 @@
+import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
 import React from 'react';
-import { CloseOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Input, Space, Typography } from 'antd';
+import {
+    Button,
+    Checkbox,
+    Col,
+    ColorPicker,
+    Form,
+    InputNumber,
+    Radio,
+    Rate,
+    Row,
+    Select,
+    Slider,
+    Space,
+    Switch,
+    Upload,
+} from 'antd';
 
-const App: React.FC = () => {
-    const [form] = Form.useForm();
-    console.log(form.getFieldsValue());
-    const onFinish = (values: any) => {
-        console.log(values);
-    };
-    return (
-        <Form
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 18 }}
-            form={form}
-            name="dynamic_form_complex"
-            style={{ maxWidth: 600 }}
-            autoComplete="off"
-            initialValues={{ items: [{}] }}
-            onFinish={onFinish}
-        >
-            <Form.List name="items">
-                {(fields, { add, remove }) => (
-                    <div style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
-                        {fields.map((field) => (
-                            <Card
-                                size="small"
-                                title={`Item ${field.name + 1}`}
-                                key={field.key}
-                                extra={
-                                    <CloseOutlined
-                                        onClick={() => {
-                                            remove(field.name);
-                                        }}
-                                    />
-                                }
-                            >
-                                <Form.Item label="Name" name={[field.name, 'name']}>
-                                    <Input />
-                                </Form.Item>
+const { Option } = Select;
 
-                                {/* Nest Form.List */}
-                                <Form.Item label="List">
-                                    <Form.List name={[field.name, 'list']}>
-                                        {(subFields, subOpt) => (
-                                            <div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
-                                                {subFields.map((subField) => (
-                                                    <Space key={subField.key}>
-                                                        <Form.Item noStyle name={[subField.name, 'first']}>
-                                                            <Input placeholder="first" />
-                                                        </Form.Item>
-                                                        <CloseOutlined
-                                                            onClick={() => {
-                                                                subOpt.remove(subField.name);
-                                                            }}
-                                                        />
-                                                    </Space>
-                                                ))}
-                                                <Button type="dashed" onClick={() => subOpt.add()} block>
-                                                    + Add Sub Item
-                                                </Button>
-
-                                            </div>
-                                        )}
-                                    </Form.List>
-                                </Form.Item>
-                            </Card>
-                        ))}
-
-                        <Button type="dashed" onClick={() => add()} block>
-                            + Add Item
-                        </Button>
-                        <Button primary htmlType="submit">
-                            Submit
-                        </Button>
-                    </div>
-                )}
-            </Form.List>
-        </Form>
-    );
+const formItemLayout = {
+    labelCol: { span: 6 },
+    wrapperCol: { span: 14 },
 };
+
+const normFile = (e: any) => {
+    console.log('Upload event:', e);
+    if (Array.isArray(e)) {
+        return e;
+    }
+    return e?.fileList;
+};
+
+const onFinish = (values: any) => {
+    console.log('Received values of form: ', values);
+};
+
+const App: React.FC = () => (
+    <Form
+        name="validate_other"
+        {...formItemLayout}
+        onFinish={onFinish}
+        initialValues={{
+            'input-number': 3,
+            'checkbox-group': ['A', 'B'],
+            rate: 3.5,
+            'color-picker': null,
+        }}
+        style={{ maxWidth: 600 }}
+    >
+        <Form.Item label="Plain Text">
+            <span className="ant-form-text">China</span>
+        </Form.Item>
+        <Form.Item
+            name="select"
+            label="Select"
+            hasFeedback
+            rules={[{ required: true, message: 'Please select your country!' }]}
+        >
+            <Select placeholder="Please select a country">
+                <Option value="china">China</Option>
+                <Option value="usa">U.S.A</Option>
+            </Select>
+        </Form.Item>
+
+        <Form.Item
+            name="select-multiple"
+            label="Select[multiple]"
+            rules={[{ required: true, message: 'Please select your favourite colors!', type: 'array' }]}
+        >
+            <Select mode="multiple" placeholder="Please select favourite colors">
+                <Option value="red">Red</Option>
+                <Option value="green">Green</Option>
+                <Option value="blue">Blue</Option>
+            </Select>
+        </Form.Item>
+        <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
+            <Space>
+                <Button type="primary" htmlType="submit">
+                    Submit
+                </Button>
+                <Button htmlType="reset">reset</Button>
+            </Space>
+        </Form.Item>
+    </Form>
+);
 
 export default App;
