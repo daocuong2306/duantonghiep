@@ -1,20 +1,9 @@
-import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
 import React from 'react';
 import {
     Button,
-    Checkbox,
-    Col,
-    ColorPicker,
     Form,
-    InputNumber,
-    Radio,
-    Rate,
-    Row,
     Select,
-    Slider,
     Space,
-    Switch,
-    Upload,
 } from 'antd';
 
 const { Option } = Select;
@@ -22,14 +11,6 @@ const { Option } = Select;
 const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },
-};
-
-const normFile = (e: any) => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-        return e;
-    }
-    return e?.fileList;
 };
 
 const onFinish = (values: any) => {
@@ -41,16 +22,10 @@ const App: React.FC = () => (
         name="validate_other"
         {...formItemLayout}
         onFinish={onFinish}
-        initialValues={{
-            'input-number': 3,
-            'checkbox-group': ['A', 'B'],
-            rate: 3.5,
-            'color-picker': null,
-        }}
         style={{ maxWidth: 600 }}
     >
         <Form.Item label="Plain Text">
-            <span className="ant-form-text">China</span>
+            <span className="ant-form-text">Áo PoLo</span>
         </Form.Item>
         <Form.Item
             name="select"
@@ -59,8 +34,31 @@ const App: React.FC = () => (
             rules={[{ required: true, message: 'Please select your country!' }]}
         >
             <Select placeholder="Please select a country">
-                <Option value="china">China</Option>
-                <Option value="usa">U.S.A</Option>
+                <Option value="china">Màu</Option>
+                <Option value="usa">Size</Option>
+            </Select>
+        </Form.Item>
+
+        <Form.Item
+            name="select-multiple-1"
+            label="Select[multiple]"
+            rules={[{ required: true, message: 'Please select your favourite colors!', type: 'array' }]}
+        >
+            <Select mode="multiple" placeholder="Please select favourite colors">
+                <Option value="10">Red</Option>
+                <Option value="13">Green</Option>
+                <Option value="14">Blue</Option>
+            </Select>
+        </Form.Item>
+        <Form.Item
+            name="select-1"
+            label="Select-1"
+            hasFeedback
+            rules={[{ required: true, message: 'Please select your country!' }]}
+        >
+            <Select placeholder="Please select a country">
+                <Option value="china">Màu</Option>
+                <Option value="usa">Size</Option>
             </Select>
         </Form.Item>
 
@@ -70,9 +68,9 @@ const App: React.FC = () => (
             rules={[{ required: true, message: 'Please select your favourite colors!', type: 'array' }]}
         >
             <Select mode="multiple" placeholder="Please select favourite colors">
-                <Option value="red">Red</Option>
-                <Option value="green">Green</Option>
-                <Option value="blue">Blue</Option>
+                <Option value="1">XL</Option>
+                <Option value="2">M</Option>
+                <Option value="3">L</Option>
             </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
