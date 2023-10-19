@@ -8,12 +8,9 @@ const AddValueOptions: React.FC = () => {
     const [form] = Form.useForm();
     console.log(form.getFieldsValue());
     const [addValueOptions] = useAddOptionValueMutation()
-    console.log(options);
     const onFinish = (values: any) => {
         console.log('Form values:', values);
-
-
-
+        console.log(options);
         for (let item of values.items) {
             const selectedValue = item.name; // Access the selected value
             console.log('Selected value:', selectedValue);
@@ -59,7 +56,7 @@ const AddValueOptions: React.FC = () => {
                                 </Form.Item> */}
                                 <Form.Item label="Select" name={[field.name, 'name']}>
                                     <Select>
-                                        {options?.options.map(option => <Option value={option.id}>{option.name}</Option>)}
+                                        {options?.options.map(option => <Option value={option.optionId}>{option.name}</Option>)}
                                     </Select>
                                 </Form.Item>
                                 {/* value option */}
