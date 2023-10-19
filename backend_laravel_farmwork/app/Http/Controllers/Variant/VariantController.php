@@ -30,7 +30,7 @@ class VariantController extends Controller
             $variant = [];
             foreach ($result as  $key => $option_value) {
                 for ($i = 0; $i < count($option_value); $i++) {
-                    $option = OptionValue::find($option_value[$i])->value;
+                    $option = OptionValue::find($option_value[$i]);
                     $option_value[$i] = $option;
                 }
                 $variant[] = $option_value;
