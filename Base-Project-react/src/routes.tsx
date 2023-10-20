@@ -10,17 +10,15 @@ import AddProduct from "./components/admin/Products/addProduct";
 import CategoryDashboard from "./components/admin/categories/categoryDashboard";
 import AddCategory from "./components/admin/categories/addCategory";
 import UpdateCategory from "./components/admin/categories/updateCategory";
-import uploadImg from "../src/components/component/check/test";
 import Home from "./components/component/check/home";
-import Update from "./components/admin/Products/Update";
 import InForAdmin from "./components/admin/InforAdmin/infor";
 import Statistical from "./components/admin/InforAdmin/statistical";
 import NotFound from "./components/component/layout/NotFound";
 import DashboardUser from "./components/admin/user/dashboard";
-import App from "../src/components/component/check/test";
 import AddOptions from "./components/admin/Options/addOptions";
 import DashboardOptions from "./components/admin/Options/dashboard";
 import AddValueOptions from "./components/admin/Options/addValues";
+import App from "./components/component/check/test";
 
 
 
@@ -70,16 +68,6 @@ export const router = createBrowserRouter([
                 path: "statistical",
                 element: <Statistical />,
             },
-
-            {
-                path: "product/update/:id",
-                element: <Update />,
-            },
-            {
-                path: "product/update/:id",
-                element: <Update />,
-            },
-
             {
                 path: "categories",
                 element: <CategoryDashboard />

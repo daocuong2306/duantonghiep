@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('image');
             $table->string('code');
             $table->integer('id_category');
-            $table->integer('quantity');
+          
             $table->integer('discount_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
