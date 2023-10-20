@@ -32,7 +32,7 @@ const Update: React.FC = (id: string) => {
                         paddingBottom: 80,
                     },
                 }}
-               
+
             >
                 <Form layout="vertical" hideRequiredMark>
                     <Row gutter={16}>
@@ -97,7 +97,7 @@ const Update: React.FC = (id: string) => {
                         </Col>
                     </Row>
                 </Form>
-                <Variant />
+                <Variant id={id} />
             </Drawer>
         </>
     );

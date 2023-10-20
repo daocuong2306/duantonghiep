@@ -84,12 +84,6 @@ const Dashboard = () => {
                                     Loại
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Kích cỡ
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Màu sắc
-                                </th>
-                                <th scope="col" className="px-6 py-3">
                                     Hành động
                                 </th>
                             </tr>
@@ -123,8 +117,6 @@ const Dashboard = () => {
                                         <td className="px-6 py-4">{product.price}</td>
                                         <td className="px-6 py-4">{product.description}</td>
                                         <td className="px-6 py-4">{product.category_name}</td>
-                                        <td className="px-6 py-4">XS</td>
-                                        <td className="px-6 py-4">White</td>
                                         <td className="px-6 py-4 ">
                                             <div className="flex ">
                                                 <Update id={product.id} />

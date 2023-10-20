@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Button,
     Form,
@@ -8,19 +8,32 @@ import {
     Row
 } from 'antd';
 import { useGetOptionsQuery } from '@/api/option';
+import SelectVarint from './selectVarint';
+import { useGetValueMutation } from '@/api/variant';
 const { Option } = Select;
 
 
-const onFinish = (values: any) => {
-    console.log('Received values of form: ', values);
-};
 
-const Variant: React.FC = () => {
+const Variant: React.FC = (id: string) => {
     const { data: options } = useGetOptionsQuery();
-    console.log(options?.options)
+    const [open, setOpen] = useState(false);
+    const [showSelect, setShowSelect] = useState(false);
+    const [selectVariants, { data: variants, isLoading, error }] = useGetValueMutation();
+    const onFinish = (values: any) => {
+        console.log('Received values of form: ', values);
+        setOpen(true)
+        setShowSelect(true);
+        const result = Object.values(values);
+
+        selectVariants({
+            "arrayValue": result
+        })
+
+        console.log(open);
+    };
     return (
         <>
-
+            {showSelect && <SelectVarint check={open} data={variants} id={id} />}
             <Form
                 name="validate_other"
                 onFinish={onFinish}
@@ -36,7 +49,7 @@ const Variant: React.FC = () => {
                                 rules={[{ required: true, message: 'Please select your favourite colors!', type: 'array' }]}
                             >
                                 <Select mode="multiple" placeholder="Please select favourite colors">
-                                    {option?.value.map((value, index) => <Option value={index + 1}>{value.name}</Option>)}
+                                    {option?.value.map((value) => <Option value={value.id}>{value.name}</Option>)}
                                 </Select>
                             </Form.Item>
                         </Col>
