@@ -16,6 +16,7 @@ import {
 } from 'redux-persist';
 
 import storage from 'redux-persist/lib/storage';
+import variantApi, { variantReducer } from '@/api/variant';
 
 const persistConfig = {
     key: 'root',
@@ -27,9 +28,10 @@ const rootReducer = combineReducers({
     [productApi.reducerPath]: productReducer,
     [userApi.reducerPath]: userReducer,
     [categoryApi.reducerPath]: categoryReducer,
-    [optionsApi.reducerPath]: optionsReducer
+    [optionsApi.reducerPath]: optionsReducer,
+    [variantApi.reducerPath]: variantReducer
 })
-const middleware = [productApi.middleware, userApi.middleware, categoryApi.middleware , optionsApi.middleware ]
+const middleware = [productApi.middleware, userApi.middleware, categoryApi.middleware, optionsApi.middleware, variantApi.middleware]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 export const store = configureStore({
