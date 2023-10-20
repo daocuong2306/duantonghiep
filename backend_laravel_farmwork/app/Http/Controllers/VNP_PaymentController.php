@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class VNP_PaymentController extends Controller
 {
@@ -97,6 +98,63 @@ class VNP_PaymentController extends Controller
         // $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
         return response()->json([
             'vnp_SecureHash' => $inputData
+        ]);
+    }
+    public function callAPIAuth(Request $request)
+    {
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $vnp_TmnCode = "3RL42V4Z"; //Mã định danh merchant kết nối (Terminal Id)
+        $vnp_HashSecret = "XGFKKDILCHTBYGSJYWUZPIJQCNHEKXQZ"; //Secret key
+        $apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
+
+        $vnp_RequestId = rand(1, 10000); // Mã truy vấn
+        $vnp_Command = "querydr"; // Mã api
+        $vnp_TxnRef = $request->input("txnRef"); // Mã tham chiếu của giao dịch
+        $vnp_OrderInfo = "Query transaction"; // Mô tả thông tin
+        //$vnp_TransactionNo= ; // Tuỳ chọn, Mã giao dịch thanh toán của CTT VNPAY
+        $vnp_TransactionDate = $request->input("transactionDate"); // Thời gian ghi nhận giao dịch
+        $vnp_CreateDate = date('YmdHis'); // Thời gian phát sinh request
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR']; // Địa chỉ IP của máy chủ thực hiện gọi API
+
+        $datarq = array(
+            "vnp_RequestId" => $vnp_RequestId,
+            "vnp_Version" => "2.1.0",
+            "vnp_Command" => $vnp_Command,
+            "vnp_TmnCode" => $vnp_TmnCode, // Cần cung cấp giá trị vnp_TmnCode từ file cấu hình
+            "vnp_TxnRef" => $vnp_TxnRef,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            //$vnp_TransactionNo= ;
+            "vnp_TransactionDate" => $vnp_TransactionDate,
+            "vnp_CreateDate" => $vnp_CreateDate,
+            "vnp_IpAddr" => $vnp_IpAddr
+        );
+
+        $format = '%s|%s|%s|%s|%s|%s|%s|%s|%s';
+
+        $dataHash = sprintf(
+            $format,
+            $datarq['vnp_RequestId'], //1
+            $datarq['vnp_Version'], //2
+            $datarq['vnp_Command'], //3
+            $datarq['vnp_TmnCode'], //4
+            $datarq['vnp_TxnRef'], //5
+            $datarq['vnp_TransactionDate'], //6
+            $datarq['vnp_CreateDate'], //7
+            $datarq['vnp_IpAddr'], //8
+            $datarq['vnp_OrderInfo'] //9
+        );
+
+        // $vnp_HashSecret = config('app.vnp_HashSecret'); // Lấy giá trị vnp_HashSecret từ file cấu hình
+
+        $checksum = hash_hmac('SHA512', $dataHash, $vnp_HashSecret);
+        $datarq["vnp_SecureHash"] = $checksum;
+        $response = Http::post($apiUrl, $datarq);
+        $txnData = $response->body();
+        $ispTxn = json_decode($txnData, true);
+
+        return response()->json([
+            // 'api_response' => $txnData,
+            'api_response'=>$ispTxn
         ]);
     }
 }

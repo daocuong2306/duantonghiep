@@ -138,6 +138,7 @@ Route::post('sendWelcomeEmail', [EmailController::class, 'sendEmail']);
 //VNP
 Route::post('createPayment', [VNP_PaymentController::class, 'CreatePayment']);
 Route::get('returnPayment', [VNP_PaymentController::class, 'VNP_Return']);
+Route::post('call-api-auth', [VNP_PaymentController::class, 'callAPIAuth']);
 // Check nếu chưa đăng nhập sẽ nhảy vào route này
 Route::get('/check', function () {
     return response()->json([
