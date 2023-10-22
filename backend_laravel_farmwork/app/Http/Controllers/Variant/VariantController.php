@@ -40,7 +40,6 @@ class VariantController extends Controller
                     'variant' => $variant
                 ],
                 200
-
             );
         } else {
             return response()->json(
@@ -54,27 +53,49 @@ class VariantController extends Controller
     public function addVariant(Request $request)
     {
         $varants = $request->variants;
+
         foreach ($varants as $item) {
-            $sku = new SKU();
-            $sku->price = $item['price'];
-            $sku->stoke = $item['stock'];
-            $sku->sku = $item['sku'];
-            $sku->save();
-            foreach ($item['option_value'] as $option) {
-                // dd($item['option_value']);
-                $result[] = [
-                    'option_value_id' => $option,
-                    'product_id' => $item['product_id'],
-                    'sku_id' => $sku->id
-                ];
+            $validator = Validator::make([
+                $item, [
+                    "price" => 'required|number',
+                    "stock" => 'required|number',
+                    "sku" => 'required|unique:skus',
+                ]
+
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 422,
+                    'errors' => $validator->messages(),
+                ], 422);
+            } else {
+                $sku = new SKU();
+                $sku->price = $item['price'];
+                $sku->stoke = $item['stock'];
+                $sku->sku = $item['sku'];
+                $sku->save();
+                foreach ($item['option_value'] as $option) {
+                    // dd($item['option_value']);
+                    $result[] = [
+                        'option_value_id' => $option,
+                        'product_id' => $item['product_id'],
+                        'sku_id' => $sku->id
+                    ];
+                }
             }
         }
-        Variant::insert($result);
-        $listAll = Variant::all();
-        return response()->json([
-            'listAll' => $listAll,
-            'isOke' => 'true',
-        ]);
+        if ($result) {
+            Variant::insert($result);
+            $listAll = Variant::all();
+            return response()->json([
+                'listAll' => $listAll,
+                'isOke' => 'true',
+            ]);
+        } else {
+            return response()->json([
+                'error' => '~~~~~~~~~~~~~'
+            ], 404);
+        }
     }
     public function listVariant($id)
     {
@@ -95,8 +116,26 @@ class VariantController extends Controller
                 )
                 ->get();
             $handleVariant = collect($variant)->groupBy('sku_id');
+            // dd($handleVariant);
+            $result = [];
+            foreach ($handleVariant as $key =>  $items) {
+                $value_array = [];
+                foreach ($items as  $value) {
+                    $value_array[] = $value->option_value;
+
+                    $result[$key] = [
+                        "product_id" => $value->product_id,
+                        "sku_id" => $value->sku_id,
+                        "skus_price" => $value->skus_price,
+                        "sku_code" => $value->sku_code,
+                        "option_value" => $value_array,
+
+                    ];
+                }
+            }
+
             return response()->json([
-                'handleVariant' => $handleVariant,
+                'handleVariant' => $result,
                 'isOk' => 'true',
             ], 200);
         } else {
