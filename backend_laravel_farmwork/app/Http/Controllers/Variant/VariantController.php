@@ -40,6 +40,7 @@ class VariantController extends Controller
                     'variant' => $variant
                 ],
                 200
+
             );
         } else {
             return response()->json(
@@ -55,13 +56,10 @@ class VariantController extends Controller
         $varants = $request->variants;
 
         foreach ($varants as $item) {
-            $validator = Validator::make([
-                $item, [
-                    "price" => 'required|number',
-                    "stock" => 'required|number',
-                    "sku" => 'required|unique:skus',
-                ]
-
+            $validator = Validator::make($item, [
+                "price" => 'required|integer',
+                "stock" => 'required|numeric',
+                "sku" => 'required|unique:skus',
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -88,7 +86,7 @@ class VariantController extends Controller
             Variant::insert($result);
             $listAll = Variant::all();
             return response()->json([
-                'listAll' => $listAll,
+                'msg' => 'success',
                 'isOke' => 'true',
             ]);
         } else {
