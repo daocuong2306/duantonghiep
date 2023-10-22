@@ -81,7 +81,7 @@ class ProductController extends Controller
             'description' => 'required',
             'status' => 'required',
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
-            'code' => 'required',
+            'code' => 'required|unique:product',
             // 'quantity' => 'required',
             'id_category' => 'required',
         ]);
@@ -163,7 +163,7 @@ class ProductController extends Controller
             'description' => 'required',
             'status' => 'required',
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
-            'code' => 'required',
+            'code' => 'required|unique:product',
             // 'quantity' => 'required',
             'id_category' => 'required',
           
