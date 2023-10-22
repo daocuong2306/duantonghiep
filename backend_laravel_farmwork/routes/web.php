@@ -14,11 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('template/admin');
 });
 
-//Category nè 
-Route::get('/index',[App\Http\Controllers\CategoryController::class,'index'])->name('category_index');
-Route::match(['GET','POST'],'/add',[App\Http\Controllers\CategoryController::class,'add'])->name('category_add');
-Route::match(['GET','POST'],'/edit/{id}',[App\Http\Controllers\CategoryController::class,'edit'])->name('category_edit');
-Route::get('/delete/{id}',[App\Http\Controllers\CategoryController::class,'delete'])->name('category_delete');
+//Category 
+Route::get('/category',[App\Http\Controllers\CategoryController::class,'index'])->name('category_index');
+Route::match(['GET','POST'],'/add_category',[App\Http\Controllers\CategoryController::class,'add'])->name('category_add');
+Route::match(['GET','POST'],'/edit_category/{id}',[App\Http\Controllers\CategoryController::class,'edit'])->name('category_edit');
+Route::get('/delete_category/{id}',[App\Http\Controllers\CategoryController::class,'delete'])->name('category_delete');
+//the  router product
+Route::get('/productlist',[App\Http\Controllers\ProductController::class,'index'])->name('product_index');
+Route::match(['GET','POST'],'/add_product',[App\Http\Controllers\ProductController::class,'addproducts'])->name('product_add');
+Route::match(['GET','POST'],'/edit_product/{id}',[App\Http\Controllers\ProductController::class,'editproduct'])->name('product_edit');
+Route::get('/delete_product/{id}',[App\Http\Controllers\ProductController::class,'deleteproduct'])->name('product_delete');
