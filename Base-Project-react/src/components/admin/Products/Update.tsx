@@ -6,7 +6,6 @@ import { useGetProductByIdQuery } from '@/api/product';
 import Variant from './Variant';
 const Update: React.FC = (id: string) => {
     const [open, setOpen] = useState(false);
-
     const showDrawer = () => {
         setOpen(true);
     };
