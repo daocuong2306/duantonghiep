@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import type { TableColumnsType } from 'antd';
 import { Button, Table, Space, Image } from 'antd';
+import Update from './Update';
 const Dashboard = () => {
     const [find, setFind] = useState({})
     const { data: products, isLoading } = useGetProductsQuery(find);
@@ -13,11 +14,6 @@ const Dashboard = () => {
             deleteProduct(id);
             alert("da xoa")
         }
-    }
-    const selectProduct = (event: any) => {
-        const newValue = event.target.value;
-        console.log(newValue);
-        setFind({ keyword: newValue });
     }
     // const expandedRowRender = (e) => {
     //     const columns: TableColumnsType<any> = [
@@ -41,6 +37,7 @@ const Dashboard = () => {
         {
             title: '', key: 'id', dataIndex: 'id', render: (dataIndex) => {
                 return <>
+                    <Update id={dataIndex} />
                     <Space wrap>
                         <Button type="primary" danger onClick={() => deleteP(dataIndex)}>
                             Xóa
