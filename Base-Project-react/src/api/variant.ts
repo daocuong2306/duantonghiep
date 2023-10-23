@@ -34,13 +34,18 @@ const variantApi = createApi({
                 body: product
             }),
             invalidatesTags: ['variant']
-        })
+        }),
+        getValueId: builder.query<any>({
+            query: (id) => `listvariant/${id}`,
+            providesTags: ['Category']
+        }),
     })
 });
 
 export const {
     useGetValueMutation,
-    useAddValueMutation
+    useAddValueMutation,
+    useGetValueIdQuery
 } = variantApi;
 export const variantReducer = variantApi.reducer;
 

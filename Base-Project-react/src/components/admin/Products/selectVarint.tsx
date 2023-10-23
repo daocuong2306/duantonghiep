@@ -1,21 +1,14 @@
 import React, { useState } from 'react';
-import { Button, Modal, Table, Input, Form } from 'antd';
+import { Button, Modal, Table, Input, Form, notification } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useAddValueMutation } from '@/api/variant';
-
+import { Link, useNavigate } from "react-router-dom";
 const SelectVarint: React.FC = (check: boolean) => {
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(check.check || false);
     const valueVariant = check.data;
-    const [addVariant] = useAddValueMutation();
-    const handleOk = () => {
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            setOpen(false);
-        }, 3000);
-    };
-
+    const [addVariant, { data, isLoading, error }] = useAddValueMutation();
+    const url = useNavigate();
     const handleCancel = () => {
         setOpen(false);
     };
@@ -91,6 +84,22 @@ const SelectVarint: React.FC = (check: boolean) => {
             "variants": formDataArray
         })
     };
+    //thông báo lỗi
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (e: any) => {
+        api.open({
+            message: e,
+        });
+    };
+    if (error) {
+        console.log(error?.data.errors);
+        openNotification(error?.data.errors.sku[0]);
+    }
+
+    if (!isLoading && !error && data?.msg) {
+        openNotification(data?.msg);
+        url('/admin')
+    }
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
@@ -105,29 +114,23 @@ const SelectVarint: React.FC = (check: boolean) => {
             <Modal
                 visible={open} // Thay đổi "open" thành "visible"
                 title="Title"
-                onOk={handleOk}
                 onCancel={handleCancel}
-                footer={[
-                    <Button key="back" onClick={handleCancel}>
-                        Return
-                    </Button>,
-                    <Button key="submit" type="primary" loading={loading} onClick={handleOk}>
-                        Submit
-                    </Button>,
-                ]}
+                footer={null}
+                width={800} // Đặt chiều ngang thành 800px hoặc giá trị tùy chỉnh của bạn
             >
+                {contextHolder}
                 <Form
                     name="basic"
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 16 }}
-                    style={{ maxWidth: 600 }}
+                    style={{ maxWidth: 800 }}
                     initialValues={{ remember: true }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
                     <Table columns={columns} dataSource={variantData} />
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Form.Item wrapperCol={{ offset: 19, span: 16 }}>
                         <Button htmlType="submit">
                             Submit
                         </Button>
