@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     public function home(Request $request)
     {
-        $keyword = $request->query('key');
+        // $keyword = $request->query('key');
         $data = [];
         // $evaluate = DB::table('evaluate')
         //     ->join('users', 'evaluate.id_user', '=', 'users.id')
@@ -26,13 +26,13 @@ class HomeController extends Controller
         $categories = DB::table('category')->get();
         $productNew = Product::orderBy('created_at', 'desc')->limit(3)->get();
 
-        if ($keyword != '') {
-            $products = Product::where('name', 'like', "%$keyword%")
-                ->orWhere('code', 'like', "%$keyword%")
-                ->get();
-        } else {
+        // if ($keyword != '') {
+        //     $products = Product::where('name', 'like', "%$keyword%")
+        //         ->orWhere('code', 'like', "%$keyword%")
+        //         ->get();
+        // } else {
             $products = DB::table('product')->get();
-        }
+        // }
         // $data['evaluate'] = $evaluate;
         $data['products'] = $products;
         $data['categories'] = $categories;

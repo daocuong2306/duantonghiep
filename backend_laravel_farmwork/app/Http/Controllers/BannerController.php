@@ -11,14 +11,11 @@ class BannerController extends Controller
 {
     public function getNewBanner()
     {
-        $newestProducts = Banner::orderBy('created_at', 'desc')
-            ->limit(3)
-            ->get();
+        $newestProducts = Banner::all();
         // dd($newestProducts);
         if ($newestProducts->count() > 0) {
             return response()->json([
                 'status' => 200,
-                'message' => 'Successfull',
                 'banner' => $newestProducts,
                 'isOke' => 'true'
             ]);

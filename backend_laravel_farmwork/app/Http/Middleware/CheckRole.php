@@ -24,7 +24,7 @@ class CheckRole
             return $next($request);
         }
          
-        return response()->json(['message' => 'You are not Amin'], 401);
+        return response()->json(['message' => 'You are not Admin'], 401);
         
     }
 }
