@@ -95,8 +95,9 @@ class VariantController extends Controller
             ], 404);
         }
     }
-    public function listVariant($id)
+    public function listVariant(Request $request)
     {
+        $id=$request->id;
         if ($id) {
             $variant = DB::table('variants')
                 ->where('product_id', $id)

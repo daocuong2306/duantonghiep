@@ -42,11 +42,11 @@ Route::group([
 });
 //Check Role...... chỉ có ADMIN ........(Chức năng nào của Admin thì cho vào function của group route này nhé !)
 Route::group(['middleware' => ['auth:api', 'role']], function () {
-    Route::get('/who', function () { //
-        return response()->json([
-            'message' => 'You are Admin.'
-        ]);
-    });
+    // Route::get('/who', function () { //
+    //     return response()->json([
+    //         'message' => 'You are Admin.'
+    //     ]);
+    // });
     Route::get('user/show_one/{id}', [UserController::class, 'show']);
     Route::delete('auth/logout', [AuthController::class, 'logout']);
     Route::get('user/listAll', [UserController::class, 'index']);
@@ -118,7 +118,7 @@ Route::delete('optionvalues/delete/{id}', [OptionValueController::class, 'destro
 Route::get('variants', [VariantController::class, 'index']);
 Route::post('variants/getvalue', [VariantController::class, 'getOptionValue']);
 Route::post('variants/addvariant', [VariantController::class, 'addVariant']);
-Route::get('variants/listvariant/{id}', [VariantController::class, 'listVariant']);
+Route::get('variants/listvariant', [VariantController::class, 'listVariant']);
 // getOneProduct
 Route::get('detail/getone/{id}', [DetailedProductController::class, 'getOneProduct']);
 //Discount
@@ -128,7 +128,7 @@ Route::get('discounts/show/{id}', [DiscountController::class, 'show']);
 Route::post('discounts/update/{id}', [DiscountController::class, 'update']);
 Route::delete('discounts/delete/{id}', [DiscountController::class, 'destroy']);
 //Banner
-Route::get('banner/listnew', [BannerController::class, 'getNewBanner']);
+Route::get('banner/list', [BannerController::class, 'getNewBanner']);
 Route::post('banner/add', [BannerController::class, 'addBanner']);
 Route::delete('banner/delete/{id}', [BannerController::class, 'deleteBanner']);
 // Home
