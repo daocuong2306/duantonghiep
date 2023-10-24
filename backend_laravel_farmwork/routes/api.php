@@ -85,6 +85,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('evaluate/listbyuser', [EvaluateController::class, 'getEvalueByUser']);
     //Images
     Route::post('image/addimagecomment', [ImageController::class, 'addImageComment']);
+    //Cart
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart/add', [CartController::class, 'store']); 
 });
 // Sanctum---------------------------------------------------
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
