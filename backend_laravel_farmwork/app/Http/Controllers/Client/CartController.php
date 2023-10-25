@@ -15,9 +15,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        $userId = auth()->user()->id;
-
-        $cartItems = Cart::where('user_id', $userId)->get();
+        $cartItems = session()->get('cart_items') ?? [];
 
         return response()->json(['cart_items' => $cartItems]);
     }
@@ -31,32 +29,35 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $productId = $request->input('product_id');
-        $skuId = $request->input('');
+        $skuId = $request->input('sku_id');
         $quantity = $request->input('quantity');
 
-        // Lấy ID của người dùng từ session hoặc JWT token, tùy thuộc vào cách xác thực người dùng
-        $userId = auth()->user()->id;
+        $cartItems = session()->get('cart_items') ?? [];
 
-        $cartItem = Cart::where('user_id', $userId)
-            ->where('product_id', $productId)
-            ->where('sku_id', $skuId)
-            ->first();
+        // Tìm kiếm sản phẩm trong giỏ hàng
+        $cartItem = null;
+        foreach ($cartItems as $key => $item) {
+            if ($item['product_id'] == $productId && $item['sku_id'] == $skuId) {
+                $cartItem = $key;
+                break;
+            }
+        }
 
-        if ($cartItem) {
+        if ($cartItem !== null) {
             // Nếu sản phẩm đã tồn tại trong giỏ hàng, cập nhật số lượng
-            $cartItem->quantity += $quantity;
-            $cartItem->save();
+            $cartItems[$cartItem]['quantity'] += $quantity;
         } else {
-            // Nếu sản phẩm chưa có trong giỏ hàng, tạo mới
-            $cartItem = Cart::create([
-                'user_id' => $userId,
+            // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới
+            $cartItems[] = [
                 'product_id' => $productId,
                 'sku_id' => $skuId,
                 'quantity' => $quantity,
-            ]);
+            ];
         }
 
-        return response()->json(['message' => 'Added to cart', 'cart_item' => $cartItem]);
+        session()->put('cart_items', $cartItems);
+
+        return response()->json(['message' => 'Added to cart', 'cart_items' => $cartItems]);
     }
 
     /**
