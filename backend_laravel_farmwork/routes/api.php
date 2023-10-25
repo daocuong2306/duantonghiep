@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\DetailedProductController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\UserSettingController;
