@@ -4,10 +4,13 @@ import { useState } from 'react'
 import type { TableColumnsType } from 'antd';
 import { Button, Table, Space, Image } from 'antd';
 import Update from './Update';
+import { useGetValueIdQuery } from '@/api/variant';
 const Dashboard = () => {
     const [find, setFind] = useState({})
-    const { data: products, isLoading } = useGetProductsQuery(find);
+    const [id, setId] = useState(null)
+    const { data: products } = useGetProductsQuery(find);
     const [deleteProduct] = useRemoveProductMutation()
+    const { data: variants, isLoading } = useGetValueIdQuery(id)
     const deleteP = (id: number) => {
         const check = window.confirm("Are you sure you want to delete");
         if (check) {
@@ -15,12 +18,30 @@ const Dashboard = () => {
             alert("da xoa")
         }
     }
-    // const expandedRowRender = (e) => {
-    //     const columns: TableColumnsType<any> = [
-    //         { title: 'Name', dataIndex: 'name', key: 'name' },
-    //     ];
-    //     return <Table columns={columns} dataSource={e.value} pagination={false} />;
-    // };
+
+    const expandedRowRender = (e) => {
+        setId(e.id)
+        const columns: TableColumnsType<any> = [
+            {
+                title: 'Tên',
+                dataIndex: 'option_value',
+                key: 'name',
+                render: (dataIndex) => {
+                    if (Array.isArray(dataIndex)) {
+                        return dataIndex.join('- ');
+                    } else {
+                        return dataIndex;
+                    }
+                }
+            },
+            { title: 'Giá', dataIndex: 'skus_price', key: 'price' },
+        ];
+        const data: any[] = variants ? Object.values(variants.handleVariant) : [];
+        console.log(data);
+
+        return <Table columns={columns} dataSource={data} pagination={false} />
+    };
+
     const columns: TableColumnsType<any> = [
         { title: 'Tên', dataIndex: 'name', key: 'name' },
         {
@@ -55,7 +76,7 @@ const Dashboard = () => {
             </Space>
             <Table
                 columns={columns}
-                // expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
+                expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
                 dataSource={data}
             />
         </div >
