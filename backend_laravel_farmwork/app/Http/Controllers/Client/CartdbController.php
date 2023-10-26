@@ -100,7 +100,10 @@ class CartdbController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $cart = Cart::findOrFail($id);
+        $cart->update($request->only('quantity'));
+    
+        return response()->json(['message' => 'Cart updated successfully']);
     }
 
     /**

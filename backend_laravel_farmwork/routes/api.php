@@ -93,6 +93,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/cart', [CartdbController::class, 'index']);
     Route::post('/cart/add', [CartdbController::class, 'store']); 
+    Route::post('/cart/update/{id}', [CartdbController::class, 'update']); 
     Route::delete('/cart/delete/{id}', [CartdbController::class, 'destroy']); 
 });
 // Sanctum---------------------------------------------------
