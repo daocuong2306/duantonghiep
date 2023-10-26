@@ -36,7 +36,10 @@ const variantApi = createApi({
             invalidatesTags: ['variant']
         }),
         getValueId: builder.query<any>({
-            query: (id) => `listvariant/${id}`,
+            query: (id) => ({
+                url: `listvariant`,
+                params: { id },
+            }),
             providesTags: ['Category']
         }),
     })
