@@ -109,6 +109,7 @@ class VariantController extends Controller
                     'variants.sku_id',
                     'variants.option_value_id',
                     'skus.price AS skus_price',
+                    'skus.stoke AS sku_stock',
                     'skus.sku AS sku',
                     'skus.barcode AS sku_code',
                     'option_values.value AS option_value'
@@ -120,6 +121,7 @@ class VariantController extends Controller
             foreach ($handleVariant as $key =>  $items) {
                 $value_array = [];
                 foreach ($items as  $value) {
+                    // dd($value);
                     $value_array[] = $value->option_value;
 
                     $result[$key] = [
@@ -127,7 +129,9 @@ class VariantController extends Controller
                         "sku_id" => $value->sku_id,
                         "skus_price" => $value->skus_price,
                         "sku_code" => $value->sku_code,
-                        "option_value" => $value_array,
+                        "stock"=> $value->sku_stock,
+                        "option_value" => $value_array
+                        
 
                     ];
                 }
