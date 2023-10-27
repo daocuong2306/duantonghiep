@@ -21,6 +21,7 @@ const Dashboard = () => {
 
     const expandedRowRender = (e) => {
         setId(e.id)
+        console.log(e);
         const columns: TableColumnsType<any> = [
             {
                 title: 'Tên',
@@ -35,7 +36,7 @@ const Dashboard = () => {
                 }
             },
             { title: 'Giá', dataIndex: 'skus_price', key: 'price' },
-            { title: 'Số Lượng', dataIndex: 'skus_price', key: 'price' },
+            { title: 'Số Lượng', dataIndex: 'stock', key: 'stock' },
         ];
         const data: any[] = variants ? Object.values(variants.handleVariant) : [];
         console.log(data);
@@ -77,7 +78,10 @@ const Dashboard = () => {
             </Space>
             <Table
                 columns={columns}
-                expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
+                expandable={{
+                    expandedRowRender,
+                    defaultExpandedRowKeys: [0], // Set the key of the row you want to be expanded by default
+                }}
                 dataSource={data}
             />
         </div >
