@@ -18,33 +18,8 @@ class CartdbController extends Controller
      */
     public function index()
     {
-        $carts = Cart::where('user_id', auth()->user()->id)->get();
-        $data = [];
-    
-        foreach ($carts as $cart) {
-            $product = Product::find($cart->product_id);
-    
-            if ($product) {
-                $sku = Sku::find($cart->sku_id);
-    
-                $skuData = [
-                    'sku' => $sku->sku,
-                    'barcode' => $sku->barcode,
-                    'price' => $sku->price,
-                    'stock' => $sku->stoke,
-                ];
-    
-                $data[] = [
-                    'id' => $cart->id,
-                    'product_id' => $cart->product_id,
-                    'name_product' => $product->name,
-                    'quantity' => $cart->quantity,
-                    'sku_id' => [$cart->sku_id => $skuData],
-                ];
-            }
-        }
-    
-        return response()->json($data);
+        $cart = Cart::with('variant')->get(['id','user_id','product_id', 'sku_id', 'quantity']);
+        return response()->json($cart, 200);
     }
 
     /**
@@ -56,6 +31,7 @@ class CartdbController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
             'product_id' => 'required|exists:product,id',
             'sku_id' => 'required|exists:skus,id',
             'quantity' => 'required|integer|min:1',
@@ -65,7 +41,7 @@ class CartdbController extends Controller
             return response()->json(['errors' => $validator->errors()], 400);
         }
     
-        $user_id = auth()->user()->id;
+        $user_id = $request->user_id;
         $product_id = $request->product_id;
         $sku_id = $request->sku_id;
         $quantity = $request->quantity;
@@ -89,11 +65,10 @@ class CartdbController extends Controller
             $newCart->save();
         }
     
-        return response()
-        ->json([
+        return response()->json([
             'status' => 200,
             'message' => 'Thêm vào giỏ hàng thành công'
-        ],200);
+        ], 200);
     }
 
     /**
