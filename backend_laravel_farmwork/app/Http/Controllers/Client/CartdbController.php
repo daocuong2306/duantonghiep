@@ -37,7 +37,7 @@ class CartdbController extends Controller
                 $data[] = [
                     'id' => $cart->id,
                     'product_id' => $cart->product_id,
-                    'name' => $product->name,
+                    'name_product' => $product->name,
                     'quantity' => $cart->quantity,
                     'sku_id' => [$cart->sku_id => $skuData],
                 ];
@@ -89,7 +89,11 @@ class CartdbController extends Controller
             $newCart->save();
         }
     
-        return response()->json(['message' => 'Thêm vào giỏ hàng thành công']);
+        return response()
+        ->json([
+            'status' => 200,
+            'message' => 'Thêm vào giỏ hàng thành công'
+        ],200);
     }
 
     /**
@@ -103,7 +107,9 @@ class CartdbController extends Controller
         $cart = Cart::findOrFail($id);
         $cart->update($request->only('quantity'));
     
-        return response()->json(['message' => 'Cart updated successfully']);
+        return response()->json([
+            'status' => 200,
+            'message' => 'update thành công giỏ hàng '],200);
     }
 
     /**
@@ -119,7 +125,7 @@ class CartdbController extends Controller
             $cart->delete();
             return response()->json([
                 'status' => 200,
-                'message' => 'Delete Successfull',
+                'message' => 'Xóa thành công ',
             ], 200);
         } else {
             return response()->json([
