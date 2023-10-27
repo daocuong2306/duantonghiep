@@ -18,8 +18,26 @@ class CartdbController extends Controller
      */
     public function index()
     {
-        $cart = Cart::with('variant')->get(['id','user_id','product_id', 'sku_id', 'quantity']);
-        return response()->json($cart, 200);
+        $carts = Cart::with(['variant', 'sku'])->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity']);
+
+        $formattedCarts = $carts->map(function ($cart) {
+            $optionValue = $cart->variant->option_value;
+            $optionValue = $optionValue ? [$optionValue->value] : [];
+            return [
+                'id' => $cart->id,
+                'user_id' => $cart->user_id,
+                'product_id' => $cart->product_id,
+                'sku_id' => $cart->sku_id,
+                'quantity' => $cart->quantity,
+                'variant' => [
+                    'id' => $cart->variant->id,
+                    'sku_price' => $cart->sku->price,
+                    'option_value' => $optionValue,
+                ],
+            ];
+        });
+    
+        return response()->json($formattedCarts, 200);
     }
 
     /**
