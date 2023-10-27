@@ -31,7 +31,7 @@ class CartdbController extends Controller
                     'sku' => $sku->sku,
                     'barcode' => $sku->barcode,
                     'price' => $sku->price,
-                    'stock' => $sku->stock,
+                    'stock' => $sku->stoke,
                 ];
     
                 $data[] = [
