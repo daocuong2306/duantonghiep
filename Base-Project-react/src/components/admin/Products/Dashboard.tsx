@@ -35,6 +35,7 @@ const Dashboard = () => {
                 }
             },
             { title: 'Giá', dataIndex: 'skus_price', key: 'price' },
+            { title: 'Số Lượng', dataIndex: 'skus_price', key: 'price' },
         ];
         const data: any[] = variants ? Object.values(variants.handleVariant) : [];
         console.log(data);
