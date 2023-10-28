@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\OptionValue;
 use App\Models\Product;
 use App\Models\SKU;
+use App\Models\Variant;
 use Illuminate\Support\Facades\Validator;
 
 class CartdbController extends Controller
@@ -17,29 +19,31 @@ class CartdbController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $carts = Cart::with(['variant', 'sku'])->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity']);
+{
+    $carts = Cart::with(['variant', 'sku'])->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity']);
 
-        $formattedCarts = $carts->map(function ($cart) {
-            $optionValue = $cart->variant->option_value;
-            $optionValue = $optionValue ? [$optionValue->value] : [];
-            return [
-                'id' => $cart->id,
-                'user_id' => $cart->user_id,
-                'product_id' => $cart->product_id,
-                'sku_id' => $cart->sku_id,
-                'quantity' => $cart->quantity,
-                'variant' => [
-                    'id' => $cart->variant->id,
-                    'sku_price' => $cart->sku->price,
-                    'option_value' => $optionValue,
-                ],
-            ];
-        });
-    
-        return response()->json($formattedCarts, 200);
-    }
+    $formattedCarts = $carts->map(function ($cart) {
+        $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+        $optionValues = array_unique($optionValues);
 
+        $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+
+        return [
+            'id' => $cart->id,
+            'user_id' => $cart->user_id,
+            'product_id' => $cart->product_id,
+            'sku_id' => $cart->sku_id,
+            'quantity' => $cart->quantity,
+            'variant' => [
+                'id' => $cart->variant->id,
+                'sku_price' => $cart->sku->price,
+                'option_value' => $optionValuesData,
+            ],
+        ];
+    });
+
+    return response()->json($formattedCarts, 200);
+}
     /**
      * Store a newly created resource in storage.
      *
