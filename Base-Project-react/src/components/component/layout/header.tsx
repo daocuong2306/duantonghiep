@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Input } from "@material-tailwind/react";
+import Image from '@/assets/image/395664742_238305892304631_1626048229353873057_n.png'
 const Header = () => {
   const token = localStorage.getItem("header")
   const url = useNavigate()
@@ -14,8 +15,8 @@ const Header = () => {
         <div className="px-4 mx-auto sm:px-6 lg:px-8">
           <nav className="flex items-center justify-between h-16 lg:h-20">
             <div className="flex">
-              <Link to="/" className="flex mr-10">
-                <img className="w-auto h-8 lg:h-10" src="../../../../img/blob.jpg" alt="" />
+              <Link to="/" className="">
+                <img className="" src={Image} alt="Transistor" width="150" height="100"></img>
               </Link>
               <div className="hidden lg:flex lg:items-center lg:ml-auto lg:space-x-10">
                 <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Features </a>
