@@ -25,20 +25,20 @@ class CartdbController extends Controller
     $formattedCarts = $carts->map(function ($cart) {
         $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
         $optionValues = array_unique($optionValues);
-
         $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
 
         return [
             'id' => $cart->id,
             'user_id' => $cart->user_id,
             'product_id' => $cart->product_id,
+            'name_product' => $cart->product->name,
+            'price_product' => $cart->product->price,
+            'image_product' => $cart->product->image,
             'sku_id' => $cart->sku_id,
             'quantity' => $cart->quantity,
-            'variant' => [
-                'id' => $cart->variant->id,
-                'sku_price' => $cart->sku->price,
-                'option_value' => $optionValuesData,
-            ],
+
+            'sku_price' => $cart->sku->price,
+            'option_value' => $optionValuesData,
         ];
     });
 
