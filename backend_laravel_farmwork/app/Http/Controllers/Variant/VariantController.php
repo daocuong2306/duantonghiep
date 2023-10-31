@@ -97,7 +97,7 @@ class VariantController extends Controller
     }
     public function listVariant(Request $request)
     {
-        $id=$request->id;
+        $id = $request->id;
         if ($id) {
             $variant = DB::table('variants')
                 ->where('product_id', $id)
@@ -129,9 +129,9 @@ class VariantController extends Controller
                         "sku_id" => $value->sku_id,
                         "skus_price" => $value->skus_price,
                         "sku_code" => $value->sku_code,
-                        "stock"=> $value->sku_stock,
+                        "stock" => $value->sku_stock,
                         "option_value" => $value_array
-                        
+
 
                     ];
                 }
@@ -145,6 +145,44 @@ class VariantController extends Controller
             return response()->json([
                 'error' => 'Không có sản phẩm này'
             ], 404);
+        }
+    }
+    public function deleteVariant($id)
+    {
+        //delete variant by sku_id
+        $variants = Variant::where('sku_id', $id)->get();
+        $sku=SKU::find($id);
+        if ($variants->isEmpty()) {
+            return response()->json(['message' => 'Không tìm thấy biến thể'], 404);
+        }
+        // Xóa tất cả các biến thể
+        foreach ($variants as $variant) {
+            $variant->delete();
+        }
+        $sku->delete();
+        return response()->json(['message' => 'Biến thể đã được xóa thành công'], 200);
+    }
+    public function updateVariant(Request $request, $id)
+    {
+        $variant = Variant::where('sku_id', $id)->first();
+
+        if (!$variant) {
+            return response()->json(['message' => 'Không tìm thấy biến thể'], 404);
+        } else {
+            $validator = Validator::make($request->all(), [
+                "price" => 'required|integer',
+                "stock" => 'required|numeric',
+                "sku" => 'required|unique:skus',
+            ]);
+            $sku = SKU::find($id);
+            $sku->update([
+                "price" => $request->price,
+                "stoke" => $request->stock,
+                "sku" => $request->sku
+            ]);
+            return response()->json([
+                'MSG' => 'update successful',
+            ]);
         }
     }
 }
