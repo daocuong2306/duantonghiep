@@ -62,9 +62,10 @@ class DetailedProductController extends Controller
             }
             if ($sku) {
                 $priceSku = DB::table('skus')
-                    ->select('price AS sku_price')
+                    ->select('price AS sku_price','id AS sku_id')
                     ->where('id', $sku)
                     ->get();
+                    // dd($priceSku);
             } else {
                 $error = 'sản phẩm không có biến thể này';
                 $sku = null;
