@@ -129,6 +129,9 @@ Route::get('variants', [VariantController::class, 'index']);
 Route::post('variants/getvalue', [VariantController::class, 'getOptionValue']);
 Route::post('variants/addvariant', [VariantController::class, 'addVariant']);
 Route::get('variants/listvariant', [VariantController::class, 'listVariant']);
+Route::get('variants/deletevariant/{id}', [VariantController::class, 'deleteVariant']);
+Route::post('variants/updatevariant/{id}', [VariantController::class, 'updateVariant']);
+
 // getOneProduct
 Route::get('detail/getone/{id}', [DetailedProductController::class, 'getOneProduct']);
 //Discount
