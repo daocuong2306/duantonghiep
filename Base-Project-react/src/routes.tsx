@@ -18,8 +18,7 @@ import DashboardUser from "./components/admin/user/dashboard";
 import AddOptions from "./components/admin/Options/addOptions";
 import DashboardOptions from "./components/admin/Options/dashboard";
 import AddValueOptions from "./components/admin/Options/addValues";
-import App from "./components/component/check/test";
-import ListVariant from "./components/admin/Products/listVariant";
+import ListVariant from "./components/admin/Products/ListVariant";
 
 
 
@@ -85,10 +84,10 @@ export const router = createBrowserRouter([
                 path: 'user',
                 element: <DashboardUser />
             },
-            {
-                path: 'test',
-                element: <App />
-            },
+            // {
+            //     path: 'test',
+            //     element: <App />
+            // },
             {
                 path: 'Options/add',
                 element: <AddOptions />

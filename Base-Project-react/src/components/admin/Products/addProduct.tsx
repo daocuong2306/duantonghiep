@@ -6,7 +6,7 @@ import { useGetCategoriesQuery } from "../../../api/category";
 import { ICategory } from "../../../interface/category";
 import { Select } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { message, Upload, Modal } from 'antd';
+import { message, Upload, notification } from 'antd';
 import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 
@@ -35,7 +35,7 @@ const AddProduct = () => {
     const { data: categories } = useGetCategoriesQuery();
     const url = useNavigate()
     const readerRef = useRef<any>(null);
-    const [addProduct] = useAddProductMutation();
+    const [addProduct, { data: products }] = useAddProductMutation();
     const { control, handleSubmit, setValue, getValues, register } = useForm();
     //tìm và chọn select
     const onChange = (value: any) => {
@@ -129,7 +129,13 @@ const AddProduct = () => {
     // Filter `option.label` match the user type `input`
     const filterOption = (input: string, option?: { label: string; value: string }) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
-
+    // Notification
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (e) => {
+        api.open({
+            message: e,
+        });
+    };
     const onHandleSubmit = async (data: ICategory) => {
         const code = getValues('code');
         const description = getValues('description');
@@ -152,21 +158,26 @@ const AddProduct = () => {
         formData.append('image', selectedFile);
         try {
             const response = await addProduct(formData);
-
-            // Handle the response here if needed
-
-            console.log(response);
-
-            // Redirect to another page after successful form submission
-            // url('/admin/dashboard')
+            console.log("error", response?.error.data.errors);
+            if (response?.error.data.errors.image) {
+                openNotification("Bạn cần thêm ảnh cho sản phẩm")
+            } else if (response?.error.data.errors.code) {
+                openNotification("Vui lòng nhập hoặc nhập lại mã sản phẩm")
+            } else if (response?.error.data.errors.name) {
+                openNotification("Vui lòng nhập hoặc nhập lại tên sản phẩm")
+            }
         } catch (error) {
-            // Handle any errors that occurred during form submission
             console.error(error);
         }
     };
+    console.log(products);
+    if (products?.message == "Successfull") {
+        url('/admin/dashboard')
+    }
     const optionId = categories?.categories.map((item: any) => ({ value: item.id, label: item.name }));
 
     return <div>
+        {contextHolder}
         <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Thêm sản phẩm</h2>
         <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-2 ml-200 mr-200 ">
             <div className="col-span-1">
