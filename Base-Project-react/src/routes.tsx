@@ -101,6 +101,11 @@ export const router = createBrowserRouter([
                 path: 'Options/OptionsValue/add',
                 element: <AddValueOptions />
             }
+            ,
+            {
+                path: 'Variant/list/:id',
+                element: <ListVariant />
+            }
         ],
     },
     {

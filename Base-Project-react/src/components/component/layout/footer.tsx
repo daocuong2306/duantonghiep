@@ -20,7 +20,7 @@ const Footer = (props: Props) => {
 
                         <ul className="mt-8 flex gap-6">
                             <li>
-                                <a
+                                <a 
                                     href="/"
                                     rel="noreferrer"
                                     target="_blank"
