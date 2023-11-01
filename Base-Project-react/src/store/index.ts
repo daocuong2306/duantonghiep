@@ -18,7 +18,9 @@ import {
 import storage from 'redux-persist/lib/storage';
 import variantApi, { variantReducer } from '@/api/variant';
 import bannerApi, { bannerReducer } from '@/api/banner';
+
 import homeApi, { homeReducer } from '@/api/home';
+
 
 const persistConfig = {
     key: 'root',
