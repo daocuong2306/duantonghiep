@@ -4,6 +4,7 @@ import Product from '../layout/product'
 import Conten from '../layout/conten'
 import Category from '../layout/category'
 import Comment from '../layout/commen'
+import Example from '../layout/ListProduct'
 
 type Props = {}
 
@@ -12,7 +13,7 @@ const Home = (props: Props) => {
         <div>
             <Banner />
             <Product />
-            <Conten />
+            <Example/>
             <Category />
             <Comment />
         </div>
