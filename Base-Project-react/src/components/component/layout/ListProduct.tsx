@@ -1,74 +1,54 @@
-const products = [
-    {
-        id: 1,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-    },
-    {
-        id: 2,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-    },
-    {
-        id: 3,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-    },
-    {
-        id: 4,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-    }
-]
+import { useGetDataQuery } from "@/api/home"
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Example() {
-    return (
-        <div className="bg-white">
-            <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-                <h2 className="text-2xl font-bold tracking-tight text-gray-900 text-center">Product Hot</h2>
+    const { data } = useGetDataQuery()
+    const [hoveredProductId, setHoveredProductId] = useState(null);
+    const [isHovered, setIsHovered] = useState(false);
 
-                <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                    {products.map((product) => (
-                        <div key={product.id} className="group relative">
-                            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                                <img
-                                    src={product.imageSrc}
-                                    alt={product.imageAlt}
-                                    className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                                />
-                            </div>
-                            <div className="mt-4 flex justify-between">
-                                <div>
-                                    <h3 className="text-sm text-gray-700">
-                                        <a href={product.href}>
-                                            <span aria-hidden="true" className="absolute inset-0" />
-                                            {product.name}
-                                        </a>
-                                    </h3>
-                                    <p className="mt-1 text-sm text-gray-500">{product.color}</p>
-                                </div>
-                                <p className="text-sm font-medium text-gray-900">{product.price}</p>
+    return (
+        <div className="h-[80%]">
+            <div>
+                <h2 className="font-bold tracking-tight text-[#00ccff] text-center text-4xl pt-10">
+                    Sản phẩm
+                </h2>
+            </div>
+            <div className="container mx-auto lg:h-screen flex items-center justify-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {data?.data.products.map((product) => (
+                        <div
+                            key={product.id}
+                            className="max-w-sm mx-auto relative cursor-pointer border border-gray-200 rounded-lg shadow"
+                            onMouseEnter={() => {
+                                setHoveredProductId(product.id);
+                                setIsHovered(true);
+                            }}
+                            onMouseLeave={() => {
+                                setHoveredProductId(null);
+                                setIsHovered(false);
+                            }}
+                        >
+                            <img
+                                src={`http://localhost:8000${product.image}`}
+                                alt={`Img by Meriç Dağlı https://unsplash.com/@meric`}
+                                className="w-[384px] h-[480px] object-cover rounded-lg"
+                            />
+                            <div
+                                className={`absolute bottom-0 left-0 right-0 h-40 bg-black bg-opacity-50 backdrop-blur text-white p-4 rounded-b-lg opacity-0 transition-opacity duration-500 ${isHovered && hoveredProductId === product.id ? 'opacity-100' : ''
+                                    }`}
+                            >
+                                <h1 className="text-2xl font-semibold">
+                                    {product.name}
+                                </h1>
+                                <p className="mt-2">
+                                    <Link to="#" className="block text-center rounded bg-[#00ccff] px-12 py-3 text-sm font-medium text-white shadow hover:bg-white hover:text-[#00ccff] focus:outline-none focus:ring active:bg-[#00ccff] active:text-white sm:w-auto">Chi tiết</Link>
+                                </p>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
         </div>
-    )
+    );
 }
