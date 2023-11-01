@@ -75,48 +75,64 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $rules = [
             'name' => 'required|unique:product',
             'price' => 'required',
             'description' => 'required',
             'status' => 'required',
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
             'code' => 'required|unique:product',
-            // 'quantity' => 'required',
             'id_category' => 'required',
-        ]);
+        ];
+    
+        $messages = [
+            'name.required' => 'Vui lòng nhập tên sản phẩm.',
+            'name.unique' => 'Tên sản phẩm đã tồn tại.',
+            'price.required' => 'Vui lòng nhập giá sản phẩm.',
+            'description.required' => 'Vui lòng nhập mô tả sản phẩm.',
+            'status.required' => 'Vui lòng chọn trạng thái sản phẩm.',
+            'image.required' => 'Vui lòng chọn một hình ảnh.',
+            'image.image' => 'Tệp tải lên phải là hình ảnh.',
+            'image.mimes' => 'Hình ảnh phải có định dạng: jpg, png, jpeg hoặc gif.',
+            'image.max' => 'Kích thước tối đa cho phép của hình ảnh là 2048 KB.',
+            'code.required' => 'Vui lòng nhập mã sản phẩm.',
+            'code.unique' => 'Mã sản phẩm đã tồn tại.',
+            'id_category.required' => 'Vui lòng chọn danh mục.',
+        ];
+    
+        $validator = Validator::make($request->all(), $rules, $messages);
+    
         if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
                 'errors' => $validator->messages(),
             ], 422);
         } else {
-
             $products = new Product();
             $products->name = $request->name;
             $products->price = $request->price;
             $products->description = $request->description;
             $products->status = $request->status;
             $products->code = $request->code;
-            // $products->quantity = $request->quantity;
             $products->id_category = $request->id_category;
+    
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
                 $imageUrl = Storage::url($imagePath);
                 $products->image = $imageUrl;
             }
-
+    
             $products->save();
-
+    
             if ($products) {
                 return response()->json([
                     'status' => 200,
-                    'message' => 'Successfull',
+                    'message' => 'Thêm sản phẩm thành công.',
                 ], 200);
             } else {
                 return response()->json([
                     'status' => 500,
-                    'message' => 'Wrong',
+                    'message' => 'Có lỗi xảy ra khi thêm sản phẩm.',
                 ], 500);
             }
         }
@@ -167,7 +183,32 @@ class ProductController extends Controller
             // 'quantity' => 'required',
             'id_category' => 'required',
           
-        ]);
+        ]);        $rules = [
+            'name' => 'required|unique:product',
+            'price' => 'required',
+            'description' => 'required',
+            'status' => 'required',
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
+            'code' => 'required|unique:product',
+            'id_category' => 'required',
+        ];
+    
+        $messages = [
+            'name.required' => 'Vui lòng nhập tên sản phẩm.',
+            'name.unique' => 'Tên sản phẩm đã tồn tại.',
+            'price.required' => 'Vui lòng nhập giá sản phẩm.',
+            'description.required' => 'Vui lòng nhập mô tả sản phẩm.',
+            'status.required' => 'Vui lòng chọn trạng thái sản phẩm.',
+            'image.required' => 'Vui lòng chọn một hình ảnh.',
+            'image.image' => 'Tệp tải lên phải là hình ảnh.',
+            'image.mimes' => 'Hình ảnh phải có định dạng: jpg, png, jpeg hoặc gif.',
+            'image.max' => 'Kích thước tối đa cho phép của hình ảnh là 2048 KB.',
+            'code.required' => 'Vui lòng nhập mã sản phẩm.',
+            'code.unique' => 'Mã sản phẩm đã tồn tại.',
+            'id_category.required' => 'Vui lòng chọn danh mục.',
+        ];
+    
+        $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
