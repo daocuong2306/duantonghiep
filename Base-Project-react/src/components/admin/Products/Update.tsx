@@ -4,19 +4,29 @@ import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from
 import { Image } from 'antd';
 import { useGetProductByIdQuery } from '@/api/product';
 import Variant from './Variant';
+import { useGetCategoriesQuery } from '@/api/category';
 const Update: React.FC = (id: string) => {
     if (id) {
         const [open, setOpen] = useState(false);
         const showDrawer = () => {
             setOpen(true);
         };
-
+        const onChange = (value: any) => {
+            console.log(`selected ${value}`);
+            setselectedCate(value)
+        };
         const onClose = () => {
             setOpen(false);
         };
-        console.log(id);
+        const onSearch = (value: any) => {
+            console.log('search:', value);
+        };
+        const filterOption = (input: string, option?: { label: string; value: string }) =>
+            (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
         const { data: product } = useGetProductByIdQuery(id.id);
+        const { data: categories } = useGetCategoriesQuery();
         console.log(product);
+        const optionId = categories?.categories.map((item: any) => ({ value: item.id, label: item.name }));
         return (
             <>
                 <Button onClick={showDrawer} >
@@ -64,12 +74,17 @@ const Update: React.FC = (id: string) => {
                                     name="category"
                                     label="Loại"
                                     rules={[{ required: true, message: 'Please choose the type' }]}
-                                    initialValue={product?.product.description}
+                                    initialValue={product?.product.category_name}
                                 >
-                                    <Select placeholder="Please choose the type">
-                                        <Option value="private">Private</Option>
-                                        <Option value="public">Public</Option>
-                                    </Select>
+                                    <Select
+                                        showSearch
+                                        placeholder="Select a person"
+                                        optionFilterProp="children"
+                                        onChange={onChange}
+                                        onSearch={onSearch}
+                                        filterOption={filterOption}
+                                        options={optionId}
+                                    />
                                 </Form.Item>
                             </Col>
 

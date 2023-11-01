@@ -18,10 +18,10 @@ import DashboardUser from "./components/admin/user/dashboard";
 import AddOptions from "./components/admin/Options/addOptions";
 import DashboardOptions from "./components/admin/Options/dashboard";
 import AddValueOptions from "./components/admin/Options/addValues";
-// import App from "./components/component/check/test";
-// import ListVariant from "./components/admin/Products/listVariant";
+
 import BannerDashboard from "./components/admin/banner/listBanner";
 import AddBanner from "./components/admin/banner/addBanner";
+import DetailProduct from "./components/client/products/detail";
 
 
 
@@ -38,7 +38,11 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: <Home />,
-            }
+            },
+            {
+                path: 'product/detail/:id',
+                element: <DetailProduct />
+            },
         ]
     },
     {

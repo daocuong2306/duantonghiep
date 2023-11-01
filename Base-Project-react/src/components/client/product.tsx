@@ -10,16 +10,17 @@ import { Link } from "react-router-dom";
 
 
 const Product = () => {
-    const token=localStorage.getItem("header")
-    const {data}=useGetUserQuery(`${token}`)
+    const token = localStorage.getItem("header")
+    const { data } = useGetUserQuery(`${token}`)
     console.log(data);
     const dispatch = useAppDispatch();
     const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
-    const { data: products, error, isLoading } = useGetProductsQuery();
+    const { data: products, error, isLoading } = useGetProductsQuery("");
     const { data: categories } = useGetCategoriesQuery();
     const { control, handleSubmit, watch, register } = useForm()
     const { min }: number = watch(['min']);
     const { max }: number = watch(['max']);
+    console.log("1", products);
     const onSubmit = (formData: any) => {
         if (Number(formData.min) < 0 && Number(formData.max) < 0) {
             console.log("giá phải là số dương")
@@ -422,11 +423,11 @@ const Product = () => {
                                             </a>
                                         </li>
                                     })
-                                    : products?.products.map((product: any) => {
+                                    : products?.product.map((product: any) => {
                                         return <li key={product.id}>
-                                            <Link to={`/details/${product.slug}`} className="group block overflow-hidden">
+                                            <Link to={`/product/detail/${product.id}`} className="group block overflow-hidden">
                                                 <img
-                                                    src={product.image}
+                                                    src={`http://127.0.0.1:8000${product.image}`}
                                                     alt=""
                                                     className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
                                                 />
