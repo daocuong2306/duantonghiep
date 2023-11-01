@@ -18,8 +18,10 @@ import DashboardUser from "./components/admin/user/dashboard";
 import AddOptions from "./components/admin/Options/addOptions";
 import DashboardOptions from "./components/admin/Options/dashboard";
 import AddValueOptions from "./components/admin/Options/addValues";
-import App from "./components/component/check/test";
-import ListVariant from "./components/admin/Products/listVariant";
+// import App from "./components/component/check/test";
+// import ListVariant from "./components/admin/Products/listVariant";
+import BannerDashboard from "./components/admin/banner/listBanner";
+import AddBanner from "./components/admin/banner/addBanner";
 
 
 
@@ -85,10 +87,10 @@ export const router = createBrowserRouter([
                 path: 'user',
                 element: <DashboardUser />
             },
-            {
-                path: 'test',
-                element: <App />
-            },
+            // {
+            //     path: 'test',
+            //     element: <App />
+            // },
             {
                 path: 'Options/add',
                 element: <AddOptions />
@@ -102,10 +104,18 @@ export const router = createBrowserRouter([
                 element: <AddValueOptions />
             }
             ,
+            // {
+            //     path: 'Variant/list/:id',
+            //     element: <ListVariant />
+            // },
             {
-                path: 'Variant/list/:id',
-                element: <ListVariant />
-            }
+                path: 'banner',
+                element: <BannerDashboard />
+            },
+            {
+                path: 'banner/add',
+                element: <AddBanner />
+            },
         ],
     },
     {
