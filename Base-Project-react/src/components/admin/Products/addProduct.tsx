@@ -171,7 +171,7 @@ const AddProduct = () => {
         }
     };
     console.log(products);
-    if (products?.message == "Successfull") {
+    if (products?.message == "Thêm sản phẩm thành công.") {
         url('/admin/dashboard')
     }
     const optionId = categories?.categories.map((item: any) => ({ value: item.id, label: item.name }));

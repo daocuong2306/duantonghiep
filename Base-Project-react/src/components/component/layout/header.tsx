@@ -19,7 +19,7 @@ const Header = () => {
                 <img className="" src={Image} alt="Transistor" width="150" height="100"></img>
               </Link>
               <div className="hidden lg:flex lg:items-center lg:ml-auto lg:space-x-10">
-                <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Features </a>
+                <Link to="/products">Sản phẩm</Link>
                 <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Solutions </a>
                 <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Resources </a>
                 <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Pricing </a>
@@ -74,23 +74,6 @@ const Header = () => {
                     </clipPath>
                   </defs>
                 </svg>
-              </div>
-            </div>
-          </nav>
-
-          <nav className="pt-4 pb-6 bg-white border border-gray-200 rounded-md shadow-md lg:hidden">
-            <div className="flow-root">
-              <div className="flex flex-col px-6 -my-2 space-y-1">
-                <a href="#" title="" className="inline-flex py-2 text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Features </a>
-                <a href="#" title="" className="inline-flex py-2 text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Solutions </a>
-                <a href="#" title="" className="inline-flex py-2 text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Resources </a>
-                <a href="#" title="" className="inline-flex py-2 text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Pricing </a>
-              </div>
-            </div>
-
-            <div className="px-6 mt-6">
-              <div className="w-72">
-                <Input label="Input With Icon" icon={<i className="fas fa-heart" />} />
               </div>
             </div>
           </nav>
