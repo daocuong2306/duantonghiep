@@ -55,7 +55,7 @@ const UpdateCategory: React.FC = (id: string) => {
                         </Col>
                     </Row>  
                 </Form>
-                <Variant id={id} />
+                
             </Drawer>
         </>
     );
