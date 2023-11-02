@@ -22,6 +22,8 @@ import AddValueOptions from "./components/admin/Options/addValues";
 import BannerDashboard from "./components/admin/banner/listBanner";
 import AddBanner from "./components/admin/banner/addBanner";
 import DetailProduct from "./components/client/products/detail";
+import MyComponent from "./components/component/check/test";
+import ListVariant from "./components/admin/Products/ListVariant";
 
 
 
@@ -91,10 +93,10 @@ export const router = createBrowserRouter([
                 path: 'user',
                 element: <DashboardUser />
             },
-            // {
-            //     path: 'test',
-            //     element: <App />
-            // },
+            {
+                path: 'test',
+                element: <MyComponent />
+            },
             {
                 path: 'Options/add',
                 element: <AddOptions />
@@ -108,10 +110,10 @@ export const router = createBrowserRouter([
                 element: <AddValueOptions />
             }
             ,
-            // {
-            //     path: 'Variant/list/:id',
-            //     element: <ListVariant />
-            // },
+            {
+                path: 'Variant/list/:id',
+                element: <ListVariant />
+            },
             {
                 path: 'banner',
                 element: <BannerDashboard />

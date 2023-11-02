@@ -35,7 +35,12 @@ const Dashboard = () => {
             ),
         },
         { title: 'Mã sản phẩm', dataIndex: 'code', key: 'code' },
-        { title: 'Mô tả sản phẩm', dataIndex: 'description', key: 'description' },
+        {
+            title: 'Mô tả sản phẩm', dataIndex: 'description', key: 'description',
+            render: (dataIndex) => {
+                return <div dangerouslySetInnerHTML={{ __html: dataIndex }} />;
+            },
+        },
         { title: 'Loại', dataIndex: 'category_name', key: 'category_name' },
         {
             title: '',

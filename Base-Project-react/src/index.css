@@ -6,3 +6,6 @@
     width: 100% !important;
     height: 300px !important;
 }
+:where(.css-dev-only-do-not-override-19gw05y).ant-select {
+    width: 100%;
+}
