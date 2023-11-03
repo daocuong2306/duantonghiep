@@ -109,13 +109,9 @@ const AddProduct = () => {
             <div style={{ marginTop: 8 }}>Upload</div>
         </div>
     );
-    const uploadButtonTable = (
-        <div>
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </div>
-    );
     //end img product 
+    //thêm variant 
+    const [check, setCheck] = useState(false)
     // Filter `option.label` match the user type `input`
     const filterOption = (input: string, option?: { label: string; value: string }) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
@@ -126,7 +122,7 @@ const AddProduct = () => {
             message: e,
         });
     };
-    const onHandleSubmit = async (data: ICategory) => {
+    const onHandleSubmit = async (data: any) => {
         const code = getValues('code');
         const name = getValues('name');
         const price = parseInt(getValues('price'));
@@ -165,21 +161,17 @@ const AddProduct = () => {
         }
     };
     console.log(products);
-    if (products?.message == "Thêm sản phẩm thành công.") {
-        url('/admin/dashboard')
-    }
+    // if (products?.message == "Thêm sản phẩm thành công.") {
+
+    // }
     const optionId = categories?.categories.map((item: any) => ({ value: item.id, label: item.name }));
 
     return <div>
         {contextHolder}
-        <div className="grid grid-cols-5 gap-8">
+
+        {check ? <Variant id={1} /> : <div className="grid grid-cols-5 gap-8">
             <div className="col-span-5 xl:col-span-3">
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                    <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
-                        <h3 className="font-medium text-black ">
-                            Thêm sản phẩm
-                        </h3>
-                    </div>
                     <div className="p-7">
                         <form onSubmit={handleSubmit(onHandleSubmit)}>
                             <div className="mb-5 flex flex-col gap-5 sm:flex-row">
@@ -267,32 +259,23 @@ const AddProduct = () => {
                 </div>
             </div>
             <div className="col-span-5 xl:col-span-2">
-                <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                    <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
-                        <h3 className="font-medium text-black ">
-                            Thêm ảnh
-                        </h3>
-                    </div>
-                    <div className="p-7">
-                        <div>
-                            <div className="w-full">
-                                <Upload
-                                    name="avatar"
-                                    listType="picture-card"
-                                    className="avatar-uploader"
-                                    showUploadList={false}
-                                    action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                                    beforeUpload={beforeUpload}
-                                    onChange={twoFunctions}
-                                >
-                                    {imageUrl ? <img src={imageUrl} alt="avatar" className="w-full h-full" /> : uploadButton}
-                                </Upload>
-                            </div>
-                        </div>
+                <div>
+                    <div className="w-full">
+                        <Upload
+                            name="avatar"
+                            listType="picture-card"
+                            className="avatar-uploader"
+                            showUploadList={false}
+                            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                            beforeUpload={beforeUpload}
+                            onChange={twoFunctions}
+                        >
+                            {imageUrl ? <img src={imageUrl} alt="avatar" className="w-full h-full" /> : uploadButton}
+                        </Upload>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>}
     </div >
 }
 
