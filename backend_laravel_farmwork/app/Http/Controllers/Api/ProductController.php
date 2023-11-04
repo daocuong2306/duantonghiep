@@ -174,29 +174,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:product',
+             $rules = [
+            'name' => 'required',
             'price' => 'required',
             'description' => 'required',
             'status' => 'required',
             'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
-            'code' => 'required|unique:product',
-            // 'quantity' => 'required',
-            'id_category' => 'required',
-          
-        ]);        $rules = [
-            'name' => 'required|unique:product',
-            'price' => 'required',
-            'description' => 'required',
-            'status' => 'required',
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
-            'code' => 'required|unique:product',
+            'code' => 'required',
             'id_category' => 'required',
         ];
     
         $messages = [
-            'name.required' => 'Vui lòng nhập tên sản phẩm.',
-            'name.unique' => 'Tên sản phẩm đã tồn tại.',
+            'name.required' => 'Vui lòng nhập tên sản phẩm.', 
             'price.required' => 'Vui lòng nhập giá sản phẩm.',
             'description.required' => 'Vui lòng nhập mô tả sản phẩm.',
             'status.required' => 'Vui lòng chọn trạng thái sản phẩm.',
@@ -205,7 +194,6 @@ class ProductController extends Controller
             'image.mimes' => 'Hình ảnh phải có định dạng: jpg, png, jpeg hoặc gif.',
             'image.max' => 'Kích thước tối đa cho phép của hình ảnh là 2048 KB.',
             'code.required' => 'Vui lòng nhập mã sản phẩm.',
-            'code.unique' => 'Mã sản phẩm đã tồn tại.',
             'id_category.required' => 'Vui lòng chọn danh mục.',
         ];
     
