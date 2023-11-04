@@ -24,55 +24,47 @@ const ListVariant = () => {
             }
         },
         { title: 'Giá', dataIndex: 'skus_price', key: 'price' },
-        { title: 'Số Lượng', dataIndex: 'stock', key: 'stock' }
+        { title: 'Số Lượng', dataIndex: 'stock', key: 'stock' },
+        { title: 'Mã', dataIndex: 'sku_id', key: 'sku_id' }
     ];
 
     const handleVariant = variants?.handleVariant || {}; // Đảm bảo handleVariant tồn tại hoặc là một đối tượng trống
     const data = Object.values(handleVariant);
 
-    const [isEmpty, setIsEmpty] = useState(false); // State để kiểm tra dữ liệu có rỗng hay không
+    const [isEmpty, setIsEmpty] = useState(true); // State để kiểm tra dữ liệu có rỗng hay không
     useEffect(() => {
-        setIsEmpty(data.length === 0);
+        setIsEmpty(false);
     }, [data]);
-    console.log(product);
-
     return (
         <div>
             {isEmpty ? (
                 <p>Dữ liệu trống.</p>
             ) : (
-                <div className="grid grid-cols-5 gap-8">
-                    <div className="col-span-5 xl:col-span-2">
-                        <div className="flex rounded-sm border border-stroke bg-white shadow-default product-card">
-                            <div className="w-1/2">
-                                <div className="overflow-hidden relative product-image">
-                                    <img className="w-30 h-auto transition duration-700 ease-in-out group-hover:opacity-60" src={`http://127.0.0.1:8000${product?.product.image}`} alt="image" />
-                                </div>
-                            </div>
-                            <div className="w-1/2">
-                                <div className="px-4 py-3 bg-white">
-                                    <h1 className="text-2xl font-semibold text-gray-800 hover:text-red-500 transition duration-300 ease-in-out">
-                                        {product?.product.name}
-                                    </h1>
-                                    <p className="text-lg text-gray-600">
-                                        Loại: {product?.product.category_name}
-                                    </p>
-                                    <p className="text-lg text-gray-600">
-                                        Mã sản phẩm: {product?.product.code}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-span-5 xl:col-span-3">
-                        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-                            <Table
-                                columns={columns}
-                                dataSource={data}
+                <div> <div className="p-4  flex items-center justify-between">
+                    <div className="product-image-container flex items-center">
+                        <div className="product-image-thumbnail rounded-full overflow-hidden">
+                            <img
+                                className="w-20 h-20"
+                                src={`http://127.0.0.1:8000${product?.product.image}`}
+                                alt=""
                             />
                         </div>
+                        <div className="product-details ml-4">
+                            <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+                                {product?.product.name}
+                            </h1>
+                            <p className="text-lg text-gray-600 mb-2">
+                                Giá: {product?.product.code}
+                            </p>
+                        </div>
                     </div>
+                    <button className="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">Xóa</button>
                 </div>
+                    <div className="mt-8">
+                        <div className="border border-gray-200 p-4 rounded-lg shadow-lg">
+                            <Table columns={columns} dataSource={data} />
+                        </div>
+                    </div></div>
 
 
 

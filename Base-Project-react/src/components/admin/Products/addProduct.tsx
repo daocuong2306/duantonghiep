@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../../api/category";
-import { ICategory } from "../../../interface/category";
 import { Select } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { message, Upload, notification } from 'antd';
@@ -39,7 +38,7 @@ const AddProduct = () => {
     const readerRef = useRef<any>(null);
     const [addProduct, { data: products }] = useAddProductMutation();
     const { control, handleSubmit, setValue, getValues, register } = useForm();
-    const [id, setId] = useState(null);
+    const [product, setProduct] = useState([]);
     //tìm và chọn select
     const onChange = (value: any) => {
         console.log(`selected ${value}`);
@@ -55,9 +54,6 @@ const AddProduct = () => {
     const getSunEditorInstance = (sunEditor) => {
         editor.current = sunEditor;
     };
-    const handleGetEditorContent = () => {
-
-    };
     //img table
     new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -67,7 +63,6 @@ const AddProduct = () => {
     });
     //end img table
     //img avatar product
-    const [loading, setLoading] = useState(false);
     const [loadingAvatar, setLoadingAvatar] = useState(false);
     const [imageUrl, setImageUrl] = useState<string>();
     const [selectedFile, setSelectedFile] = useState(null);
@@ -127,12 +122,8 @@ const AddProduct = () => {
         const code = getValues('code');
         const name = getValues('name');
         const price = parseInt(getValues('price'));
-        const quantity = parseInt(getValues('quantity'));
         let status = 0;
         const formData = new FormData();
-        if (quantity > 0) {
-            status = 1;
-        }
         if (editor.current) {
             const content = editor.current.getContents();
             // Do something with the content (e.g., log it or use it as needed)
@@ -164,7 +155,8 @@ const AddProduct = () => {
     console.log(products);
     useEffect(() => {
         if (products?.message === "Thêm sản phẩm thành công.") {
-            setId(products?.product.id);
+            setProduct(products?.product)
+            setCheck(true);
         }
     }, [products]);
     const optionId = categories?.categories.map((item: any) => ({ value: item.id, label: item.name }));
@@ -172,7 +164,7 @@ const AddProduct = () => {
     return <div>
         {contextHolder}
 
-        {check ? <Variant id={1} /> : <div className="grid grid-cols-5 gap-8">
+        {check ? <Variant product={product} /> : <div className="grid grid-cols-5 gap-8">
             <div className="col-span-5 xl:col-span-3">
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="p-7">

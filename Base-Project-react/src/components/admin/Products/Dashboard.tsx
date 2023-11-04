@@ -16,7 +16,6 @@ const Dashboard = () => {
             deleteProduct(id);
         }
     };
-
     const columns: TableColumnsType<any> = [
         {
             title: 'Tên',

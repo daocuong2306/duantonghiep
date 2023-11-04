@@ -12,6 +12,7 @@ const SelectVarint: React.FC = (check: boolean) => {
     const handleCancel = () => {
         setOpen(false);
     };
+    console.log(check);
 
     const columns: ColumnsType<DataType> = [
         {
@@ -77,7 +78,7 @@ const SelectVarint: React.FC = (check: boolean) => {
                 price: Number(values[`price${item.map((i) => i.id).join(',')}`]), // Sử dụng id để truy cập giá trị Form
                 stock: Number(values[`Stock${item.map((i) => i.id).join(',')}`]), // Sử dụng id để truy cập giá trị Form
                 sku: Number(values[`Sku${item.map((i) => i.id).join(',')}`]), // Sử dụng id để truy cập giá trị Form
-                product_id: check?.id.id.id
+                product_id: check?.id
             };
         });
         addVariant({
@@ -98,7 +99,7 @@ const SelectVarint: React.FC = (check: boolean) => {
 
     if (!isLoading && !error && data?.msg) {
         openNotification(data?.msg);
-        url('/admin')
+        url('/admin/dashboard')
     }
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
