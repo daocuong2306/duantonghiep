@@ -1,6 +1,6 @@
 import { useAddProductMutation } from "../../../api/product";
 import { useForm } from "react-hook-form";
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../../api/category";
 import { ICategory } from "../../../interface/category";
@@ -39,6 +39,7 @@ const AddProduct = () => {
     const readerRef = useRef<any>(null);
     const [addProduct, { data: products }] = useAddProductMutation();
     const { control, handleSubmit, setValue, getValues, register } = useForm();
+    const [id, setId] = useState(null);
     //tìm và chọn select
     const onChange = (value: any) => {
         console.log(`selected ${value}`);
@@ -161,9 +162,11 @@ const AddProduct = () => {
         }
     };
     console.log(products);
-    // if (products?.message == "Thêm sản phẩm thành công.") {
-
-    // }
+    useEffect(() => {
+        if (products?.message === "Thêm sản phẩm thành công.") {
+            setId(products?.product.id);
+        }
+    }, [products]);
     const optionId = categories?.categories.map((item: any) => ({ value: item.id, label: item.name }));
 
     return <div>
