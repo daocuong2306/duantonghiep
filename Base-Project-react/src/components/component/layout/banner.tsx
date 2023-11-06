@@ -46,30 +46,6 @@ const Banner = (props: Props) => {
                     <div
                         className="relative mx-auto max-w-screen-xl px-4 pt-60 sm:px-6 lg:flex lg:h-screen lg:items-center lg:px-8"
                     >
-                        <div className="max-w-xl  ltr:sm:text-left rtl:sm:text-right">
-                            <h1 className="text-3xl font-extrabold sm:text-5xl text-[#00ccff]">
-                                Lựa chọn thỏa thích
-                                <strong className="block font-extrabold text-[#00ccff]">
-                                    Hãy đến với Brite Shop
-                                </strong>
-                            </h1>
-                            <div className="mt-8 flex flex-wrap gap-4 text-center">
-                                {token ? "" : (
-                                    <Link
-                                        to="/login"
-                                        className="block w-full rounded bg-[#00ccff] px-12 py-3 text-sm font-medium text-white shadow hover:bg-white hover:text-[#00ccff] focus:outline-none focus:ring active:bg-[#00ccff] active:text-white sm:w-auto"
-                                    >
-                                        Đăng nhập
-                                    </Link>
-                                )}
-                                <a
-                                    href="#"
-                                    className="block w-full rounded bg-white px-12 py-3 text-sm font-medium text-[#00ccff] shadow hover:text-white hover:bg-[#00ccff]  focus:outline-none focus:ring active:text-[#00ccff] active-bg-white sm:w-auto"
-                                >
-                                    Sản phẩm
-                                </a>
-                            </div>
-                        </div>
                     </div>
                 </section>
             ))}

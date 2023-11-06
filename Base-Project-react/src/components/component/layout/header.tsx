@@ -18,11 +18,11 @@ const Header = () => {
               <Link to="/" className="">
                 <img className="" src={Image} alt="Transistor" width="150" height="100"></img>
               </Link>
-              <div className="hidden lg:flex lg:items-center lg:ml-auto lg:space-x-10">
-                <Link to="/products">Sản phẩm</Link>
-                <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Solutions </a>
-                <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Resources </a>
-                <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-blue-600 focus:text-blue-600"> Pricing </a>
+              <div className="hidden pl-[30px] lg:flex lg:items-center lg:ml-auto lg:space-x-10">
+                <Link to="/products" className="text-base font-medium text-black transition-all duration-200 hover:text-[#02CCFE] focus:text-[#02CCFE]">Sản phẩm</Link>
+                <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-[#02CCFE] focus:text-[#02CCFE]"> Xu hướng </a>
+                <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-[#02CCFE] focus:text-[#02CCFE]">  </a>
+                <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-[#02CCFE] focus:text-[#02CCFE]">  </a>
               </div>
             </div>
 
