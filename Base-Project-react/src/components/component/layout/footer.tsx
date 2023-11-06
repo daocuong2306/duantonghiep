@@ -1,4 +1,4 @@
-
+import Image from '@/assets/image/395664742_238305892304631_1626048229353873057_n.png'
 type Props = {}
 
 const Footer = (props: Props) => {
@@ -10,7 +10,7 @@ const Footer = (props: Props) => {
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
                     <div>
                         <div className="text-teal-600">
-                            <img src="../../../../img/blob.jpg" alt="" className="w-20 "  />
+                            <img src={Image} alt=""/>
                         </div>
 
                         <p className="mt-4 max-w-xs text-gray-500">
