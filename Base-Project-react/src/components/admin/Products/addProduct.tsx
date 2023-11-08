@@ -164,7 +164,8 @@ const AddProduct = () => {
     return <div>
         {contextHolder}
 
-        {check ? <Variant product={product} /> : <div className="grid grid-cols-5 gap-8">
+        {check ? <Variant product={product} /> : <div></div>}
+        <div className="grid grid-cols-5 gap-8">
             <div className="col-span-5 xl:col-span-3">
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="p-7">
@@ -270,7 +271,7 @@ const AddProduct = () => {
                     </div>
                 </div>
             </div>
-        </div>}
+        </div>
     </div >
 }
 

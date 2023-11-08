@@ -10,7 +10,6 @@ import AddProduct from "./components/admin/Products/addProduct";
 import CategoryDashboard from "./components/admin/categories/categoryDashboard";
 import AddCategory from "./components/admin/categories/addCategory";
 import UpdateCategory from "./components/admin/categories/updateCategory";
-import Home from "./components/component/check/home";
 import InForAdmin from "./components/admin/InforAdmin/infor";
 import Statistical from "./components/admin/InforAdmin/statistical";
 import NotFound from "./components/component/layout/NotFound";
@@ -23,6 +22,7 @@ import BannerDashboard from "./components/admin/banner/listBanner";
 import AddBanner from "./components/admin/banner/addBanner";
 import DetailProduct from "./components/client/products/detail";
 import ListVariant from "./components/admin/Products/ListVariant";
+import Home from "./components/component/layout/home";
 
 
 
