@@ -203,7 +203,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                                     showSearch
                                     placeholder="Select a category"
                                     optionFilterProp="children"
-                                    options={optionId.map((option) => ({
+                                    options={optionId?.map((option) => ({
                                         ...option,
                                         value: categoryMapping[option.label], // Set the value to the category ID
                                     }))}
