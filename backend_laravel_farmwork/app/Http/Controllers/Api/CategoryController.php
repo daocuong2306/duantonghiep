@@ -102,7 +102,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request,int $id){
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:category',
+            'name' => 'required|unique:category,name,' . $id,
             'image' => 'image|mimes:jpg,png,jpeg,gif|max:2048',
             
         ]);
