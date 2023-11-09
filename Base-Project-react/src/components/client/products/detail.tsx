@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { RadioGroup } from '@headlessui/react'
 import { useGetDetailQuery } from '@/api/detail'
@@ -13,18 +13,46 @@ function classNames(...classes) {
 export default function DetailProduct() {
     const { id } = useParams()
 
-    const { data: detaiProduct } = useGetDetailQuery(id)
-    const modifiedData = detaiProduct?.data.variant.Size?.map(item => ({
+
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
+
+    const selectC = (color) => {
+        setSelectedColor(color);
+    };
+
+    const selectS = (size) => {
+        setSelectedSize(size);
+    };
+
+    const a = [
+        selectedSize,
+        selectedColor
+    ]
+    console.log(a);
+
+    const newArray = useMemo(() => {
+        return [selectedSize, selectedColor].filter(Boolean).map(item => item.option_value_id);
+    }, [selectedSize, selectedColor]);
+
+    const prodcuts = {
+        id, selectP: newArray
+    }
+
+    console.log("size", newArray);
+    console.log("data", prodcuts);
+    const { data: detaiProduct } = useGetDetailQuery(prodcuts)
+    const modifiedData = detaiProduct?.data.variant.size?.map(item => ({
         ...item,
         inStock: true
     }));
-    console.log(detaiProduct);
+    
     const product = {
         name: detaiProduct?.data.product.name,
         price: detaiProduct?.data.product.price,
         href: '#',
         images: detaiProduct?.data.product.image,
-        colors: detaiProduct?.data.variant.Màu,
+        colors: detaiProduct?.data.variant.Mau,
         sizes: modifiedData,
         description: detaiProduct?.data.product.description,
         highlights: [
@@ -36,16 +64,6 @@ export default function DetailProduct() {
         details:
             'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
     }
-    const [selectedColor, setSelectedColor] = useState(null)
-    const [selectedSize, setSelectedSize] = useState(null);
-
-    const selectC = (color) => {
-        setSelectedColor(color)
-    }
-    const selectS = (size) => {
-        setSelectedSize(size)
-    }
-    console.log(selectedSize, selectedColor);
     return (
         <div className="bg-white">
             <div className="pt-6">
@@ -206,7 +224,9 @@ export default function DetailProduct() {
                                         : null}
 
                                 </div>
-
+                                <div className='m-10'>
+                                    Số Lượng : 10
+                                </div>
                                 <button
                                     type="submit"
                                     className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
