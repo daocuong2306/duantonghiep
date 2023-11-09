@@ -14,7 +14,7 @@ export default function DetailProduct() {
     const { id } = useParams()
 
     const { data: detaiProduct } = useGetDetailQuery(id)
-    const modifiedData = detaiProduct?.data.variant.size.map(item => ({
+    const modifiedData = detaiProduct?.data.variant.Size?.map(item => ({
         ...item,
         inStock: true
     }));
@@ -24,11 +24,7 @@ export default function DetailProduct() {
         price: detaiProduct?.data.product.price,
         href: '#',
         images: detaiProduct?.data.product.image,
-        colors: [
-            { name: 'Trắng', class: 'bg-white', selectedClass: 'ring-gray-400' },
-            { name: 'Xám', class: 'bg-gray-200', selectedClass: 'ring-gray-400' },
-            { name: 'Đen', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
-        ],
+        colors: detaiProduct?.data.variant.Màu,
         sizes: modifiedData,
         description: detaiProduct?.data.product.description,
         highlights: [
@@ -40,10 +36,16 @@ export default function DetailProduct() {
         details:
             'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
     }
-    const [selectedColor, setSelectedColor] = useState(product.colors[0])
+    const [selectedColor, setSelectedColor] = useState(null)
     const [selectedSize, setSelectedSize] = useState(null);
-    console.log(selectedSize);
 
+    const selectC = (color) => {
+        setSelectedColor(color)
+    }
+    const selectS = (size) => {
+        setSelectedSize(size)
+    }
+    console.log(selectedSize, selectedColor);
     return (
         <div className="bg-white">
             <div className="pt-6">
@@ -103,97 +105,105 @@ export default function DetailProduct() {
                                     <p className='text-sm font-base text-gray-500 pb-[5%] pt-[1%]'>Áo</p>
                                 </div>
                                 <div>
-                                    <h3 className="text-sm font-medium text-gray-900">Màu sắc</h3>
 
-                                    <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
-                                        <RadioGroup.Label className="sr-only">Chọn một màu</RadioGroup.Label>
-                                        <div className="flex items-center space-x-3">
-                                            {product?.colors.map((color) => (
-                                                <RadioGroup.Option
-                                                    key={color.name}
-                                                    value={color}
-                                                    className={({ active, checked }) =>
-                                                        classNames(
-                                                            color.selectedClass,
-                                                            active && checked ? 'ring ring-offset-1' : '',
-                                                            !active && checked ? 'ring-2' : '',
-                                                            'relative -m-0.5 flex cursor-pointer items-center justify-center p-0.5 focus:outline-none',
-                                                            checked ? 'bg-indigo-100' : ''
-                                                        )
-                                                    }
-                                                >
-                                                    <RadioGroup.Label as="span" className="sr-only">
-                                                        {color.name}
-                                                    </RadioGroup.Label>
-                                                    <span aria-hidden="true" >
-                                                        {color.name}
-                                                    </span>
-                                                </RadioGroup.Option>
-                                            ))}
-                                        </div>
-                                    </RadioGroup>
+
+                                    {product.colors ?
+                                        <div>
+                                            <h3 className="text-sm font-medium text-gray-900">Màu sắc</h3>
+                                            <RadioGroup value={selectedColor} onChange={(color) => selectC(color)}>
+                                                <RadioGroup.Label className="sr-only">Chọn một màu</RadioGroup.Label>
+                                                <div className="flex items-center space-x-3">
+                                                    {product?.colors.map((color) => (
+                                                        <RadioGroup.Option
+                                                            key={color.value}
+                                                            value={color}
+                                                            className={({ active, checked }) =>
+                                                                classNames(
+                                                                    color.selectedClass,
+                                                                    active && checked ? 'ring ring-offset-1' : '',
+                                                                    !active && checked ? 'ring-2' : '',
+                                                                    'relative -m-0.5 flex cursor-pointer items-center justify-center p-0.5 focus:outline-none',
+                                                                    checked ? 'bg-indigo-100' : ''
+                                                                )
+                                                            }
+                                                        >
+                                                            <RadioGroup.Label as="span" className="sr-only">
+                                                                {color.value}
+                                                            </RadioGroup.Label>
+                                                            <span aria-hidden="true">{color.value}</span>
+                                                        </RadioGroup.Option>
+                                                    ))}
+                                                </div>
+                                            </RadioGroup>
+
+                                        </div> : null}
 
                                 </div>
 
                                 {/* Sizes */}
                                 <div className="mt-10">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-sm font-medium text-gray-900">Kích thước</h3>
-                                        <div className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                                            Bảng kích thước
-                                        </div>
-                                    </div>
-                                    <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
-                                        <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
-                                        <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                                            {product?.sizes?.map((size) => (
-                                                <RadioGroup.Option
-                                                    key={size.value}
-                                                    value={size}
-                                                    disabled={!size.inStock}
-                                                    className={({ checked }) => {
-                                                        return classNames(
-                                                            size.inStock
-                                                                ? 'cursor-pointer bg-white text-gray-900 shadow-sm'
-                                                                : 'cursor-not-allowed bg-gray-50 text-gray-200',
-                                                            'relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 sm:flex-1 sm:py-6',
-                                                            checked ? 'ring-2 ring-indigo-500' : 'ring-2 ring-transparent'
-                                                        );
-                                                    }}
-                                                >
-                                                    {({ checked }) => (
-                                                        <>
-                                                            <RadioGroup.Label as="span">{size.value}</RadioGroup.Label>
-                                                            {size.inStock ? (
-                                                                <span
-                                                                    className={classNames(
-                                                                        'pointer-events-none absolute -inset-px rounded-md',
-                                                                        checked ? 'border-2 border-indigo-500' : 'border-2 border-transparent'
-                                                                    )}
-                                                                    aria-hidden="true"
-                                                                />
-                                                            ) : (
-                                                                <span
-                                                                    aria-hidden="true"
-                                                                    className="pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200"
-                                                                >
-                                                                    <svg
-                                                                        className="absolute inset-0 h-full w-full stroke-2 text-gray-200"
-                                                                        viewBox="0 0 100 100"
-                                                                        preserveAspectRatio="none"
-                                                                        stroke="currentColor"
-                                                                    >
-                                                                        <line x1={0} y1={100} x2={100} y2={0} vectorEffect="non-scaling-stroke" />
-                                                                    </svg>
-                                                                </span>
-                                                            )}
-                                                        </>
-                                                    )}
-                                                </RadioGroup.Option>
-                                            ))}
-                                        </div>
-                                    </RadioGroup>
 
+                                    {product.sizes ?
+                                        <div>
+                                            <div className="flex items-center justify-between">
+                                                <h3 className="text-sm font-medium text-gray-900">Kích thước</h3>
+                                                <div className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                                    Bảng kích thước
+                                                </div>
+                                            </div>
+
+                                            <RadioGroup value={selectedSize} onChange={(size) => selectS(size)} className="mt-4">
+                                                <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
+                                                <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+                                                    {product?.sizes?.map((size) => (
+                                                        <RadioGroup.Option
+                                                            key={size.value}
+                                                            value={size}
+                                                            disabled={!size.inStock}
+                                                            className={({ checked }) => {
+                                                                return classNames(
+                                                                    size.inStock
+                                                                        ? 'cursor-pointer bg-white text-gray-900 shadow-sm'
+                                                                        : 'cursor-not-allowed bg-gray-50 text-gray-200',
+                                                                    'relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 sm:flex-1 sm:py-6',
+                                                                    checked ? 'ring-2 ring-indigo-500' : 'ring-2 ring-transparent'
+                                                                );
+                                                            }}
+                                                        >
+                                                            {({ checked }) => (
+                                                                <>
+                                                                    <RadioGroup.Label as="span">{size.value}</RadioGroup.Label>
+                                                                    {size.inStock ? (
+                                                                        <span
+                                                                            className={classNames(
+                                                                                'pointer-events-none absolute -inset-px rounded-md',
+                                                                                checked ? 'border-2 border-indigo-500' : 'border-2 border-transparent'
+                                                                            )}
+                                                                            aria-hidden="true"
+                                                                        />
+                                                                    ) : (
+                                                                        <span
+                                                                            aria-hidden="true"
+                                                                            className="pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200"
+                                                                        >
+                                                                            <svg
+                                                                                className="absolute inset-0 h-full w-full stroke-2 text-gray-200"
+                                                                                viewBox="0 0 100 100"
+                                                                                preserveAspectRatio="none"
+                                                                                stroke="currentColor"
+                                                                            >
+                                                                                <line x1={0} y1={100} x2={100} y2={0} vectorEffect="non-scaling-stroke" />
+                                                                            </svg>
+                                                                        </span>
+                                                                    )}
+                                                                </>
+                                                            )}
+                                                        </RadioGroup.Option>
+                                                    ))}
+                                                </div>
+                                            </RadioGroup>
+                                        </div>
+                                        : null}
 
                                 </div>
 
