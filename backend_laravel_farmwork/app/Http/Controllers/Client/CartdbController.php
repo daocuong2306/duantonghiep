@@ -21,27 +21,42 @@ class CartdbController extends Controller
      */
     public function index()
     {
-        $carts = Cart::with(['variant', 'sku'])->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity']);
-
-        $formattedCarts = $carts->map(function ($cart) {
-            $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
-            $optionValues = array_unique($optionValues);
-            $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
-            return [
-                'id' => $cart->id,
-                'user_id' => $cart->user_id,
-                'product_id' => $cart->product_id,
-                'name_product' => $cart->product->name,
-                'price_product' => $cart->product->price,
-                'image_product' => $cart->product->image,
-                'sku_id' => $cart->sku_id,
-                'quantity' => $cart->quantity,
-                'sku_price' => $cart->sku->price,
-                'option_value' => $optionValuesData,
-            ];
-        });
-
-        return response()->json($formattedCarts, 200);
+        if (Auth::check()) {
+            $user_id = Auth::user()->id;
+            $carts = Cart::with(['variant', 'sku'])->where('user_id', $user_id)->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity']);
+    
+            $totalAmount = 0; // Biến lưu tổng tiền của cả giỏ hàng
+    
+            $formattedCarts = $carts->map(function ($cart) use (&$totalAmount) {
+                $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+                $optionValues = array_unique($optionValues);
+                $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+    
+                $totalPrice = $cart->quantity * $cart->sku->price; // Tính tổng tiền cho sản phẩm hiện tại
+                $totalAmount += $totalPrice; // Cộng tổng tiền của sản phẩm vào tổng tiền của cả giỏ hàng
+    
+                return [
+                    'id' => $cart->id,
+                    'user_id' => $cart->user_id,
+                    'product_id' => $cart->product_id,
+                    'name_product' => $cart->product->name,
+                    'price_product' => $cart->product->price,
+                    'image_product' => $cart->product->image,
+                    'sku_id' => $cart->sku_id,
+                    'quantity' => $cart->quantity,
+                    'sku_price' => $cart->sku->price,
+                    'option_value' => $optionValuesData,
+                    'total_price' => $totalPrice, // Thêm trường tổng tiền cho từng sản phẩm
+                ];
+            });
+    
+            return response()->json([
+                'carts' => $formattedCarts,
+                'total_amount' => $totalAmount, // Thêm trường tổng tiền của cả giỏ hàng
+            ], 200);
+        } else {
+           
+        }
     }
     /**
      * Store a newly created resource in storage.
@@ -52,7 +67,7 @@ class CartdbController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
+            
             'product_id' => 'required|exists:product,id',
             'sku_id' => 'required|exists:skus,id',
             'quantity' => 'required|integer|min:1',
