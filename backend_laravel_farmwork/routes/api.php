@@ -133,7 +133,7 @@ Route::get('variants/deletevariant/{id}', [VariantController::class, 'deleteVari
 Route::post('variants/updatevariant/{id}', [VariantController::class, 'updateVariant']);
 
 // getOneProduct
-Route::get('detail/getone/{id}', [DetailedProductController::class, 'getOneProduct']);
+Route::post('detail/getone/{id}', [DetailedProductController::class, 'getOneProduct']);
 //Discount
 Route::get('discounts/', [DiscountController::class, 'index']);
 Route::post('discounts/add', [DiscountController::class, 'store']);
