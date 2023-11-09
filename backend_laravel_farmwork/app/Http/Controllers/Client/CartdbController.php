@@ -9,6 +9,7 @@ use App\Models\OptionValue;
 use App\Models\Product;
 use App\Models\SKU;
 use App\Models\Variant;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CartdbController extends Controller
@@ -19,31 +20,29 @@ class CartdbController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-{
-    $carts = Cart::with(['variant', 'sku'])->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity']);
+    {
+        $carts = Cart::with(['variant', 'sku'])->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity']);
 
-    $formattedCarts = $carts->map(function ($cart) {
-        $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
-        $optionValues = array_unique($optionValues);
-        $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+        $formattedCarts = $carts->map(function ($cart) {
+            $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+            $optionValues = array_unique($optionValues);
+            $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+            return [
+                'id' => $cart->id,
+                'user_id' => $cart->user_id,
+                'product_id' => $cart->product_id,
+                'name_product' => $cart->product->name,
+                'price_product' => $cart->product->price,
+                'image_product' => $cart->product->image,
+                'sku_id' => $cart->sku_id,
+                'quantity' => $cart->quantity,
+                'sku_price' => $cart->sku->price,
+                'option_value' => $optionValuesData,
+            ];
+        });
 
-        return [
-            'id' => $cart->id,
-            'user_id' => $cart->user_id,
-            'product_id' => $cart->product_id,
-            'name_product' => $cart->product->name,
-            'price_product' => $cart->product->price,
-            'image_product' => $cart->product->image,
-            'sku_id' => $cart->sku_id,
-            'quantity' => $cart->quantity,
-
-            'sku_price' => $cart->sku->price,
-            'option_value' => $optionValuesData,
-        ];
-    });
-
-    return response()->json($formattedCarts, 200);
-}
+        return response()->json($formattedCarts, 200);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -58,21 +57,21 @@ class CartdbController extends Controller
             'sku_id' => 'required|exists:skus,id',
             'quantity' => 'required|integer|min:1',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
-    
-        $user_id = $request->user_id;
+
+        $user_id = Auth::user()->id;
         $product_id = $request->product_id;
         $sku_id = $request->sku_id;
         $quantity = $request->quantity;
-    
+
         $cart = Cart::where('user_id', $user_id)
             ->where('product_id', $product_id)
             ->where('sku_id', $sku_id)
             ->first();
-    
+
         if ($cart) {
             // Sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng
             $cart->quantity += $quantity;
@@ -86,7 +85,7 @@ class CartdbController extends Controller
             $newCart->quantity = $quantity;
             $newCart->save();
         }
-    
+
         return response()->json([
             'status' => 200,
             'message' => 'Thêm vào giỏ hàng thành công'
@@ -103,10 +102,11 @@ class CartdbController extends Controller
     {
         $cart = Cart::findOrFail($id);
         $cart->update($request->only('quantity'));
-    
+
         return response()->json([
             'status' => 200,
-            'message' => 'update thành công giỏ hàng '],200);
+            'message' => 'update thành công giỏ hàng '
+        ], 200);
     }
 
     /**
