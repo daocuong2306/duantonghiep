@@ -23,7 +23,7 @@ const detailApi = createApi({
             query: (product) => ({
                 url: `/getone/${product.id}`,
                 method: "GET",
-                params: { searchOptionValueId: [3,5] },
+                params: { searchOptionValueId: [product.selectP] },
             }),
             providesTags: ['detail'],
         }),
