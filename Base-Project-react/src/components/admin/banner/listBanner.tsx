@@ -6,10 +6,10 @@ const BannerDashboard = () => {
     console.log(banners);
     const [deleteBanner] = useRemoveBannerMutation()
     const deleteB = (id: number) => {
-        const check = window.confirm("Are you sure you want to delete");
+        const check = window.confirm("Bạn có chắc chắn muốn xóa");
         if (check) {
             deleteBanner(id);
-            alert("da xoa")
+            alert("Đã xóa")
         }
     }
     const columns: TableColumnsType<any> = [

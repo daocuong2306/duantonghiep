@@ -11,7 +11,7 @@ const Dashboard = () => {
     const [deleteProduct, { data: dele, isLoading }] = useRemoveProductMutation();
 
     const deleteP = (id: number) => {
-        const check = window.confirm('Are you sure you want to delete?');
+        const check = window.confirm('Bạn có chắc chắn muốn xóa?');
         if (check) {
             deleteProduct(id);
         }

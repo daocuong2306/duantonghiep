@@ -65,11 +65,11 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
     const beforeUpload = (file: RcFile) => {
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
-            message.error('You can only upload JPG/PNG file!');
+            message.error('Bạn cần cập nhật ảnh với định dạng có đuôi JPG/PNG!');
         }
         const isLt2M = file.size / 1024 / 1024 < 2;
         if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
+            message.error('Hình ảnh phải nhỏ hơn 2MB!');
         }
         return isJpgOrPng && isLt2M;
     };
@@ -106,7 +106,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
     const uploadButton = (
         <div>
             {loadingAvatar ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
+            <div style={{ marginTop: 8 }}>Chỉnh sửa</div>
         </div>
     );
     const twoFunctions = (event: any) => {
@@ -136,7 +136,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                 Sửa
             </Button>
             <Drawer
-                title="Update Product"
+                title="Chỉnh sửa sản phẩm"
                 width={720}
                 onClose={onClose}
                 visible={open}
@@ -185,14 +185,14 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                                 label="Name"
                                 initialValue={product?.product.name}
                             >
-                                <Input placeholder="Please enter a name" />
+                                <Input placeholder="Vui lòng nhập tên" />
                             </Form.Item>
                             <Form.Item
                                 name="price"
                                 label="Price"
                                 initialValue={product?.product.price}
                             >
-                                <Input placeholder="Please enter a price" />
+                                <Input placeholder="Vui lòng nhập giá" />
                             </Form.Item>
                             <Form.Item
                                 name="category"
@@ -216,7 +216,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                         label="Code"
                         initialValue={product?.product.code}
                     >
-                        <Input placeholder="Please enter a code" />
+                        <Input placeholder="Vui lòng nhập mã" />
                     </Form.Item>
                     <Form.Item
                         name="description"
@@ -227,9 +227,9 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                     </Form.Item>
 
                     <Space>
-                        <Button onClick={onClose}>Cancel</Button>
+                        <Button onClick={onClose}>Bỏ qua</Button>
                         <Button htmlType="submit">
-                            Submit
+                            Gửi
                         </Button>
                     </Space>
                 </Form>

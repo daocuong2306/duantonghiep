@@ -77,10 +77,10 @@ const AddOptions: React.FC = () => {
                         ))}
 
                         <Button type="dashed" onClick={() => add()} block>
-                            + Add Item
+                            + Thêm mục phụ
                         </Button>
                         <Button primary htmlType="submit">
-                            Submit
+                            Gửi
                         </Button>
                     </div>
                 )}

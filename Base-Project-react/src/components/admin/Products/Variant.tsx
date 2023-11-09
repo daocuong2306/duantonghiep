@@ -67,9 +67,9 @@ const Variant: React.FC = (product: any) => {
                             <Form.Item
                                 name={option.name}
                                 label={option.name}
-                                rules={[{ required: true, message: 'Please select your favourite colors!', type: 'array' }]}
+                                rules={[{ required: true, message: 'Hãy chọn màu sắc bạn yêu thích!', type: 'array' }]}
                             >
-                                <Select mode="multiple" placeholder="Please select favourite colors">
+                                <Select mode="multiple" placeholder="Hãy chọn màu sắc bạn yêu thích">
                                     {option?.value.map((value) => <Option value={value.id}>{value.name}</Option>)}
                                 </Select>
                             </Form.Item>
@@ -84,9 +84,9 @@ const Variant: React.FC = (product: any) => {
                         <Form.Item wrapperCol={{ span: 15, offset: 14 }}>
                             <Space>
                                 <Button htmlType="submit">
-                                    Submit
+                                    Gửi
                                 </Button>
-                                <Button htmlType="reset">reset</Button>
+                                <Button htmlType="reset">Cài lại</Button>
                             </Space>
                         </Form.Item>
                     </Col>

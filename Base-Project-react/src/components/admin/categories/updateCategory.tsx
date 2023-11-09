@@ -23,7 +23,7 @@ const UpdateCategory: React.FC = (id: string) => {
                 Sửa
             </Button>
             <Drawer
-                title="Create a new account"
+                title="Tạo danh mục"
                 width={720}
                 onClose={onClose}
                 open={open}
@@ -47,10 +47,10 @@ const UpdateCategory: React.FC = (id: string) => {
                             <Form.Item
                                 name="name"
                                 label="Name"
-                                rules={[{ required: true, message: 'Please enter user name' }]}
+                                rules={[{ required: true, message: 'Vui lòng nhập tên danh mục' }]}
                                 initialValue={category?.categories.name}
                             >
-                                <Input placeholder="Please enter user name" />
+                                <Input placeholder="Vui lòng nhập tên danh mục " />
                             </Form.Item>
                         </Col>
                     </Row>  

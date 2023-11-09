@@ -21,11 +21,11 @@ const getBase64 = (img: RcFile, callback: (url: string) => void) => {
 const beforeUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
-        message.error('You can only upload JPG/PNG file!');
+        message.error('Bạn cần cập nhật ảnh với định dạng có đuôi JPG/PNG!');
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-        message.error('Image must smaller than 2MB!');
+        message.error('Hình ảnh phải nhỏ hơn 2MB!');
     }
     return isJpgOrPng && isLt2M;
 };
@@ -41,12 +41,12 @@ const AddProduct = () => {
     const [product, setProduct] = useState([]);
     //tìm và chọn select
     const onChange = (value: any) => {
-        console.log(`selected ${value}`);
+        console.log(`Đã chọn ${value}`);
         setselectedCate(value)
     };
 
     const onSearch = (value: any) => {
-        console.log('search:', value);
+        console.log('Tìm kiếm:', value);
     };
     //text mô tả
     const editor = useRef();
@@ -102,7 +102,7 @@ const AddProduct = () => {
     const uploadButton = (
         <div>
             {loadingAvatar ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
+            <div style={{ marginTop: 8 }}>Chỉnh sửa</div>
         </div>
     );
     //end img product 

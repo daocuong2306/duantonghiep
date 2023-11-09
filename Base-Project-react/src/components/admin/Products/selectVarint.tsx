@@ -37,7 +37,7 @@ const SelectVarint: React.FC = (check: boolean) => {
             render: (dataIndex) => (
                 <Form.Item
                     name={`price${dataIndex}`} // Thay đổi tên trường Form
-                    rules={[{ required: true, message: 'Please input your Price!' }]}
+                    rules={[{ required: true, message: 'Vui lòng nhập giá của bạn!' }]}
                 >
                     <Input />
                 </Form.Item>
@@ -50,7 +50,7 @@ const SelectVarint: React.FC = (check: boolean) => {
             render: (dataIndex) => (
                 <Form.Item
                     name={`Stock${dataIndex}`} // Thay đổi tên trường Form
-                    rules={[{ required: true, message: 'Please input your Stock!' }]}
+                    rules={[{ required: true, message: 'Vui lòng nhập kho của bạn!' }]}
                 >
                     <Input />
                 </Form.Item>
@@ -63,7 +63,7 @@ const SelectVarint: React.FC = (check: boolean) => {
             render: (dataIndex) => (
                 <Form.Item
                     name={`Sku${dataIndex}`} // Thay đổi tên trường Form
-                    rules={[{ required: true, message: 'Please input your Sku!' }]}
+                    rules={[{ required: true, message: 'Vui lòng nhập SKU của bạn!' }]}
                 >
                     <Input />
                 </Form.Item>
@@ -133,7 +133,7 @@ const SelectVarint: React.FC = (check: boolean) => {
                     <Table columns={columns} dataSource={variantData} />
                     <Form.Item wrapperCol={{ offset: 19, span: 16 }}>
                         <Button htmlType="submit">
-                            Submit
+                           Gửi
                         </Button>
                     </Form.Item>
                 </Form>

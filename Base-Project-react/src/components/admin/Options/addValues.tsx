@@ -77,7 +77,7 @@ const AddValueOptions: React.FC = () => {
                                                     </Space>
                                                 ))}
                                                 <Button type="dashed" onClick={() => subOpt.add()} block>
-                                                    + Add Sub Item
+                                                    + Thêm mục phụ
                                                 </Button>
 
                                             </div>
@@ -88,10 +88,10 @@ const AddValueOptions: React.FC = () => {
                         ))}
 
                         <Button type="dashed" onClick={() => add()} block>
-                            + Add Item
+                            + Thêm mục phụ
                         </Button>
                         <Button primary htmlType="submit">
-                            Submit
+                            Gửi
                         </Button>
                     </div>
                 )

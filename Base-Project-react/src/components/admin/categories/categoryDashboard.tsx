@@ -10,10 +10,10 @@ const CategoryDashboard = () => {
     const { data: categories, isLoading } = useGetCategoriesQuery();
     const [deleteProduct] = useRemoveCategoryMutation()
     const deleteP = (id: number) => {
-        const check = window.confirm("Are you sure you want to delete");
+        const check = window.confirm("Bạn có chắc chắn muốn xóa");
         if (check) {
             deleteProduct(id);
-            alert("da xoa")
+            alert("Đã xóa")
         }
     }
     const columns: TableColumnsType<any> = [
