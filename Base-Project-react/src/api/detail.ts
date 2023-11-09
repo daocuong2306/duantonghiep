@@ -20,8 +20,12 @@ const detailApi = createApi({
     }),
     endpoints: (builder) => ({
         getDetail: builder.query<any, number | string>({
-            query: (id) => `/getone/${id}`,
-            providesTags: ['detail']
+            query: (product) => ({
+                url: `/getone/${product.id}`,
+                method: "GET",
+                params: { searchOptionValueId: [3,5] },
+            }),
+            providesTags: ['detail'],
         }),
     })
 });
