@@ -10,7 +10,7 @@ const Header = () => {
     url("/")
   }
   return (
-    <div className="w-full">
+    <div className="w-full mt-[2%]">
       <header className="pb-0 bg-white fixed top-0 left-0 right-0 z-10">
         <div className="px-4 mx-auto sm:px-6 lg:px-8">
           <nav className="flex items-center justify-between h-16 lg:h-20">
@@ -20,9 +20,9 @@ const Header = () => {
               </Link>
               <div className="hidden pl-[30px] lg:flex lg:items-center lg:ml-auto lg:space-x-10">
                 <Link to="/products" className="text-base font-medium text-black transition-all duration-200 hover:text-[#02CCFE] focus:text-[#02CCFE]">Sản phẩm</Link>
-                <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-[#02CCFE] focus:text-[#02CCFE]"> Xu hướng </a>
-                <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-[#02CCFE] focus:text-[#02CCFE]">  </a>
-                <a href="#" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-[#02CCFE] focus:text-[#02CCFE]">  </a>
+                <Link to="" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-[#02CCFE] focus:text-[#02CCFE]"> Xu hướng </Link>
+                <Link to="" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-[#02CCFE] focus:text-[#02CCFE]">  </Link>
+                <Link to="" title="" className="text-base font-medium text-black transition-all duration-200 hover:text-[#02CCFE] focus:text-[#02CCFE]">  </Link>
               </div>
             </div>
 
