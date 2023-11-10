@@ -5,7 +5,9 @@ import Home from "../component/layout/home";
 
 const LayoutWebsite = () => {
     return <div>
+        <Header/>
         <Outlet />
+        <Footer/>
     </div>;
 };
 

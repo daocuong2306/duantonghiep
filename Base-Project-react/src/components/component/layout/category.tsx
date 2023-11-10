@@ -10,21 +10,19 @@ const Category = (props: Props) => {
     console.log(data);
 
     return (
-        <div className="container-fluid pt-5">
-            <div className="flex flex-wrap px-5 pb-3">
-                {data?.data.categories.map((category) =>
-                    <div className="w-full md:w-1/2 lg:w-1/3 pb-1">
-                        <div className="flex flex-col border mb-4 p-6">
-                            <Link to="">
-                                <div className="cat-img relative overflow-hidden mb-3 group">
-                                    <img src={`http://localhost:8000${category.image}`} alt="" className="w-full transition-transform transform-gpu group-hover:scale-110" /> {/* Sử dụng classes Tailwind CSS */}
-                                </div>
-                                <h5 className="font-semibold m-0">{category.name}</h5>
-                            </Link>
-                        </div>
-                    </div>
-                )}
-            </div>
+        <div>
+            {/* <div className="nav-item dropdown">
+                <a href="#" className="nav-link" data-toggle="dropdown">Dresses <i className="fa fa-angle-down float-right mt-1"></i></a>
+                <div className="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
+                    <Link to="" className="dropdown-item">Men's Dresses</Link>
+                    <Link to="" className="dropdown-item">Women's Dresses</Link>
+                    <Link to="" className="dropdown-item">Baby's Dresses</Link>
+                </div>
+            </div> */}
+            {data?.data.categories.map((category) =>
+                <Link to="" className="nav-item nav-link text-[#00CCFF]">{category.name}</Link>
+            )}
+
         </div>
     )
 }
