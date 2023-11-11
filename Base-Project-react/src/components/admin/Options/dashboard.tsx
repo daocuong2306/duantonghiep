@@ -22,7 +22,7 @@ const DashboardOptions: React.FC = () => {
     };
     const columns: TableColumnsType<DataType> = [
         { title: 'Name', dataIndex: 'name', key: 'name' },
-        { title: 'Action', key: 'operation', render: () => <a>Xoa</a> },
+        { title: 'Action', key: 'operation', render: () => <a>Xóa</a> },
     ];
     const newData = options?.options.map(item => ({
         ...item,
@@ -33,7 +33,7 @@ const DashboardOptions: React.FC = () => {
     return (
         <>
             <Space>
-                <Link to="add">  <Button primary>Thêm Options</Button></Link>
+                <Link to="add">  <Button primary>Thêm mục phụ</Button></Link>
                 <Link to='OptionsValue/add'> <Button primary>Thêm giá trị</Button></Link>
             </Space>
             <Table

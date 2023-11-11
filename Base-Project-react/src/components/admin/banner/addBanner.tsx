@@ -15,11 +15,11 @@ const getBase64 = (img: RcFile, callback: (url: string) => void) => {
 const beforeUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
-        message.error('Bạn chỉ có thể tải lên tệp JPG/PNG!');
+        message.error('You can only upload JPG/PNG file!');
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-        message.error('Hình ảnh phải nhỏ hơn 2MB!');
+        message.error('Image must smaller than 2MB!');
     }
     return isJpgOrPng && isLt2M;
 };
@@ -37,7 +37,7 @@ const AddBanner = () => {
     };
 
     const onSearch = (value: any) => {
-        console.log('Tìm kiếm:', value);
+        console.log('search:', value);
     };
     //img table
     new Promise((resolve, reject) => {
@@ -106,7 +106,7 @@ const AddBanner = () => {
     const uploadButton = (
         <div>
             {loadingAvatar ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
+            <div style={{ marginTop: 8 }}>Cập nhật</div>
         </div>
     );
     const onHandleSubmit = async (data: any) => {
@@ -162,7 +162,7 @@ const AddBanner = () => {
                             placeholder="Content"
                             {...register('content')}
                         />
-                        <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                        <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Gửi</button>
                     </form>
                 </div>
             </div>
