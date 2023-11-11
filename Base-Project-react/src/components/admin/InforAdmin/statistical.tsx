@@ -105,12 +105,12 @@ const Statistical = () => {
                                 <div className="col-6">
                                     <div className="text-right">
                                         <h3 className="text-dark my-1 "><span data-plugin="counterup" className='text-zinc-500 text-5xl font-bold '><CountUp end={1576} /></span></h3>
-                                        <p className="text-zinc-500 text-xl">January's Sales</p>
+                                        <p className="text-zinc-500 text-xl">Doanh số tháng Giêng</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="mt-3">
-                                <h6 className="text-uppercase text-zinc-500 text-xl">Target <span className="float-right text-zinc-500 text-xl">49%</span></h6>
+                                <h6 className="text-uppercase text-zinc-500 text-xl">Mục tiêu <span className="float-right text-zinc-500 text-xl">49%</span></h6>
                                 <div className="progress progress-sm mt-1">
                                     <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                                         <div className="bg-green-700 h-2.5 rounded-full" style={{ width: '49%' }}></div>
@@ -132,12 +132,12 @@ const Statistical = () => {
                                 <div className="col-6">
                                     <div className="text-right">
                                         <h3 className="text-dark my-1 "><span data-plugin="counterup" className='text-zinc-500 text-5xl font-bold '>$<CountUp end={12145} /></span></h3>
-                                        <p className="text-zinc-500 text-xl">Income status</p>
+                                        <p className="text-zinc-500 text-xl">Tình trạng thu nhập</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="mt-3">
-                                <h6 className="text-uppercase text-zinc-500 text-xl">Target <span className="float-right text-zinc-500 text-xl">60%</span></h6>
+                                <h6 className="text-uppercase text-zinc-500 text-xl">Mục tiêu <span className="float-right text-zinc-500 text-xl">60%</span></h6>
                                 <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                                     <div
                                         id="progressBar"

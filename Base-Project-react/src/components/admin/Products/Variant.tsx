@@ -84,9 +84,9 @@ const Variant: React.FC = (product: any) => {
                         <Form.Item wrapperCol={{ span: 15, offset: 14 }}>
                             <Space>
                                 <Button htmlType="submit">
-                                    Submit
+                                  Gửi
                                 </Button>
-                                <Button htmlType="reset">reset</Button>
+                                <Button htmlType="reset">Cài lại</Button>
                             </Space>
                         </Form.Item>
                     </Col>

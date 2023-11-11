@@ -106,7 +106,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
     const uploadButton = (
         <div>
             {loadingAvatar ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
+            <div style={{ marginTop: 8 }}>Cập nhật</div>
         </div>
     );
     const twoFunctions = (event: any) => {
@@ -227,9 +227,9 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                     </Form.Item>
 
                     <Space>
-                        <Button onClick={onClose}>Cancel</Button>
+                        <Button onClick={onClose}>Hủy bỏ</Button>
                         <Button htmlType="submit">
-                            Submit
+                           Gửi
                         </Button>
                     </Space>
                 </Form>

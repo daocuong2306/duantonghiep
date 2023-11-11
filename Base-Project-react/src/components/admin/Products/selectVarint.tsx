@@ -133,7 +133,7 @@ const SelectVarint: React.FC = (check: boolean) => {
                     <Table columns={columns} dataSource={variantData} />
                     <Form.Item wrapperCol={{ offset: 19, span: 16 }}>
                         <Button htmlType="submit">
-                            Submit
+                           Gửi
                         </Button>
                     </Form.Item>
                 </Form>
