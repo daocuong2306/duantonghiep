@@ -15,11 +15,11 @@ const getBase64 = (img: RcFile, callback: (url: string) => void) => {
 const beforeUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
-        message.error('You can only upload JPG/PNG file!');
+        message.error('Bạn chỉ có thể tải lên tệp JPG/PNG!');
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-        message.error('Image must smaller than 2MB!');
+        message.error('Hình ảnh phải nhỏ hơn 2MB!');
     }
     return isJpgOrPng && isLt2M;
 };
@@ -37,7 +37,7 @@ const AddBanner = () => {
     };
 
     const onSearch = (value: any) => {
-        console.log('search:', value);
+        console.log('Tìm kiếm:', value);
     };
     //img table
     new Promise((resolve, reject) => {
