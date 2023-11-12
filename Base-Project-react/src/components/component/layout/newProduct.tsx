@@ -26,8 +26,8 @@ const NewProducts = () => {
                         </div>
                     </div>
                     <div className="card-footer d-flex justify-content-between bg-light border">
-                        <Link to="" className="btn btn-sm text-dark p-0"><i className="fas fa-eye text-primary mr-1"></i>View Detail</Link>
-                        <Link to="" className="btn btn-sm text-dark p-0"><i className="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</Link>
+                        <Link to={`/product/detail/${product.id}`} className="btn btn-sm text-dark p-0"><i className="fas fa-eye text-primary mr-1"></i>Xem chi tiết</Link>
+                        <Link to="" className="btn btn-sm text-dark p-0"><i className="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ hàng</Link>
                     </div>
                 </div>
 

@@ -1,30 +1,28 @@
-import { useGetDataQuery } from '@/api/home'
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { BsFillArrowRightCircleFill } from "react-icons/bs"
+import { useState } from 'react';
+import { useGetDataQuery } from '@/api/home';
+import { Link } from 'react-router-dom';
 
-type Props = {}
+type Props = {};
 
 const Category = (props: Props) => {
     const { data } = useGetDataQuery();
     console.log(data);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
 
     return (
-        <div>
-            {/* <div className="nav-item dropdown">
-                <a href="#" className="nav-link" data-toggle="dropdown">Dresses <i className="fa fa-angle-down float-right mt-1"></i></a>
-                <div className="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
-                    <Link to="" className="dropdown-item">Men's Dresses</Link>
-                    <Link to="" className="dropdown-item">Women's Dresses</Link>
-                    <Link to="" className="dropdown-item">Baby's Dresses</Link>
+        <div className="dropdown" style={{paddingTop:"5%"}}>
+            <button className="btn" onClick={toggleDropdown} style={{backgroundColor:"#00CCFF",color:"white", padding:"3% 20%",border:"solid 1%"}}>Danh mục</button>
+            {isOpen && data?.data.categories.map((category) =>
+                <div style={{padding:"2%"}}>
+                    <Link to="" style={{color:"#00CCFF"}}>{category.name}</Link>
                 </div>
-            </div> */}
-            {data?.data.categories.map((category) =>
-                <Link to="" className="nav-item nav-link text-[#00CCFF]">{category.name}</Link>
             )}
-
         </div>
-    )
+    );
 }
 
-export default Category
+export default Category;
