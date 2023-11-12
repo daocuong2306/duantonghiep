@@ -19,14 +19,17 @@ const detailApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getDetail: builder.query<any, number | string>({
-            query: (product) => ({
-                url: `/getone/${product.id}`,
-                method: "GET",
-                params: { searchOptionValueId: [product.selectP] },
-            }),
+        getDetail: builder.query<any, { id: number | string, selectP: string[] }>({
+            query: (product) => {
+                const queryString = product.selectP.map(item => `searchOptionValueId[]=${item}`).join('&');
+                return {
+                    url: `/getone/${product.id}?${queryString}`,
+                    method: "GET",
+                };
+            },
             providesTags: ['detail'],
         }),
+
     })
 });
 
