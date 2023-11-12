@@ -16,7 +16,8 @@ class DetailedProductController extends Controller
         $product = DB::table('product')
             ->join('category', 'category.id', '=', 'product.id_category')
             ->where('product.id', $id)
-            ->first();
+            ->select('product.*', 'category.name as category_name')
+            ->get();
         $optionvalue = DB::table('variants')->where('product_id', $id)
             ->join('skus', 'skus.id', '=', 'variants.sku_id')
             ->join('option_values', 'variants.option_value_id', '=', 'option_values.id')
@@ -62,10 +63,10 @@ class DetailedProductController extends Controller
             }
             if ($sku) {
                 $priceSku = DB::table('skus')
-                    ->select('price AS sku_price','id AS sku_id')
+                    ->select('price AS sku_price', 'id AS sku_id')
                     ->where('id', $sku)
                     ->get();
-                    // dd($priceSku);
+                // dd($priceSku);
             } else {
                 $error = 'sản phẩm không có biến thể này';
                 $sku = null;
