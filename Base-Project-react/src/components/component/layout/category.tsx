@@ -1,32 +1,28 @@
-import { useGetDataQuery } from '@/api/home'
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { BsFillArrowRightCircleFill } from "react-icons/bs"
+import { useState } from 'react';
+import { useGetDataQuery } from '@/api/home';
+import { Link } from 'react-router-dom';
 
-type Props = {}
+type Props = {};
 
 const Category = (props: Props) => {
     const { data } = useGetDataQuery();
     console.log(data);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
 
     return (
-        <div className="container-fluid pt-5">
-            <div className="flex flex-wrap px-5 pb-3">
-                {data?.data.categories.map((category) =>
-                    <div className="w-full md:w-1/2 lg:w-1/3 pb-1">
-                        <div className="flex flex-col border mb-4 p-6">
-                            <Link to="">
-                                <div className="cat-img relative overflow-hidden mb-3 group">
-                                    <img src={`http://localhost:8000${category.image}`} alt="" className="w-full transition-transform transform-gpu group-hover:scale-110" /> {/* Sử dụng classes Tailwind CSS */}
-                                </div>
-                                <h5 className="font-semibold m-0">{category.name}</h5>
-                            </Link>
-                        </div>
-                    </div>
-                )}
-            </div>
+        <div className="dropdown" style={{paddingTop:"5%"}}>
+            <button className="btn" onClick={toggleDropdown} style={{backgroundColor:"#00CCFF",color:"white", padding:"3% 20%",border:"solid 1%"}}>Danh mục</button>
+            {isOpen && data?.data.categories.map((category) =>
+                <div style={{padding:"2%"}}>
+                    <Link to="" style={{color:"#00CCFF"}}>{category.name}</Link>
+                </div>
+            )}
         </div>
-    )
+    );
 }
 
-export default Category
+export default Category;

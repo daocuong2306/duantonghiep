@@ -23,6 +23,8 @@ import AddBanner from "./components/admin/banner/addBanner";
 import DetailProduct from "./components/client/products/detail";
 import ListVariant from "./components/admin/Products/ListVariant";
 import Home from "./components/component/layout/home";
+import CartProduct from "./components/client/Cart/cart";
+import Statistics from "./components/admin/statistics/statistics";
 
 
 
@@ -43,6 +45,14 @@ export const router = createBrowserRouter([
             {
                 path: 'product/detail/:id',
                 element: <DetailProduct />
+            },
+            {
+                path: 'cart',
+                element: <CartProduct />
+            },
+            {
+                path: "statistics",
+                element: <Statistics />,
             },
         ]
     },
@@ -68,6 +78,10 @@ export const router = createBrowserRouter([
                 element: <AddProduct />,
             }
             ,
+            {
+                path: "statistics",
+                element: <Statistics />,
+            },
             {
                 path: "profile",
                 element: <InForAdmin />,

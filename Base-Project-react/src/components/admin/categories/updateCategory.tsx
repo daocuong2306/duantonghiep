@@ -1,22 +1,118 @@
-import React, { useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from 'antd';
+import React, { useRef, useState } from 'react';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, UploadProps, message } from 'antd';
 import { Image } from 'antd';
 
-import { useGetCategoryByIdQuery } from '@/api/category';
+import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from '@/api/category';
 import Variant from '../Products/Variant';
-const UpdateCategory: React.FC = (id: string) => {
+import Upload, { RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
+const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
     const [open, setOpen] = useState(false);
+    const readerRef = useRef<any>(null);
+    const [updateCategory] = useUpdateCategoryMutation()
     const showDrawer = () => {
         setOpen(true);
     };
-
     const onClose = () => {
         setOpen(false);
     };
-    console.log(id);
-    const { data: category } = useGetCategoryByIdQuery(id.id);
+   console.log(id);
+   
+    const onFinish = async (values: any) => {
+        console.log('Success:', values);
+        const formData = new FormData();
+        formData.append('name', values.name);
+        
+        if (selectedFile) {
+            // If a new image is selected, append it to the formData
+            formData.append('image', selectedFile);
+        }
+        else {
+            // If no new image is selected, use the existing image value
+            formData.append('image', category?.categories.image);
+        }
+        
+        try {
+            const idCate={formData,id}
+            const response = await updateCategory(idCate);
+            message.success('Cập nhật sản phẩm thành công');
+
+            // Close the drawer or perform any other actions as needed
+            onClose();
+        }
+        catch (err) {
+            message.success('Cập nhật sản phẩm thất bại');
+        }
+    };
+    ///////////////////////////////////////////
+    const [check, setCheck] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [loadingAvatar, setLoadingAvatar] = useState(false);
+    const [imageUrl, setImageUrl] = useState<string>();
+    const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => callback(reader.result as string));
+        reader.readAsDataURL(img);
+    };
+
+    const beforeUpload = (file: RcFile) => {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        if (!isJpgOrPng) {
+            message.error('Bạn chỉ có thể đẩy file JPG/PNG');
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('Ảnh phải nhỏ hơn 2MB!');
+        }
+        return isJpgOrPng && isLt2M;
+    };
+
+    const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
+        if (info.file.status === 'uploading') {
+            getBase64(info.file.originFileObj as RcFile, (url) => {
+                setLoadingAvatar(true);
+                setImageUrl(url);
+            });
+            return;
+        }
+        if (info.file.status === 'done') {
+            // Get this url from response in real world.
+            getBase64(info.file.originFileObj as RcFile, (url) => {
+                setLoadingAvatar(false);
+                setImageUrl(url);
+            });
+        }
+    };
+    const handleFileChange = (event: any) => {
+        const file = event.fileList[0].originFileObj;
+        setSelectedFile(file);
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e: any) => {
+                const fileData = e.target.result;
+            };
+            readerRef.current = reader;
+            reader.readAsDataURL(file);
+        }
+        console.log(selectedFile);
+    };
+    const uploadButton = (
+        <div>
+            {loadingAvatar ? <LoadingOutlined /> : <PlusOutlined />}
+            <div style={{ marginTop: 8 }}>Cập nhật</div>
+        </div>
+    );
+    const twoFunctions = (event: any) => {
+        handleFileChange(event)
+        handleChange(event)
+    }
+    //end add image 
+
+    
+    const { data: category } = useGetCategoryByIdQuery(id);
+    
     console.log(category);
+    
     return (
         <>
             <Button onClick={showDrawer} >
@@ -27,33 +123,59 @@ const UpdateCategory: React.FC = (id: string) => {
                 width={720}
                 onClose={onClose}
                 open={open}
-                styles={{
-                    body: {
-                        paddingBottom: 80,
-                    },
+                bodyStyle={{
+                    paddingBottom: 80,
                 }}
 
             >
-                <Form layout="vertical" hideRequiredMark>
-                    <Row gutter={16}>
+                <Form layout="vertical" onFinish={onFinish}>
+                <Row gutter={16}>
                         <Col span={12}>
-                            <Image
-                                width={200}
-                                src={`http://127.0.0.1:8000${category?.categories.image}`}
-                            />
+                            {!check ? <>
+                                <Button
+                                    onClick={() => {
+                                        setImageUrl(undefined);
+                                        setSelectedFile(null);
+                                        setCheck(true);
+                                    }}
+                                    className="delete-button"
+                                >
+                                    Xóa
+                                </Button>
+                                <img src={`http://127.0.0.1:8000${category?.categories.image}`} className="w-full h-full" />
+
+                            </>
+                                : <div className="w-full">
+                                    <Upload
+                                        name="avatar"
+                                        listType="picture-card"
+                                        className="avatar-uploader"
+                                        showUploadList={false}
+                                        action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                                        beforeUpload={beforeUpload}
+                                        onChange={twoFunctions}
+                                    >
+                                        {imageUrl ? <img src={imageUrl} alt="avatar" className="w-full h-full" /> : uploadButton}
+                                    </Upload>
+                                </div>}
                         </Col>
                         <Col span={12}>
-
                             <Form.Item
                                 name="name"
                                 label="Name"
-                                rules={[{ required: true, message: 'Please enter user name' }]}
                                 initialValue={category?.categories.name}
                             >
-                                <Input placeholder="Please enter user name" />
+                                <Input placeholder="Please enter a name" />
                             </Form.Item>
+                            
                         </Col>
-                    </Row>  
+                    </Row> 
+                    <Space>
+                        <Button onClick={onClose}>Hủy bỏ</Button>
+                        <Button htmlType="submit">
+                           Gửi
+                        </Button>
+                    </Space>
                 </Form>
                 
             </Drawer>

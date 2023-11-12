@@ -3,52 +3,63 @@ import { useGetDataQuery } from "@/api/home";
 import { Link } from 'react-router-dom';
 
 const Banner = (props: Props) => {
-    const { data, isLoading } = useGetDataQuery();
-    const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
-    const token = localStorage.getItem("header");
+    const { data } = useGetDataQuery();
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % (data?.data.banner.length || 1));
-        }, 3000);
+        // Start the carousel when the component mounts
+        const headerCarousel = document.getElementById('header-carousel');
+        if (headerCarousel) {
+            const carousel = new window.bootstrap.Carousel(headerCarousel, {
+                interval: 3000, // Set the interval between slides (in milliseconds)
+            });
 
-        return () => {
-            clearInterval(timer);
-        };
-    }, [data]);
+            // Handle click on the previous button
+            const prevButton = document.querySelector('.carousel-control-prev');
+            prevButton.addEventListener('click', () => {
+                carousel.prev();
+            });
 
-    const bannerStyle = {
-        transition: "transform 1s, opacity 1s",
-        opacity: 0,
-    };
-
-    if (data) {
-        bannerStyle.opacity = 1;
-    }
+            // Handle click on the next button
+            const nextButton = document.querySelector('.carousel-control-next');
+            nextButton.addEventListener('click', () => {
+                carousel.next();
+            });
+        }
+    }, []);
 
     return (
-        <div className="banner-container">
-            {data?.data.banner.map((banner, index) => (
-                <section
-                    key={index}
-                    style={{
-                        ...bannerStyle,
-                        backgroundImage: `url(${banner.image})`,
-                        display: index === currentBannerIndex ? 'block' : 'none',
-                        transform: `translateX(${(index - currentBannerIndex) * 100}%)`, // Trượt từ trái sang phải
-                    }}
-                    className="relative bg-cover bg-center bg-no-repeat"
-                >
-                    <div
-                        className="absolute inset-0 bg-white/75 sm:bg-transparent sm:from-white/95 sm:to-white/25 ltr:sm:bg-gradient-to-r rtl:sm:bg-gradient-to-l"
-                    ></div>
-
-                    <div
-                        className="relative mx-auto max-w-screen-xl px-4 pt-60 sm:px-6 lg:flex lg:h-screen lg:items-center lg:px-8"
-                    >
+        <div>
+            <div id="header-carousel" className="carousel slide" data-ride="carousel" data-interval="3000">
+                <div className="carousel-inner">
+                    {data?.data.banner.map((banner, index) => (
+                        <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+                            <img
+                                className="img-fluid"
+                                src={banner.image}
+                                alt={`Image ${index + 1}`}
+                                style={{ height: '550px' }}
+                            />
+                            <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                                <div className="p-3">
+                                    <h4 className="text-light text-uppercase font-weight-medium mb-3">Giảm giá 10% cho đơn hàng đầu tiên</h4>
+                                    <h3 className="display-4 text-white font-weight-semi-bold mb-4">Lựa chọn các sản phẩm yêu thích</h3>
+                                    <Link to="" className="btn btn-light py-2 px-3">Mua ngay</Link>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <button className="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+                    <div className="btn btn-dark">
+                        <span className="carousel-control-prev-icon mb-n2"></span>
                     </div>
-                </section>
-            ))}
+                </button>
+                <button className="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
+                    <div className="btn btn-dark">
+                        <span className="carousel-control-next-icon mb-n2"></span>
+                    </div>
+                </button>
+            </div>
         </div>
     );
 }

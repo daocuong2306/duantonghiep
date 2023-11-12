@@ -65,7 +65,7 @@ const Product = (props: Props) => {
                         <div className="relative pl-[10%]">
                             <h5 className="text-[#D19C97] uppercase mb-3">Giảm giá 20% cho các sản phẩm Hạ - Thu</h5>
                             <h1 className="font-semibold text-4xl mb-4">Sản phẩm</h1>
-                            <a href="#" className="text-[#D19C97] py-2 px-3"><button className='px-[3%] py-[2%] border-[1px] border-[#D19C97] rounded-lg hover:text-black hover:bg-[#D19C97]'> Mua ngay</button></a>
+                            <Link to="#" className="text-[#D19C97] py-2 px-3"><button className='px-[3%] py-[2%] border-[1px] border-[#D19C97] rounded-lg hover:text-black hover:bg-[#D19C97]'> Mua ngay</button></Link>
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@ const Product = (props: Props) => {
                         <div className="relative pr-[10%]">
                             <h5 className="text-[#D19C97] uppercase mb-3">Giảm giá 20% cho các sản phẩm Thu - Đông</h5>
                             <h1 className="font-semibold text-4xl mb-4">Sản phẩm</h1>
-                            <a href="#" className="text-[#D19C97] py-2 px-3"><button className='px-[3%] py-[2%] border-[1px] border-[#D19C97] rounded-lg hover:text-black hover:bg-[#D19C97]'> Mua ngay</button></a>
+                            <Link to="#" className="text-[#D19C97] py-2 px-3"><button className='px-[3%] py-[2%] border-[1px] border-[#D19C97] rounded-lg hover:text-black hover:bg-[#D19C97]'> Mua ngay</button></Link>
                         </div>
                         <img src={img2} alt=""className='w-[160px] h-[224px] ' />
                     </div>

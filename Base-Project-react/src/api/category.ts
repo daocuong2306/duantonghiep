@@ -1,4 +1,5 @@
 
+import { BsBodyText } from 'react-icons/bs';
 import { ICategory } from '../interface/category';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
