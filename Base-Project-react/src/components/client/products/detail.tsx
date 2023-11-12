@@ -1,68 +1,57 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { RadioGroup } from '@headlessui/react'
 import { useGetDetailQuery } from '@/api/detail'
 import { useParams } from 'react-router-dom'
-
+import { useAddCartMutation } from '@/api/cart'
+import { useForm } from "react-hook-form";
 
 const reviews = { href: '#', average: 4, totalCount: 117 }
-function classNames(...classes) {
+function classNames(...classes: any) {
     return classes.filter(Boolean).join(' ')
 }
 
 export default function DetailProduct() {
     const { id } = useParams()
-
-
+    const { register, handleSubmit } = useForm();
+    const [addCart, { data: add, error }] = useAddCartMutation();
     const [selectedColor, setSelectedColor] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
 
-    const selectC = (color) => {
+    const selectC = (color: any) => {
         setSelectedColor(color);
     };
 
-    const selectS = (size) => {
+    const selectS = (size: any) => {
         setSelectedSize(size);
     };
-
-    const a = [
-        selectedSize,
-        selectedColor
-    ]
-    console.log(a);
-
     const newArray = useMemo(() => {
-        return [selectedSize, selectedColor].filter(Boolean).map(item => item.option_value_id);
+        return [selectedSize, selectedColor].filter(Boolean).map((item: any) => item.option_value_id);
     }, [selectedSize, selectedColor]);
-
     const prodcuts = {
         id, selectP: newArray
     }
-
-    console.log("size", newArray);
-    console.log("data", prodcuts);
-    const { data: detaiProduct } = useGetDetailQuery(prodcuts)
-    const modifiedData = detaiProduct?.data.variant.size?.map(item => ({
+    const { data: detaiProduct, isLoading } = useGetDetailQuery(prodcuts)
+    const modifiedData = detaiProduct?.data.variant.Size?.map((item: any) => ({
         ...item,
         inStock: true
     }));
-    
-    const product = {
-        name: detaiProduct?.data.product.name,
-        price: detaiProduct?.data.product.price,
-        href: '#',
-        images: detaiProduct?.data.product.image,
-        colors: detaiProduct?.data.variant.Mau,
-        sizes: modifiedData,
-        description: detaiProduct?.data.product.description,
-        highlights: [
-            'Hand cut and sewn locally',
-            'Dyed with our proprietary colors',
-            'Pre-washed & pre-shrunk',
-            'Ultra-soft 100% cotton',
-        ],
-        details:
-            'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
+    console.log(modifiedData);
+    console.log(detaiProduct);
+    const onHandleSubmit = (dataUser: any) => {
+        if (detaiProduct?.data.priceSku == null) {
+            alert("vui lòng chọn kích cỡ và size")
+        } else {
+            addCart({
+                "product_id": id,
+                "quantity": 1,
+                "sku_id": detaiProduct?.data.priceSku[0].sku_id
+            });
+        }
+
+    }
+    if (add) {
+        alert("thêm thành công")
     }
     return (
         <div className="bg-white">
@@ -70,9 +59,7 @@ export default function DetailProduct() {
                 <nav aria-label="Breadcrumb">
                     <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                         <li className="text-sm">
-                            <a href={product.href} aria-current="page" className="font-medium text-gray-500 hover:text-gray-600">
-                                {product.name}
-                            </a>
+                            {detaiProduct?.data.product.name}
                         </li>
                     </ol>
                 </nav>
@@ -81,17 +68,17 @@ export default function DetailProduct() {
                 <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
                     <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
                         <img
-                            src={`http://127.0.0.1:8000${product.images}`}
+                            src={`http://127.0.0.1:8000${detaiProduct?.data.product.image}`}
                             className="h-full w-full object-cover object-center"
                         />
                     </div>
                     <div className=" pl-[2%] aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
                         <div className="pt-[5%] lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-                            <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">{product.name}</h1>
+                            <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">{detaiProduct?.data.product.name}</h1>
                         </div>
                         <div className="mt-4 lg:row-span-3 lg:mt-0">
                             <h2 className="sr-only">Product information</h2>
-                            <p className="text-3xl tracking-tight text-gray-900">{product.price}</p>
+                            <p className="text-3xl tracking-tight text-gray-900">{detaiProduct?.data.priceSku == null ? detaiProduct?.data.product.price : detaiProduct?.data.priceSku[0].sku_price}</p>
 
                             Reviews
                             <div className="mt-6">
@@ -116,22 +103,22 @@ export default function DetailProduct() {
                                 </div>
                             </div>
 
-                            <form className="mt-10">
+                            <form className="mt-10" onSubmit={handleSubmit(onHandleSubmit)}>
                                 {/* Colors */}
                                 <div>
                                     <h3 className="text-sm font-medium text-gray-900">Danh mục</h3>
-                                    <p className='text-sm font-base text-gray-500 pb-[5%] pt-[1%]'>Áo</p>
+                                    <p className='text-sm font-base text-gray-500 pb-[5%] pt-[1%]'>{detaiProduct?.data.product.category_name}</p>
                                 </div>
                                 <div>
 
 
-                                    {product.colors ?
+                                    {detaiProduct?.data.variant.Màu ?
                                         <div>
                                             <h3 className="text-sm font-medium text-gray-900">Màu sắc</h3>
                                             <RadioGroup value={selectedColor} onChange={(color) => selectC(color)}>
                                                 <RadioGroup.Label className="sr-only">Chọn một màu</RadioGroup.Label>
                                                 <div className="flex items-center space-x-3">
-                                                    {product?.colors.map((color) => (
+                                                    {detaiProduct?.data.variant.Màu.map((color) => (
                                                         <RadioGroup.Option
                                                             key={color.value}
                                                             value={color}
@@ -161,7 +148,7 @@ export default function DetailProduct() {
                                 {/* Sizes */}
                                 <div className="mt-10">
 
-                                    {product.sizes ?
+                                    {detaiProduct?.data.variant.Size ?
                                         <div>
                                             <div className="flex items-center justify-between">
                                                 <h3 className="text-sm font-medium text-gray-900">Kích thước</h3>
@@ -173,7 +160,7 @@ export default function DetailProduct() {
                                             <RadioGroup value={selectedSize} onChange={(size) => selectS(size)} className="mt-4">
                                                 <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
                                                 <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                                                    {product?.sizes?.map((size) => (
+                                                    {modifiedData.map((size) => (
                                                         <RadioGroup.Option
                                                             key={size.value}
                                                             value={size}
@@ -241,37 +228,21 @@ export default function DetailProduct() {
                                 <h3 className="sr-only">Mô tả</h3>
 
                                 <div className="space-y-6">
-                                    <div className="space-y-6" dangerouslySetInnerHTML={{ __html: product?.description }}></div>
+                                    <div className="space-y-6" dangerouslySetInnerHTML={{ __html: detaiProduct?.data.product?.description }}></div>
                                 </div>
                             </div>
 
                             <div className="mt-10">
                                 <h3 className="text-base font-medium text-gray-900">Chất liệu</h3>
 
-                                <div className="mt-4">
-                                    <ul role="list" className="list-disc space-y-2 pl-4 text-base">
-                                        {product?.highlights.map((highlight) => (
-                                            <li key={highlight} className="text-gray-400">
-                                                <span className="text-gray-600">{highlight}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
 
-                            <div className="mt-10">
-                                <h2 className="text-base font-medium text-gray-900">Thông tin chi tiết</h2>
-
-                                <div className="mt-4 space-y-6">
-                                    <p className="text-base text-gray-600">{product.details}</p>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }

@@ -21,6 +21,8 @@ import bannerApi, { bannerReducer } from '@/api/banner';
 
 import homeApi, { homeReducer } from '@/api/home';
 import detailApi, { detailReducer } from '@/api/detail';
+import cartApi, { cartReducer } from '@/api/cart';
+import paymentApi, { paymentReducer } from '@/api/payment';
 
 
 const persistConfig = {
@@ -37,9 +39,11 @@ const rootReducer = combineReducers({
     [variantApi.reducerPath]: variantReducer,
     [bannerApi.reducerPath]: bannerReducer,
     [homeApi.reducerPath]: homeReducer,
-    [detailApi.reducerPath]: detailReducer
+    [detailApi.reducerPath]: detailReducer,
+    [cartApi.reducerPath]: cartReducer,
+    [paymentApi.reducerPath]: paymentReducer
 })
-const middleware = [productApi.middleware, userApi.middleware, categoryApi.middleware, optionsApi.middleware, variantApi.middleware, bannerApi.middleware, homeApi.middleware, detailApi.middleware]
+const middleware = [productApi.middleware, userApi.middleware, categoryApi.middleware, optionsApi.middleware, variantApi.middleware, bannerApi.middleware, homeApi.middleware, detailApi.middleware, cartApi.middleware, detailApi.middleware, paymentApi.middleware]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 export const store = configureStore({

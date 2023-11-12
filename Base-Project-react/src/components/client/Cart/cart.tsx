@@ -1,8 +1,11 @@
+import { useGetCartQuery } from '@/api/cart'
 import React from 'react'
 
 type Props = {}
-
 const CartProduct = (props: Props) => {
+    const { data: dataCart } = useGetCartQuery()
+    console.log(dataCart);
+
     return (
         <div>
             <div className="container-fluid bg-secondary mb-5">
@@ -32,28 +35,34 @@ const CartProduct = (props: Props) => {
                                 </tr>
                             </thead>
                             <tbody className="align-middle">
-                                <tr>
-                                    <td className="align-middle d-flex justify-content-center align-items-center "><img src="https://themewagon.github.io/eshopper/img/product-1.jpg" className='w-[50px]' alt="" /> <p>Colorful Stylish Shirt</p></td>
-                                    <td className="align-middle">XL - Đỏ</td>
-                                    <td className="align-middle">$150</td>
-                                    <td className="align-middle">
-                                        <div className="input-group quantity mx-auto w-[100px]" >
-                                            <div className="input-group-btn">
-                                                <button className="btn btn-sm btn-primary btn-minus" >
-                                                    <i className="fa fa-minus"></i>
-                                                </button>
+                                {dataCart?.carts.map((cart: any) => (
+                                    <tr key={cart.id}>
+                                        <td className="align-middle d-flex justify-content-center align-items-center">
+                                            <img src={`http://127.0.0.1:8000${cart.image_product}`} className='w-[50px]' alt="" />
+                                            <p>Colorful Stylish Shirt</p>
+                                        </td>
+                                        <td className="align-middle">{`${cart.option_value[0]} - ${cart.option_value[1]}`}</td>
+                                        <td className="align-middle">${cart.sku_price}</td>
+                                        <td className="align-middle">
+                                            <div className="input-group quantity mx-auto w-[100px]">
+                                                <div className="input-group-btn">
+                                                    <button className="btn btn-sm btn-primary btn-minus">
+                                                        <i className="fa fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                                <input type="text" className="form-control form-control-sm bg-secondary text-center" value={`${cart.quantity}`} />
+                                                <div className="input-group-btn">
+                                                    <button className="btn btn-sm btn-primary btn-plus">
+                                                        <i className="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <input type="text" className="form-control form-control-sm bg-secondary text-center" value="1" />
-                                            <div className="input-group-btn">
-                                                <button className="btn btn-sm btn-primary btn-plus">
-                                                    <i className="fa fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td className="align-middle">$150</td>
-                                    <td className="align-middle"><button className="btn btn-sm btn-primary"><i className="fa fa-times"></i></button></td>
-                                </tr>
+                                        </td>
+                                        <td className="align-middle">$150</td>
+                                        <td className="align-middle"><button className="btn btn-sm btn-primary"><i className="fa fa-times"></i></button></td>
+                                    </tr>
+                                ))}
+
 
                             </tbody>
                         </table>
@@ -74,7 +83,7 @@ const CartProduct = (props: Props) => {
                             <div className="card-body">
                                 <div className="d-flex justify-content-between mb-3 pt-1">
                                     <h6 className="font-weight-medium">Subtotal</h6>
-                                    <h6 className="font-weight-medium">$150</h6>
+                                    <h6 className="font-weight-medium">${dataCart?.total_amount}</h6>
                                 </div>
                                 <div className="d-flex justify-content-between">
                                     <h6 className="font-weight-medium">Shipping</h6>
@@ -84,7 +93,7 @@ const CartProduct = (props: Props) => {
                             <div className="card-footer border-secondary bg-transparent">
                                 <div className="d-flex justify-content-between mt-2">
                                     <h5 className="font-weight-bold">Total</h5>
-                                    <h5 className="font-weight-bold">$160</h5>
+                                    <h5 className="font-weight-bold">${dataCart?.total_amount}</h5>
                                 </div>
                                 <button className="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
                             </div>
