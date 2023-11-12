@@ -5,6 +5,28 @@ import { Link } from 'react-router-dom';
 const Banner = (props: Props) => {
     const { data } = useGetDataQuery();
 
+    useEffect(() => {
+        // Start the carousel when the component mounts
+        const headerCarousel = document.getElementById('header-carousel');
+        if (headerCarousel) {
+            const carousel = new window.bootstrap.Carousel(headerCarousel, {
+                interval: 3000, // Set the interval between slides (in milliseconds)
+            });
+
+            // Handle click on the previous button
+            const prevButton = document.querySelector('.carousel-control-prev');
+            prevButton.addEventListener('click', () => {
+                carousel.prev();
+            });
+
+            // Handle click on the next button
+            const nextButton = document.querySelector('.carousel-control-next');
+            nextButton.addEventListener('click', () => {
+                carousel.next();
+            });
+        }
+    }, []);
+
     return (
         <div>
             <div id="header-carousel" className="carousel slide" data-ride="carousel" data-interval="3000">
@@ -27,16 +49,16 @@ const Banner = (props: Props) => {
                         </div>
                     ))}
                 </div>
-                <Link className="carousel-control-prev" href="#header-carousel" data-slide="prev">
+                <button className="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
                     <div className="btn btn-dark">
                         <span className="carousel-control-prev-icon mb-n2"></span>
                     </div>
-                </Link>
-                <Link className="carousel-control-next" href="#header-carousel" data-slide="next">
+                </button>
+                <button className="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
                     <div className="btn btn-dark">
                         <span className="carousel-control-next-icon mb-n2"></span>
                     </div>
-                </Link>
+                </button>
             </div>
         </div>
     );
