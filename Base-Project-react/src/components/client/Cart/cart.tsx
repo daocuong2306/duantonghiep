@@ -58,7 +58,7 @@ const CartProduct = (props: Props) => {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="align-middle">$150</td>
+                                        <td className="align-middle">${cart.total_price}</td>
                                         <td className="align-middle"><button className="btn btn-sm btn-primary"><i className="fa fa-times"></i></button></td>
                                     </tr>
                                 ))}

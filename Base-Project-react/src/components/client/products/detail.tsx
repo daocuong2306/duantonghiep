@@ -32,7 +32,7 @@ export default function DetailProduct() {
         id, selectP: newArray
     }
     const { data: detaiProduct, isLoading } = useGetDetailQuery(prodcuts)
-    const modifiedData = detaiProduct?.data.variant.Size?.map((item: any) => ({
+    const modifiedData = detaiProduct?.data.variant.size?.map((item: any) => ({
         ...item,
         inStock: true
     }));
@@ -59,7 +59,7 @@ export default function DetailProduct() {
                 <nav aria-label="Breadcrumb">
                     <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                         <li className="text-sm">
-                            {detaiProduct?.data.product.name}
+                            {detaiProduct?.data.product[0].name}
                         </li>
                     </ol>
                 </nav>
@@ -68,17 +68,17 @@ export default function DetailProduct() {
                 <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
                     <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
                         <img
-                            src={`http://127.0.0.1:8000${detaiProduct?.data.product.image}`}
+                            src={`http://127.0.0.1:8000${detaiProduct?.data.product[0].image}`}
                             className="h-full w-full object-cover object-center"
                         />
                     </div>
                     <div className=" pl-[2%] aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
                         <div className="pt-[5%] lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-                            <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">{detaiProduct?.data.product.name}</h1>
+                            <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">{detaiProduct?.data.product[0].name}</h1>
                         </div>
                         <div className="mt-4 lg:row-span-3 lg:mt-0">
                             <h2 className="sr-only">Product information</h2>
-                            <p className="text-3xl tracking-tight text-gray-900">{detaiProduct?.data.priceSku == null ? detaiProduct?.data.product.price : detaiProduct?.data.priceSku[0].sku_price}</p>
+                            <p className="text-3xl tracking-tight text-gray-900">{detaiProduct?.data.priceSku == null ? detaiProduct?.data.product[0].price : detaiProduct?.data.priceSku[0].sku_price}</p>
 
                             Reviews
                             <div className="mt-6">
@@ -107,18 +107,18 @@ export default function DetailProduct() {
                                 {/* Colors */}
                                 <div>
                                     <h3 className="text-sm font-medium text-gray-900">Danh mục</h3>
-                                    <p className='text-sm font-base text-gray-500 pb-[5%] pt-[1%]'>{detaiProduct?.data.product.category_name}</p>
+                                    <p className='text-sm font-base text-gray-500 pb-[5%] pt-[1%]'>{detaiProduct?.data.product[0].category_name}</p>
                                 </div>
                                 <div>
 
 
-                                    {detaiProduct?.data.variant.Màu ?
+                                    {detaiProduct?.data.variant.Mau ?
                                         <div>
                                             <h3 className="text-sm font-medium text-gray-900">Màu sắc</h3>
                                             <RadioGroup value={selectedColor} onChange={(color) => selectC(color)}>
                                                 <RadioGroup.Label className="sr-only">Chọn một màu</RadioGroup.Label>
                                                 <div className="flex items-center space-x-3">
-                                                    {detaiProduct?.data.variant.Màu.map((color) => (
+                                                    {detaiProduct?.data.variant.Mau.map((color) => (
                                                         <RadioGroup.Option
                                                             key={color.value}
                                                             value={color}
@@ -148,7 +148,7 @@ export default function DetailProduct() {
                                 {/* Sizes */}
                                 <div className="mt-10">
 
-                                    {detaiProduct?.data.variant.Size ?
+                                    {detaiProduct?.data.variant.size ?
                                         <div>
                                             <div className="flex items-center justify-between">
                                                 <h3 className="text-sm font-medium text-gray-900">Kích thước</h3>
@@ -228,7 +228,7 @@ export default function DetailProduct() {
                                 <h3 className="sr-only">Mô tả</h3>
 
                                 <div className="space-y-6">
-                                    <div className="space-y-6" dangerouslySetInnerHTML={{ __html: detaiProduct?.data.product?.description }}></div>
+                                    <div className="space-y-6" dangerouslySetInnerHTML={{ __html: detaiProduct?.data.product[0]?.description }}></div>
                                 </div>
                             </div>
 

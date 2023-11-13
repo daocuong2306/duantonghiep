@@ -26,6 +26,7 @@ import Home from "./components/component/layout/home";
 import CartProduct from "./components/client/Cart/cart";
 import Statistics from "./components/admin/statistics/statistics";
 import PaymentOnline from "./components/client/payment/paymentOnline";
+import ConfirmPayment from "./components/client/payment/confirmPayment";
 
 
 
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
                 path: "statistics",
                 element: <Statistics />,
             },
+            {
+                path: "confirm",
+                element: <ConfirmPayment />,
+            }
         ]
     },
     {
