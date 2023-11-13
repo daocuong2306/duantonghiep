@@ -29,7 +29,7 @@ const Home = (props: Props) => {
                                 </div>
                             </div>
                             <div className="col-lg-9">
-                                <MenuBar/>
+                                <MenuBar />
                                 <Banner />
                             </div>
                         </div>
@@ -43,22 +43,22 @@ const Home = (props: Props) => {
                     <div className="container-fluid offer pt-5">
                         <div className="row px-xl-5">
                             <div className="col-md-6 pb-4">
-                                <div className="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
+                                <div className="position-relative text-center text-md-right mb-2 py-5 px-5" style={{backgroundColor:"#00CCFF"}}>
                                     <img src="https://themewagon.github.io/eshopper/img/offer-1.png" alt="" />
                                     <div className="position-relative" >
-                                        <h5 className="text-uppercase text-primary mb-3">Giảm giá 20% cho các sản phẩm Hạ - Thu</h5>
+                                        <h5 className="text-uppercase mb-3" style={{color:"#FF6600"}}>Giảm giá 20% cho các sản phẩm Hạ - Thu</h5>
                                         <h1 className="mb-4 font-weight-semi-bold">Áo Polo, T-shirt</h1>
-                                        <Link to="" className="btn btn-outline-primary py-md-2 px-md-3">Mua ngay</Link>
+                                        <Link to="" className="btn btn-primary py-md-2 px-md-3" style={{}}>Mua ngay</Link>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-6 pb-4">
-                                <div className="position-relative bg-secondary text-center text-md-left text-white mb-2 py-5 px-5">
+                                <div className="position-relative text-center text-md-left mb-2 py-5 px-5" style={{backgroundColor:"#00CCFF"}}>
                                     <img src="https://themewagon.github.io/eshopper/img/offer-2.png" alt="" />
                                     <div className="position-relative" >
-                                        <h5 className="text-uppercase text-primary mb-3">Giảm giá 20% cho các sản phẩm Thu - Đông</h5>
+                                        <h5 className="text-uppercase mb-3" style={{color:"#FF6600"}}>Giảm giá 20% cho các sản phẩm Thu - Đông</h5>
                                         <h1 className="mb-4 font-weight-semi-bold">Áo khoác, Hoodie</h1>
-                                        <Link to="" className="btn btn-outline-primary py-md-2 px-md-3">Mua ngay</Link>
+                                        <Link to="" className="btn btn-primary py-md-2 px-md-3" >Mua ngay</Link>
                                     </div>
                                 </div>
                             </div>
