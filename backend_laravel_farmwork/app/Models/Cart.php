@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-    protected $fillable = ['user_id', 'product_id', 'sku_id', 'quantity'];
+    protected $fillable = ['user_id', 'product_id', 'sku_id', 'quantity','status'];
+
+    const PAID ='da_thanh_toan';
+    const UNPAID = 'chua_thanh_toan';
+    const COMFIRM = 'cho_xac_nhan';
 
     public function user()
     {

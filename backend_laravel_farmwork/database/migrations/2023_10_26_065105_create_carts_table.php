@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('product_id');
             $table->integer('sku_id');
             $table->integer('quantity');
+            $table->string('status')->default(\App\Models\Cart::UNPAID);
             $table->timestamps();
         });
     }
