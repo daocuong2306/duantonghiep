@@ -9,9 +9,9 @@ class Cart extends Model
 {
     protected $fillable = ['user_id', 'product_id', 'sku_id', 'quantity','status'];
 
-    const PAID ='da_thanh_toan';
-    const UNPAID = 'chua_thanh_toan';
-    const COMFIRM = 'cho_xac_nhan';
+    const ORDER ='da_dat_hang';
+    const NO_ORDER = 'chua_dat_hang';
+ 
 
     public function user()
     {

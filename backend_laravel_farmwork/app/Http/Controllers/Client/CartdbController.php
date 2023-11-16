@@ -71,7 +71,7 @@ class CartdbController extends Controller
             'product_id' => 'required|exists:product,id',
             'sku_id' => 'required|exists:skus,id',
             'quantity' => 'required|integer|min:1',
-            'status' => 'nullable|in:UNPAID,PAID,COMFIRM', // Thêm quy tắc kiểm tra cho trường status
+            'status' => 'nullable|in:ORDER,NO_ORDER', // Thêm quy tắc kiểm tra cho trường status
         ]);
     
         if ($validator->fails()) {
@@ -82,7 +82,7 @@ class CartdbController extends Controller
         $product_id = $request->product_id;
         $sku_id = $request->sku_id;
         $quantity = $request->quantity;
-        $status = $request->status ? $request->status : 'UNPAID'; // Gán giá trị mặc định là "UNPAID" nếu không có giá trị được chọn
+        $status = $request->status ? $request->status : 'NO_ORDER'; // Gán giá trị mặc định là "UNPAID" nếu không có giá trị được chọn
     
         $cart = Cart::where('user_id', $user_id)
             ->where('product_id', $product_id)
