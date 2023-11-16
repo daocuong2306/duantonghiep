@@ -102,7 +102,7 @@ const AddProduct = () => {
     const uploadButton = (
         <div>
             {loadingAvatar ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Cập nhập</div>
+            <div style={{ marginTop: 8 }}>Cập nhật</div>
         </div>
     );
     //end img product 

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, UploadProps, message } from 'antd';
+import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, Spin, UploadProps, message } from 'antd';
 import { Image } from 'antd';
 
 import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from '@/api/category';
@@ -16,13 +16,13 @@ const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
     const onClose = () => {
         setOpen(false);
     };
-   console.log(id);
-   
+    console.log(id);
+
     const onFinish = async (values: any) => {
         console.log('Success:', values);
         const formData = new FormData();
         formData.append('name', values.name);
-        
+
         if (selectedFile) {
             // If a new image is selected, append it to the formData
             formData.append('image', selectedFile);
@@ -31,9 +31,9 @@ const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
             // If no new image is selected, use the existing image value
             formData.append('image', category?.categories.image);
         }
-        
+
         try {
-            const idCate={formData,id}
+            const idCate = { formData, id }
             const response = await updateCategory(idCate);
             message.success('Cập nhật sản phẩm thành công');
 
@@ -108,13 +108,14 @@ const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
     }
     //end add image 
 
-    
-    const { data: category } = useGetCategoryByIdQuery(id);
-    
+
+    const { data: category, isLoading } = useGetCategoryByIdQuery(id);
+
     console.log(category);
-    
+
     return (
         <>
+            <Spin spinning={isLoading}></Spin>
             <Button onClick={showDrawer} >
                 Sửa
             </Button>
@@ -129,7 +130,7 @@ const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
 
             >
                 <Form layout="vertical" onFinish={onFinish}>
-                <Row gutter={16}>
+                    <Row gutter={16}>
                         <Col span={12}>
                             {!check ? <>
                                 <Button
@@ -167,17 +168,17 @@ const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
                             >
                                 <Input placeholder="Please enter a name" />
                             </Form.Item>
-                            
+
                         </Col>
-                    </Row> 
+                    </Row>
                     <Space>
                         <Button onClick={onClose}>Hủy bỏ</Button>
                         <Button htmlType="submit">
-                           Gửi
+                            Gửi
                         </Button>
                     </Space>
                 </Form>
-                
+
             </Drawer>
         </>
     );
