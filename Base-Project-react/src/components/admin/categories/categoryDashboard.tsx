@@ -1,19 +1,18 @@
 import { useGetCategoriesQuery, useRemoveCategoryMutation } from "@/api/category"
 import { ICategory } from "@/interface/category"
-import { Button, Image, Space, Table, TableColumnsType } from "antd"
+import { Button, Image, Space, Spin, Table, TableColumnsType } from "antd"
 import { FcFullTrash, FcSupport } from "react-icons/fc"
 import { Link } from "react-router-dom"
 import UpdateCategory from "./updateCategory"
 
 const CategoryDashboard = () => {
-  
-    const { data: categories, isLoading } = useGetCategoriesQuery();
-    const [deleteProduct] = useRemoveCategoryMutation()
-    const deleteP = (id: number) => {
+
+    const { data: categories, isLoading: dataLoading } = useGetCategoriesQuery();
+    const [deleteCate, { isLoading }] = useRemoveCategoryMutation()
+    const deleteC = (id: number) => {
         const check = window.confirm("Are you sure you want to delete");
         if (check) {
-            deleteProduct(id);
-            alert("da xoa")
+            deleteCate(id);
         }
     }
     const columns: TableColumnsType<any> = [
@@ -31,7 +30,7 @@ const CategoryDashboard = () => {
                 return <>
                     <UpdateCategory id={dataIndex} />
                     <Space wrap>
-                        <Button type="primary" danger onClick={() => deleteP(dataIndex)}>
+                        <Button type="primary" danger onClick={() => deleteC(dataIndex)}>
                             Xóa
                         </Button>
                     </Space>
@@ -42,14 +41,17 @@ const CategoryDashboard = () => {
     const data: any[] = categories?.categories;
     return (
         <div>
+
+            <Spin spinning={isLoading}></Spin>
             <Space>
-                <Link to='/admin/categories/add'> <Button primary>Thêm Sản Phẩm</Button></Link>
+                <Link to='/admin/categories/add'> <Button primary>Thêm Danh Mục</Button></Link>
             </Space>
+
             <Table
                 columns={columns}
-                // expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
                 dataSource={data}
             />
+            <Spin spinning={dataLoading} className="pl-[50%]"></Spin>
         </div >
     )
 }

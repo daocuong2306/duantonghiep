@@ -67,9 +67,9 @@ const Variant: React.FC = (product: any) => {
                             <Form.Item
                                 name={option.name}
                                 label={option.name}
-                                rules={[{ required: true, message: 'Please select your favourite colors!', type: 'array' }]}
+                                rules={[{ required: true, message: `Hãy nhập ${option.name}`, type: 'array' }]}
                             >
-                                <Select mode="multiple" placeholder="Please select favourite colors">
+                                <Select mode="multiple" placeholder="Hãy chọn giá trị mong muốn">
                                     {option?.value.map((value) => <Option value={value.id}>{value.name}</Option>)}
                                 </Select>
                             </Form.Item>
