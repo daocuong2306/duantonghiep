@@ -23,7 +23,7 @@ class CartdbController extends Controller
     {
         if (Auth::check()) {
             $user_id = Auth::user()->id;
-            $carts = Cart::with(['variant', 'sku'])->where('user_id', $user_id)->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity']);
+            $carts = Cart::with(['variant', 'sku'])->where('user_id', $user_id)->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity','status']);
     
             $totalAmount = 0; // Biến lưu tổng tiền của cả giỏ hàng
     
@@ -47,6 +47,7 @@ class CartdbController extends Controller
                     'sku_price' => $cart->sku->price,
                     'option_value' => $optionValuesData,
                     'total_price' => $totalPrice, // Thêm trường tổng tiền cho từng sản phẩm
+                    'status' => $cart->status,
                 ];
             });
     
@@ -67,26 +68,27 @@ class CartdbController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            
             'product_id' => 'required|exists:product,id',
             'sku_id' => 'required|exists:skus,id',
             'quantity' => 'required|integer|min:1',
+            'status' => 'nullable|in:UNPAID,PAID,COMFIRM', // Thêm quy tắc kiểm tra cho trường status
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
-
+    
         $user_id = Auth::user()->id;
         $product_id = $request->product_id;
         $sku_id = $request->sku_id;
         $quantity = $request->quantity;
-
+        $status = $request->status ? $request->status : 'UNPAID'; // Gán giá trị mặc định là "UNPAID" nếu không có giá trị được chọn
+    
         $cart = Cart::where('user_id', $user_id)
             ->where('product_id', $product_id)
             ->where('sku_id', $sku_id)
             ->first();
-
+    
         if ($cart) {
             // Sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng
             $cart->quantity += $quantity;
@@ -98,15 +100,15 @@ class CartdbController extends Controller
             $newCart->product_id = $product_id;
             $newCart->sku_id = $sku_id;
             $newCart->quantity = $quantity;
+            $newCart->status = $status; // Gán giá trị cho trường status
             $newCart->save();
         }
-
+    
         return response()->json([
             'status' => 200,
             'message' => 'Thêm vào giỏ hàng thành công'
         ], 200);
     }
-
     /**
      * Display the specified resource.
      *
