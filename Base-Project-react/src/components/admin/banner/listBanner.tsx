@@ -1,15 +1,15 @@
 import { useGetListBannerQuery, useRemoveBannerMutation } from "@/api/banner";
-import { Button, Image, Space, Table, TableColumnsType } from "antd"
+import { Button, Image, Space, Spin, Table, TableColumnsType } from "antd"
 import { Link } from "react-router-dom"
 const BannerDashboard = () => {
     const { data: banners, isLoading } = useGetListBannerQuery();
     console.log(banners);
-    const [deleteBanner] = useRemoveBannerMutation()
+    const [deleteBanner,{isLoading:deleteLoading}] = useRemoveBannerMutation()
     const deleteB = (id: number) => {
         const check = window.confirm("Are you sure you want to delete");
         if (check) {
             deleteBanner(id);
-            alert("da xoa")
+            
         }
     }
     const columns: TableColumnsType<any> = [
@@ -45,6 +45,9 @@ const BannerDashboard = () => {
                 // expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
                 dataSource={data}
             />
+            <Spin spinning={isLoading} className="pl-[50%]"></Spin>
+            <Spin spinning={deleteLoading} className="pl-[50%]"></Spin>
+            
         </div >
     )
 }
