@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\Client\BillController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CartdbController;
 use App\Http\Controllers\Client\DetailedProductController;
@@ -95,6 +96,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/cart/add', [CartdbController::class, 'store']); 
     Route::post('/cart/update/{id}', [CartdbController::class, 'update']); 
     Route::delete('/cart/delete/{id}', [CartdbController::class, 'destroy']); 
+
+    // Bill
+    Route::get('/bill', [BillController::class, 'index']); 
+    Route::post('/bill/add', [BillController::class, 'store']); 
+
 });
 // Sanctum---------------------------------------------------
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
