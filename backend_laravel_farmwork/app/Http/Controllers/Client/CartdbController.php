@@ -23,7 +23,7 @@ class CartdbController extends Controller
     {
         if (Auth::check()) {
             $user_id = Auth::user()->id;
-            $carts = Cart::with(['variant', 'sku'])->where('user_id', $user_id)->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity','status']);
+            $carts = Cart::with(['variant', 'sku'])->where('user_id', $user_id)->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity','price_cart','status']);
     
             $totalAmount = 0; // Biến lưu tổng tiền của cả giỏ hàng
     
@@ -46,6 +46,7 @@ class CartdbController extends Controller
                     'quantity' => $cart->quantity,
                     'sku_price' => $cart->sku->price,
                     'option_value' => $optionValuesData,
+                    'price_cart'  =>$cart->price_cart,
                     'total_price' => $totalPrice, // Thêm trường tổng tiền cho từng sản phẩm
                     'status' => $cart->status,
                 ];
@@ -71,7 +72,7 @@ class CartdbController extends Controller
             'product_id' => 'required|exists:product,id',
             'sku_id' => 'required|exists:skus,id',
             'quantity' => 'required|integer|min:1',
-            'status' => 'nullable|in:ORDER,NO_ORDER', // Thêm quy tắc kiểm tra cho trường status
+            'status' => 'nullable|in:ORDER,NO_ORDER',
         ]);
     
         if ($validator->fails()) {
@@ -82,25 +83,35 @@ class CartdbController extends Controller
         $product_id = $request->product_id;
         $sku_id = $request->sku_id;
         $quantity = $request->quantity;
-        $status = $request->status ? $request->status : 'NO_ORDER'; // Gán giá trị mặc định là "UNPAID" nếu không có giá trị được chọn
+        $status = $request->status ? $request->status : 'NO_ORDER';
     
-        $cart = Cart::where('user_id', $user_id)
+        $sku = Sku::find($sku_id);
+    
+        if (!$sku) {
+            return response()->json(['error' => 'Sản phẩm không tồn tại'], 400);
+        }
+    
+        $price_cart = $sku->price;
+    
+        $existingCart = Cart::where('user_id', $user_id)
             ->where('product_id', $product_id)
             ->where('sku_id', $sku_id)
+            ->where('status', 'NO_ORDER')
             ->first();
     
-        if ($cart) {
-            // Sản phẩm đã tồn tại trong giỏ hàng, tăng số lượng
-            $cart->quantity += $quantity;
-            $cart->save();
+        if ($existingCart) {
+            // Sản phẩm đã tồn tại trong giỏ hàng và trạng thái là "NO_ORDER", tăng số lượng
+            $existingCart->quantity += $quantity;
+            $existingCart->save();
         } else {
-            // Sản phẩm chưa tồn tại trong giỏ hàng, tạo mới
+            // Sản phẩm chưa tồn tại trong giỏ hàng hoặc không ở trạng thái "NO_ORDER", tạo mới
             $newCart = new Cart();
             $newCart->user_id = $user_id;
             $newCart->product_id = $product_id;
             $newCart->sku_id = $sku_id;
             $newCart->quantity = $quantity;
-            $newCart->status = $status; // Gán giá trị cho trường status
+            $newCart->status = $status;
+            $newCart->price_cart = $price_cart; // Lưu giá tiền vào trường price_cart
             $newCart->save();
         }
     
@@ -116,15 +127,41 @@ class CartdbController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $cart = Cart::findOrFail($id);
-        $cart->update($request->only('quantity'));
+{
+    $cart = Cart::findOrFail($id);
 
+    $newQuantity = $request->input('quantity');
+    $newStatus = $request->input('status');
+
+    // Kiểm tra và không cho phép tăng số lượng khi trạng thái là "ORDER"
+    if ($cart->status === 'ORDER' && $newQuantity > $cart->quantity) {
         return response()->json([
-            'status' => 200,
-            'message' => 'update thành công giỏ hàng '
-        ], 200);
+            'error' => 'Không thể tăng số lượng khi trạng thái là "ORDER"'
+        ], 400);
     }
+
+    // Kiểm tra và chỉ cho phép cập nhật trạng thái thành "ORDER" hoặc "NO_ORDER"
+    if ($newStatus !== null) {
+        if ($newStatus === 'ORDER' || $newStatus === 'NO_ORDER') {
+            $cart->status = $newStatus;
+        } else {
+            return response()->json([
+                'error' => 'Giá trị trạng thái không hợp lệ'
+            ], 400);
+        }
+    }
+
+    if ($newQuantity !== null) {
+        $cart->quantity = $newQuantity;
+    }
+
+    $cart->save();
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Cập nhật giỏ hàng thành công'
+    ], 200);
+}
 
     /**
      * Remove the specified resource from storage.
