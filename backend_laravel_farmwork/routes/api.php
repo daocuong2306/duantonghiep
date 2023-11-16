@@ -11,6 +11,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\Client\BillController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CartdbController;
+use App\Http\Controllers\Client\CartProductController;
 use App\Http\Controllers\Client\DetailedProductController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\UserSettingController;
@@ -69,14 +70,13 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     //Setting
     Route::post('admin/settingshop', [SettingController::class, 'setingshope']);
     Route::get('admin/editinforshop', [SettingController::class, 'InforShop']);
-    
 });
 // ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
 Route::group(['middleware' => 'auth:api'], function () {
     //User
     Route::get('auth/user', [AuthController::class, 'user']);
     Route::post('user/edit/{id}', [UserController::class, 'edit']);
-    
+
     Route::get('user/inforuser', [UserSettingController::class, 'inforUsser']);
     Route::post('user/edituser', [UserSettingController::class, 'editUser']);
     //Comment
@@ -93,14 +93,20 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Route::post('/cart/add', [CartController::class, 'store']); 
 
     Route::get('/cart', [CartdbController::class, 'index']);
-    Route::post('/cart/add', [CartdbController::class, 'store']); 
-    Route::post('/cart/update/{id}', [CartdbController::class, 'update']); 
-    Route::delete('/cart/delete/{id}', [CartdbController::class, 'destroy']); 
+    Route::post('/cart/add', [CartdbController::class, 'store']);
+    Route::post('/cart/update/{id}', [CartdbController::class, 'update']);
+    Route::delete('/cart/delete/{id}', [CartdbController::class, 'destroy']);
+
 
     // Bill
-    Route::get('/bill', [BillController::class, 'index']); 
-    Route::post('/bill/add', [BillController::class, 'store']); 
+    Route::get('/bill', [BillController::class, 'index']);
+    Route::post('/bill/add', [BillController::class, 'store']);
 
+
+    Route::get('/cartproduct', [CartProductController::class, 'index']);
+    Route::post('/cartproduct/add', [CartProductController::class, 'store']);
+    Route::post('/cartproduct/update/{id}', [CartProductController::class, 'update']);
+    Route::delete('/cartproduct/delete/{id}', [CartProductController::class, 'destroy']);
 });
 // Sanctum---------------------------------------------------
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
