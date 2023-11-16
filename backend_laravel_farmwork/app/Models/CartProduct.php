@@ -33,4 +33,8 @@ class CartProduct extends Model
     {
         return $this->belongsTo(Sku::class, 'sku_id');
     }
+    public function variant()
+    {
+        return $this->belongsTo(Variant::class, 'sku_id');
+}
 }
