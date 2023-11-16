@@ -56,10 +56,7 @@ export const router = createBrowserRouter([
                 path: 'payment',
                 element: <PaymentOnline />
             },
-            {
-                path: "statistics",
-                element: <Statistics />,
-            },
+
             {
                 path: "confirm",
                 element: <ConfirmPayment />,
@@ -144,6 +141,10 @@ export const router = createBrowserRouter([
             {
                 path: 'banner/add',
                 element: <AddBanner />
+            },
+            {
+                path: "statistics",
+                element: <Statistics />,
             },
         ],
     },
