@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CartdbController;
+use App\Http\Controllers\Client\CartProductController;
 use App\Http\Controllers\Client\DetailedProductController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\UserSettingController;
@@ -95,6 +96,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/cart/add', [CartdbController::class, 'store']); 
     Route::post('/cart/update/{id}', [CartdbController::class, 'update']); 
     Route::delete('/cart/delete/{id}', [CartdbController::class, 'destroy']); 
+
+    Route::get('/cartproduct', [CartProductController::class, 'index']);
+    Route::post('/cartproduct/add', [CartProductController::class, 'store']); 
+    Route::post('/cartproduct/update/{id}', [CartProductController::class, 'update']); 
+    Route::delete('/cartproduct/delete/{id}', [CartProductController::class, 'destroy']); 
+    
 });
 // Sanctum---------------------------------------------------
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

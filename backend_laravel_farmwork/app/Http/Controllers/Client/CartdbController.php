@@ -23,8 +23,10 @@ class CartdbController extends Controller
     {
         if (Auth::check()) {
             $user_id = Auth::user()->id;
-            $carts = Cart::with(['variant', 'sku'])->where('user_id', $user_id)->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity','price_cart','status']);
-    
+            $carts = Cart::with(['variant', 'sku'])
+            ->where('user_id', $user_id)
+            ->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity', 'price_cart', 'status']);
+            
             $totalAmount = 0; // Biến lưu tổng tiền của cả giỏ hàng
     
             $formattedCarts = $carts->map(function ($cart) use (&$totalAmount) {
