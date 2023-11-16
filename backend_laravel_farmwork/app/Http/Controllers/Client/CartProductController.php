@@ -42,7 +42,7 @@ class CartProductController extends Controller
     {
         // Validate the request data
         $validator = Validator::make($request->all(), [
-            'cart_id' => 'required',
+            'cart_id' => 'required|exists:carts,id',
         ]);
     
         // Check if validation fails
@@ -53,15 +53,15 @@ class CartProductController extends Controller
             ], 400);
         }
     
-        // Get the authenticated user's ID
+       //check id
         $userId = Auth::id();
     
-        // Retrieve the cart based on cart_id and user_id
+        
         $cart = Cart::where('id', $request->cart_id)
                     ->where('user_id', $userId)
                     ->first();
     
-        // Check if the cart exists
+        
         if (!$cart) {
             return response()->json([
                 'success' => false,
@@ -69,7 +69,7 @@ class CartProductController extends Controller
             ], 404);
         }
     
-        // Create a new CartProduct instance with automatically filled fields
+        
         $cartProduct = new CartProduct;
         $cartProduct->user_id = $userId;
         $cartProduct->cart_id = $request->cart_id;
@@ -79,7 +79,7 @@ class CartProductController extends Controller
         $cartProduct->price_cartpro = $cart->price_cart;
         $cartProduct->status = $cart->status;
     
-        // Save the CartProduct to the database
+        
         $cartProduct->save();
     
         return response()->json([
@@ -120,6 +120,18 @@ class CartProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $cartProduct = CartProduct::find($id);
+        if ($cartProduct) {
+            $cartProduct->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Xóa thành công ',
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Not found',
+            ], 404);
+        }
     }
 }
