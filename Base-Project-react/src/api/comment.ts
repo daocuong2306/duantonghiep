@@ -24,16 +24,19 @@ const commentApi = createApi({
             query: (comment: any) => ({
                 url: `/add`,
                 method: "POST",
-                params: comment
+                params: comment.value,
+                headers: {
+                    Authorization: `Bearer ${comment.token}`,
+                },
             }),
             invalidatesTags: ['Comment']
         }),
-        
+
     })
 });
 
 export const {
-   useAddCommentMutation
+    useAddCommentMutation
 } = commentApi;
 export const commentReducer = commentApi.reducer;
 

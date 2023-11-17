@@ -19,18 +19,18 @@ const Comment = () => {
         setRating(value);
     };
 
-    const handleSubmit = async () => {
-        const formData = new FormData();
-        formData.append('comments', comment);
-        formData.append('evaluate', rating);
-        formData.append('id_product', String(id))
-        try {
-            const response = await addComment(formData);
-            console.log(response);
-        } catch (error) {
-
-            console.error(error);
+    const handleSubmit = () => {
+        const token = localStorage.getItem("header")
+        const data = {
+            token: token,
+            value: {
+                comments: comment,
+                evaluate: rating,
+                id_product: String(id)
+            }
         }
+        console.log(data.token);
+        addComment(data);
     };
 
     return (
