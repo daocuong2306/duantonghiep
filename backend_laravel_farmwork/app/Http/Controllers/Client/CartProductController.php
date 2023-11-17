@@ -51,6 +51,7 @@ class CartProductController extends Controller
 
                 return [
                     'id' => $cart->id,
+                    'cart_id'=>$cart->cart_id,
                     'user_id' => $cart->user_id,
                     'product_id' => $cart->product_id,
                     'name_product' => $cart->product->name,
@@ -82,61 +83,40 @@ class CartProductController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request data
+        // Lấy thông tin người dùng đã đăng nhập
+        $user = Auth::user();
+    
+        // Kiểm tra dữ liệu đầu vào
         $validator = Validator::make($request->all(), [
             'cart_id' => 'required|exists:carts,id',
+            'product_id' => 'required|exists:product,id',
+            'sku_id' => 'required|exists:skus,id',
+            'quantity' => 'required|integer|min:1',
+            'status' => 'nullable|in:ORDER,NO_ORDER',
+            // Các validation rules khác cho các trường khác của CartProduct
         ]);
-
-        // Check if validation fails
+    
+        // Kiểm tra nếu validation không thành công
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors(),
-            ], 400);
+            return response()->json(['errors' => $validator->errors()], 400);
         }
-
-        // Check user ID
-        $userId = Auth::id();
-
-        // Find the cart
-        $cart = Cart::where('id', $request->cart_id)
-            ->where('user_id', $userId)
-            ->first();
-
-        if (!$cart) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cart not found.',
-            ], 404);
-        }
-
-        // Check if cart status is "order"
-        if ($cart->status !== 'order') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cannot add CartProduct. Cart status is not "order".',
-            ], 400);
-        }
-
-        // Create and save the CartProduct
-        $cartProduct = new CartProduct;
-        $cartProduct->user_id = $userId;
-        $cartProduct->cart_id = $request->cart_id;
-        $cartProduct->product_id = $cart->product_id;
-        $cartProduct->sku_id = $cart->sku_id;
-        $cartProduct->quantity = $cart->quantity;
-        $cartProduct->price_cartpro = $cart->price_cart;
-        $cartProduct->status = $cart->status;
-
+    
+        // Tạo một đối tượng CartProduct mới dựa trên dữ liệu từ yêu cầu
+        $cartProduct = new CartProduct();
+        $cartProduct->user_id = $user->id;
+        $cartProduct->cart_id = $request->input('cart_id');
+        $cartProduct->product_id = $request->input('product_id');
+        $cartProduct->sku_id = $request->input('sku_id');
+        $cartProduct->quantity = $request->input('quantity');
+        $cartProduct->status = $request->input('status');
+        // Cập nhật các trường khác của CartProduct
+    
+        // Lưu thông tin CartProduct
         $cartProduct->save();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'CartProduct created successfully.',
-            'data' => $cartProduct,
-        ], 201);
+    
+        // Trả về CartProduct vừa được tạo làm dữ liệu JSON
+        return response()->json($cartProduct, 201);
     }
-
     /**
      * Display the specified resource.
      *

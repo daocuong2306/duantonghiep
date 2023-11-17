@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('product_id');
-            $table->integer('sku_id');
-            $table->integer('quantity');
-            $table->integer('price_cart')->nullable();
-            $table->string('status')->default(\App\Models\Cart::NO_ORDER);
+            // $table->integer('sku_id');
+            // $table->integer('quantity');
+            // $table->integer('price_cart')->nullable();
+            // $table->string('status')->default(\App\Models\Cart::NO_ORDER);
             $table->timestamps();
         });
     }
