@@ -55,7 +55,7 @@ class CartdbController extends Controller
     
         // Kiểm tra dữ liệu đầu vào
         $validator = Validator::make($request->all(), [
-            'product_id' => 'required|exists:products,id',
+            'product_id' => 'required|exists:product,id',
             // Các validation rules khác cho các trường khác của cart
         ]);
     
@@ -94,7 +94,7 @@ public function update(Request $request, $id)
 
     // Kiểm tra dữ liệu đầu vào
     $validator = Validator::make($request->all(), [
-        'product_id' => 'required|exists:products,id',
+        'product_id' => 'required|exists:product,id',
         // Các validation rules khác cho các trường khác của cart
     ]);
 
