@@ -30,7 +30,21 @@ import ConfirmPayment from "./components/client/payment/confirmPayment";
 
 
 
-const role = localStorage.getItem('role');
+const header = localStorage.getItem('header');
+const roleKey = 'role';
+const role = sessionStorage.getItem(roleKey);
+if (role) {
+    // Đặt giá trị và hẹn giờ xóa trong sessionStorage
+    sessionStorage.setItem(roleKey, role);
+    setTimeout(() => {
+        // Xóa role từ sessionStorage sau 15 phút
+        sessionStorage.removeItem(roleKey);
+        console.log('Role has been removed.');
+    }, 900000); // 15 * 60 * 1000 milliseconds = 900000
+}
+if (header == undefined) {
+    localStorage.removeItem('header');
+}
 export const router = createBrowserRouter([
     {
         path: "/",
