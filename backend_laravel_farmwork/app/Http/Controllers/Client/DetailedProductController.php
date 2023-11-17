@@ -63,7 +63,7 @@ class DetailedProductController extends Controller
             }
             if ($sku) {
                 $priceSku = DB::table('skus')
-                    ->select('price AS sku_price', 'id AS sku_id')
+                    ->select('price AS sku_price', 'id AS sku_id','stoke AS sku_stoke')
                     ->where('id', $sku)
                     ->get();
                 // dd($priceSku);
