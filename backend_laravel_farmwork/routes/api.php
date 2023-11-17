@@ -157,11 +157,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // getOneProduct
 Route::get('detail/getone/{id}', [DetailedProductController::class, 'getOneProduct']);
-
-//Banner
-Route::get('banner/list', [BannerController::class, 'getNewBanner']);
-Route::post('banner/add', [BannerController::class, 'addBanner']);
-Route::delete('banner/delete/{id}', [BannerController::class, 'deleteBanner']);
 // Home
 Route::get('home', [HomeController::class, 'home']);
 Route::post('sendWelcomeEmail', [EmailController::class, 'sendEmail']);
