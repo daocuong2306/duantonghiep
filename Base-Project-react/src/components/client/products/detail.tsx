@@ -111,7 +111,7 @@ export default function DetailProduct() {
                                     <p className='text-sm font-base text-gray-500 pb-[5%] pt-[1%]'>{detaiProduct?.data.product[0]?.category_name}</p>
                                 </div>
                                 <div>
-
+                                   
 
                                     {detaiProduct?.data.variant.Mau ?
                                         <div>
