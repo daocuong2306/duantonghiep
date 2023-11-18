@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('sku')->unique();
             $table->string('barcode')->unique()->nullable();
             $table->integer('price')->default(0);
-            $table->string('stoke')->default(0);
+            $table->integer('stoke')->default(0);
             $table->timestamps();
         });
     }
