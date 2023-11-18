@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
 use App\Models\Cart;
+use App\Models\OptionValue;
 use App\Models\Product;
+use App\Models\Variant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -17,66 +19,48 @@ class BillController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function index()
-    // {
-    //     if (Auth::check()) {
-    //         $user_id = Auth::user()->id;
-
-    //         $bills = Bill::with('cart')->where('user_id', $user_id)->get();
-           
-    //         $formattedBills = $bills->map(function ($bill) {
-    //             $handle_cart=json_decode($bill->carts_id);
-              
-
-    //             return [
-    //                 'id' => $bill->id,
-    //                 'user_id' => $bill->user_id,
-    //                 'address' => $bill->address,
-    //                 'phone' => $bill->phone,
-    //                 'cart_id' =>  $handle_cart,
-    //                 'payments' => $bill->payments,
-    //                 'order_status' => $bill->order_status,
-    //             ];
-    //         });
-
-    //         return response()->json($formattedBills);
-    //     }
-    // }
     public function index()
     {
         if (Auth::check()) {
             $user_id = Auth::user()->id;
     
             $bills = Bill::with('cart')->where('user_id', $user_id)->get();
-           
+          
             $formattedBills = $bills->map(function ($bill) {
                 $cartIds = json_decode($bill->carts_id);
-    
+             
                 $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
+                    $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+                    $optionValues = array_unique($optionValues);
+                    $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
                     return [
                         'id_product' => $cart->product->id,
-                        'option_values' => json_decode($cart->option_values),
+                        'option_values' => $optionValuesData,
                         'name' => $cart->product->name,
                         'image' => $cart->product->image,
-                        'price' => $cart->product->price,
+                        'price' => $cart->price_cart,
                         'quantity' => $cart->quantity
                     ];
                 });
-    
+                $total_price = $cartItems->sum(function ($cartItem) {
+                    return $cartItem['price'] * $cartItem['quantity'];
+                });
                 return [
                     'id' => $bill->id,
                     'user_id' => $bill->user_id,
                     'address' => $bill->address,
-                    'phone' => $bill->phone,
-                    'payments' => $bill->payments,
+                    'phone' => $bill->phone,                   
+                    'payments' => $bill->payments, 
                     'order_status' => $bill->order_status,
-                    'cart' => $cartItems
+                    'cart' => $cartItems,
+                    'total_price' => $total_price
                 ];
             });
     
             return response()->json($formattedBills);
         }
     }
+   
     /**
      * Store a newly created resource in storage.
      *
@@ -89,6 +73,7 @@ class BillController extends Controller
             'address' => 'required',
             'phone' => 'required',
             'carts_id' => 'required|array',
+            'carts_id.*' => 'required|integer', // Thêm quy tắc kiểm tra cho mỗi phần tử trong mảng carts_id
             'payments' => 'nullable|in:OFF,ON',
             'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel'
         ]);
@@ -142,7 +127,24 @@ class BillController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $bill = Bill::findOrFail($id);
+
+    $request->validate([
+        'payments' => 'nullable|in:OFF,ON',
+        'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel'
+    ]);
+
+    if ($request->has('payments')) {
+        $bill->payments = $request->input('payments');
+    }
+
+    if ($request->has('order_status')) {
+        $bill->order_status = $request->input('order_status');
+    }
+
+    $bill->save();
+
+    return response()->json(['message' => 'Hóa đơn được cập nhật thành công']);
     }
 
     /**
@@ -153,6 +155,14 @@ class BillController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $bill = Bill::find($id);
+
+    if (!$bill) {
+        return response()->json(['message' => 'Hóa đơn không tồn tại'], 404);
+    }
+
+    $bill->delete();
+
+    return response()->json(['message' => 'Hóa đơn đã được xóa'], 200);
     }
 }
