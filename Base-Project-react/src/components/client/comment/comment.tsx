@@ -6,7 +6,7 @@ import { useAddCommentMutation } from '@/api/comment';
 
 
 const Comment = () => {
-    const [addComment] = useAddCommentMutation()
+    const [addComment, { data: commentData }] = useAddCommentMutation()
     const { id } = useParams()
     const [comment, setComment] = useState('');
     const [rating, setRating] = useState(0);
@@ -14,7 +14,6 @@ const Comment = () => {
     const handleCommentChange = (e) => {
         setComment(e.target.value);
     };
-
     const handleRatingChange = (value) => {
         setRating(value);
     };
@@ -32,7 +31,10 @@ const Comment = () => {
         console.log(data.token);
         addComment(data);
     };
+    if (commentData) {
 
+        alert(commentData.error)
+    }
     return (
         <div className="app container mx-auto p-4">
             <div id="comment-box" className="mb-4">
