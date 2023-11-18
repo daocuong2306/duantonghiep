@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Cast\Json;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,6 +10,10 @@ class Bill extends Model
 {
     use HasFactory;
     protected $fillable = ['user_id', 'address', 'phone', 'carts_id','payments','order_status'];
+    protected $cast = [
+         'carts_id' => Json::class,
+    ];
+   
     const OFF ='thanh_toan_khi_nhan_han';
     const ON = 'thanh_toan_online';
     const Pending = 'cho_duyet';
@@ -25,6 +30,5 @@ class Bill extends Model
     {
         return $this->belongsTo(Cart::class,'carts_id');
     }
-
   
 }

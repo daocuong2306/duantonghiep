@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('address');
             $table->string('phone');
-            $table->integer('carts_id');
+            $table->json('carts_id');
             $table->string('payments');
             $table->string('order_status');
             $table->timestamps();
@@ -33,5 +33,9 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('bills');
+        // Schema::table('bill', function (Blueprint $table) {
+        //     $table->dropColumn('carts_id');
+        // });
     }
+ 
 };
