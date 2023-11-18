@@ -1,11 +1,21 @@
-import { useGetCartQuery } from '@/api/cart'
+import { useGetCartQuery, useRemoveCartMutation, useUpdateCartMutation } from '@/api/cart'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 type Props = {}
 const CartProduct = (props: Props) => {
     const { data: dataCart } = useGetCartQuery()
     console.log(dataCart);
-
+    const [updateCart] = useUpdateCartMutation()
+    const [deleteCart] = useRemoveCartMutation()
+    const buttonCart = (id: any, count: any, quantity: any) => {
+        const data = { id, count };
+        if (quantity == 1 && (count == -1 ? window.confirm("Bạn có muốn xóa sản phẩm này không ?") : true)) {
+            deleteCart(id);
+        } else {
+            updateCart(data);
+        }
+    };
     return (
         <div>
             <div className="container-fluid bg-secondary mb-5">
@@ -46,20 +56,20 @@ const CartProduct = (props: Props) => {
                                         <td className="align-middle">
                                             <div className="input-group quantity mx-auto w-[100px]">
                                                 <div className="input-group-btn">
-                                                    <button className="btn btn-sm btn-primary btn-minus">
+                                                    <button className="btn btn-sm btn-primary btn-minus " onClick={() => { buttonCart(cart.id, -1, cart.quantity) }}>
                                                         <i className="fa fa-minus"></i>
                                                     </button>
                                                 </div>
                                                 <input type="text" className="form-control form-control-sm bg-secondary text-center" value={`${cart.quantity}`} />
                                                 <div className="input-group-btn">
-                                                    <button className="btn btn-sm btn-primary btn-plus">
+                                                    <button className="btn btn-sm btn-primary btn-plus" onClick={() => { buttonCart(cart.id, 1, cart.quantity) }}>
                                                         <i className="fa fa-plus"></i>
                                                     </button>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="align-middle">${cart.total_price}</td>
-                                        <td className="align-middle"><button className="btn btn-sm btn-primary"><i className="fa fa-times"></i></button></td>
+                                        <td className="align-middle"><button className="btn btn-sm btn-primary" onClick={() => { buttonCart(cart.id, -1, 1) }}><i className="fa fa-times"></i></button></td>
                                     </tr>
                                 ))}
 
@@ -95,7 +105,7 @@ const CartProduct = (props: Props) => {
                                     <h5 className="font-weight-bold">Total</h5>
                                     <h5 className="font-weight-bold">${dataCart?.total_amount}</h5>
                                 </div>
-                                <button className="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                                <Link to="/payment"><button className="btn btn-block btn-primary my-3 py-3">Thanh Toán</button></Link>
                             </div>
                         </div>
                     </div>

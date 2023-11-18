@@ -8,7 +8,9 @@ const productApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: "http://127.0.0.1:8000/api/products",
         prepareHeaders: (headers) => {
-            const token = localStorage.getItem("access_token");
+            const token = localStorage.getItem("header");
+            console.log("tonken" , token);
+            
             headers.set("authorization", `Bearer ${token}`)
             // modify header theo từng request
             return headers;
