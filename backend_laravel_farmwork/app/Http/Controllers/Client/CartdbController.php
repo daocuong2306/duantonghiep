@@ -5,128 +5,180 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\OptionValue;
 use App\Models\Product;
+use App\Models\SKU;
+use App\Models\Variant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CartdbController extends Controller
 {
     /**
-     * Hiển thị danh sách các giỏ hàng.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    
+     public function index()
+     {
+         if (Auth::check()) {
+             $user_id = Auth::user()->id;
+             $carts = Cart::with(['variant', 'sku'])
+                 ->where('user_id', $user_id)
+                 ->get(['id', 'product_id', 'sku_id', 'quantity', 'price_cart', 'status']);
+     
+             $totalAmount = 0;  // Tổng tiền của giỏ hàng 
+             $totalQuantity = 0; // Tổng số lượng của cả giỏ hàng
+             $formattedCarts = [];
+     
+             foreach ($carts as $cart) {
+                 $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+                 $optionValues = array_unique($optionValues);
+                 $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+     
+                 $totalPrice = $cart->quantity * $cart->sku->price;
+                 $totalAmount += $totalPrice; // Cộng tổng tiền của giỏ hàng
+                 $totalQuantity += $cart->quantity; // Cộng số lượng của sản phẩm vào tổng số lượng của cả giỏ hàng
+     
+                 $formattedCarts['user_id:' . $user_id][] = [
+                     'id' => $cart->id,
+                     'product_id' => $cart->product_id,
+                     'name_product' => $cart->product->name,
+                     'price_product' => $cart->product->price,
+                     'image_product' => $cart->product->image,
+                     'sku_id' => $cart->sku_id,
+                     'quantity' => $cart->quantity,
+                     'sku_price' => $cart->sku->price,
+                     'option_value' => $optionValuesData,
+                     'price_cart' => $cart->price_cart,
+                     'total_price' => $totalPrice,
+                     'status' => $cart->status,
+                 ];
+             }
+     
+             $response = [
+                 'carts' => $formattedCarts,
+                 'total_quantity' => $totalQuantity, // Thêm trường tổng số lượng của cả giỏ hàng
+                 'total_amount' => $totalAmount, // Tổng tiền
+         
+             ];
+     
+             return response()->json($response, 200);
+         } else {
+             // Xử lý khi người dùng không đăng nhập
+         }
+     }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
 {
-    // Kiểm tra xem người dùng đã đăng nhập hay chưa
-    if (Auth::check()) {
-        // Lấy danh sách sản phẩm
-        $products = Product::all();
+    $validator = Validator::make($request->all(), [
+        'product_id' => 'required|exists:product,id',
+        'sku_id' => 'required|exists:skus,id',
+        'quantity' => 'required|integer|min:1',
+        'status' => 'nullable|in:ORDER,NO_ORDER',
+    ]);
 
-        // Tạo một mảng chứa thông tin sản phẩm
-        $productList = [];
-        foreach ($products as $product) {
-            $productItem = [
-                'product_id' => $product->id,
-                'product_name' => $product->name,            
-               
-                // Thêm thông tin khác của sản phẩm nếu cần thiết
-            ];
-            $productList[] = $productItem;
-        }
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 400);
+    }
+
+    $user_id = Auth::user()->id;
+    $product_id = $request->product_id;
+    $sku_id = $request->sku_id;
+    $quantity = $request->quantity;
+    $status = $request->status ? $request->status : 'NO_ORDER';
+
+    $sku = Sku::find($sku_id);
+
+    if (!$sku) {
+        return response()->json(['error' => 'Sản phẩm không tồn tại'], 400);
+    }
+
+    $price_cart = $sku->price;
+
+    $existingCart = Cart::where('user_id', $user_id)
+        ->where('product_id', $product_id)
+        ->where('sku_id', $sku_id)
+        ->where('status', 'NO_ORDER')
+        ->first();
+
+    if ($existingCart) {
+        // Sản phẩm đã tồn tại trong giỏ hàng và trạng thái là "NO_ORDER", tăng số lượng
+        $existingCart->quantity += $quantity;
+        $existingCart->save();
 
         return response()->json([
-            'message' => 'Product list ',
-            'products' => $productList,
+            'status' => 200,
+            'message' => 'Số lượng sản phẩm trong giỏ hàng đã được cập nhật'
         ], 200);
     } else {
-        return response()->json([
-            'message' => 'Unauthorized',
-        ], 401);
+        // Sản phẩm chưa tồn tại trong giỏ hàng hoặc không ở trạng thái "NO_ORDER", tạo mới
+        $newCart = new Cart();
+        $newCart->user_id = $user_id;
+        $newCart->product_id = $product_id;
+        $newCart->sku_id = $sku_id;
+        $newCart->quantity = $quantity;
+        $newCart->status = $status;
+        $newCart->price_cart = $price_cart; // Lưu giá tiền vào trường price_cart
+        $newCart->save();
     }
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Thêm vào giỏ hàng thành công'
+    ], 200);
 }
-
     /**
-     * Lưu giỏ hàng mới vào cơ sở dữ liệu.
+     * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-
-
-     public function store(Request $request)
-     {
-         // Lấy danh sách các product id từ bảng 'product'
-         $productIds = Product::pluck('id')->toArray();
-     
-         // Kiểm tra và validate 'product_ids'
-         $validatedData = $request->validate([
-             'product_ids' => 'required|array|in:' . implode(',', $productIds),
-         ]);
-     
-         // Lấy thông tin sản phẩm từ các product_ids
-         $products = Product::whereIn('id', $validatedData['product_ids'])->get();
-     
-         // Tạo một mảng carts chứa thông tin sản phẩm
-         $carts = [];
-         foreach ($products as $product) {
-             $cartItem = [
-                 'product_id' => $product->id,
-                 'product_name' => $product->name,
-                 // Thêm thông tin khác của sản phẩm nếu cần thiết
-             ];
-             $carts[] = $cartItem;
-         }
-     
-         return response()->json([
-             'carts' => $carts,
-         ], 201);
-     }
-
-
-    /**
-     * Cập nhật giỏ hàng.
-     *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
     public function update(Request $request, $id)
-    {
-        // Lấy thông tin người dùng đã đăng nhập
-        $user = Auth::user();
+{
+    $cart = Cart::findOrFail($id);
 
-        // Kiểm tra dữ liệu đầu vào
-        $validator = Validator::make($request->all(), [
-            'product_id' => 'required|exists:product,id',
-            // Các validation rules khác cho các trường khác của cart
-        ]);
+    $newQuantity = $request->input('quantity');
+    $newStatus = $request->input('status');
 
-        // Kiểm tra nếu validation không thành công
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
-
-        // Kiểm tra nếu cart tồn tại và thuộc về người dùng hiện tại
-        $cart = Cart::where('id', $id)->where('user_id', $user->id)->first();
-        if (!$cart) {
-            return response()->json(['error' => 'Cart not found'], 404);
-        }
-
-        // Cập nhật thông tin giỏ hàng
-        $cart->product_id = $request->input('product_id');
-        // Cập nhật các trường khác của cart
-
-        // Lưu thông tin giỏ hàng đã được cập nhật
-        $cart->save();
-
-        // Trả về cart đã được cập nhật làm dữ liệu JSON
-        return response()->json($cart, 200);
+    // Kiểm tra và không cho phép tăng số lượng khi trạng thái là "ORDER"
+    if ($cart->status === 'ORDER' && $newQuantity > $cart->quantity) {
+        return response()->json([
+            'error' => 'Không thể tăng số lượng khi trạng thái là "ORDER"'
+        ], 400);
     }
 
+    // Kiểm tra và chỉ cho phép cập nhật trạng thái thành "ORDER" hoặc "NO_ORDER"
+    if ($newStatus !== null) {
+        if ($newStatus === 'ORDER' || $newStatus === 'NO_ORDER') {
+            $cart->status = $newStatus;
+        } else {
+            return response()->json([
+                'error' => 'Giá trị trạng thái không hợp lệ'
+            ], 400);
+        }
+    }
+
+    if ($newQuantity !== null) {
+        $cart->quantity = $newQuantity;
+    }
+
+    $cart->save();
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Cập nhật giỏ hàng thành công'
+    ], 200);
+}
+
     /**
-     * Xóa giỏ hàng khỏi cơ sở dữ liệu.
+     * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -134,18 +186,16 @@ class CartdbController extends Controller
     public function destroy($id)
     {
         $cart = Cart::find($id);
-
         if ($cart) {
             $cart->delete();
-
             return response()->json([
                 'status' => 200,
-                'message' => 'Xóa giỏ hàng thành công',
+                'message' => 'Xóa thành công ',
             ], 200);
         } else {
             return response()->json([
                 'status' => 404,
-                'message' => 'Không tìm thấy giỏ hàng',
+                'message' => 'Not found',
             ], 404);
         }
     }
