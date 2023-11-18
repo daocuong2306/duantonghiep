@@ -45,6 +45,8 @@ class BillController extends Controller
                 $total_price = $cartItems->sum(function ($cartItem) {
                     return $cartItem['price'] * $cartItem['quantity'];
                 });
+                $bill->total_price = $total_price;
+                $bill->save();
                 return [
                     'id' => $bill->id,
                     'user_id' => $bill->user_id,
@@ -82,23 +84,17 @@ class BillController extends Controller
             return response()->json(['errors' => $validator->errors()], 400);
         }
 
-        // $user_id = Auth::user()->id;
-        // $address = $request->address;
-        // $phone = $request->phone;
-        // $carts_id = [1,2];
-        // $payments = $request->payments ?? 'OFF';
-        // $order_status = $request->order_status ?? 'Pending';
+        
         $bill = new Bill();
         $bill->user_id = Auth::user()->id;
         $bill->address = $request->address;
         $bill->phone = $request->phone;
-        // $carts_id = [1, 2];
-        // $carts_id['key'] = 'value';
+   
         $bill->carts_id = json_encode($request->carts_id);
         $bill->payments = $request->payments ?? 'OFF';
         $bill->order_status = $request->order_status ?? 'Pending';
         $bill->save();
-        // $bill->carts()->attach($carts_id);
+ 
 
         return response()->json([
             'status' => 200,
@@ -164,5 +160,49 @@ class BillController extends Controller
     $bill->delete();
 
     return response()->json(['message' => 'Hóa đơn đã được xóa'], 200);
+    }
+// list ra tất cả 
+    public function list_bills()
+    {
+        $bills = Bill::with('cart')->get();
+
+    $formattedBills = $bills->map(function ($bill) {
+        $cartIds = json_decode($bill->carts_id);
+
+        $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
+            $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+            $optionValues = array_unique($optionValues);
+            $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+            return [
+                'id_product' => $cart->product->id,
+                'option_values' => $optionValuesData,
+                'name' => $cart->product->name,
+                'image' => $cart->product->image,
+                'price' => $cart->price_cart,
+                'quantity' => $cart->quantity
+            ];
+        });
+
+        $total_price = $cartItems->sum(function ($cartItem) {
+            return $cartItem['price'] * $cartItem['quantity'];
+        });
+
+        // Lưu tổng giá trị vào trường total_price của hóa đơn
+        $bill->total_price = $total_price;
+        $bill->save();
+
+        return [
+            'id' => $bill->id,
+            'user_id' => $bill->user_id,
+            'address' => $bill->address,
+            'phone' => $bill->phone,                   
+            'payments' => $bill->payments, 
+            'order_status' => $bill->order_status,
+            'cart' => $cartItems,
+            'total_price' => $total_price
+        ];
+    });
+
+    return response()->json($formattedBills);
     }
 }
