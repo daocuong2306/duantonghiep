@@ -32,10 +32,11 @@ import ConfirmPayment from "./components/client/payment/confirmPayment";
 
 const header = localStorage.getItem('header');
 const roleKey = 'role';
-const role = sessionStorage.getItem(roleKey);
-if (role) {
+const roleA = sessionStorage.getItem(roleKey);
+const role = localStorage.getItem('role');
+if (roleA) {
     // Đặt giá trị và hẹn giờ xóa trong sessionStorage
-    sessionStorage.setItem(roleKey, role);
+    sessionStorage.setItem(roleKey, roleA);
     setTimeout(() => {
         // Xóa role từ sessionStorage sau 15 phút
         sessionStorage.removeItem(roleKey);

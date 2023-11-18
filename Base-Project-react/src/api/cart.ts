@@ -34,12 +34,30 @@ const cartApi = createApi({
             }),
             invalidatesTags: ['cart']
         }),
+        updateCart: builder.mutation({
+            query: (product: any) => ({
+                url: `/update/${product.id}`,
+                method: "POST",
+                body: product.count
+            }),
+            invalidatesTags: ['cart']
+        }),
+        removeCart: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `/delete/${id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ['cart']
+        })
+
     })
 });
 
 export const {
     useAddCartMutation,
-    useGetCartQuery
+    useGetCartQuery,
+    useUpdateCartMutation,
+    useRemoveCartMutation
 } = cartApi;
 export const cartReducer = cartApi.reducer;
 
