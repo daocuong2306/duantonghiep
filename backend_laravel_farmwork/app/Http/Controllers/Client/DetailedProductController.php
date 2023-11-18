@@ -85,6 +85,7 @@ class DetailedProductController extends Controller
         $data['priceSku'] = $priceSku;
         $data['variant'] = $resultOptionValue;
         $data['comment'] = $listcomment;
+        $data['total_comment'] = $listcomment->count();
         return response()->json([
             'data' => $data,
             'errors' => $error
