@@ -21,6 +21,7 @@ class Bill extends Model
     const Pack = 'dong_goi';
     const Transport = 'van_chuyen';
     const Cancel = 'huy';
+    const Success = 'thanh_cong';
     public function user()
     {
         return $this->belongsTo(User::class);

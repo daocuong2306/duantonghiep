@@ -77,7 +77,7 @@ class BillController extends Controller
             'carts_id' => 'required|array',
             'carts_id.*' => 'required|integer', // Thêm quy tắc kiểm tra cho mỗi phần tử trong mảng carts_id
             'payments' => 'nullable|in:OFF,ON',
-            'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel'
+            'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel,Success'
         ]);
 
         if ($validator->fails()) {
@@ -127,7 +127,7 @@ class BillController extends Controller
 
     $request->validate([
         'payments' => 'nullable|in:OFF,ON',
-        'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel'
+        'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel,Success'
     ]);
 
     if ($request->has('payments')) {
