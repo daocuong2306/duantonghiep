@@ -21,55 +21,52 @@ class CartdbController extends Controller
      */
     
      public function index()
-{
-    if (Auth::check()) {
-        $user_id = Auth::user()->id;
-        $carts = Cart::with(['variant', 'sku'])
-            ->where('user_id', $user_id)
-            ->where('status', 'NO_ORDER') // Chỉ lấy các mục có trạng thái "no order"
-            ->get(['id', 'product_id', 'sku_id', 'quantity', 'price_cart', 'status']);
-
-        $totalAmount = 0;  // Tổng tiền của giỏ hàng 
-        $totalQuantity = 0; // Tổng số lượng của cả giỏ hàng
-        $formattedCarts = [];
-
-        foreach ($carts as $cart) {
-            $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
-            $optionValues = array_unique($optionValues);
-            $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
-
-            $totalPrice = $cart->quantity * $cart->sku->price;
-            $totalAmount += $totalPrice; // Cộng tổng tiền của giỏ hàng
-            $totalQuantity += $cart->quantity; // Cộng số lượng của sản phẩm vào tổng số lượng của cả giỏ hàng
-
-            $formattedCarts['user_id:' . $user_id][] = [
-                'id' => $cart->id,
-                'product_id' => $cart->product_id,
-                'name_product' => $cart->product->name,
-                'price_product' => $cart->product->price,
-                'image_product' => $cart->product->image,
-                'sku_id' => $cart->sku_id,
-                'quantity' => $cart->quantity,
-                'sku_price' => $cart->sku->price,
-                'option_value' => $optionValuesData,
-                'price_cart' => $cart->price_cart,
-                'total_price' => $totalPrice,
-                'status' => $cart->status,
-            ];
-        }
-
-        $response = [
-            'carts' => $formattedCarts,
-            'total_quantity' => $totalQuantity, // Thêm trường tổng số lượng của cả giỏ hàng
-            'total_amount' => $totalAmount, // Tổng tiền
-
-        ];
-
-        return response()->json($response, 200);
-    } else {
-        // Xử lý khi người dùng không đăng nhập
-    }
-}
+     {
+         if (Auth::check()) {
+             $user_id = Auth::user()->id;
+             $carts = Cart::with(['variant', 'sku'])
+                 ->where('user_id', $user_id)
+                 ->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity', 'price_cart', 'status']);
+     
+             $totalAmount = 0; // Biến lưu tổng tiền của cả giỏ hàng
+     
+             $formattedCarts = $carts->map(function ($cart) use (&$totalAmount) {
+                 if ($cart->status === 'ORDER') {
+                     return null; // Nếu trạng thái là "order", trả về null để loại bỏ mục này khỏi danh sách
+                 }
+     
+                 $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+                 $optionValues = array_unique($optionValues);
+                 $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+     
+                 $totalPrice = $cart->quantity * $cart->sku->price; // Tính tổng tiền cho sản phẩm hiện tại
+                 $totalAmount += $totalPrice; // Cộng tổng tiền của sản phẩm vào tổng tiền của cả giỏ hàng
+     
+                 return [
+                     'id' => $cart->id,
+                     'user_id' => $cart->user_id,
+                     'product_id' => $cart->product_id,
+                     'name_product' => $cart->product->name,
+                     'price_product' => $cart->product->price,
+                     'image_product' => $cart->product->image,
+                     'sku_id' => $cart->sku_id,
+                     'quantity' => $cart->quantity,
+                     'sku_price' => $cart->sku->price,
+                     'option_value' => $optionValuesData,
+                     'price_cart'  =>$cart->price_cart,
+                     'total_price' => $totalPrice, // Thêm trường tổng tiền cho từng sản phẩm
+                     'status' => $cart->status,
+                 ];
+             })->filter(); // Loại bỏ các mục null
+     
+             return response()->json([
+                 'carts' => $formattedCarts,
+                 'total_amount' => $totalAmount, // Thêm trường tổng tiền của cả giỏ hàng
+             ], 200);
+         } else {
+             // Xử lý khi người dùng chưa đăng nhập
+         }
+     }
     /**
      * Store a newly created resource in storage.
      *
