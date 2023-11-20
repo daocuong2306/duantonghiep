@@ -19,22 +19,18 @@ class CartdbController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+     
      public function index()
      {
          if (Auth::check()) {
              $user_id = Auth::user()->id;
              $carts = Cart::with(['variant', 'sku'])
-                 ->where('user_id', $user_id)
-                 ->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity', 'price_cart', 'status']);
-     
+             ->where('user_id', $user_id)
+             ->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity', 'price_cart', 'status']);
+             
              $totalAmount = 0; // Biến lưu tổng tiền của cả giỏ hàng
      
              $formattedCarts = $carts->map(function ($cart) use (&$totalAmount) {
-                 if ($cart->status === 'ORDER') {
-                     return null; // Nếu trạng thái là "order", trả về null để loại bỏ mục này khỏi danh sách
-                 }
-     
                  $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
                  $optionValues = array_unique($optionValues);
                  $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
@@ -57,14 +53,14 @@ class CartdbController extends Controller
                      'total_price' => $totalPrice, // Thêm trường tổng tiền cho từng sản phẩm
                      'status' => $cart->status,
                  ];
-             })->filter(); // Loại bỏ các mục null
+             });
      
              return response()->json([
                  'carts' => $formattedCarts,
                  'total_amount' => $totalAmount, // Thêm trường tổng tiền của cả giỏ hàng
              ], 200);
          } else {
-             // Xử lý khi người dùng chưa đăng nhập
+        
          }
      }
     /**
