@@ -27,6 +27,7 @@ import CartProduct from "./components/client/Cart/cart";
 import Statistics from "./components/admin/statistics/statistics";
 import PaymentOnline from "./components/client/payment/paymentOnline";
 import ConfirmPayment from "./components/client/payment/confirmPayment";
+import Bill from "./components/client/bill/Bill";
 
 
 
@@ -75,6 +76,10 @@ export const router = createBrowserRouter([
             {
                 path: "confirm",
                 element: <ConfirmPayment />,
+            },
+            {
+                path: "bill",
+                element : <Bill/>
             }
         ]
     },
