@@ -3,6 +3,7 @@ import { Button, Input, Rate } from 'antd';
 type Props = {}
 
 const Showcomt = ({ data }: Props) => {
+    const [latestCmt, setLatestCmt] = useState()
     console.log("props", data);
     return (
         <div>
@@ -11,7 +12,7 @@ const Showcomt = ({ data }: Props) => {
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-lg lg:text-2xl font-bold text-gray-900 ">Discussion (20)</h2>
                     </div>
-                    {data?.map((value: any) => {
+                    {data ? [...data].reverse()?.map((value: any) => {
                         return <article className="p-6 mb-3 ml-6 lg:ml-12 text-base bg-white rounded-lg ">
                             < footer className="flex justify-between items-center mb-2" >
                                 <div className="flex items-center">
@@ -28,7 +29,7 @@ const Showcomt = ({ data }: Props) => {
 
                         </article>
 
-                    })}
+                    }) : ""}
                 </div>
             </section >
         </div >
