@@ -7,10 +7,13 @@ use App\Models\Bill;
 use App\Models\Cart;
 use App\Models\OptionValue;
 use App\Models\Product;
+use App\Models\SKU;
 use App\Models\Variant;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class BillController extends Controller
 {
@@ -34,6 +37,15 @@ class BillController extends Controller
                     $optionValues = array_unique($optionValues);
                     $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
                     
+
+                    // $stoke = SKU::where('id', $cart->sku_id)->value('stoke');
+                    // SKU::where('id', $cart->sku_id)->decrement('stoke', $cart->quantity);
+                    // if ($stoke >= $cart->quantity) {
+                    //     SKU::where('id', $cart->sku_id)->decrement('stoke', $cart->quantity);
+                    // } else {
+                    //     // Xử lý khi 'quantity' vượt quá 'stoke' hiện tại
+                    //     throw new Exception("Số lượng không khả dụng.");
+                    // }
                     return [
                         'id_product' => $cart->product->id,
                         'option_values' => $optionValuesData,
@@ -41,22 +53,23 @@ class BillController extends Controller
                         'image' => $cart->product->image,
                         'price' => $cart->price_cart,
                         'quantity' => $cart->quantity,
-                        'status' => $cart->status
-
+                        'status' => $cart->status,
                     ];
                 });
                 $total_price = $cartItems->sum(function ($cartItem) {
                     return $cartItem['price'] * $cartItem['quantity'];
                 });
                 $bill->total_price = $total_price;
-                $bill->save();
+                $bill->save(); 
+                   
                 return [
                     'id' => $bill->id,
                     'user_id' => $bill->user_id,
                     'address' => $bill->address,
                     'phone' => $bill->phone,                   
                     'payments' => $bill->payments, 
-                    'order_status' => $bill->order_status,
+                    'order_status' =>$bill-> order_status,
+                   
                     'cart' => $cartItems,
                     'total_price' => $total_price
                 ];
@@ -74,52 +87,146 @@ class BillController extends Controller
      */
     public function store(Request $request)
     {
+        // Xác thực dữ liệu và xử lý lỗi (nếu có)
         $validator = Validator::make($request->all(), [
             'address' => 'required',
             'phone' => 'required',
             'carts_id' => 'required|array',
-            'carts_id.*' => 'required|integer', // Thêm quy tắc kiểm tra cho mỗi phần tử trong mảng carts_id 
+            'carts_id.*' => 'required|integer',
             'payments' => 'nullable|in:OFF,ON',
             'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel,Success'
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
-      
-        
+    
+        // Tạo mới hóa đơn
         $bill = new Bill();
         $bill->user_id = Auth::user()->id;
         $bill->address = $request->address;
         $bill->phone = $request->phone;
-   
         $bill->carts_id = json_encode($request->carts_id);
         $bill->payments = $request->payments ?? 'OFF';
         $bill->order_status = $request->order_status ?? 'Pending';
         $bill->save();
-         
-        // if ($bill->order_status === 'Cancel') {
-        //     $carts = Cart::whereIn('id', $request->carts_id)->get();
     
-        //     foreach ($carts as $cart) {
-        //         $product = $cart->product;
+        // Xử lý thông tin hóa đơn và giỏ hàng
+        $cartIds = json_decode($bill->carts_id);
+        $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
+            $cart->status = 'ORDER';
+            $cart->save();
+            $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+            $optionValues = array_unique($optionValues);
+            $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+            $stoke = SKU::where('id', $cart->sku_id)->value('stoke');
+            if ($stoke >= $cart->quantity) {
+                SKU::where('id', $cart->sku_id)->decrement('stoke', $cart->quantity);
+            } else {
+                throw new Exception("Số lượng không khả dụng.");
+            }
+            return [
+                'id_product' => $cart->product->id,
+                'option_values' => $optionValuesData,
+                'name' => $cart->product->name,
+                'image' => $cart->product->image,
+                'price' => $cart->price_cart,
+                'quantity' => $cart->quantity,
+                'status' => $cart->status,
+            ];
+        });
     
-        //         if ($product->quantity >= $cart->quantity) {
-        //             $product->decrement('quantity', $cart->quantity);
-        //         } else {
-        //             // Xử lý khi số lượng sản phẩm không đủ
-        //             // Ví dụ: gửi thông báo cho người dùng
-        //             return response()->json(['message' => 'Số lượng sản phẩm không đủ'], 400);
-        //         }
-        //     }
-        // }
-        return response()->json([
-            'status' => 200,
-            'message' => 'Thêm vào bill thành công',
-            'bill' => $bill
-        ], 200);
+        $total_price = $cartItems->sum(function ($cartItem) {
+            return $cartItem['price'] * $cartItem['quantity'];
+        });
+    
+        $bill->total_price = $total_price;
+        $bill->save();
+    
+        // Trả về hóa đơn đã định dạng
+        $formattedBill = [
+            'id' => $bill->id,
+            'user_id' => $bill->user_id,
+            'address' => $bill->address,
+            'phone' => $bill->phone,
+            'payments' => $bill->payments,
+            'order_status' => $bill->order_status,
+            'cart' => $cartItems,
+            'total_price' => $total_price
+        ];
+    
+        return response()->json($formattedBill);
     }
-    
+//     public function store(Request $request)
+// {
+//     // Xác thực dữ liệu và xử lý lỗi (nếu có)
+//     $validator = Validator::make($request->all(), [
+//         'address' => 'required',
+//         'phone' => 'required',
+//         'carts_id' => 'required|array',
+//         'carts_id.*' => 'required|integer',
+//         'payments' => 'nullable|in:OFF,ON',
+//         'order_status' => 'nullable|in:no_order,Pending,Browser,Pack,Transport,Cancel,Success'
+//     ]);
+
+//     if ($validator->fails()) {
+//         return response()->json(['errors' => $validator->errors()], 400);
+//     }
+
+//     // Tạo mới hóa đơn
+//     $bill = new Bill();
+//     $bill->user_id = Auth::user()->id;
+//     $bill->address = $request->address;
+//     $bill->phone = $request->phone;
+//     $bill->carts_id = json_encode($request->carts_id);
+//     $bill->payments = $request->payments ?? 'OFF';
+//     $bill->order_status = $request->order_status == 'no_order' ? 'order' : ($request->order_status ?? 'Pending');
+//     $bill->save();
+
+//     // Xử lý thông tin hóa đơn và giỏ hàng
+//     $cartIds = json_decode($bill->carts_id);
+//     $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
+//         $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+//         $optionValues = array_unique($optionValues);
+//         $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+//         $stoke = SKU::where('id', $cart->sku_id)->value('stoke');
+//         if ($stoke >= $cart->quantity) {
+//             SKU::where('id', $cart->sku_id)->decrement('stoke', $cart->quantity);
+//         } else {
+//             throw new Exception("Số lượng không khả dụng.");
+//         }
+//         return [
+//             'id_product' => $cart->product->id,
+//             'option_values' => $optionValuesData,
+//             'name' => $cart->product->name,
+//             'image' => $cart->product->image,
+//             'price' => $cart->price_cart,
+//             'quantity' => $cart->quantity,
+//             'status' => $cart->status,
+//         ];
+//     });
+
+//     $total_price = $cartItems->sum(function ($cartItem) {
+//         return $cartItem['price'] * $cartItem['quantity'];
+//     });
+
+//     $bill->total_price = $total_price;
+//     $bill->save();
+
+//     // Trả về hóa đơn đã định dạng
+//     $formattedBill = [
+//         'id' => $bill->id,
+//         'user_id' => $bill->user_id,
+//         'address' => $bill->address,
+//         'phone' => $bill->phone,
+//         'payments' => $bill->payments,
+//         'order_status' => $bill->order_status,
+//         'cart' => $cartItems,
+//         'total_price' => $total_price
+//     ];
+
+//     return response()->json($formattedBill);
+// }
     /**
      * Display the specified resource.
      *
@@ -139,13 +246,21 @@ class BillController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $bill = Bill::findOrFail($id);
+{
+    $bill = Bill::findOrFail($id);
 
-    $request->validate([
-        'payments' => 'nullable|in:OFF,ON',
-        'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel,Success'
-    ]);
+    try {
+        $request->validate([
+            'payments' => 'nullable|in:OFF,ON',
+            'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel,Success'
+        ], [
+            'payments.in' => 'Giá trị của trường "payments" phải là OFF hoặc ON.',
+            'order_status.in' => 'Giá trị của trường "order_status" phải là Pending, Browser, Pack, Transport, Cancel, hoặc Success.'
+        ]);
+    } catch (ValidationException $e) {
+        $errors = $e->validator->errors()->all();
+        return response()->json(['errors' => $errors], 422);
+    }
 
     if ($request->has('payments')) {
         $bill->payments = $request->input('payments');
@@ -158,7 +273,7 @@ class BillController extends Controller
     $bill->save();
 
     return response()->json(['message' => 'Hóa đơn được cập nhật thành công']);
-    }
+}
 //api update bên người dùng 
     public function update_user(Request $request, $id)
 {
