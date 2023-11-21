@@ -13,7 +13,7 @@ const Statistics = (props: Props) => {
     const { data: statisData } = useListStatisticalQuery()
     console.log(statisData);
     const dataMonth = statisData?.total_price;
-    const dataComment = statisData?.comment;
+    const dataComment = statisData?.handlecomment;
     return (
         <>
             <div className="container mx-auto p-4">
