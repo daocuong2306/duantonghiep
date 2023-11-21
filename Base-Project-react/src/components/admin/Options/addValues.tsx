@@ -2,12 +2,14 @@ import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Input, Space, Typography, Select } from 'antd';
 import { useAddOptionMutation, useAddOptionValueMutation, useGetOptionsQuery } from '@/api/option';
+import { useNavigate } from 'react-router-dom';
 
 const AddValueOptions: React.FC = () => {
     const { data: options, isLoading, error } = useGetOptionsQuery();
     const [form] = Form.useForm();
     console.log(form.getFieldsValue());
     const [addValueOptions] = useAddOptionValueMutation()
+    const url=useNavigate()
     const onFinish = (values: any) => {
         console.log('Form values:', values);
         console.log(options);
@@ -21,6 +23,7 @@ const AddValueOptions: React.FC = () => {
                 values: list
             });
         }
+        url("/admin/Options")
     };
     return (
         <Form

@@ -2,12 +2,14 @@ import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { Button, Card, Form, Input, Space, Typography } from 'antd';
 import { useAddOptionMutation, useAddOptionValueMutation } from '@/api/option';
+import { useNavigate } from 'react-router-dom';
 
 const AddOptions: React.FC = () => {
     const [form] = Form.useForm();
     console.log(form.getFieldsValue());
     const [AddOptions] = useAddOptionMutation();
     const [addValueOptions] = useAddOptionValueMutation()
+    const url = useNavigate()
     const onFinish = (values: any) => {
         console.log(values);
         for (let item of values.items) {
@@ -16,6 +18,7 @@ const AddOptions: React.FC = () => {
                 name: item.name
             })
         }
+        url("/admin/Options")
     };
     return (
         <Form

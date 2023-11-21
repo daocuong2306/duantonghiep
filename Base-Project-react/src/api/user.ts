@@ -66,6 +66,27 @@ const userApi = createApi({
             }),
             invalidatesTags: ['user']
         }),
+        inforUser: builder.query<any, void>({
+            query: (token: string) => ({
+                url: `/user/inforuser`,
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }),
+            providesTags: ['user'],
+        }),
+        updateAccount:builder.mutation({
+            query: (account: any) => ({
+                url: `/user/edituser`,
+                method: "POST",
+                body: account.formData,
+                headers: {
+                    Authorization: `Bearer ${account.token}`,
+                },
+            }),
+            invalidatesTags: ['user']
+        }),
     })
 });
 
@@ -75,7 +96,9 @@ export const {
     useGetUserQuery,
     useListUserQuery,
     useBanUserMutation,
-    useUnBanUserMutation
+    useUnBanUserMutation,
+    useInforUserQuery,
+    useUpdateAccountMutation
 } = userApi;
 export const userReducer = userApi.reducer;
 
