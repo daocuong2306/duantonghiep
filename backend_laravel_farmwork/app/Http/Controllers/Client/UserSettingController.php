@@ -25,7 +25,7 @@ class UserSettingController extends Controller
     public function editUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:2048',
             'name' => 'required'
         ]);
         if ($validator->fails()) {
@@ -58,6 +58,7 @@ class UserSettingController extends Controller
             $user->name = $request->name;
             if ($request->age) {
                 
+
                 $user->age = $request->age;
             }
             if ($request->phone) {
