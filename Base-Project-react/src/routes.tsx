@@ -84,23 +84,23 @@ export const router = createBrowserRouter([
                 element: <Bill />
             },
             {
-                path: "/login",
-                element: <Login />,
+                path: "/account",
+                element: <Account />
             },
             {
-                path: "/signup",
-                element: <Signup />,
+                path: "/account/update",
+                element: <AccountUpdate />
             },
-            {
-                path:"/account",
-                element:<Account/>
-            },
-            {
-                path:"/account/update",
-                element:<AccountUpdate/>
-            },
-            
+
         ]
+    },
+    {
+        path: "/login",
+        element: <Login />,
+    },
+    {
+        path: "/signup",
+        element: <Signup />,
     },
     {
         path: "/admin",

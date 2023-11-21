@@ -5,7 +5,7 @@ import { RcFile, UploadChangeParam, UploadFile, UploadProps } from "antd/es/uplo
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import image from "../../../img/user.png"
+import image from "../../../../img/user.png"
 const AccountUpdate = () => {
     const { control, handleSubmit, setValue, getValues, register } = useForm();
 
