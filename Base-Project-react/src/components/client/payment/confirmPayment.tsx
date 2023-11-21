@@ -1,10 +1,12 @@
 import React from 'react';
 import { Result, Button } from 'antd';
 import { Link } from 'react-router-dom';
+import { useAddBillMutation } from '@/api/bill';
 
 type Props = {};
 
 const ConfirmPayment: React.FC<Props> = () => {
+    const [addBill, { loading }] = useAddBillMutation();
     const urlParams = new URLSearchParams(window.location.search);
 
     const vnp_ResponseCode = urlParams.get('vnp_ResponseCode');
@@ -30,7 +32,12 @@ const ConfirmPayment: React.FC<Props> = () => {
 
         return withoutTrailingZeros;
     };
-
+    const handleAddBill = () => {
+            const dataBill = JSON.parse(localStorage.getItem('dataBill'));
+                addBill(dataBill);
+        }
+    };
+ 
     // Parse amount and format it in VND
     const formattedAmount = formatAmountInVND(parseFloat(vnp_Amount));
 

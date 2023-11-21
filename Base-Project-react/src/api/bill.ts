@@ -2,11 +2,11 @@ import { IUser, IUserLogin } from '../interface/user';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const cartApi = createApi({
-    reducerPath: "cart",
-    tagTypes: ['cart'],
+const billApi = createApi({
+    reducerPath: "bill",
+    tagTypes: ['bill'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api/cart",
+        baseUrl: "http://127.0.0.1:8000/api/bill",
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)
@@ -19,46 +19,46 @@ const cartApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getCart: builder.query<any[], void>({
+        getBill: builder.query<any[], void>({
             query: (key: any) => ({
                 url: `/`,
                 method: "GET",
             }),
-            providesTags: ['cart']
+            providesTags: ['bill']
         }),
-        addCart: builder.mutation({
+        addBill: builder.mutation({
             query: (product: any) => ({
                 url: `/add`,
                 method: "POST",
                 body: product
             }),
-            invalidatesTags: ['cart']
+            invalidatesTags: ['bill']
         }),
-        updateCart: builder.mutation({
+        updateBill: builder.mutation({
             query: (product: any) => ({
                 url: `/update/${product.id}`,
                 method: "POST",
-                body: { quantity: product.count }
+                body: product.count
             }),
-            invalidatesTags: ['cart']
+            invalidatesTags: ['bill']
         }),
-        removeCart: builder.mutation<void, number>({
+        removeBill: builder.mutation<void, number>({
             query: (id) => ({
                 url: `/delete/${id}`,
                 method: "DELETE"
             }),
-            invalidatesTags: ['cart']
+            invalidatesTags: ['bill']
         })
 
     })
 });
 
 export const {
-    useAddCartMutation,
-    useGetCartQuery,
-    useUpdateCartMutation,
-    useRemoveCartMutation
-} = cartApi;
-export const cartReducer = cartApi.reducer;
+    useGetBillQuery,
+    useAddBillMutation,
+    useRemoveBillMutation,
+    useUpdateBillMutation
+} = billApi;
+export const billReducer = billApi.reducer;
 
-export default cartApi;
+export default billApi;
