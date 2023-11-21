@@ -16,6 +16,10 @@ const CartProduct = (props: Props) => {
             updateCart(data);
         }
     };
+    const updateCartA = (id: any, count: any, quantity: any) => {
+        const data = { id, count };
+        updateCart(data);
+    }
     return (
         <div>
             <div className="container-fluid bg-secondary mb-5">
@@ -62,7 +66,7 @@ const CartProduct = (props: Props) => {
                                                 </div>
                                                 <input type="text" className="form-control form-control-sm bg-secondary text-center" value={`${cart.quantity}`} />
                                                 <div className="input-group-btn">
-                                                    <button className="btn btn-sm btn-primary btn-plus" onClick={() => { buttonCart(cart.id, 1, cart.quantity) }}>
+                                                    <button className="btn btn-sm btn-primary btn-plus" onClick={() => { updateCartA(cart.id, 1, cart.quantity) }}>
                                                         <i className="fa fa-plus"></i>
                                                     </button>
                                                 </div>

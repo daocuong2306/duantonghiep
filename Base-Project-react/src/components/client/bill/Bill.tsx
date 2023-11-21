@@ -1,8 +1,36 @@
-import React from 'react'
+import { useAddBillMutation, useGetBillQuery, useUpdateBillMutation } from '@/api/bill'
+import { useGetCartQuery } from '@/api/cart'
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {}
 
 const Bill = (props: Props) => {
+    const { data: cartData } = useGetCartQuery()
+    const [addBill] = useAddBillMutation()
+    console.log(cartData);
+    const URL = useNavigate()
+    const { register, handleSubmit, watch, setValue } = useForm();
+    const onSubmit = (data: any) => {
+        const ids = cartData?.carts.map(item => item.id);
+        const formData = {
+            "address": data.address,
+            "phone": data.phoneNumber,
+            "payments": data.paymentMethod,
+            "carts_id": `[${ids}]`,
+            "order_status": "Pending"
+        }
+        if (data.paymentMethod == "ON") {
+            localStorage.setItem("dataBill", JSON.stringify(formData));
+            URL("/payment")
+            return;
+        } else {
+            addBill(formData);
+        }
+    };
+
+
     return (
         <div>
             <section >
@@ -15,77 +43,77 @@ const Bill = (props: Props) => {
                                         <h5><span className="far fa-check-square pe-2"></span><b>ELIGIBLE</b> |</h5>
                                         <span className="ps-2">Pay</span>
                                     </div>
-                                    <h4 className="text-success">$85.00</h4>
-                                    <h4>Diabetes Pump & Supplies</h4>
+                                    <h4 className="text-success">{cartData?.total_amount}VND</h4>
+                                    <h4>Trách nhiệm và bảo hành</h4>
                                     <div className="d-flex pt-2">
-                                        <div>
-                                            <p>
-                                                <b>Insurance Responsibility <span className="text-success">$71.76</span></b>
-                                            </p>
-                                        </div>
-                                        <div className="ms-auto">
-                                            <p className="text-primary">
-                                                <i className="fas fa-plus-circle text-primary pe-1"></i>Add insurance card
-                                            </p>
-                                        </div>
+
                                     </div>
                                     <p>
-                                        Insurance claims and all necessary dependencies will be submitted to your
-                                        insurer for the coverred portion of this order
+                                        Yêu cầu bảo hiểm và tất cả các phụ thuộc cần thiết sẽ được gửi cho công ty bảo hiểm của bạn cho phần được bảo hiểm của đơn đặt hàng này
                                     </p>
-                                    <div className="rounded d-flex" >
-                                        <div className="p-2">Aetna-Open Access</div>
-                                        <div className="ms-auto p-2">OAP</div>
-                                    </div>
                                     <hr />
                                     <div className="pt-2">
                                         <div className="d-flex pb-2">
-                                            <div>
-                                                <p>
-                                                    <b>Patient Balance <span className="text-success">$13.24</span></b>
-                                                </p>
-                                            </div>
-                                            <div className="ms-auto">
-                                                <p className="text-primary">
-                                                    <i className="fas fa-plus-circle text-primary pe-1"></i>Add payment card
-                                                </p>
-                                            </div>
+
                                         </div>
                                         <p>
-                                            This is an estimate for the portion of your order (not covered by
-                                            insurance) due today . once insurance finalizes their review refunds
-                                            and/or balances will reconcile automatically.
+                                            Đây là ước tính cho phần đơn đặt hàng của bạn (không được bao gồm bởi
+                                            bảo hiểm) đến hạn ngày hôm nay . Sau khi bảo hiểm hoàn tất việc hoàn trả đánh giá của họ
+                                            và / hoặc số dư sẽ tự động điều chỉnh.
                                         </p>
-                                        <form className="pb-3">
+
+                                        <form className="pb-3" onSubmit={handleSubmit(onSubmit)}>
+                                            <div className="d-flex flex-row pb-3">
+                                                <input
+                                                    type="number"
+                                                    className="form-control ml-4"
+                                                    placeholder="Số điện thoại"
+                                                    aria-label="STD"
+                                                    {...register('phoneNumber')}
+                                                />
+                                            </div>
+                                            <div className="d-flex flex-row pb-3">
+                                                <input
+                                                    type="text"
+                                                    className="form-control ml-4"
+                                                    placeholder="Địa chỉ"
+                                                    aria-label="Địa chỉ"
+                                                    {...register('address')}
+                                                />
+                                            </div>
                                             <div className="d-flex flex-row pb-3">
                                                 <div className="d-flex align-items-center pe-2">
-                                                    <input className="form-check-input" type="radio" name="radioNoLabel" id="radioNoLabel1"
-                                                        value="" aria-label="..." checked />
+                                                    <input
+                                                        type="radio"
+                                                        {...register('paymentMethod')}
+                                                        id="radioNoLabel1"
+                                                        value="ON"
+                                                    />
                                                 </div>
                                                 <div className="rounded border d-flex w-100 p-3 align-items-center">
                                                     <p className="mb-0">
-                                                        <i className="fab fa-cc-visa fa-lg text-primary pe-2"></i>Visa Debit
-                                                        Card
+                                                        <i className="fab fa-cc-visa fa-lg text-primary pe-2"></i>Thanh toán online
                                                     </p>
-                                                    <div className="ms-auto">************3456</div>
                                                 </div>
                                             </div>
 
-                                            <div className="d-flex flex-row">
+                                            <div className="d-flex flex-row pb-3">
                                                 <div className="d-flex align-items-center pe-2">
-                                                    <input className="form-check-input" type="radio" name="radioNoLabel" id="radioNoLabel2"
-                                                        value="" aria-label="..." />
+                                                    <input
+                                                        type="radio"
+                                                        {...register('paymentMethod')}
+                                                        id="radioNoLabel2"
+                                                        value="OFF"
+                                                    />
                                                 </div>
                                                 <div className="rounded border d-flex w-100 p-3 align-items-center">
                                                     <p className="mb-0">
-                                                        <i className="fab fa-cc-mastercard fa-lg text-dark pe-2"></i>Mastercard
-                                                        Office
+                                                        <i className="fab fa-brands fa-stripe-s fa-lg text-dark pe-2"></i>Trả tiền khi nhận hàng
                                                     </p>
-                                                    <div className="ms-auto">************1038</div>
                                                 </div>
                                             </div>
+                                            <button type="submit" className="btn btn-primary btn-block btn-lg" >Thanh toán</button>
                                         </form>
-                                        <input type="button" value="Proceed to payment" className="btn btn-primary btn-block btn-lg" />
                                     </div>
                                 </div>
 
@@ -97,48 +125,40 @@ const Bill = (props: Props) => {
                                         <div className="p-2 me-3">
                                             <h4>Order Recap</h4>
                                         </div>
-                                        <div className="p-2 d-flex">
-                                            <div className="col-8">Contracted Price</div>
-                                            <div className="ms-auto">$186.76</div>
-                                        </div>
-                                        <div className="p-2 d-flex">
-                                            <div className="col-8">Amount toward deductible</div>
-                                            <div className="ms-auto">$0.00</div>
-                                        </div>
-                                        <div className="p-2 d-flex">
-                                            <div className="col-8">Coinsurance( 0% )</div>
-                                            <div className="ms-auto">+ $0.00</div>
-                                        </div>
-                                        <div className="p-2 d-flex">
-                                            <div className="col-8">Copayment</div>
-                                            <div className="ms-auto">+ $40.00</div>
-                                        </div>
-                                        <div className="border-top px-2 mx-2"></div>
-                                        <div className="p-2 d-flex pt-3">
-                                            <div className="col-8">Total Deductible, Coinsurance, and Copay</div>
-                                            <div className="ms-auto">$40.00</div>
-                                        </div>
-                                        <div className="p-2 d-flex">
-                                            <div className="col-8">
-                                                Maximum out-of-pocket on Insurance Policy (not reached)
+                                        {cartData?.carts.map((cart: any) => {
+                                            return <div>
+                                                <div className="p-2 d-flex">
+                                                    <div className="col-8">Tên sản phẩm</div>
+                                                    <div className="ms-auto">{cart.name_product} </div>
+                                                </div>
+                                                <div className="p-2 d-flex">
+                                                    <div className="col-8">Giá sản phẩm</div>
+                                                    <div className="ms-auto">{cart.price_cart}x {cart.quantity}</div>
+                                                </div>
+                                                <div className="border-top px-2 mx-2"></div>
                                             </div>
-                                            <div className="ms-auto">$6500.00</div>
-                                        </div>
-                                        <div className="border-top px-2 mx-2"></div>
-                                        <div className="p-2 d-flex pt-3">
-                                            <div className="col-8">Insurance Responsibility</div>
-                                            <div className="ms-auto"><b>$71.76</b></div>
-                                        </div>
+                                        })}
                                         <div className="p-2 d-flex">
-                                            <div className="col-8">
-                                                Patient Balance <span className="fa fa-question-circle text-dark"></span>
-                                            </div>
-                                            <div className="ms-auto"><b>$71.76</b></div>
+                                            <div className="col-8">Tổng giá</div>
+                                            <div className="ms-auto">{cartData?.total_amount}VND</div>
                                         </div>
+
+                                        {/* <div className="p-2 d-flex">
+                                            <div className="col-8">Giảm giá</div>
+                                            <div className="ms-auto">0</div>
+                                        </div> */}
+
+                                        <div className="border-top px-2 mx-2"></div>
+                                        {/* <div className="p-2 d-flex pt-3">
+                                            <div className="col-8">Tổng số tiền được giảm</div>
+                                            <div className="ms-auto">0</div>
+                                        </div> */}
+
+
                                         <div className="border-top px-2 mx-2"></div>
                                         <div className="p-2 d-flex pt-3">
-                                            <div className="col-8"><b>Total</b></div>
-                                            <div className="ms-auto"><b className="text-success">$85.00</b></div>
+                                            <div className="col-8"><b>Tổng</b></div>
+                                            <div className="ms-auto"><b className="text-success">{cartData?.total_amount}VND</b></div>
                                         </div>
                                     </div>
                                 </div>
