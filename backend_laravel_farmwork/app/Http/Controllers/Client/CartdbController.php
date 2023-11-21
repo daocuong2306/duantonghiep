@@ -142,41 +142,56 @@ class CartdbController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-{
-    $cart = Cart::findOrFail($id);
-
-    $newQuantity = $request->input('quantity');
-    $newStatus = $request->input('status');
-
-    // Kiểm tra và không cho phép tăng số lượng khi trạng thái là "ORDER"
-    if ($cart->status === 'ORDER' && $newQuantity > $cart->quantity) {
-        return response()->json([
-            'error' => 'Không thể tăng số lượng khi trạng thái là "ORDER"'
-        ], 400);
-    }
-
-    // Kiểm tra và chỉ cho phép cập nhật trạng thái thành "ORDER" hoặc "NO_ORDER"
-    if ($newStatus !== null) {
-        if ($newStatus === 'ORDER' || $newStatus === 'NO_ORDER') {
-            $cart->status = $newStatus;
-        } else {
+    {
+        $cart = Cart::findOrFail($id);
+    
+        $newQuantity = $request->input('quantity');
+        $newStatus = $request->input('status');
+    
+        // Kiểm tra và không cho phép tăng số lượng khi trạng thái là "ORDER"
+        if ($cart->status === 'ORDER' && $newQuantity > $cart->quantity) {
             return response()->json([
-                'error' => 'Giá trị trạng thái không hợp lệ'
+                'error' => 'Không thể tăng số lượng khi trạng thái là "ORDER"'
             ], 400);
         }
+    
+        // Kiểm tra và chỉ cho phép cập nhật trạng thái thành "ORDER" hoặc "NO_ORDER"
+        if ($newStatus !== null) {
+            if ($newStatus === 'ORDER' || $newStatus === 'NO_ORDER') {
+                $cart->status = $newStatus;
+            } else {
+                return response()->json([
+                    'error' => 'Giá trị trạng thái không hợp lệ'
+                ], 400);
+            }
+        }
+    
+        // Cộng số lượng mới vào số lượng hiện có nếu có số lượng trước đó
+        if ($newQuantity !== null) {
+            if ($cart->quantity !== null) {
+                $cart->quantity += $newQuantity;
+            } else {
+                $cart->quantity = $newQuantity;
+            }
+    
+            // Kiểm tra và xóa giỏ hàng nếu số lượng nhỏ hơn 0
+            if ($cart->quantity === 0) {
+                $cart->delete();
+    
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Xóa giỏ hàng thành công'
+                ], 200);
+            }
+        }
+    
+        $cart->save();
+    
+        return response()->json([
+            'status' => 200,
+            'message' => 'Cập nhật giỏ hàng thành công'
+        ], 200);
     }
-
-    if ($newQuantity !== null) {
-        $cart->quantity = $newQuantity;
-    }
-
-    $cart->save();
-
-    return response()->json([
-        'status' => 200,
-        'message' => 'Cập nhật giỏ hàng thành công'
-    ], 200);
-}
 
     /**
      * Remove the specified resource from storage.
