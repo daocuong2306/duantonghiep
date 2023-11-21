@@ -20,6 +20,7 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EvaluateController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\StatisticalController;
 use App\Http\Controllers\Variant\VariantController;
 use App\Http\Controllers\VNP_PaymentController;
 use Illuminate\Http\Request;
@@ -111,6 +112,8 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::get('banner/list', [BannerController::class, 'getNewBanner']);
     Route::post('banner/add', [BannerController::class, 'addBanner']);
     Route::delete('banner/delete/{id}', [BannerController::class, 'deleteBanner']);
+    //Statistical
+    Route::get('statistical/list', [StatisticalController::class, 'summary']);
 });
 // ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
 Route::group(['middleware' => 'auth:api'], function () {
