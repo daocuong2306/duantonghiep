@@ -105,7 +105,7 @@ const CartProduct = (props: Props) => {
                                     <h5 className="font-weight-bold">Total</h5>
                                     <h5 className="font-weight-bold">${dataCart?.total_amount}</h5>
                                 </div>
-                                <Link to="/payment"><button className="btn btn-block btn-primary my-3 py-3">Thanh Toán</button></Link>
+                                <Link to="/bill"><button className="btn btn-block btn-primary my-3 py-3">Thanh Toán</button></Link>
                             </div>
                         </div>
                     </div>

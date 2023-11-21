@@ -19,57 +19,57 @@ class CartdbController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+     
      public function index()
-{
-    if (Auth::check()) {
-        $user_id = Auth::user()->id;
-        $carts = Cart::with(['variant', 'sku'])
-            ->where('user_id', $user_id)
-            ->where('status', 'NO_ORDER') // Chỉ lấy các mục có trạng thái "no order"
-            ->get(['id', 'product_id', 'sku_id', 'quantity', 'price_cart', 'status']);
-
-        $totalAmount = 0;  // Tổng tiền của giỏ hàng 
-        $totalQuantity = 0; // Tổng số lượng của cả giỏ hàng
-        $formattedCarts = [];
-
-        foreach ($carts as $cart) {
-            $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
-            $optionValues = array_unique($optionValues);
-            $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
-
-            $totalPrice = $cart->quantity * $cart->sku->price;
-            $totalAmount += $totalPrice; // Cộng tổng tiền của giỏ hàng
-            $totalQuantity += $cart->quantity; // Cộng số lượng của sản phẩm vào tổng số lượng của cả giỏ hàng
-
-            $formattedCarts['user_id:' . $user_id][] = [
-                'id' => $cart->id,
-                'product_id' => $cart->product_id,
-                'name_product' => $cart->product->name,
-                'price_product' => $cart->product->price,
-                'image_product' => $cart->product->image,
-                'sku_id' => $cart->sku_id,
-                'quantity' => $cart->quantity,
-                'sku_price' => $cart->sku->price,
-                'option_value' => $optionValuesData,
-                'price_cart' => $cart->price_cart,
-                'total_price' => $totalPrice,
-                'status' => $cart->status,
-            ];
-        }
-
-        $response = [
-            'carts' => $formattedCarts,
-            'total_quantity' => $totalQuantity, // Thêm trường tổng số lượng của cả giỏ hàng
-            'total_amount' => $totalAmount, // Tổng tiền
-
-        ];
-
-        return response()->json($response, 200);
-    } else {
-        // Xử lý khi người dùng không đăng nhập
-    }
-}
+     {
+         if (Auth::check()) {
+             $user_id = Auth::user()->id;
+             $carts = Cart::with(['variant', 'sku'])
+                 ->where('user_id', $user_id)
+                 ->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity', 'price_cart', 'status']);
+             
+             $totalAmount = 0; // Biến lưu tổng tiền của cả giỏ hàng
+             $totalQuantity = 0; // Biến lưu tổng số lượng của cả giỏ hàng
+     
+             $formattedCarts = [];
+             
+             foreach ($carts as $cart) {
+                 if ($cart->status !== 'ORDER') {
+                     $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+                     $optionValues = array_unique($optionValues);
+                     $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+     
+                     $totalPrice = $cart->quantity * $cart->sku->price; // Tính tổng tiền cho sản phẩm hiện tại
+                     $totalAmount += $totalPrice; // Cộng tổng tiền của sản phẩm vào tổng tiền của cả giỏ hàng
+                     $totalQuantity += $cart->quantity; // Cộng tổng số lượng của sản phẩm vào tổng số lượng của cả giỏ hàng
+     
+                     $formattedCarts[] = [
+                         'id' => $cart->id,
+                         'user_id' => $cart->user_id,
+                         'product_id' => $cart->product_id,
+                         'name_product' => $cart->product->name,
+                         'price_product' => $cart->product->price,
+                         'image_product' => $cart->product->image,
+                         'sku_id' => $cart->sku_id,
+                         'quantity' => $cart->quantity,
+                         'sku_price' => $cart->sku->price,
+                         'option_value' => $optionValuesData,
+                         'price_cart'  =>$cart->price_cart,
+                         'total_price' => $totalPrice, // Thêm trường tổng tiền cho từng sản phẩm
+                         'status' => $cart->status,
+                     ];
+                 }
+             }
+     
+             return response()->json([
+                 'carts' => $formattedCarts,
+                 'total_amount' => $totalAmount, // Thêm trường tổng tiền của cả giỏ hàng
+                 'total_quantity' => $totalQuantity, // Thêm trường tổng số lượng của cả giỏ hàng
+             ], 200);
+         } else {
+             // Xử lý trường hợp người dùng chưa đăng nhập
+         }
+     }
     /**
      * Store a newly created resource in storage.
      *
@@ -142,41 +142,65 @@ class CartdbController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-{
-    $cart = Cart::findOrFail($id);
-
-    $newQuantity = $request->input('quantity');
-    $newStatus = $request->input('status');
-
-    // Kiểm tra và không cho phép tăng số lượng khi trạng thái là "ORDER"
-    if ($cart->status === 'ORDER' && $newQuantity > $cart->quantity) {
-        return response()->json([
-            'error' => 'Không thể tăng số lượng khi trạng thái là "ORDER"'
-        ], 400);
-    }
-
-    // Kiểm tra và chỉ cho phép cập nhật trạng thái thành "ORDER" hoặc "NO_ORDER"
-    if ($newStatus !== null) {
-        if ($newStatus === 'ORDER' || $newStatus === 'NO_ORDER') {
-            $cart->status = $newStatus;
-        } else {
+    {
+        $validator = Validator::make($request->all(), [
+            'quantity' => 'required',
+            'status' => 'nullable|in:ORDER,NO_ORDER',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+    
+        $cart = Cart::findOrFail($id);
+    
+        $newQuantity = $request->input('quantity');
+        $newStatus = $request->input('status');
+    
+        // Kiểm tra và không cho phép tăng số lượng khi trạng thái là "ORDER"
+        if ($cart->status === 'ORDER' && $newQuantity > $cart->quantity) {
             return response()->json([
-                'error' => 'Giá trị trạng thái không hợp lệ'
+                'error' => 'Không thể tăng số lượng khi trạng thái là "ORDER"'
             ], 400);
         }
+    
+        // Kiểm tra và chỉ cho phép cập nhật trạng thái thành "ORDER" hoặc "NO_ORDER"
+        if ($newStatus !== null) {
+            if ($newStatus === 'ORDER' || $newStatus === 'NO_ORDER') {
+                $cart->status = $newStatus;
+            } else {
+                return response()->json([
+                    'error' => 'Giá trị trạng thái không hợp lệ'
+                ], 400);
+            }
+        }
+    
+        // Cộng số lượng mới vào số lượng hiện có nếu có số lượng trước đó
+        if ($newQuantity !== null) {
+            if ($cart->quantity !== null) {
+                $cart->quantity += $newQuantity;
+            } else {
+                $cart->quantity = $newQuantity;
+            }
+    
+            // Kiểm tra và xóa giỏ hàng nếu số lượng nhỏ hơn 0
+            if ($cart->quantity === 0) {
+                $cart->delete();
+    
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Xóa giỏ hàng thành công'
+                ], 200);
+            }
+        }
+    
+        $cart->save();
+    
+        return response()->json([
+            'status' => 200,
+            'message' => 'Cập nhật giỏ hàng thành công'
+        ], 200);
     }
-
-    if ($newQuantity !== null) {
-        $cart->quantity = $newQuantity;
-    }
-
-    $cart->save();
-
-    return response()->json([
-        'status' => 200,
-        'message' => 'Cập nhật giỏ hàng thành công'
-    ], 200);
-}
 
     /**
      * Remove the specified resource from storage.
