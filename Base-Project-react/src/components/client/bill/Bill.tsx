@@ -10,7 +10,7 @@ const Bill = (props: Props) => {
     const { data: cartData } = useGetCartQuery()
     const [addBill] = useAddBillMutation()
     console.log(cartData);
-    const URL = useNavigate()
+    const aUrl = useNavigate()
     const { register, handleSubmit, watch, setValue } = useForm();
     const onSubmit = (data: any) => {
         const ids = cartData?.carts.map(item => item.id);
@@ -21,15 +21,17 @@ const Bill = (props: Props) => {
             "carts_id": `[${ids}]`,
             "order_status": "Pending"
         }
+
         if (data.paymentMethod == "ON") {
             localStorage.setItem("dataBill", JSON.stringify(formData));
-            URL("/payment")
+            aUrl("/payment")
+            console.log(1);
             return;
         } else {
             addBill(formData);
         }
     };
-
+    const status = localStorage.getItem("status");
 
     return (
         <div>
@@ -98,19 +100,21 @@ const Bill = (props: Props) => {
                                             </div>
 
                                             <div className="d-flex flex-row pb-3">
-                                                <div className="d-flex align-items-center pe-2">
-                                                    <input
-                                                        type="radio"
-                                                        {...register('paymentMethod')}
-                                                        id="radioNoLabel2"
-                                                        value="OFF"
-                                                    />
-                                                </div>
-                                                <div className="rounded border d-flex w-100 p-3 align-items-center">
-                                                    <p className="mb-0">
-                                                        <i className="fab fa-brands fa-stripe-s fa-lg text-dark pe-2"></i>Trả tiền khi nhận hàng
-                                                    </p>
-                                                </div>
+                                                {status == 0 ? <div>
+                                                    <div className="d-flex align-items-center pe-2">
+                                                        <input
+                                                            type="radio"
+                                                            {...register('paymentMethod')}
+                                                            id="radioNoLabel2"
+                                                            value="OFF"
+                                                        />
+                                                    </div>
+                                                    <div className="rounded border d-flex w-100 p-3 align-items-center">
+                                                        <p className="mb-0">
+                                                            <i className="fab fa-brands fa-stripe-s fa-lg text-dark pe-2"></i>Trả tiền khi nhận hàng
+                                                        </p>
+                                                    </div>
+                                                </div> : <p>Bạn đã bị ban và không thể sử dụng thanh toán khi nhận hàng vui long liên hệ admin</p>}
                                             </div>
                                             <button type="submit" className="btn btn-primary btn-block btn-lg" >Thanh toán</button>
                                         </form>
