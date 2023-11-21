@@ -31,5 +31,8 @@ class Bill extends Model
     {
         return $this->belongsTo(Cart::class,'carts_id');
     }
-  
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }

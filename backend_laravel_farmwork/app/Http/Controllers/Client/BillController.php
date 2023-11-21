@@ -33,13 +33,16 @@ class BillController extends Controller
                     $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
                     $optionValues = array_unique($optionValues);
                     $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+                    
                     return [
                         'id_product' => $cart->product->id,
                         'option_values' => $optionValuesData,
                         'name' => $cart->product->name,
                         'image' => $cart->product->image,
                         'price' => $cart->price_cart,
-                        'quantity' => $cart->quantity
+                        'quantity' => $cart->quantity,
+                        'status' => $cart->status
+
                     ];
                 });
                 $total_price = $cartItems->sum(function ($cartItem) {
@@ -74,8 +77,8 @@ class BillController extends Controller
         $validator = Validator::make($request->all(), [
             'address' => 'required',
             'phone' => 'required',
-            'carts_id' => 'required',
-        // Thêm quy tắc kiểm tra cho mỗi phần tử trong mảng carts_id
+            'carts_id' => 'required|array',
+            'carts_id.*' => 'required|integer', // Thêm quy tắc kiểm tra cho mỗi phần tử trong mảng carts_id 
             'payments' => 'nullable|in:OFF,ON',
             'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel,Success'
         ]);
@@ -90,19 +93,33 @@ class BillController extends Controller
         $bill->address = $request->address;
         $bill->phone = $request->phone;
    
-        $bill->carts_id =$request->carts_id;
+        $bill->carts_id = json_encode($request->carts_id);
         $bill->payments = $request->payments ?? 'OFF';
         $bill->order_status = $request->order_status ?? 'Pending';
         $bill->save();
          
-
+        // if ($bill->order_status === 'Cancel') {
+        //     $carts = Cart::whereIn('id', $request->carts_id)->get();
+    
+        //     foreach ($carts as $cart) {
+        //         $product = $cart->product;
+    
+        //         if ($product->quantity >= $cart->quantity) {
+        //             $product->decrement('quantity', $cart->quantity);
+        //         } else {
+        //             // Xử lý khi số lượng sản phẩm không đủ
+        //             // Ví dụ: gửi thông báo cho người dùng
+        //             return response()->json(['message' => 'Số lượng sản phẩm không đủ'], 400);
+        //         }
+        //     }
+        // }
         return response()->json([
             'status' => 200,
             'message' => 'Thêm vào bill thành công',
             'bill' => $bill
         ], 200);
     }
-   
+    
     /**
      * Display the specified resource.
      *
@@ -142,7 +159,32 @@ class BillController extends Controller
 
     return response()->json(['message' => 'Hóa đơn được cập nhật thành công']);
     }
+//api update bên người dùng 
+    public function update_user(Request $request, $id)
+{
+    $bill = Bill::findOrFail($id);
 
+    // Kiểm tra và cập nhật các trường dữ liệu của hóa đơn
+    if ($request->has('order_status')) {
+        $orderStatus = $request->input('order_status');
+        
+        if ($bill->order_status === 'Pending' && $orderStatus === 'Cancel') {
+            $bill->order_status = $orderStatus;
+        } elseif ($bill->order_status !== 'Pending') {
+            return response()->json(['message' => 'Không thể thay đổi trạng thái đơn hàng.'], 403);
+        }
+    }
+
+    // Lưu hóa đơn đã cập nhật
+    $bill->save();
+
+    // Trả về hóa đơn đã được cập nhật trong Response
+    return response()->json($bill);
+}
+
+
+
+    
     /**
      * Remove the specified resource from storage.
      *

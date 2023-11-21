@@ -146,6 +146,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/bill', [BillController::class, 'index']);
     Route::post('/bill/add', [BillController::class, 'store']);
     Route::post('/bill/update/{id}', [BillController::class, 'update']);
+    Route::post('/bill/update_user/{id}', [BillController::class, 'update_user']);
     Route::delete('/bill/delete/{id}', [BillController::class, 'destroy']);
     Route::get('/bills', [BillController::class, 'list_bills']);
 
