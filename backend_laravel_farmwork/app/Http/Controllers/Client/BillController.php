@@ -74,8 +74,8 @@ class BillController extends Controller
         $validator = Validator::make($request->all(), [
             'address' => 'required',
             'phone' => 'required',
-            'carts_id' => 'required|array',
-            'carts_id.*' => 'required|integer', // Thêm quy tắc kiểm tra cho mỗi phần tử trong mảng carts_id
+            'carts_id' => 'required',
+        // Thêm quy tắc kiểm tra cho mỗi phần tử trong mảng carts_id
             'payments' => 'nullable|in:OFF,ON',
             'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel,Success'
         ]);
@@ -83,18 +83,18 @@ class BillController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
-
+      
         
         $bill = new Bill();
         $bill->user_id = Auth::user()->id;
         $bill->address = $request->address;
         $bill->phone = $request->phone;
    
-        $bill->carts_id = json_encode($request->carts_id);
+        $bill->carts_id =$request->carts_id;
         $bill->payments = $request->payments ?? 'OFF';
         $bill->order_status = $request->order_status ?? 'Pending';
         $bill->save();
- 
+         
 
         return response()->json([
             'status' => 200,
