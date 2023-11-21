@@ -143,6 +143,15 @@ class CartdbController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'quantity' => 'required|integer|min:1',
+            'status' => 'nullable|in:ORDER,NO_ORDER',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+    
         $cart = Cart::findOrFail($id);
     
         $newQuantity = $request->input('quantity');
