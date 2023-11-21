@@ -32,7 +32,16 @@ class StatisticalController extends Controller
             ->join('product', 'product.id', '=', 'comments.id_product')
             ->select('comments.*', 'product.name AS product_name', 'users.name AS user_name', 'users.image AS user_image')
             ->get();
+        $handlecomment = $comment->groupBy('evaluate')->map(function ($group) {
+            $totalStars = $group->sum('evaluate');
+            $count = $group->count();
 
+            return [
+                'stars' => $group->first()->evaluate,
+                'count' => $count,
+            ];
+        });
+        // dd($handlecomment);
         $product = [];
 
         foreach ($best_saler as $key => $value) {
@@ -74,8 +83,9 @@ class StatisticalController extends Controller
         return response()->json([
             'total_price' => $monthlySummary,
             'product' => $result,
-            'comment'=>$comment
-            
+            'comment' => $comment,
+            'handlecomment'=>$handlecomment
+
         ]);
     }
     private function getMonthlySummary(Collection $summary)
