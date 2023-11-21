@@ -2,137 +2,149 @@ import { ApexOptions } from 'apexcharts';
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const options: ApexOptions = {
-  legend: {
-    show: false,
-    position: 'top',
-    horizontalAlign: 'left',
-  },
-  colors: ['#3C50E0', '#80CAEE'],
-  chart: {
-    fontFamily: 'Satoshi, sans-serif',
-    height: 335,
-    type: 'area',
-    dropShadow: {
-      enabled: true,
-      color: '#623CEA14',
-      top: 10,
-      blur: 4,
-      left: 0,
-      opacity: 0.1,
-    },
 
-    toolbar: {
+
+const ChartOne: React.FC = ({ data }: any) => {
+  const January = Number(data?.January?.total_amount) || 0;
+  const February = Number(data?.February?.total_amount) || 0;
+  const March = Number(data?.March?.total_amount) || 0;
+  const April = Number(data?.April?.total_amount) || 0;
+  const May = Number(data?.May?.total_amount) || 0;
+  const June = Number(data?.June?.total_amount) || 0;
+  const July = Number(data?.July?.total_amount) || 0;
+  const August = Number(data?.August?.total_amount) || 0;
+  const September = Number(data?.September?.total_amount) || 0;
+  const October = Number(data?.October?.total_amount) || 0;
+  const November = Number(data?.November?.total_amount) || 0;
+  const December = Number(data?.December?.total_amount) || 0;
+  const maxTotalAmount = Math.max(
+    January, February, March, April, May, June,
+    July, August, September, October, November, December
+  );
+  const options: ApexOptions = {
+    legend: {
       show: false,
+      position: 'top',
+      horizontalAlign: 'left',
     },
-  },
-  responsive: [
-    {
-      breakpoint: 1024,
-      options: {
-        chart: {
-          height: 300,
+    colors: ['#3C50E0', '#80CAEE'],
+    chart: {
+      fontFamily: 'Satoshi, sans-serif',
+      height: 335,
+      type: 'area',
+      dropShadow: {
+        enabled: true,
+        color: '#623CEA14',
+        top: 10,
+        blur: 4,
+        left: 0,
+        opacity: 0.1,
+      },
+
+      toolbar: {
+        show: false,
+      },
+    },
+    responsive: [
+      {
+        breakpoint: 1024,
+        options: {
+          chart: {
+            height: 300,
+          },
+        },
+      },
+      {
+        breakpoint: 1366,
+        options: {
+          chart: {
+            height: 350,
+          },
+        },
+      },
+    ],
+    stroke: {
+      width: [2, 2],
+      curve: 'straight',
+    },
+    // labels: {
+    //   show: false,
+    //   position: "top",
+    // },
+    grid: {
+      xaxis: {
+        lines: {
+          show: true,
+        },
+      },
+      yaxis: {
+        lines: {
+          show: true,
         },
       },
     },
-    {
-      breakpoint: 1366,
-      options: {
-        chart: {
-          height: 350,
-        },
+    dataLabels: {
+      enabled: false,
+    },
+    markers: {
+      size: 4,
+      colors: '#fff',
+      strokeColors: ['#3056D3', '#80CAEE'],
+      strokeWidth: 3,
+      strokeOpacity: 0.9,
+      strokeDashArray: 0,
+      fillOpacity: 1,
+      discrete: [],
+      hover: {
+        size: undefined,
+        sizeOffset: 5,
       },
     },
-  ],
-  stroke: {
-    width: [2, 2],
-    curve: 'straight',
-  },
-  // labels: {
-  //   show: false,
-  //   position: "top",
-  // },
-  grid: {
     xaxis: {
-      lines: {
-        show: true,
+      type: 'category',
+      categories: [
+        'Tháng 1',
+        'Tháng 2',
+        'Tháng 3',
+        'Tháng 4',
+        'Tháng 5',
+        'Tháng 6',
+        'Tháng 7',
+        'Tháng 8',
+        'Tháng 9',
+        'Tháng 10',
+        'Tháng 11',
+        'Tháng 12',
+      ],
+      axisBorder: {
+        show: false,
+      },
+      axisTicks: {
+        show: false,
       },
     },
     yaxis: {
-      lines: {
-        show: true,
+      title: {
+        style: {
+          fontSize: '0px',
+        },
       },
+      min: 0,
+      max: maxTotalAmount,
     },
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  markers: {
-    size: 4,
-    colors: '#fff',
-    strokeColors: ['#3056D3', '#80CAEE'],
-    strokeWidth: 3,
-    strokeOpacity: 0.9,
-    strokeDashArray: 0,
-    fillOpacity: 1,
-    discrete: [],
-    hover: {
-      size: undefined,
-      sizeOffset: 5,
-    },
-  },
-  xaxis: {
-    type: 'category',
-    categories: [
-      'Tháng 1',
-      'Tháng 2',
-      'Tháng 3',
-      'Tháng 4',
-      'Tháng 5',
-      'Tháng 6',
-      'Tháng 7',
-      'Tháng 8',
-      'Tháng 9',
-      'Tháng 10',
-      'Tháng 11',
-      'Tháng 12',
-    ],
-    axisBorder: {
-      show: false,
-    },
-    axisTicks: {
-      show: false,
-    },
-  },
-  yaxis: {
-    title: {
-      style: {
-        fontSize: '0px',
-      },
-    },
-    min: 0,
-    max: 100,
-  },
-};
+  };
 
-interface ChartOneState {
-  series: {
-    name: string;
-    data: number[];
-  }[];
-}
-
-const ChartOne: React.FC = () => {
+  interface ChartOneState {
+    series: {
+      name: string;
+      data: number[];
+    }[];
+  }
   const [state, setState] = useState<ChartOneState>({
     series: [
       {
-        name: '2022',
-        data: [22, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
-      },
-
-      {
         name: '2023',
-        data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
+        data: [January, February, March, April, May, June, July, August, September, October, November, December],
       },
     ],
   });

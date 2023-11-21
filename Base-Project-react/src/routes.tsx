@@ -30,6 +30,7 @@ import ConfirmPayment from "./components/client/payment/confirmPayment";
 import Bill from "./components/client/bill/Bill";
 import Account from "./components/client/account/account";
 import AccountUpdate from "./components/client/account/accountUpdate";
+import Checkbill from "./components/client/account/checkbill";
 
 
 
@@ -90,6 +91,10 @@ export const router = createBrowserRouter([
             {
                 path: "/account/update",
                 element: <AccountUpdate />
+            },
+            {
+                path: "/account/bill",
+                element: <Checkbill />
             },
 
         ]
