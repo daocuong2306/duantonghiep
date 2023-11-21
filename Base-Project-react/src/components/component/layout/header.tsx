@@ -60,13 +60,11 @@ const Header = () => {
                     </form>
                 </div>
                 <div className="col-lg-3 col-6 text-right">
-                    <Link to="" className="btn border">
+                    <Link to="/account/bill" className="btn border">
                         <i className="fas fa-heart text-[#00CCFF]"></i>
-                        <span className="badge">0</span>
                     </Link>
                     <Link to="/cart" className="btn border">
                         <i className="fas fa-shopping-cart text-[#00CCFF]"></i>
-                        <span className="badge">0</span>
                     </Link>
                 </div>
             </div>

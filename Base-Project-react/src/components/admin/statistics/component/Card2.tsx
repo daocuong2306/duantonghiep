@@ -2,47 +2,30 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Pie } from '@ant-design/plots';
 
-export const DemoPie = () => {
-    const data2 = {
-        day: 'tháng 11',
-        valuedata: [
-            {
-                type: 'Quần',
-                value: 27,
-            },
-            {
-                type: 'Áo',
-                value: 25,
-            },
-            {
-                type: 'Túi',
-                value: 18,
-            },
-            {
-                type: 'Đồng hồ',
-                value: 15,
-            }
-        ]
-    };
+const DemoPie = ({ dataComment }) => {
+    console.log(dataComment);
 
 
-    
     const data = [
         {
-            type: 'Quần',
-            value: 27,
+            type: '5 sao',
+            value: 0,
         },
         {
-            type: 'Áo',
-            value: 25,
+            type: '4 sao',
+            value: 0,
         },
         {
-            type: 'Túi',
-            value: 18,
+            type: '3 sao',
+            value: 0,
         },
         {
-            type: 'Đồng hồ',
-            value: 15,
+            type: '2 sao',
+            value: 0,
+        },
+        {
+            type: '1 sao',
+            value: 0,
         }
     ];
     const config = {
@@ -83,3 +66,6 @@ export const DemoPie = () => {
     };
     return <Pie {...config} />;
 };
+
+
+export default DemoPie

@@ -2,25 +2,47 @@
 import ChartOne from './component/ChartOne'
 
 import TableThree from './component/TableThree'
-import { DemoPie } from './component/Card2'
 import { DemoColumn } from './component/Card3'
+import { useListStatisticalQuery } from '@/api/statistics'
+import DemoPie from './component/Card2'
+import CardOne from './component/CardOne'
 
 type Props = {}
 
 const Statistics = (props: Props) => {
+    const { data: statisData } = useListStatisticalQuery()
+    console.log(statisData);
+    const dataMonth = statisData?.total_price;
+    const dataComment = statisData?.comment;
     return (
         <>
+            <div className="container mx-auto p-4">
+                <h3 className="text-2xl font-semibold mb-4">Top 3 sản phẩm bán chạy</h3>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {/* Cards */}
+                    <div className="bg-white p-6 rounded-md shadow-md">
+                        <CardOne />
+                    </div>
+                    <div className="bg-white p-6 rounded-md shadow-md">
+                        <CardOne />
+                    </div>
+                    <div className="bg-white p-6 rounded-md shadow-md">
+                        <CardOne />
+                    </div>
 
-            <div >
-                <ChartOne />
-            </div>
+                    {/* Chart */}
+                    <div className="col-span-2 bg-white p-6 rounded-md shadow-md">
+                        <ChartOne data={dataMonth} />
+                    </div>
 
-           
-            <div>
-                <DemoPie />
+                    {/* Pie Chart */}
+                    <div className="bg-white p-6 rounded-md shadow-md">
+                        <DemoPie dataComment={dataComment} />
+                    </div>
+                </div>
             </div>
-            
         </>
+
     )
 }
 
