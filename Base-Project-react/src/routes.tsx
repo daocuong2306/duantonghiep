@@ -25,9 +25,11 @@ import ListVariant from "./components/admin/Products/ListVariant";
 import Home from "./components/component/layout/home";
 import CartProduct from "./components/client/Cart/cart";
 import Statistics from "./components/admin/statistics/statistics";
-import PaymentOnline from "./components/client/payment/paymentOnline";
-import ConfirmPayment from "./components/client/payment/confirmPayment";
+// import PaymentOnline from "./components/client/payment/paymentOnline";
+// import ConfirmPayment from "./components/client/payment/confirmPayment";
 import Bill from "./components/client/bill/Bill";
+import Account from "./components/client/account";
+import AccountUpdate from "./components/client/accountUpdate";
 
 
 
@@ -68,19 +70,36 @@ export const router = createBrowserRouter([
                 path: 'cart',
                 element: <CartProduct />
             },
-            {
-                path: 'payment',
-                element: <PaymentOnline />
-            },
+            // {
+            //     path: 'payment',
+            //     element: <PaymentOnline />
+            // },
 
-            {
-                path: "confirm",
-                element: <ConfirmPayment />,
-            },
+            // {
+            //     path: "confirm",
+            //     element: <ConfirmPayment />,
+            // },
             {
                 path: "bill",
-                element : <Bill/>
-            }
+                element: <Bill />
+            },
+            {
+                path: "/login",
+                element: <Login />,
+            },
+            {
+                path: "/signup",
+                element: <Signup />,
+            },
+            {
+                path:"/account",
+                element:<Account/>
+            },
+            {
+                path:"/account/update",
+                element:<AccountUpdate/>
+            },
+            
         ]
     },
     {
@@ -168,13 +187,6 @@ export const router = createBrowserRouter([
             },
         ],
     },
-    {
-        path: "/login",
-        element: <Login />,
-    },
-    {
-        path: "/signup",
-        element: <Signup />,
-    },
+
 ]);
 

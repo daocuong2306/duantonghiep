@@ -2,7 +2,7 @@ import React from 'react';
 import type { TableColumnsType } from 'antd';
 import { Button, Table, Space } from 'antd';
 import { Link } from 'react-router-dom';
-import { useGetOptionsQuery } from '@/api/option';
+import { useGetOptionsQuery, useRemoveOptionMutation } from '@/api/option';
 interface DataType {
     key: React.Key;
     name: string;
@@ -13,16 +13,41 @@ interface DataType {
 
 const DashboardOptions: React.FC = () => {
     const { data: options } = useGetOptionsQuery();
+    const [removeOption] = useRemoveOptionMutation()
+    const deleteO = (id: number) => {
+        removeOption(id)
+    }
     const expandedRowRender = (e) => {
         console.log(e);
         const columns: TableColumnsType<any> = [
-            { title: 'Name', dataIndex: 'name', key: 'name' },
+            { title: 'Tên', dataIndex: 'name', key: 'name' },
+            {
+                title: 'Hành động', key: 'operation', dataIndex: 'optionId', render: (optionId) => {
+                    return <>
+                        <Space wrap>
+                            <Button type="primary" danger onClick={() => deleteO(optionId)}>
+                                Xóa
+                            </Button>
+                        </Space>
+                    </>
+                },
+            }
         ];
         return <Table columns={columns} dataSource={e.value} pagination={false} />;
     };
     const columns: TableColumnsType<DataType> = [
-        { title: 'Name', dataIndex: 'name', key: 'name' },
-        { title: 'Action', key: 'operation', render: () => <a>Xóa</a> },
+        { title: 'Tên', dataIndex: 'name', key: 'name' },
+        {
+            title: 'Hành động', key: 'operation', dataIndex: 'optionId', render: (optionId) => {
+                return <>
+                    <Space wrap>
+                        <Button type="primary" danger onClick={() => deleteO(optionId)}>
+                            Xóa
+                        </Button>
+                    </Space>
+                </>
+            },
+        }
     ];
     const newData = options?.options.map(item => ({
         ...item,
