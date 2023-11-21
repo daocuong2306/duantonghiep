@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Result, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { useAddBillMutation } from '@/api/bill';
@@ -33,11 +33,15 @@ const ConfirmPayment: React.FC<Props> = () => {
         return withoutTrailingZeros;
     };
     const handleAddBill = () => {
-            const dataBill = JSON.parse(localStorage.getItem('dataBill'));
-                addBill(dataBill);
+        const dataBill = JSON.parse(localStorage.getItem('dataBill'));
+        addBill(dataBill);
+    }
+    useEffect(() => {
+        if (vnp_ResponseCode == 0) {
+            // If vnp_ResponseCode is 0, call the handleAddBill function
+            handleAddBill();
         }
-    };
- 
+    }, []);
     // Parse amount and format it in VND
     const formattedAmount = formatAmountInVND(parseFloat(vnp_Amount));
 
@@ -47,9 +51,11 @@ const ConfirmPayment: React.FC<Props> = () => {
             title={`Bạn đã thanh toán thành công đơn hàng giá ${formattedAmount}`}
             subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
             extra={[
-                <Link to='/'> <Button key="console" primary>
-                    Tiếp tục mua hàng
-                </Button>,</Link>
+                <Link to='/' key="continueShopping">
+                    <Button  key="console">
+                        Tiếp tục mua hàng
+                    </Button>
+                </Link>,
             ]}
         />
     ) : (
@@ -57,9 +63,11 @@ const ConfirmPayment: React.FC<Props> = () => {
             status="warning"
             title={`Bạn đã thanh toán thất bại đơn hàng giá ${formattedAmount}`}
             extra={
-                <Link to='/payment'> <Button key="console" primary>
-                    Quay lại thanh toán
-                </Button></ Link>
+                <Link to='/payment' key="goBackToPayment">
+                    <Button  key="console">
+                        Quay lại thanh toán
+                    </Button>
+                </Link>
             }
         />
     );
