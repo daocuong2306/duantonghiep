@@ -144,7 +144,7 @@ class CartdbController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'required',
             'status' => 'nullable|in:ORDER,NO_ORDER',
         ]);
     
