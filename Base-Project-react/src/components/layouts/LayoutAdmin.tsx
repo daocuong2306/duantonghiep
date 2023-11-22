@@ -33,25 +33,30 @@ const LayoutAdmin: React.FC = () => {
                         {
                             key: "1",
                             icon: <AiOutlineUser />,
-                            label: <Link to="/admin/user">Người dùng</Link>,
+                            label: <Link to="/admin/statistics">Thống kê</Link>,
                         },
                         {
                             key: "2",
+                            icon: <AiOutlineUser />,
+                            label: <Link to="/admin/user">Người dùng</Link>,
+                        },
+                        {
+                            key: "3",
                             icon: <AiOutlineVideoCamera />,
                             label: <Link to="/admin/dashboard">Sản phẩm</Link>,
                         },
                         {
-                            key: "3",
+                            key: "4",
                             icon: <AiFillFolder />,
                             label: <Link to="/admin/categories">Danh mục</Link>
                         },
                         {
-                            key: "4",
+                            key: "5",
                             icon: <AiFillFolder />,
                             label: <Link to="/admin/Options">Tùy chọn</Link>
                         },
                         {
-                            key: "5",
+                            key: "6",
                             icon: <AiFillFolder />,
                             label: <Link to="/admin/banner">Banner</Link>
                         }
