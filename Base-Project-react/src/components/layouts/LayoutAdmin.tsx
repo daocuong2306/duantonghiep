@@ -8,6 +8,7 @@ import {
 import React from 'react';
 import { Layout, Menu, theme } from 'antd';
 import { Link, Outlet } from 'react-router-dom';
+import MenuBar from "../component/layout/menu";
 const { Header, Content, Sider } = Layout;
 const LayoutAdmin: React.FC = () => {
     const {
@@ -64,7 +65,8 @@ const LayoutAdmin: React.FC = () => {
                 />
             </Sider>
             <Layout className="site-layout" style={{ marginLeft: 200 }}>
-                <Header style={{ padding: 0, background: colorBgContainer }} />
+                {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}
+                <MenuBar/>
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div style={{ padding: 24, background: colorBgContainer }}>
                         <Outlet />
