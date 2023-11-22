@@ -29,7 +29,7 @@ const Bill = (props: Props) => {
             return;
         } else {
             addBill(formData);
-            aUrl('/account/bill')
+            // aUrl('/account/bill')
         }
     };
     const status = localStorage.getItem("status");
@@ -130,7 +130,7 @@ const Bill = (props: Props) => {
                                         <div className="p-2 me-3">
                                             <h4>Order Recap</h4>
                                         </div>
-                                        {cartData?.carts.map((cart: any) => {
+                                        {cartData.carts.map((cart: any) => {
                                             return <div>
                                                 <div className="p-2 d-flex">
                                                     <div className="col-8">Tên sản phẩm</div>
