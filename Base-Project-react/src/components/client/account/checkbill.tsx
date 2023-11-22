@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { Avatar, List, Radio, Space } from 'antd';
-import { useGetBillQuery } from '@/api/bill';
 import { Link } from 'react-router-dom';
+import { useGetBillQuery } from '@/api/bill';
 
 
 
 const Checkbill: React.FC = () => {
-    const { data: billData } = useGetBillQuery()
-    console.log(billData);
-    const data = billData;
-
+    const data = useGetBillQuery()
+    console.log(data);
+    
     return (
         <>
-            <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl ">
+            {/* <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl ">
                 <List
                  pagination={{
                   }}
@@ -31,7 +30,7 @@ const Checkbill: React.FC = () => {
                         </List.Item>
                     )}
                 />
-            </div>
+            </div> */}
         </>
     );
 };
