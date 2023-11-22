@@ -1,5 +1,5 @@
 import { useBanUserMutation, useListUserQuery, useUnBanUserMutation } from '@/api/user';
-import { Space, Switch, Table, Image, Button, notification } from 'antd';
+import { Space, Switch, Table, Image, Button, notification, Spin } from 'antd';
 import { blue } from '@ant-design/colors';
 import type { ColumnsType } from 'antd/es/table';
 import type { TableRowSelection } from 'antd/es/table/interface';
@@ -99,7 +99,7 @@ const DashboardUser: React.FC = () => {
     ];
 
 
-    const { data: user } = useListUserQuery()
+    const { data: user, isLoading } = useListUserQuery()
     console.log(user);
     ///Notification
     const [api, contextHolder] = notification.useNotification();
@@ -137,11 +137,13 @@ const DashboardUser: React.FC = () => {
     const data: DataType[] = user?.user;
     return (
         <>
-            {contextHolder}
-            <Table
-                columns={columns}
-                dataSource={data}
-            />
+            <Spin spinning={isLoading}>
+                {contextHolder}
+                <Table
+                    columns={columns}
+                    dataSource={data}
+                />
+            </Spin>
         </>
     );
 };

@@ -41,18 +41,19 @@ const CategoryDashboard = () => {
     const data: any[] = categories?.categories;
     return (
         <div>
+            <Spin spinning={dataLoading} className="pl-[50%]">
+                <Spin spinning={isLoading} className="pl-[50%]">
+                    <Space>
+                        <Link to='/admin/categories/add'> <Button primary>Thêm Danh Mục</Button></Link>
+                    </Space>
 
-            <Space>
-                <Link to='/admin/categories/add'> <Button primary>Thêm Danh Mục</Button></Link>
-            </Space>
+                    <Table
+                        columns={columns}
+                        dataSource={data}
+                    />
+                </Spin>
+            </Spin>
 
-            <Table
-                columns={columns}
-                dataSource={data}
-            />
-            <Spin spinning={dataLoading} className="pl-[50%]"></Spin>
-            <Spin spinning={isLoading} className="pl-[50%]"></Spin>
-            
         </div >
     )
 }

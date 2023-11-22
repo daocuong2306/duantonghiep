@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useAddCategoryMutation, useGetCategoriesQuery } from "../../../api/category";
 import { ICategory } from "../../../interface/category";
-import { Modal, Select, message } from "antd";
+import { Modal, Select, Spin, message } from "antd";
 import Upload, { RcFile, UploadFile, UploadProps } from "antd/es/upload";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
@@ -29,7 +29,7 @@ const AddCategory = () => {
     const { data: categories } = useGetCategoriesQuery();
     const url = useNavigate()
     const readerRef = useRef<any>(null);
-    const [addCategory] = useAddCategoryMutation();
+    const [addCategory,{isLoading}] = useAddCategoryMutation();
     const { control, handleSubmit, setValue, getValues, register } = useForm();
     //tìm và chọn select
     const onChange = (value: any) => {
@@ -151,6 +151,7 @@ const AddCategory = () => {
         url("/admin/categories")
     };
     return <div>
+        <Spin spinning={isLoading} className="pl-[50%]">
         <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Thêm danh mục</h2>
         <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-2 ml-200 mr-200 ">
             <div className="col-span-1">
@@ -183,6 +184,7 @@ const AddCategory = () => {
                 </div>
             </div>
         </div>
+        </Spin>
     </div>
 };
 

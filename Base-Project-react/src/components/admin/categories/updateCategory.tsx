@@ -9,7 +9,7 @@ import Upload, { RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
 const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
     const [open, setOpen] = useState(false);
     const readerRef = useRef<any>(null);
-    const [updateCategory] = useUpdateCategoryMutation()
+    const [updateCategory, { isLoading: updateLoading }] = useUpdateCategoryMutation()
     const showDrawer = () => {
         setOpen(true);
     };
@@ -115,71 +115,74 @@ const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
 
     return (
         <>
-            <Spin spinning={isLoading}></Spin>
-            <Button onClick={showDrawer} >
-                Sửa
-            </Button>
-            <Drawer
-                title="Create a new account"
-                width={720}
-                onClose={onClose}
-                open={open}
-                bodyStyle={{
-                    paddingBottom: 80,
-                }}
+            <Spin spinning={updateLoading}>
+                <Spin spinning={isLoading}>
+                    <Button onClick={showDrawer} >
+                        Sửa
+                    </Button>
+                    <Drawer
+                        title="Create a new account"
+                        width={720}
+                        onClose={onClose}
+                        open={open}
+                        bodyStyle={{
+                            paddingBottom: 80,
+                        }}
 
-            >
-                <Form layout="vertical" onFinish={onFinish}>
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            {!check ? <>
-                                <Button
-                                    onClick={() => {
-                                        setImageUrl(undefined);
-                                        setSelectedFile(null);
-                                        setCheck(true);
-                                    }}
-                                    className="delete-button"
-                                >
-                                    Xóa
-                                </Button>
-                                <img src={`http://127.0.0.1:8000${category?.categories.image}`} className="w-full h-full" />
+                    >
+                        <Form layout="vertical" onFinish={onFinish}>
+                            <Row gutter={16}>
+                                <Col span={12}>
+                                    {!check ? <>
+                                        <Button
+                                            onClick={() => {
+                                                setImageUrl(undefined);
+                                                setSelectedFile(null);
+                                                setCheck(true);
+                                            }}
+                                            className="delete-button"
+                                        >
+                                            Xóa
+                                        </Button>
+                                        <img src={`http://127.0.0.1:8000${category?.categories.image}`} className="w-full h-full" />
 
-                            </>
-                                : <div className="w-full">
-                                    <Upload
-                                        name="avatar"
-                                        listType="picture-card"
-                                        className="avatar-uploader"
-                                        showUploadList={false}
-                                        action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                                        beforeUpload={beforeUpload}
-                                        onChange={twoFunctions}
+                                    </>
+                                        : <div className="w-full">
+                                            <Upload
+                                                name="avatar"
+                                                listType="picture-card"
+                                                className="avatar-uploader"
+                                                showUploadList={false}
+                                                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                                                beforeUpload={beforeUpload}
+                                                onChange={twoFunctions}
+                                            >
+                                                {imageUrl ? <img src={imageUrl} alt="avatar" className="w-full h-full" /> : uploadButton}
+                                            </Upload>
+                                        </div>}
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item
+                                        name="name"
+                                        label="Name"
+                                        initialValue={category?.categories.name}
                                     >
-                                        {imageUrl ? <img src={imageUrl} alt="avatar" className="w-full h-full" /> : uploadButton}
-                                    </Upload>
-                                </div>}
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item
-                                name="name"
-                                label="Name"
-                                initialValue={category?.categories.name}
-                            >
-                                <Input placeholder="Please enter a name" />
-                            </Form.Item>
+                                        <Input placeholder="Please enter a name" />
+                                    </Form.Item>
 
-                        </Col>
-                    </Row>
-                    <Space>
-                        <Button onClick={onClose}>Hủy bỏ</Button>
-                        <Button htmlType="submit">
-                            Gửi
-                        </Button>
-                    </Space>
-                </Form>
+                                </Col>
+                            </Row>
+                            <Space>
+                                <Button onClick={onClose}>Hủy bỏ</Button>
+                                <Button htmlType="submit">
+                                    Gửi
+                                </Button>
+                            </Space>
+                        </Form>
 
-            </Drawer>
+                    </Drawer>
+                </Spin>
+            </Spin>
         </>
     );
 };
