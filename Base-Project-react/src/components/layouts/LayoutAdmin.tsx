@@ -60,6 +60,11 @@ const LayoutAdmin: React.FC = () => {
                             key: "6",
                             icon: <AiFillFolder />,
                             label: <Link to="/admin/banner">Banner</Link>
+                        },
+                        {
+                            key: "7",
+                            icon: <AiFillFolder />,
+                            label: <Link to="/admin/bills">Đơn hàng</Link>
                         }
                     ]}
                 />

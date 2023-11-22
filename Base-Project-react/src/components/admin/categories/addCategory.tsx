@@ -29,7 +29,7 @@ const AddCategory = () => {
     const { data: categories } = useGetCategoriesQuery();
     const url = useNavigate()
     const readerRef = useRef<any>(null);
-    const [addCategory,{isLoading}] = useAddCategoryMutation();
+    const [addCategory, { isLoading }] = useAddCategoryMutation();
     const { control, handleSubmit, setValue, getValues, register } = useForm();
     //tìm và chọn select
     const onChange = (value: any) => {
@@ -152,38 +152,38 @@ const AddCategory = () => {
     };
     return <div>
         <Spin spinning={isLoading} className="pl-[50%]">
-        <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Thêm danh mục</h2>
-        <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-2 ml-200 mr-200 ">
-            <div className="col-span-1">
-                <Upload
-                    name="avatar"
-                    listType="picture-card"
-                    className="avatar-uploader"
-                    showUploadList={false}
-                    action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                    beforeUpload={beforeUpload}
-                    onChange={twoFunctions}
-                >
-                    {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-                </Upload>
-            </div>
-            <div>
-                <div className="col-span-2">
-                    <form onSubmit={handleSubmit(onHandleSubmit)}>
-                        <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Tên sản phẩm</label>
-                        <input
-                            type="text"
-                            id="name"
-                            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                            placeholder="Tên danh mục"
-                            required
-                            {...register('name')}
-                        />
-                        <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Gửi</button>
-                    </form>
+            <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Thêm danh mục</h2>
+            <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-2 ml-200 mr-200 ">
+                <div className="col-span-1">
+                    <Upload
+                        name="avatar"
+                        listType="picture-card"
+                        className="avatar-uploader"
+                        showUploadList={false}
+                        action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                        beforeUpload={beforeUpload}
+                        onChange={twoFunctions}
+                    >
+                        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                    </Upload>
+                </div>
+                <div>
+                    <div className="col-span-2">
+                        <form onSubmit={handleSubmit(onHandleSubmit)}>
+                            <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray">Tên sản phẩm</label>
+                            <input
+                                type="text"
+                                id="name"
+                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                                placeholder="Tên danh mục"
+                                required
+                                {...register('name')}
+                            />
+                            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Gửi</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
         </Spin>
     </div>
 };
