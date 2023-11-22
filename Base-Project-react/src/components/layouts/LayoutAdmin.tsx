@@ -8,6 +8,7 @@ import {
 import React from 'react';
 import { Layout, Menu, theme } from 'antd';
 import { Link, Outlet } from 'react-router-dom';
+import MenuBar from "../component/layout/menu";
 const { Header, Content, Sider } = Layout;
 const LayoutAdmin: React.FC = () => {
     const {
@@ -33,25 +34,30 @@ const LayoutAdmin: React.FC = () => {
                         {
                             key: "1",
                             icon: <AiOutlineUser />,
-                            label: <Link to="/admin/user">Người dùng</Link>,
+                            label: <Link to="/admin/statistics">Thống kê</Link>,
                         },
                         {
                             key: "2",
+                            icon: <AiOutlineUser />,
+                            label: <Link to="/admin/user">Người dùng</Link>,
+                        },
+                        {
+                            key: "3",
                             icon: <AiOutlineVideoCamera />,
                             label: <Link to="/admin/dashboard">Sản phẩm</Link>,
                         },
                         {
-                            key: "3",
+                            key: "4",
                             icon: <AiFillFolder />,
                             label: <Link to="/admin/categories">Danh mục</Link>
                         },
                         {
-                            key: "4",
+                            key: "5",
                             icon: <AiFillFolder />,
                             label: <Link to="/admin/Options">Tùy chọn</Link>
                         },
                         {
-                            key: "5",
+                            key: "6",
                             icon: <AiFillFolder />,
                             label: <Link to="/admin/banner">Banner</Link>
                         }
@@ -59,7 +65,8 @@ const LayoutAdmin: React.FC = () => {
                 />
             </Sider>
             <Layout className="site-layout" style={{ marginLeft: 200 }}>
-                <Header style={{ padding: 0, background: colorBgContainer }} />
+                {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}
+                <MenuBar/>
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div style={{ padding: 24, background: colorBgContainer }}>
                         <Outlet />

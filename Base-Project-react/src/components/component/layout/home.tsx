@@ -29,7 +29,7 @@ const Home = (props: Props) => {
                                 </div>
                             </div>
                             <div className="col-lg-9">
-                                <MenuBar />
+                               
                                 <Banner />
                             </div>
                         </div>
