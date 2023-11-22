@@ -90,7 +90,7 @@ const AddOptions: React.FC = () => {
                     )}
                 </Form.List>
             </Form>
-        </Spin>
+        
     );
 };
 
