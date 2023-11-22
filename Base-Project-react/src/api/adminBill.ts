@@ -19,15 +19,15 @@ const adminBillApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getBill: builder.query<any[], void>({
+        getBillAdmin: builder.query<any[], void>({
             query: (key: any) => ({
                 url: `/`,
                 method: "GET",
             }),
             providesTags: ['bill']
         }),
-        
-        updateBill: builder.mutation({
+
+        updateBillAdmin: builder.mutation({
             query: (product: any) => ({
                 url: `/update/${product.id}`,
                 method: "POST",
@@ -35,14 +35,12 @@ const adminBillApi = createApi({
             }),
             invalidatesTags: ['bill']
         }),
-        
+
     })
 });
 
 export const {
-    useGetBillQuery,
-
-    useUpdateBillMutation
+    useGetBillAdminQuery,
 } = adminBillApi;
 export const adminBillReducer = adminBillApi.reducer;
 
