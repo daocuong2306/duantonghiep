@@ -14,13 +14,13 @@ const cartApi = createApi({
             return headers;
         },
         fetchFn: async (...args) => {
-            await pause(500);
+            await pause(100);
             return fetch(...args);
         }
     }),
     endpoints: (builder) => ({
         getCart: builder.query<any[], void>({
-            query: (key: any) => ({
+            query: () => ({
                 url: `/`,
                 method: "GET",
             }),

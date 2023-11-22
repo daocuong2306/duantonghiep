@@ -18,7 +18,7 @@ const Bill = (props: Props) => {
             "address": data.address,
             "phone": data.phoneNumber,
             "payments": data.paymentMethod,
-            "carts_id": `[${ids}]`,
+            "carts_id": ids,
             "order_status": "Pending"
         }
 
@@ -29,6 +29,7 @@ const Bill = (props: Props) => {
             return;
         } else {
             addBill(formData);
+            aUrl('/account/bill')
         }
     };
     const status = localStorage.getItem("status");
