@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\OptionValue;
 use App\Models\Product;
 use App\Models\SKU;
+use App\Models\User;
 use App\Models\Variant;
 use Exception;
 use Illuminate\Http\Request;
@@ -26,10 +27,14 @@ class BillController extends Controller
     {
         if (Auth::check()) {
             $user_id = Auth::user()->id;
-    
+            
+            // Lấy thông tin người dùng từ id_user
+            $user = User::find($user_id);
+            $user_name = $user->name; // Tên người dùng
+            
             $bills = Bill::with('cart')->where('user_id', $user_id)->get();
           
-            $formattedBills = $bills->map(function ($bill) {
+            $formattedBills = $bills->map(function ($bill) use ($user_name) {
                 $cartIds = json_decode($bill->carts_id);
              
                 $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
@@ -37,15 +42,8 @@ class BillController extends Controller
                     $optionValues = array_unique($optionValues);
                     $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
                     
-
-                    // $stoke = SKU::where('id', $cart->sku_id)->value('stoke');
-                    // SKU::where('id', $cart->sku_id)->decrement('stoke', $cart->quantity);
-                    // if ($stoke >= $cart->quantity) {
-                    //     SKU::where('id', $cart->sku_id)->decrement('stoke', $cart->quantity);
-                    // } else {
-                    //     // Xử lý khi 'quantity' vượt quá 'stoke' hiện tại
-                    //     throw new Exception("Số lượng không khả dụng.");
-                    // }
+    
+                   
                     return [
                         'id_product' => $cart->product->id,
                         'option_values' => $optionValuesData,
@@ -65,6 +63,7 @@ class BillController extends Controller
                 return [
                     'id' => $bill->id,
                     'user_id' => $bill->user_id,
+                    'user_name' => $user_name, // Thêm tên người dùng vào mảng kết quả
                     'address' => $bill->address,
                     'phone' => $bill->phone,                   
                     'payments' => $bill->payments, 
@@ -319,47 +318,65 @@ class BillController extends Controller
     return response()->json(['message' => 'Hóa đơn đã được xóa'], 200);
     }
 // list ra tất cả 
-    public function list_bills()
-    {
-        $bills = Bill::with('cart')->get();
+public function list_bills()
+{
+    $bills = Bill::with('cart')->get();
 
-    $formattedBills = $bills->map(function ($bill) {
-        $cartIds = json_decode($bill->carts_id);
+    // Bước 1: Lấy tất cả user_id từ danh sách hóa đơn
+    $userIds = $bills->pluck('user_id')->unique()->toArray();
 
-        $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
-            $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
-            $optionValues = array_unique($optionValues);
-            $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
-            return [
-                'id_product' => $cart->product->id,
-                'option_values' => $optionValuesData,
-                'name' => $cart->product->name,
-                'image' => $cart->product->image,
-                'price' => $cart->price_cart,
-                'quantity' => $cart->quantity
-            ];
-        });
+    // Bước 2: Lấy thông tin người dùng tương ứng với user_id
+    $users = User::whereIn('id', $userIds)->pluck('name', 'id')->toArray();
 
-        $total_price = $cartItems->sum(function ($cartItem) {
-            return $cartItem['price'] * $cartItem['quantity'];
-        });
+    $formattedBills = [];
 
-        // Lưu tổng giá trị vào trường total_price của hóa đơn
-        $bill->total_price = $total_price;
-        $bill->save();
+    foreach ($userIds as $userId) {
+        $userBills = $bills->where('user_id', $userId);
 
-        return [
-            'id' => $bill->id,
-            'user_id' => $bill->user_id,
-            'address' => $bill->address,
-            'phone' => $bill->phone,                   
-            'payments' => $bill->payments, 
-            'order_status' => $bill->order_status,
-            'cart' => $cartItems,
-            'total_price' => $total_price
+        $billData = [
+            'id' => $userBills[0]->id,
+            'user_id' => $userId,
+            'user_name' => isset($users[$userId]) ? $users[$userId] : '',
+            'user_image' => '', // Thêm ảnh người dùng vào mảng kết quả
+            'carts' => []
         ];
-    });
+
+        foreach ($userBills as $bill) {
+            $cartIds = json_decode($bill->carts_id);
+
+            $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
+                $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+                $optionValues = array_unique($optionValues);
+                $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+                return [
+                    'id_product' => $cart->product->id,
+                    'option_values' => $optionValuesData,
+                    'name' => $cart->product->name,
+                    'image' => $cart->product->image,
+                    'price' => $cart->price_cart,
+                    'quantity' => $cart->quantity
+                ];
+            });
+
+            $total_price = $cartItems->sum(function ($cartItem) {
+                return $cartItem['price'] * $cartItem['quantity'];
+            });
+
+            $billInformation = [
+                'address' => $bill->address,
+                'phone' => $bill->phone,                   
+                'payments' => $bill->payments, 
+                'order_status' => $bill->order_status,
+                'cart' => $cartItems,
+                'total_price' => $total_price
+            ];
+
+            $billData['carts'][] = $billInformation;
+        }
+
+        $formattedBills[] = $billData;
+    }
 
     return response()->json($formattedBills);
-    }
+}
 }
