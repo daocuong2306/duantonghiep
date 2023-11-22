@@ -1,6 +1,6 @@
 import React from 'react';
 import type { TableColumnsType } from 'antd';
-import { Button, Table, Space } from 'antd';
+import { Button, Table, Space, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { useGetOptionsQuery, useRemoveOptionMutation } from '@/api/option';
 interface DataType {
@@ -12,8 +12,8 @@ interface DataType {
 }
 
 const DashboardOptions: React.FC = () => {
-    const { data: options } = useGetOptionsQuery();
-    const [removeOption] = useRemoveOptionMutation()
+    const { data: options, isLoading } = useGetOptionsQuery();
+    const [removeOption, { isLoading: deleteLoading }] = useRemoveOptionMutation()
     const deleteO = (id: number) => {
         removeOption(id)
     }
@@ -57,15 +57,19 @@ const DashboardOptions: React.FC = () => {
     console.log(options?.options);
     return (
         <>
-            <Space>
-                <Link to="add">  <Button primary>Thêm mục phụ</Button></Link>
-                <Link to='OptionsValue/add'> <Button primary>Thêm giá trị</Button></Link>
-            </Space>
-            <Table
-                columns={columns}
-                expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
-                dataSource={data}
-            />
+            <Spin spinning={isLoading} className="pl-[50%]">
+                <Spin spinning={deleteLoading} className="pl-[50%]">
+                    <Space>
+                        <Link to="add">  <Button primary>Thêm mục phụ</Button></Link>
+                        <Link to='OptionsValue/add'> <Button primary>Thêm giá trị</Button></Link>
+                    </Space>
+                    <Table
+                        columns={columns}
+                        expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
+                        dataSource={data}
+                    />
+                </Spin>
+            </Spin>
         </>
     );
 };

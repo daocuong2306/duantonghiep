@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import type { TableColumnsType } from 'antd';
-import { Button, Table, Space, Image } from 'antd';
+import { Button, Table, Space, Image, Spin } from 'antd';
 import { useGetValueIdQuery } from '@/api/variant';
 import { useParams } from 'react-router-dom';
 import { useGetProductByIdQuery } from '@/api/product';
 
 const ListVariant = () => {
     let { id } = useParams();
-    const { data: variants, isLoading } = useGetValueIdQuery(id)
-    const { data: product } = useGetProductByIdQuery(id)
+    const { data: variants, isLoading: valueLoading } = useGetValueIdQuery(id)
+    const { data: product, isLoading: productLoading } = useGetProductByIdQuery(id)
     const columns: TableColumnsType<any> = [
         {
             title: 'Tên',
@@ -37,39 +37,41 @@ const ListVariant = () => {
     }, [data]);
     return (
         <div>
-            {isEmpty ? (
-                <p>Dữ liệu trống.</p>
-            ) : (
-                <div> <div className="p-4  flex items-center justify-between">
-                    <div className="product-image-container flex items-center">
-                        <div className="product-image-thumbnail rounded-full overflow-hidden">
-                            <img
-                                className="w-20 h-20"
-                                src={`http://127.0.0.1:8000${product?.product.image}`}
-                                alt=""
-                            />
+            <Spin spinning={productLoading}>
+                {isEmpty ? (
+                    <p>Dữ liệu trống.</p>
+                ) : (
+                    <div> <div className="p-4  flex items-center justify-between">
+                        <div className="product-image-container flex items-center">
+                            <div className="product-image-thumbnail rounded-full overflow-hidden">
+                                <img
+                                    className="w-20 h-20"
+                                    src={`http://127.0.0.1:8000${product?.product.image}`}
+                                    alt=""
+                                />
+                            </div>
+                            <div className="product-details ml-4">
+                                <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+                                    {product?.product.name}
+                                </h1>
+                                <p className="text-lg text-gray-600 mb-2">
+                                    Giá: {product?.product.code}
+                                </p>
+                            </div>
                         </div>
-                        <div className="product-details ml-4">
-                            <h1 className="text-2xl font-semibold text-gray-800 mb-2">
-                                {product?.product.name}
-                            </h1>
-                            <p className="text-lg text-gray-600 mb-2">
-                                Giá: {product?.product.code}
-                            </p>
-                        </div>
+                        <button className="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">Xóa</button>
                     </div>
-                    <button className="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">Xóa</button>
-                </div>
-                    <div className="mt-8">
-                        <div className="border border-gray-200 p-4 rounded-lg shadow-lg">
-                            <Table columns={columns} dataSource={data} />
-                        </div>
-                    </div></div>
+                        <div className="mt-8">
+                            <div className="border border-gray-200 p-4 rounded-lg shadow-lg">
+                                <Table columns={columns} dataSource={data} />
+                            </div>
+                        </div></div>
 
 
 
 
-            )}
+                )}
+            </Spin>
         </div>
     )
 }

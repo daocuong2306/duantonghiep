@@ -33,10 +33,10 @@ const beforeUpload = (file: RcFile) => {
 const AddProduct = () => {
     // Xử lý sự kiện khi người dùng chọn tệp
     const [selectedCate, setselectedCate] = useState(null);
-    const { data: categories } = useGetCategoriesQuery();
+    const { data: categories,isLoading } = useGetCategoriesQuery();
     const url = useNavigate()
     const readerRef = useRef<any>(null);
-    const [addProduct, { data: products }] = useAddProductMutation();
+    const [addProduct, { data: products,isLoading:addLoading }] = useAddProductMutation();
     const { control, handleSubmit, setValue, getValues, register } = useForm();
     const [product, setProduct] = useState([]);
     //tìm và chọn select

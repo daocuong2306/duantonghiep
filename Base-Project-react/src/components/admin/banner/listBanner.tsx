@@ -4,12 +4,12 @@ import { Link } from "react-router-dom"
 const BannerDashboard = () => {
     const { data: banners, isLoading } = useGetListBannerQuery();
     console.log(banners);
-    const [deleteBanner,{isLoading:deleteLoading}] = useRemoveBannerMutation()
+    const [deleteBanner, { isLoading: deleteLoading }] = useRemoveBannerMutation()
     const deleteB = (id: number) => {
         const check = window.confirm("Are you sure you want to delete");
         if (check) {
             deleteBanner(id);
-            
+
         }
     }
     const columns: TableColumnsType<any> = [
@@ -37,17 +37,19 @@ const BannerDashboard = () => {
     const data: any[] = banners?.banner
     return (
         <div>
-            <Space>
-                <Link to='/admin/banner/add'> <Button primary>Thêm Ảnh</Button></Link>
-            </Space>
-            <Table
-                columns={columns}
-                // expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
-                dataSource={data}
-            />
-            <Spin spinning={isLoading} className="pl-[50%]"></Spin>
-            <Spin spinning={deleteLoading} className="pl-[50%]"></Spin>
-            
+            <Spin spinning={deleteLoading} className="pl-[50%]">
+                <Spin spinning={isLoading} className="pl-[50%]">
+                    <Space>
+                        <Link to='/admin/banner/add'> <Button primary>Thêm Ảnh</Button></Link>
+                    </Space>
+                    <Table
+                        columns={columns}
+                        // expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
+                        dataSource={data}
+                    />
+                </Spin>
+            </Spin>
+
         </div >
     )
 }
