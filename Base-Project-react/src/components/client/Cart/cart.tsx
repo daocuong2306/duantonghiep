@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom'
 import { Button, notification, Alert, Spin, Switch } from 'antd';
 type Props = {}
 const CartProduct = (props: Props) => {
-    const { data: dataCart } = useGetCartQuery()
+    const { data: dataCart , refetch  } = useGetCartQuery()
     console.log(dataCart);
     const [updateCart, { data: updateData }] = useUpdateCartMutation()
     const [deleteCart, { data: deleteData }] = useRemoveCartMutation()
     const [loading, setLoading] = useState(false);
     console.log(updateData);
-
+    console.log("refetch " ,refetch );
+    
     const buttonCart = (id: any, count: any, quantity: any) => {
         const data = { id, count };
         if (quantity == 1 && (count == -1 ? window.confirm("Bạn có muốn xóa sản phẩm này không ?") : true)) {
@@ -28,6 +29,10 @@ const CartProduct = (props: Props) => {
     useEffect(() => {
         setLoading(false); 
     }, [updateData, deleteData]);
+    useEffect(() => {
+        // Refetch dataCart whenever the component mounts
+    refetch();
+      }, []);
     return (
         <Spin spinning={loading}>
             <div>
@@ -58,7 +63,7 @@ const CartProduct = (props: Props) => {
                                     </tr>
                                 </thead>
                                 <tbody className="align-middle">
-                                    {dataCart?.carts.map((cart: any) => (
+                                    {dataCart?.carts?.map((cart: any) => (
                                         <tr key={cart.id}>
                                             <td className="align-middle d-flex justify-content-center align-items-center">
                                                 <img src={`http://127.0.0.1:8000${cart.image_product}`} className='w-[50px]' alt="" />

@@ -4,22 +4,6 @@ import { useGetBillQuery } from '@/api/bill';
 import { Link } from 'react-router-dom';
 
 
-const data = [
-    {
-        title: 'Ant Design Title 1',
-    },
-    {
-        title: 'Ant Design Title 2',
-    },
-    {
-        title: 'Ant Design Title 3',
-    },
-    {
-        title: 'Ant Design Title 4',
-    },
-];
-
-
 
 const Checkbill: React.FC = () => {
     const { data: billData } = useGetBillQuery()
@@ -37,7 +21,7 @@ const Checkbill: React.FC = () => {
                         <List.Item actions={[<p key="list-loadmore-edit">Trạng thái</p>, <p key="list-loadmore-more">Pending</p>]}>
                             <List.Item.Meta
                                 avatar={
-                                    <Avatar    src={`http://127.0.0.1:8000${item.cart[0].image}`}  />
+                                    <Avatar    src={`http://127.0.0.1:8000${item?.cart[0].image}`}  />
                                 }
                                 title={<Link to="">{item.address}</Link>}
                                 description={`Hình thức thanh toán ${item.payments} |

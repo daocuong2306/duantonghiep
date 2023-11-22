@@ -23,11 +23,10 @@ export default function DetailProduct() {
     const [loading, setLoading] = useState(false);
     //Thông báo
     const [api, contextHolder] = notification.useNotification();
-    const openNotification = () => {
+    const openNotification = (m, d) => {
         api.open({
-            message: 'Thêm sản phẩm vào giỏ hàng thành công',
-            description:
-                'Bạn đã thêm sản phẩm vào giỏ hàng thành công'
+            message: m,
+            description: d
         });
     };
     const selectC = (color: any) => {
@@ -43,24 +42,25 @@ export default function DetailProduct() {
     const prodcuts = {
         id, selectP: newArray
     }
-    const { data: detaiProduct, isLoading } = useGetDetailQuery(prodcuts)
+    const { data: detaiProduct, isLoading } = useGetDetailQuery(prodcuts);
     console.log(detaiProduct);
 
     const jsonArray = detaiProduct?.data.variant
         ? Object.entries(detaiProduct.data.variant).map(([key, value]) => ({ key, value }))
         : [];
 
-    const newData = jsonArray.map(item => {
-        return {
-            ...item,
-            value: item.value.map(option => ({ ...option, inStock: true })),
-        };
-    });
+    const newData = jsonArray.map(item => ({
+        ...item,
+        value: item.value.map(option => ({ ...option, inStock: true })),
+    }));
 
     const onHandleSubmit = (dataUser: any) => {
         if (detaiProduct?.data.priceSku == null) {
-            alert("vui lòng chọn kích cỡ và size")
-        } else {
+            openNotification("vui lòng chọn kích cỡ và size", 'Bạn chưa chọn kích cỡ và size')
+        } else if (detaiProduct?.data.priceSku[0]?.sku_stoke==0) {
+            openNotification("Kích cỡ và size của bạn chọn đã hết hàng", 'Vui lòng chọn khiểu dáng khác')
+        } 
+        else {
             addCart({
                 "product_id": id,
                 "quantity": 1,
@@ -70,10 +70,13 @@ export default function DetailProduct() {
         }
 
     }
-
+    const dataCmt = {
+        cmt: detaiProduct?.data.comment,
+        total: detaiProduct?.data.total_comment
+    }
     useEffect(() => {
         if (add) {
-            openNotification();
+            openNotification('Thêm sản phẩm vào giỏ hàng thành công', 'Bạn đã thêm sản phẩm vào giỏ hàng thành công');
             setLoading(false); // This will not trigger a re-render immediately
         }
     }, [add]);
@@ -82,14 +85,6 @@ export default function DetailProduct() {
             <div className="bg-white">
                 {contextHolder}
                 <div className="pt-6">
-                    <nav aria-label="Breadcrumb">
-                        <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                            <li className="text-sm">
-                                {detaiProduct?.data.product[0]?.name}
-                            </li>
-                        </ol>
-                    </nav>
-
                     {/* Image gallery */}
                     <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
                         <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
@@ -235,9 +230,9 @@ export default function DetailProduct() {
                     <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
                     </div>
                 </div >
-                
+
                 <Comment />
-                <Showcomt data={detaiProduct?.data.comment} />
+                <Showcomt data={dataCmt} />
             </div >
         </Spin>
     )
