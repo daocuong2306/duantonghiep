@@ -4,22 +4,34 @@ import { Link } from 'react-router-dom'
 import { Button, notification, Alert, Spin, Switch } from 'antd';
 type Props = {}
 const CartProduct = (props: Props) => {
-    const { data: dataCart , refetch  } = useGetCartQuery()
+    const { data: dataCart, refetch } = useGetCartQuery()
     console.log(dataCart);
-    const [updateCart, { data: updateData }] = useUpdateCartMutation()
+    const [updateCart, { data: updateData, error }] = useUpdateCartMutation()
     const [deleteCart, { data: deleteData }] = useRemoveCartMutation()
     const [loading, setLoading] = useState(false);
     console.log(updateData);
-    console.log("refetch " ,refetch );
-    
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (m, d) => {
+        api.open({
+            message: m,
+            description: d
+        });
+    };
     const buttonCart = (id: any, count: any, quantity: any) => {
         const data = { id, count };
-        if (quantity == 1 && (count == -1 ? window.confirm("Bạn có muốn xóa sản phẩm này không ?") : true)) {
-            deleteCart(id);
+        if (quantity == 1) {
+            if (count == -1) {
+                const check = window.confirm("Bạn có muốn xóa sản phẩm này không ?")
+                if (check) {
+                    deleteCart(id);
+                }
+            } else {
+                updateCart(data);
+            }
         } else {
             updateCart(data);
         }
-        setLoading(true)
+        setLoading(false)
     };
     const updateCartA = (id: any, count: any, quantity: any) => {
         const data = { id, count };
@@ -27,14 +39,21 @@ const CartProduct = (props: Props) => {
         setLoading(true)
     }
     useEffect(() => {
-        setLoading(false); 
+        if (error) {
+            openNotification("Số lượng của bạn đã vượt quá số lượng hàng còn trong kho", "");
+            setLoading(false);
+        }
+    }, [error]);
+    useEffect(() => {
+        setLoading(false);
     }, [updateData, deleteData]);
     useEffect(() => {
         // Refetch dataCart whenever the component mounts
-    refetch();
-      }, []);
+        refetch();
+    }, []);
     return (
         <Spin spinning={loading}>
+            {contextHolder}
             <div>
                 <div className="container-fluid bg-secondary mb-5">
                     <div className="d-flex flex-column align-items-center justify-content-center h-[300px]" >

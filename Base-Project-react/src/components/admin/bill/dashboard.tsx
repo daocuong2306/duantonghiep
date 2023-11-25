@@ -20,19 +20,10 @@ const BillDashboard: React.FC = () => {
     };
 
     const orderStatusOptions = ["Đang chờ xử lý", "Đã xác nhận", "Đang giao hàng", "Hoàn thành"]; // Add your order status options
-    const expandedRowRender = (e) => {
-        console.log(e.cart);
-        const columns: TableColumnsType<any> = [
-            { title: 'Tên', dataIndex: 'name', key: 'name' },
-            { title: 'Giá', dataIndex: 'price', key: 'price' },
-            { title: 'Kiểu dáng', dataIndex: 'option_values', key: 'option_values' },
-            { title: 'Số lượng', dataIndex: 'quantity', key: 'quantity' },
-        ];
-        return <Table columns={columns} dataSource={e.cart} pagination={false} />;
-    };
+
 
     const columns: TableColumnsType<DataType> = [
-        { title: 'Tên', dataIndex: 'id', key: 'id' },
+        { title: 'Tên', dataIndex: 'user_name', key: 'user_name' },
         { title: 'Địa chỉ', dataIndex: 'address', key: 'address' },
         {
             title: 'Trạng thái',
@@ -83,10 +74,12 @@ const BillDashboard: React.FC = () => {
         <>
             <Spin spinning={false} className="pl-[50%]">
                 <Spin spinning={false} className="pl-[50%]">
+                    <Link to={'/admin/historybills'}>
+                        <Button>Xem lịch sử</Button>
 
+                    </Link>
                     <Table
                         columns={columns}
-                        expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
                         dataSource={data}
                     />
                 </Spin>
