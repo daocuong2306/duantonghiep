@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
 use App\Models\Cart;
+use App\Models\HistoryStatusBill;
 use App\Models\OptionValue;
 use App\Models\Product;
 use App\Models\SKU;
 use App\Models\User;
 use App\Models\Variant;
 use Exception;
+use Http\Client\Common\Plugin\HistoryPlugin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -141,7 +144,11 @@ class BillController extends Controller
     
         $bill->total_price = $total_price;
         $bill->save();
-    
+        $history = new HistoryStatusBill();
+        $history->user_id = Auth::user()->id;
+        $history->bill_id = $bill->id;
+        $history->infor_change = $bill->order_status;
+        $history->save();
         // Trả về hóa đơn đã định dạng
         $formattedBill = [
             'id' => $bill->id,
@@ -270,7 +277,11 @@ class BillController extends Controller
     }
 
     $bill->save();
-
+    $history = new HistoryStatusBill();
+    $history->user_id = Auth::user()->id;
+    $history->bill_id = $bill->id;
+    $history->infor_change = $bill->order_status;
+    $history->save();
     return response()->json(['message' => 'Hóa đơn được cập nhật thành công']);
 }
 //api update bên người dùng 
@@ -291,7 +302,11 @@ class BillController extends Controller
 
     // Lưu hóa đơn đã cập nhật
     $bill->save();
-
+    $history = new HistoryStatusBill();
+    $history->user_id = Auth::user()->id;
+    $history->bill_id = $bill->id;
+    $history->infor_change = $bill->order_status;
+    $history->save();
     // Trả về hóa đơn đã được cập nhật trong Response
     return response()->json($bill);
 }
@@ -314,7 +329,11 @@ class BillController extends Controller
     }
 
     $bill->delete();
-
+    $history = new HistoryStatusBill();
+    $history->user_id = Auth::user()->id;
+    $history->bill_id = $bill->id;
+    $history->infor_change = $bill->order_status;
+    $history->save();
     return response()->json(['message' => 'Hóa đơn đã được xóa'], 200);
     }
 // list ra tất cả 
@@ -379,4 +398,22 @@ public function list_bills()
 
     return response()->json($formattedBills);
 }
+
+public function list_history($billId){
+  $history = DB::table('history_status_bill')  
+    ->where('bill_id', $billId)
+   ->get();
+  // Bước 1: Lấy tất cả user_id từ danh sách hóa đơn
+  $userIds = $history->pluck('user_id')->unique()->toArray();
+
+  // Bước 2: Lấy thông tin người dùng tương ứng với user_id
+  $users = User::whereIn('id', $userIds)->pluck('name', 'id')->toArray();
+   // Bước 3: Gán thông tin người dùng vào mỗi mục lịch sử
+  foreach ($history as $item) {
+    $item->user_name = $users[$item->user_id] ?? 'Unknown User';
+}
+// Trả về danh sách lịch sử với thông tin người dùng
+return response()->json(['history' => $history]);
+}
+
 }
