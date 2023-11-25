@@ -46,12 +46,12 @@ const rootReducer = combineReducers({
     [detailApi.reducerPath]: detailReducer,
     [cartApi.reducerPath]: cartReducer,
     [paymentApi.reducerPath]: paymentReducer,
-    [commentApi.reducerPath]:commentReducer,
-    [billApi.reducerPath]:billReducer,
+    [commentApi.reducerPath]: commentReducer,
+    [billApi.reducerPath]: billReducer,
     [statisticalApi.reducerPath]: statisticalReducer,
-    [adminBillApi.reducerPath]:adminBillReducer
+    [adminBillApi.reducerPath]: adminBillReducer
 })
-const middleware = [productApi.middleware, userApi.middleware, categoryApi.middleware, optionsApi.middleware, variantApi.middleware, bannerApi.middleware, homeApi.middleware, detailApi.middleware, cartApi.middleware, detailApi.middleware, paymentApi.middleware,commentApi.middleware , billApi.middleware , statisticalApi.middleware,adminBillApi.middleware]
+const middleware = [productApi.middleware, userApi.middleware, categoryApi.middleware, optionsApi.middleware, variantApi.middleware, bannerApi.middleware, homeApi.middleware, detailApi.middleware, cartApi.middleware, detailApi.middleware, paymentApi.middleware, commentApi.middleware, billApi.middleware, statisticalApi.middleware, adminBillApi.middleware]
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 export const store = configureStore({

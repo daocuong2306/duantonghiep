@@ -29,11 +29,11 @@ const Bill = (props: Props) => {
             return;
         } else {
             addBill(formData);
-            // aUrl('/account/bill')
+            aUrl('/account/bill')
         }
     };
     const status = localStorage.getItem("status");
-
+    
     return (
         <div>
             <section >

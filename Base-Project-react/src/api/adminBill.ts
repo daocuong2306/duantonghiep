@@ -3,8 +3,8 @@ import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const adminBillApi = createApi({
-    reducerPath: "bill",
-    tagTypes: ['bill'],
+    reducerPath: "billAdmin",
+    tagTypes: ['billAdmin'],
     baseQuery: fetchBaseQuery({
         baseUrl: "http://127.0.0.1:8000/api/bills",
         prepareHeaders: (headers) => {
@@ -24,7 +24,7 @@ const adminBillApi = createApi({
                 url: `/`,
                 method: "GET",
             }),
-            providesTags: ['bill']
+            providesTags: ['billAdmin']
         }),
 
         updateBillAdmin: builder.mutation({
@@ -33,7 +33,7 @@ const adminBillApi = createApi({
                 method: "POST",
                 body: product.count
             }),
-            invalidatesTags: ['bill']
+            invalidatesTags: ['billAdmin']
         }),
 
     })

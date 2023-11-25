@@ -14,7 +14,7 @@ const cartApi = createApi({
             return headers;
         },
         fetchFn: async (...args) => {
-            await pause(100);
+            await pause(500);
             return fetch(...args);
         }
     }),
