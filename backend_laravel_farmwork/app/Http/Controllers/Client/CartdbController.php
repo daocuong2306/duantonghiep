@@ -77,64 +77,83 @@ class CartdbController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-{
-    $validator = Validator::make($request->all(), [
-        'product_id' => 'required|exists:product,id',
-        'sku_id' => 'required|exists:skus,id',
-        'quantity' => 'required|integer|min:1',
-        'status' => 'nullable|in:ORDER,NO_ORDER',
-    ]);
+    {
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required|exists:product,id',
+            'sku_id' => 'required|exists:skus,id',
+            'quantity' => 'required|integer|min:1',
+            'status' => 'nullable|in:ORDER,NO_ORDER',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+    
+        $user_id = Auth::user()->id;
+        $product_id = $request->product_id;
+        $sku_id = $request->sku_id;
+        $quantity = $request->quantity;
+        $status = $request->status ? $request->status : 'NO_ORDER';
+    
+        $sku = Sku::find($sku_id);
+    
+        if (!$sku) {
+            return response()->json(['error' => 'Sản phẩm không tồn tại'], 400);
+        }
+    
+        $price_cart = $sku->price;
+        $stoke = $sku->stoke; //gọi ra stoke
+    
+        $existingCart = Cart::where('user_id', $user_id)
+            ->where('product_id', $product_id)
+            ->where('sku_id', $sku_id)
+            ->where('status', 'NO_ORDER')
+            ->first();
+    
+        if ($existingCart) {
+            // Sản phẩm đã tồn tại trong giỏ hàng và trạng thái là "NO_ORDER", tăng số lượng
+            $newQuantity = $existingCart->quantity + $quantity;
+    
+            if ($newQuantity > $stoke) {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'Số lượng sản phẩm vượt quá số lượng tồn kho'
+                ], 400);
+            }
+    
+            $existingCart->quantity = $newQuantity;
+            $existingCart->save();
+    
+            return response()->json([
+                'status' => 200,
+                'message' => 'Số lượng sản phẩm trong giỏ hàng đã được cập nhật'
+            ], 200);
+        } else {
+            // Sản phẩm chưa tồn tại trong giỏ hàng hoặc không ở trạng thái "NO_ORDER", tạo mới
 
-    if ($validator->fails()) {
-        return response()->json(['errors' => $validator->errors()], 400);
-    }
-
-    $user_id = Auth::user()->id;
-    $product_id = $request->product_id;
-    $sku_id = $request->sku_id;
-    $quantity = $request->quantity;
-    $status = $request->status ? $request->status : 'NO_ORDER';
-
-    $sku = Sku::find($sku_id);
-
-    if (!$sku) {
-        return response()->json(['error' => 'Sản phẩm không tồn tại'], 400);
-    }
-
-    $price_cart = $sku->price;
-
-    $existingCart = Cart::where('user_id', $user_id)
-        ->where('product_id', $product_id)
-        ->where('sku_id', $sku_id)
-        ->where('status', 'NO_ORDER')
-        ->first();
-
-    if ($existingCart) {
-        // Sản phẩm đã tồn tại trong giỏ hàng và trạng thái là "NO_ORDER", tăng số lượng
-        $existingCart->quantity += $quantity;
-        $existingCart->save();
-
+            //kiểm tra stoke
+            if ($quantity > $stoke) {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'Số lượng sản phẩm vượt quá số lượng tồn kho'
+                ], 400);
+            }
+    
+            $newCart = new Cart();
+            $newCart->user_id = $user_id;
+            $newCart->product_id = $product_id;
+            $newCart->sku_id = $sku_id;
+            $newCart->quantity = $quantity;
+            $newCart->status = $status;
+            $newCart->price_cart = $price_cart; // Lưu giá tiền vào trường price_cart
+            $newCart->save();
+        }
+    
         return response()->json([
             'status' => 200,
-            'message' => 'Số lượng sản phẩm trong giỏ hàng đã được cập nhật'
+            'message' => 'Thêm vào giỏ hàng thành công'
         ], 200);
-    } else {
-        // Sản phẩm chưa tồn tại trong giỏ hàng hoặc không ở trạng thái "NO_ORDER", tạo mới
-        $newCart = new Cart();
-        $newCart->user_id = $user_id;
-        $newCart->product_id = $product_id;
-        $newCart->sku_id = $sku_id;
-        $newCart->quantity = $quantity;
-        $newCart->status = $status;
-        $newCart->price_cart = $price_cart; // Lưu giá tiền vào trường price_cart
-        $newCart->save();
     }
-
-    return response()->json([
-        'status' => 200,
-        'message' => 'Thêm vào giỏ hàng thành công'
-    ], 200);
-}
     /**
      * Display the specified resource.
      *
@@ -153,9 +172,15 @@ class CartdbController extends Controller
         }
     
         $cart = Cart::findOrFail($id);
+        $sku = Sku::find($cart->sku_id); //gọi sku_id
+    
+        if (!$sku) {
+            return response()->json(['error' => 'Sản phẩm không tồn tại'], 400);
+        }
     
         $newQuantity = $request->input('quantity');
         $newStatus = $request->input('status');
+        $stoke = $sku->stoke; // gọi đến stoke
     
         // Kiểm tra và không cho phép tăng số lượng khi trạng thái là "ORDER"
         if ($cart->status === 'ORDER' && $newQuantity > $cart->quantity) {
@@ -177,14 +202,19 @@ class CartdbController extends Controller
     
         // Cộng số lượng mới vào số lượng hiện có nếu có số lượng trước đó
         if ($newQuantity !== null) {
-            if ($cart->quantity !== null) {
-                $cart->quantity += $newQuantity;
-            } else {
-                $cart->quantity = $newQuantity;
+            $newTotalQuantity = $cart->quantity + $newQuantity;
+            
+            //kiểm tra stoke
+            if ($newTotalQuantity > $stoke) {
+                return response()->json([
+                    'error' => 'Số lượng sản phẩm vượt quá số lượng tồn kho'
+                ], 400);
             }
     
-            // Kiểm tra và xóa giỏ hàng nếu số lượng nhỏ hơn 0
-            if ($cart->quantity === 0) {
+            $cart->quantity = $newTotalQuantity;
+    
+            // Kiểm tra và xóa giỏ hàng nếu số lượng nhỏ hơn hoặc bằng 0
+            if ($cart->quantity <= 0) {
                 $cart->delete();
     
                 return response()->json([
