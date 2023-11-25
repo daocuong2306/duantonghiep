@@ -263,6 +263,66 @@ class BillController extends Controller
     return response()->json(['message' => 'Hóa đơn đã được xóa'], 200);
     }
 // list ra tất cả 
+// public function list_bills()
+// {
+//     $bills = Bill::with('cart')->get();
+//     $userIds = $bills->pluck('user_id')->unique()->toArray();
+//     $users = User::whereIn('id', $userIds)->pluck('name', 'id')->toArray();
+//     $userImages = User::whereIn('id', $userIds)->pluck('image', 'id')->toArray();
+//     $formattedBills = [];
+
+//     foreach ($userIds as $userId) {
+//         $userBills = $bills->where('user_id', $userId);
+
+//         if ($userBills->isNotEmpty()) {
+//             $billData = [
+//                 'id' => $userBills->first()->id,
+//                 'user_id' => $userId,
+//                 'user_name' => isset($users[$userId]) ? $users[$userId] : '',
+//                 'user_image' => isset($userImages[$userId]) ? $userImages[$userId] : '',
+//                 'carts' => []
+//             ];
+
+//             foreach ($userBills as $bill) {
+//                 $cartIds = json_decode($bill->carts_id);
+
+//                 $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
+//                     $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+//                     $optionValues = array_unique($optionValues);
+//                     $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+//                     return [
+//                         'id_product' => $cart->product->id,
+//                         'option_values' => $optionValuesData,
+//                         'name' => $cart->product->name,
+//                         'image' => $cart->product->image,
+//                         'price' => $cart->price_cart,
+//                         'quantity' => $cart->quantity,
+//                         'status' => $cart->status
+//                     ];
+//                 });
+
+//                 $total_price = $cartItems->sum(function ($cartItem) {
+//                     return $cartItem['price'] * $cartItem['quantity'];
+//                 });
+
+//                 $billInformation = [
+//                     'address' => $bill->address,
+//                     'phone' => $bill->phone,
+//                     'payments' => $bill->payments,
+//                     'order_status' => $bill->order_status,
+//                     'cart' => $cartItems,
+//                     'total_price' => $total_price
+//                 ];
+
+//                 $billData['carts'][] = $billInformation;
+//             }
+
+//             $formattedBills[] = $billData;
+//         }
+//     }
+
+//     return response()->json($formattedBills);
+// }
 public function list_bills()
 {
     $bills = Bill::with('cart')->get();
@@ -280,7 +340,12 @@ public function list_bills()
                 'user_id' => $userId,
                 'user_name' => isset($users[$userId]) ? $users[$userId] : '',
                 'user_image' => isset($userImages[$userId]) ? $userImages[$userId] : '',
-                'carts' => []
+                'address' => $userBills->first()->address,
+                'phone' => $userBills->first()->phone,
+                'payments' => $userBills->first()->payments,
+                'order_status' => $userBills->first()->order_status,
+                'cart' => [],
+                'total_price' => 0
             ];
 
             foreach ($userBills as $bill) {
@@ -305,16 +370,8 @@ public function list_bills()
                     return $cartItem['price'] * $cartItem['quantity'];
                 });
 
-                $billInformation = [
-                    'address' => $bill->address,
-                    'phone' => $bill->phone,
-                    'payments' => $bill->payments,
-                    'order_status' => $bill->order_status,
-                    'cart' => $cartItems,
-                    'total_price' => $total_price
-                ];
-
-                $billData['carts'][] = $billInformation;
+                $billData['cart'] = $cartItems->toArray();
+                $billData['total_price'] += $total_price;
             }
 
             $formattedBills[] = $billData;
