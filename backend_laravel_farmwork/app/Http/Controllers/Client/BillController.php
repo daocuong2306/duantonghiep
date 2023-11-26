@@ -14,6 +14,7 @@ use App\Models\Variant;
 use Exception;
 use Http\Client\Common\Plugin\HistoryPlugin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -182,15 +183,46 @@ class BillController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+//     public function update(Request $request, $id)
+// {
+//     $bill = Bill::findOrFail($id);
+//     try {
+//         $request->validate([
+//             'payments' => 'nullable|in:OFF,ON',
+//             'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel,Success'
+//         ], [
+//             'payments.in' => 'Giá trị của trường "payments" phải là OFF hoặc ON.',
+//             'order_status.in' => 'Giá trị của trường "order_status" phải là Pending, Browser, Pack, Transport, Cancel, hoặc Success.'
+//         ]);
+//     } catch (ValidationException $e) {
+//         $errors = $e->validator->errors()->all();
+//         return response()->json(['errors' => $errors], 422);
+//     }
+
+//     if ($request->has('payments')) {
+//         $bill->payments = $request->input('payments');
+//     }
+
+//     if ($request->has('order_status')) {
+//         $bill->order_status = $request->input('order_status');
+//     }
+
+//     $bill->save();
+//     $history = new HistoryStatusBill();
+//     $history->user_id = Auth::user()->id;
+//     $history->bill_id = $bill->id;
+//     $history->infor_change = $bill->order_status;
+//     $history->save();
+//     return response()->json(['message' => 'Hóa đơn được cập nhật thành công']);
+// }
+public function update(Request $request, $id)
 {
     $bill = Bill::findOrFail($id);
+    
     try {
         $request->validate([
-            'payments' => 'nullable|in:OFF,ON',
             'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel,Success'
         ], [
-            'payments.in' => 'Giá trị của trường "payments" phải là OFF hoặc ON.',
             'order_status.in' => 'Giá trị của trường "order_status" phải là Pending, Browser, Pack, Transport, Cancel, hoặc Success.'
         ]);
     } catch (ValidationException $e) {
@@ -198,20 +230,17 @@ class BillController extends Controller
         return response()->json(['errors' => $errors], 422);
     }
 
-    if ($request->has('payments')) {
-        $bill->payments = $request->input('payments');
-    }
-
     if ($request->has('order_status')) {
         $bill->order_status = $request->input('order_status');
+        $bill->save();
+
+        $history = new HistoryStatusBill();
+        $history->user_id = Auth::user()->id;
+        $history->bill_id = $bill->id;
+        $history->infor_change = $bill->order_status;
+        $history->save();
     }
 
-    $bill->save();
-    $history = new HistoryStatusBill();
-    $history->user_id = Auth::user()->id;
-    $history->bill_id = $bill->id;
-    $history->infor_change = $bill->order_status;
-    $history->save();
     return response()->json(['message' => 'Hóa đơn được cập nhật thành công']);
 }
 //api update bên người dùng 
@@ -323,60 +352,153 @@ class BillController extends Controller
 
 //     return response()->json($formattedBills);
 // }
+// public function list_bills()
+// {
+//     $bills = Bill::with('cart')->get();
+//     $userIds = $bills->pluck('user_id')->unique()->toArray();
+//     $users = User::whereIn('id', $userIds)->pluck('name', 'id')->toArray();
+//     $userImages = User::whereIn('id', $userIds)->pluck('image', 'id')->toArray();
+//     $formattedBills = [];
+
+//     foreach ($userIds as $userId) {
+//         $userBills = $bills->where('user_id', $userId);
+
+//         if ($userBills->isNotEmpty()) {
+//             $billData = [
+//                 'id' => $userBills->first()->id,
+//                 'user_id' => $userId,
+//                 'user_name' => isset($users[$userId]) ? $users[$userId] : '',
+//                 'user_image' => isset($userImages[$userId]) ? $userImages[$userId] : '',
+//                 'address' => $userBills->first()->address,
+//                 'phone' => $userBills->first()->phone,
+//                 'payments' => $userBills->first()->payments,
+//                 'order_status' => $userBills->first()->order_status,
+//                 'cart' => [],
+//                 'total_price' => 0
+//             ];
+
+//             foreach ($userBills as $bill) {
+//                 $cartIds = json_decode($bill->carts_id);
+
+//                 $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
+//                     $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+//                     $optionValues = array_unique($optionValues);
+//                     $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+//                     return [
+//                         'id_product' => $cart->product->id,
+//                         'option_values' => $optionValuesData,
+//                         'name' => $cart->product->name,
+//                         'image' => $cart->product->image,
+//                         'price' => $cart->price_cart,
+//                         'quantity' => $cart->quantity,
+//                         'status' => $cart->status
+//                     ];
+//                 });
+
+//                 $total_price = $cartItems->sum(function ($cartItem) {
+//                     return $cartItem['price'] * $cartItem['quantity'];
+//                 });
+
+//                 $billData['cart'] = $cartItems->toArray();
+//                 $billData['total_price'] += $total_price;
+//             }
+
+//             $formattedBills[] = $billData;
+//         }
+//     }
+
+//     return response()->json($formattedBills);
+// }
+
+// public function list_bills()
+// {
+//     $bills = Bill::all();
+//     $formattedBills = [];
+
+//     foreach ($bills as $bill) {
+//         $cartItems = [];
+
+//         if (!is_null($bill->cart)) {
+//             $cartItems = Cart::whereIn('id', json_decode($bill->cart))->get()->map(function ($cart) {
+//                 $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+//                 $optionValues = array_unique($optionValues);
+//                 $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+//                 return [
+//                     'id_product' => $cart->product->id,
+//                     'option_values' => $optionValuesData,
+//                     'name' => $cart->product->name,
+//                     'image' => $cart->product->image,
+//                     'price' => $cart->price_cart,
+//                     'quantity' => $cart->quantity,
+//                     'status' => $cart->status
+//                 ];
+//             });
+//         }
+
+//         $total_price = Collection::make($cartItems)->sum(function ($cartItem) {
+//             return $cartItem['price'] * $cartItem['quantity'];
+//         });
+
+//         $billData = [
+//             'id' => $bill->id,
+//             'user_id' => $bill->user_id,
+//             'user_name' => User::find($bill->user_id)->name,
+//             'user_image' => User::find($bill->user_id)->image,
+//             'address' => $bill->address,
+//             'phone' => $bill->phone,
+//             'payments' => $bill->payments,
+//             'order_status' => $bill->order_status,
+//             'cart' => $cartItems,
+//             'total_price' => $total_price
+//         ];
+
+//         $formattedBills[] = $billData;
+//     }
+
+//     return response()->json($formattedBills);
+// }
+
 public function list_bills()
 {
-    $bills = Bill::with('cart')->get();
-    $userIds = $bills->pluck('user_id')->unique()->toArray();
-    $users = User::whereIn('id', $userIds)->pluck('name', 'id')->toArray();
-    $userImages = User::whereIn('id', $userIds)->pluck('image', 'id')->toArray();
-    $formattedBills = [];
+    $bills = Bill::with('user', 'cart')->get();
+    $formattedBills = $bills->map(function ($bill) {
+        $cartIds = json_decode($bill->carts_id);
+        $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
+            $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+            $optionValues = array_unique($optionValues);
+            $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
 
-    foreach ($userIds as $userId) {
-        $userBills = $bills->where('user_id', $userId);
-
-        if ($userBills->isNotEmpty()) {
-            $billData = [
-                'id' => $userBills->first()->id,
-                'user_id' => $userId,
-                'user_name' => isset($users[$userId]) ? $users[$userId] : '',
-                'user_image' => isset($userImages[$userId]) ? $userImages[$userId] : '',
-                'address' => $userBills->first()->address,
-                'phone' => $userBills->first()->phone,
-                'payments' => $userBills->first()->payments,
-                'order_status' => $userBills->first()->order_status,
-                'cart' => [],
-                'total_price' => 0
+            return [
+                'id_product' => $cart->product->id,
+                'option_values' => $optionValuesData,
+                'name' => $cart->product->name,
+                'image' => $cart->product->image,
+                'price' => $cart->price_cart,
+                'quantity' => $cart->quantity,
+                'status' => $cart->status,
             ];
+        });
 
-            foreach ($userBills as $bill) {
-                $cartIds = json_decode($bill->carts_id);
+        $total_price = $cartItems->sum(function ($cartItem) {
+            return $cartItem['price'] * $cartItem['quantity'];
+        });
 
-                $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
-                    $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
-                    $optionValues = array_unique($optionValues);
-                    $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
-                    return [
-                        'id_product' => $cart->product->id,
-                        'option_values' => $optionValuesData,
-                        'name' => $cart->product->name,
-                        'image' => $cart->product->image,
-                        'price' => $cart->price_cart,
-                        'quantity' => $cart->quantity,
-                        'status' => $cart->status
-                    ];
-                });
+        $bill->total_price = $total_price;
+        $bill->save();
 
-                $total_price = $cartItems->sum(function ($cartItem) {
-                    return $cartItem['price'] * $cartItem['quantity'];
-                });
-
-                $billData['cart'] = $cartItems->toArray();
-                $billData['total_price'] += $total_price;
-            }
-
-            $formattedBills[] = $billData;
-        }
-    }
+        return [
+            'id' => $bill->id,
+            'user_id' => $bill->user_id,
+            'user_name' => $bill->user->name, // Lấy tên người dùng từ mối quan hệ
+            'user_image' => $bill->user->image, // Lấy ảnh người dùng từ mối quan hệ
+            'address' => $bill->address,
+            'phone' => $bill->phone,
+            'payments' => $bill->payments,
+            'order_status' => $bill->order_status,
+            'cart' => $cartItems,
+            'total_price' => $total_price
+        ];
+    });
 
     return response()->json($formattedBills);
 }
