@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bill;
+use App\Models\Cart;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,14 +52,22 @@ class CommentController extends Controller
             ]);
         }
         $user = Auth::user();
-        $existingComment = Comment::where('id_user', $user->id)->where('id_product',$request->id_product)->first();
-        // dd($existingComment);
-
-        if ($existingComment) {
+        $existingComment = Comment::where('id_user', $user->id)->where('id_product', $request->id_product)->get();
+        $checkBill = Bill::where('user_id', $user->id)->get();
+        $sum = 0;
+        foreach ($checkBill as $key => $value) {
+            $carts_id = json_decode($value->carts_id);
+            foreach ($carts_id as  $item) {
+                $cart = Cart::find($item);
+                if ($cart->product_id == $request->id_product) {
+                    $sum++;
+                }
+            }
+        }
+        if ($existingComment->count() >= $sum) {
             return response()->json([
-                'error' => 'Bạn đã bình luận về sản phẩm này',
+                'error' => 'Bạn đã hết lần bình luận về sản phẩm này , để bình luận thêm hãy mua hàng',
             ]);
-            
         } else {
             $comment = new Comment([
                 'comments' => $request->comments,
@@ -68,7 +78,7 @@ class CommentController extends Controller
             $comment->save();
             return response()->json([
                 'status' => 'success',
-            ],200);
+            ], 200);
         }
     }
     public function deleteByAmin($id)
