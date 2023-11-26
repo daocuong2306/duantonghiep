@@ -34,6 +34,14 @@ const billApi = createApi({
             }),
             invalidatesTags: ['bill']
         }),
+        updateBill: builder.mutation({
+            query: (product: any) => ({
+                url: `update/${product.id}`,
+                method: "POST",
+                body: product.count
+            }),
+            invalidatesTags: ['bill']
+        }),
         cancelBill: builder.mutation({
             query: (product: any) => ({
                 url: `/update_user/${product.id}`,
@@ -57,7 +65,8 @@ export const {
     useGetBillQuery,
     useAddBillMutation,
     useRemoveBillMutation,
-    useCancelBillMutation
+    useCancelBillMutation,
+    useUpdateBillMutation
 } = billApi;
 export const billReducer = billApi.reducer;
 

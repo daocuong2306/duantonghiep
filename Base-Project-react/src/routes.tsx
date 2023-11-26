@@ -197,10 +197,9 @@ export const router = createBrowserRouter([
                 element: <BillDashboard />,
             },
             {
-                path: "historybills",
+                path: "historybills/:id",
                 element: <HistoryBill />,
-            },
-            
+            }
         ],
     },
 

@@ -1,45 +1,64 @@
-import React from 'react';
-import type { TableColumnsType } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { Button, Table, Space, Spin, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import { useGetBillAdminQuery } from '@/api/adminBill';
-interface DataType {
-    key: React.Key;
-    name: string;
-    age: number;
+import { useUpdateBillMutation } from '@/api/bill';
+
+interface Bill {
+    id: React.Key;
+    user_name: string;
     address: string;
-    description: string;
+    order_status: string;
+    payments: string;
+    total_price: number;
+    phone: string;
 }
 
 const BillDashboard: React.FC = () => {
-    const { data: dataBill } = useGetBillAdminQuery()
-    console.log(dataBill);
-    const handleStatusChange = (orderId, value) => {
-        // Implement logic to update the order status in your data
+    const { data: dataBill } = useGetBillAdminQuery();
+    const [updateBill, { data: updateData }] = useUpdateBillMutation();
+    const [loading, setLoading] = useState(false);
+
+    const handleStatusChange = (orderId: React.Key, value: string) => {
         console.log(`Order ID ${orderId} status changed to ${value}`);
+        const updatedData = {
+            id: orderId,
+            count: {
+                order_status: value
+            }
+        };
+        updateBill(updatedData);
+        setLoading(true);
     };
 
-    const orderStatusOptions = ["Đang chờ xử lý", "Đã xác nhận", "Đang giao hàng", "Hoàn thành"]; // Add your order status options
+    useEffect(() => {
+        setLoading(false);
+    }, [updateData]);
+
+    const orderStatusOptions = ["Pending", "Browser", "Transport", "Cancel", "Success"];
 
 
-    const columns: TableColumnsType<DataType> = [
+
+    const columns = [
         { title: 'Tên', dataIndex: 'user_name', key: 'user_name' },
         { title: 'Địa chỉ', dataIndex: 'address', key: 'address' },
         {
             title: 'Trạng thái',
             dataIndex: 'order_status',
             key: 'order_status',
-            render: (orderStatus, record) => (
+            render: (orderStatus: string, record: Bill) => (
                 <Select
                     defaultValue={orderStatus}
                     onChange={(value) => handleStatusChange(record.id, value)}
-                    disabled={orderStatus === 'Hoàn thành'} // Disable when order status is 'Hoàn thành'
+                    disabled={orderStatus === 'Success' || orderStatus === 'Cancel'}
                 >
-                    {orderStatusOptions.map((option) => (
-                        <Select.Option key={option} value={option}>
-                            {option}
-                        </Select.Option>
-                    ))}
+                    {orderStatusOptions
+                        .filter(option => option !== 'Pending' && option !== 'Browser')
+                        .map((option) => (
+                            <Select.Option key={option} value={option}>
+                                {option}
+                            </Select.Option>
+                        ))}
                 </Select>
             ),
         },
@@ -48,43 +67,29 @@ const BillDashboard: React.FC = () => {
         { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
         {
             title: 'Hành động',
-            key: 'operation',
-            dataIndex: 'optionId',
-            render: (optionId) => (
-                <>
-                    <Space wrap>
-                        <Button type="primary" danger onClick={() => deleteO(optionId)}>
-                            Xóa
+            key: 'id',
+            dataIndex: 'id',
+            render: (id: React.Key) => (
+                <Space wrap>
+                    <Link to={`/admin/historybills/${id}`}>
+                        <Button type="primary" danger>
+                            Xem lịch sử
                         </Button>
-                    </Space>
-                </>
+                    </Link>
+                </Space>
             ),
         },
     ];
 
-    const newData = dataBill?.map(item => ({
+    const transformedData = dataBill?.map(item => ({
         ...item,
         key: item.id
-    }));
-    console.log(dataBill);
-
-    const data: DataType[] = newData;
+    })) as Bill[];
 
     return (
-        <>
-            <Spin spinning={false} className="pl-[50%]">
-                <Spin spinning={false} className="pl-[50%]">
-                    <Link to={'/admin/historybills'}>
-                        <Button>Xem lịch sử</Button>
-
-                    </Link>
-                    <Table
-                        columns={columns}
-                        dataSource={data}
-                    />
-                </Spin>
-            </Spin>
-        </>
+        <Spin spinning={loading} className="pl-[50%]">
+            <Table columns={columns} dataSource={transformedData} />
+        </Spin>
     );
 };
 

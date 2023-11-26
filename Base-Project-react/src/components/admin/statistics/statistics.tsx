@@ -14,6 +14,8 @@ const Statistics = (props: Props) => {
     const { data: statisData, isLoading } = useListStatisticalQuery()
     console.log(statisData);
     const dataMonth = statisData?.total_price;
+    console.log(dataMonth);
+    
     const dataComment = statisData?.handlecomment;
     return (
         <>
