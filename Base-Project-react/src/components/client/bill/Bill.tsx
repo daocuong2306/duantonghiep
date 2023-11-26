@@ -33,7 +33,7 @@ const Bill = (props: Props) => {
         }
     };
     const status = localStorage.getItem("status");
-    
+
     return (
         <div>
             <section >
@@ -100,8 +100,9 @@ const Bill = (props: Props) => {
                                                 </div>
                                             </div>
 
-                                            <div className="d-flex flex-row pb-3">
-                                                {status == 0 ? <div>
+
+                                            {status == 0 ? (
+                                                <div className="d-flex flex-row pb-3">
                                                     <div className="d-flex align-items-center pe-2">
                                                         <input
                                                             type="radio"
@@ -115,8 +116,12 @@ const Bill = (props: Props) => {
                                                             <i className="fab fa-brands fa-stripe-s fa-lg text-dark pe-2"></i>Trả tiền khi nhận hàng
                                                         </p>
                                                     </div>
-                                                </div> : <p>Bạn đã bị ban và không thể sử dụng thanh toán khi nhận hàng vui long liên hệ admin</p>}
-                                            </div>
+                                                </div>
+                                            ) : (
+                                                <p>Bạn đã bị ban và không thể sử dụng thanh toán khi nhận hàng. Vui lòng liên hệ admin.</p>
+                                            )}
+
+
                                             <button type="submit" className="btn btn-primary btn-block btn-lg" >Thanh toán</button>
                                         </form>
                                     </div>
