@@ -16,7 +16,6 @@ interface DataType {
 const HistoryBill = (props: Props) => {
     const { id } = useParams()
     console.log(id);
-    const { data: productIdData } = useGetProductByIdQuery(id)
     const { data: historyData } = useGetHistoryBillQuery(id)
     console.log(historyData);
     const columns: TableColumnsType<DataType> = [
@@ -33,7 +32,6 @@ const HistoryBill = (props: Props) => {
         key: item.id
     }));
     console.log(historyData);
-    console.log("productIdData", productIdData);
 
     const data: DataType[] = newData;
 
@@ -45,13 +43,13 @@ const HistoryBill = (props: Props) => {
                         <div className="container mt-5 mb-5">
                             <div className="d-flex justify-content-center row">
                                 <div className="col-md-10">
-                                    <Product
+                                    {/* <Product
                                         name={productIdData?.product.name}
                                         ratings={4}
                                         description={productIdData?.product.description}
                                         discountedPrice={productIdData?.product.price}
                                         imageUrl={`http://127.0.0.1:8000${productIdData?.product.image}`}
-                                    />
+                                    /> */}
                                 </div>
                             </div>
                         </div>
