@@ -149,7 +149,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/bill/update_user/{id}', [BillController::class, 'update_user']);
     Route::delete('/bill/delete/{id}', [BillController::class, 'destroy']);
     Route::get('/bills', [BillController::class, 'list_bills']);
-
+    Route::get('/bill/show/{id}', [BillController::class, 'show']);
     Route::get('/history/{id}', [BillController::class,'list_history']);
     Route::get('/cartproduct', [CartProductController::class, 'index']);
     Route::post('/cartproduct/add', [CartProductController::class, 'store']);
