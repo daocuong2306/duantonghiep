@@ -19,18 +19,17 @@ const Header = () => {
             <div className="flex items-center space-x-2">
                 <img src={Image} alt="" className="h-16 w-auto" />
 
-                <div className="hidden lg:flex space-x-4">
-                    <Link to="/" className="text-dark hover:text-[#00CCFF]">Trang chủ</Link>
-                    <Link to="/products" className="text-dark hover:text-[#00CCFF]">Sản phẩm</Link>
-                    <Link to="" className="text-dark hover:text-[#00CCFF]">Thông tin</Link>
-                </div>
+
 
             </div>
 
             {/* Search Bar */}
             <div className="flex items-center space-x-4 lg:w-1/3">
-                <input type="text" placeholder="Tìm kiếm sản phẩm" className="border border-black rounded px-2 py-1" />
-                <button className="bg-[#00CCFF] text-white rounded px-4 py-1">Tìm kiếm</button>
+                <div className="hidden lg:flex space-x-4">
+                    <Link to="/" className="text-dark hover:text-[#00CCFF]">Trang chủ</Link>
+                    <Link to="/products" className="text-dark hover:text-[#00CCFF]">Sản phẩm</Link>
+                    <Link to="" className="text-dark hover:text-[#00CCFF]">Thông tin</Link>
+                </div>
             </div>
 
             {/* User Actions */}

@@ -10823,12 +10823,12 @@ a.text-dark:focus {
 
 .btn-cart-account:hover {
     background-color: #00CCFF;
-    color:white
-    /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
+    color: white
+        /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
 }
 
 .btn-bill-account {
-    background-color:white;
+    background-color: white;
     color: #00CCFF;
     padding: 5%;
     transition: background-color 0.3s ease;
@@ -10837,8 +10837,8 @@ a.text-dark:focus {
     margin-top: 2%;
 }
 
-.btn-bill-account:hover {
+.btn-bill-account:target {
     background-color: #00CCFF;
-    color:white
-    /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
+    color: white
+        /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
 }

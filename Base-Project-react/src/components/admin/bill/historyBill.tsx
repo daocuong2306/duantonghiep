@@ -14,6 +14,8 @@ interface DataType {
 const HistoryBill = (props: Props) => {
     const { id } = useParams()
     const { data: historyData } = useGetHistoryBillQuery(id)
+    console.log(historyData);
+    
     const columnsHistory: TableColumnsType<DataType> = [
         { title: 'Tên người thay đổi', dataIndex: 'user_name', key: 'user_name' },
         {
