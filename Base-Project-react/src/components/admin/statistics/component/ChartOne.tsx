@@ -1,105 +1,34 @@
+import { useListStatisticalQuery } from '@/api/statistics';
 import { ApexOptions } from 'apexcharts';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
+interface ChartOneProps {
+  data: any; // Adjust the type of your data accordingly
+}
 
+const ChartOne: React.FC<ChartOneProps> = () => {
+  const { data: statisData, isLoading } = useListStatisticalQuery();
 
-const ChartOne: React.FC = ({ data }: any) => {
-  const January = Number(data?.January?.total_amount) || 0;
-  const February = Number(data?.February?.total_amount) || 0;
-  const March = Number(data?.March?.total_amount) || 0;
-  const April = Number(data?.April?.total_amount) || 0;
-  const May = Number(data?.May?.total_amount) || 0;
-  const June = Number(data?.June?.total_amount) || 0;
-  const July = Number(data?.July?.total_amount) || 0;
-  const August = Number(data?.August?.total_amount) || 0;
-  const September = Number(data?.September?.total_amount) || 0;
-  const October = Number(data?.October?.total_amount) || 0;
-  const November = Number(data?.November?.total_amount) || 0;
-  const December = Number(data?.December?.total_amount) || 0;
-  const maxTotalAmount = Math.max(
-    January, February, March, April, May, June,
-    July, August, September, October, November, December
+  // Extracting values for each month from data (replace this with your actual data structure)
+  const monthlyData = Object.keys(statisData?.total_price || {}).map(
+    (month) => Number(statisData?.total_price[month]?.total_amount) || 0
   );
-  const options: ApexOptions = {
-    legend: {
-      show: false,
-      position: 'top',
-      horizontalAlign: 'left',
-    },
-    colors: ['#3C50E0', '#80CAEE'],
-    chart: {
-      fontFamily: 'Satoshi, sans-serif',
-      height: 335,
-      type: 'area',
-      dropShadow: {
-        enabled: true,
-        color: '#623CEA14',
-        top: 10,
-        blur: 4,
-        left: 0,
-        opacity: 0.1,
-      },
 
-      toolbar: {
-        show: false,
-      },
+  const maxTotalAmount = Math.max(...monthlyData);
+
+  let chartData = [
+    {
+      name: 'Product One',
+      data: monthlyData,
     },
-    responsive: [
-      {
-        breakpoint: 1024,
-        options: {
-          chart: {
-            height: 300,
-          },
-        },
-      },
-      {
-        breakpoint: 1366,
-        options: {
-          chart: {
-            height: 350,
-          },
-        },
-      },
-    ],
-    stroke: {
-      width: [2, 2],
-      curve: 'straight',
+    {
+      name: 'Product Two',
+      data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
     },
-    // labels: {
-    //   show: false,
-    //   position: "top",
-    // },
-    grid: {
-      xaxis: {
-        lines: {
-          show: true,
-        },
-      },
-      yaxis: {
-        lines: {
-          show: true,
-        },
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    markers: {
-      size: 4,
-      colors: '#fff',
-      strokeColors: ['#3056D3', '#80CAEE'],
-      strokeWidth: 3,
-      strokeOpacity: 0.9,
-      strokeDashArray: 0,
-      fillOpacity: 1,
-      discrete: [],
-      hover: {
-        size: undefined,
-        sizeOffset: 5,
-      },
-    },
+  ];
+
+  const options: ApexOptions = {
     xaxis: {
       type: 'category',
       categories: [
@@ -116,53 +45,33 @@ const ChartOne: React.FC = ({ data }: any) => {
         'Tháng 11',
         'Tháng 12',
       ],
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
-    },
-    yaxis: {
-      title: {
-        style: {
-          fontSize: '0px',
-        },
-      },
-      min: 0,
-      max: maxTotalAmount,
     },
   };
 
-  interface ChartOneState {
-    series: {
-      name: string;
-      data: number[];
-    }[];
-  }
-  const [state, setState] = useState<ChartOneState>({
-    series: [
-      {
-        name: '2023',
-        data: [January, February, March, April, May, June, July, August, September, October, November, December],
-      },
-    ],
-  });
+  useEffect(() => {
+    if (monthlyData.length > 0) {
+      chartData = [
+        {
+          name: 'Product One',
+          data: monthlyData,
+        },
+        {
+          name: 'Product Two',
+          data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
+        },
+      ];
+    }
+  }, [monthlyData]);
 
   return (
-    <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
-      {/* seclect */}
-      <h1 className='text-center'>Thông kê</h1>
-      <div>
-        <div id="chartOne" className="-ml-5">
-          <ReactApexChart
-            options={options}
-            series={state.series}
-            type="area"
-            height={350}
-          />
+    <div className="col-12 p-0 m-0 rounded-sm border border-stroke bg-white pt-7.5 pb-5 shadow-default">
+      {isLoading ? null : (
+        <div>
+          <div id="chartOne">
+            <ReactApexChart options={options} series={chartData} type="area" height={350} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
