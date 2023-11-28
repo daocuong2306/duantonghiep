@@ -237,4 +237,5 @@ export default function DetailProduct() {
             </div >
         </Spin >
     )
-}   
+}
+
