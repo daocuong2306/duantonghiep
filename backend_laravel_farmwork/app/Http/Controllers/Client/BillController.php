@@ -544,63 +544,68 @@ public function list_bills()
     return response()->json($formattedBills);
 }
 //history
-public function list_history($billId){
-  $history = DB::table('history_status_bill')  
-    ->where('bill_id', $billId)
-   ->get();
-   $bill = Bill::with('cart')->find($billId);
-    
-   if (!$bill) {
-       return response()->json(['message' => 'Hóa đơn không tồn tại'], 404);
-   }
+public function list_history($billId)
+{
+    $history = DB::table('history_status_bill')
+        ->where('bill_id', $billId)
+        ->get();
 
-   $cartIds = json_decode($bill->carts_id);
+    $bill = Bill::with('cart')->find($billId);
 
-   $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
-       $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
-       $optionValues = array_unique($optionValues);
-       $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
+    if (!$bill) {
+        return response()->json(['message' => 'Hóa đơn không tồn tại'], 404);
+    }
 
-       return [
-           'id_product' => $cart->product->id,
-           'option_values' => $optionValuesData,
-           'name' => $cart->product->name,
-           'image' => $cart->product->image,
-           'price' => $cart->price_cart,
-           'quantity' => $cart->quantity,
-           'status' => $cart->status,
-       ];
-   });
+    $cartIds = json_decode($bill->carts_id);
 
-   $total_price = $cartItems->sum(function ($cartItem) {
-       return $cartItem['price'] * $cartItem['quantity'];
-   });
+    $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
+        $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
+        $optionValues = array_unique($optionValues);
+        $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
 
-   $bill->total_price = $total_price;
-   $bill->save();
+        return [
+            'id_product' => $cart->product->id,
+            'option_values' => $optionValuesData,
+            'name' => $cart->product->name,
+            'image' => $cart->product->image,
+            'price' => $cart->price_cart,
+            'quantity' => $cart->quantity,
+            'status' => $cart->status,
+        ];
+    });
 
-   $formattedBill = [
-       'id' => $bill->id,
-       'user_id' => $bill->user_id,
-       'address' => $bill->address,
-       'phone' => $bill->phone,
-       'payments' => $bill->payments,
-       'order_status' => $bill->order_status,
-       'cart' => $cartItems,
-       'total_price' => $total_price
-   ];
+    $total_price = $cartItems->sum(function ($cartItem) {
+        return $cartItem['price'] * $cartItem['quantity'];
+    });
 
-//    return response()->json($formattedBill);
-  // Bước 1: Lấy tất cả user_id từ danh sách hóa đơn
-  $userIds = $history->pluck('user_id')->unique()->toArray();
+    $bill->total_price = $total_price;
+    $bill->save();
 
-  // Bước 2: Lấy thông tin người dùng tương ứng với user_id
-  $users = User::whereIn('id', $userIds)->pluck('name', 'id')->toArray();
-   // Bước 3: Gán thông tin người dùng vào mỗi mục lịch sử
-  foreach ($history as $item) {
-    $item->user_name = $users[$item->user_id] ?? 'Unknown User';}
+    $userIds = $history->pluck('user_id')->unique()->toArray();
 
-return response()->json(['bill' =>$formattedBill,'history' => $history]);
+    $users = User::whereIn('id', $userIds)->pluck('name', 'id')->toArray();
+
+    $formattedHistory = $history->map(function ($item) use ($users) {
+        $item->user_name = $users[$item->user_id] ?? 'Unknown User';
+        return $item;
+    });
+
+    $user = User::find($bill->user_id);
+
+    $formattedBill = [
+        'id' => $bill->id,
+        'user_id' => $bill->user_id,
+        'address' => $bill->address,
+        'phone' => $bill->phone,
+        'name' => $user->name,
+        'image' => $user->image,
+        'payments' => $bill->payments,
+        'order_status' => $bill->order_status,
+        'cart' => $cartItems,
+        'total_price' => $total_price
+    ];
+
+    return response()->json(['bill' => $formattedBill, 'history' => $formattedHistory]);
 }
 
 }
