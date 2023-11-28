@@ -31,7 +31,7 @@ class HomeController extends Controller
         //         ->orWhere('code', 'like', "%$keyword%")
         //         ->get();
         // } else {
-            $products = DB::table('product')->get();
+        $products = DB::table('product')->get();
         // }
         // $data['evaluate'] = $evaluate;
         $data['products'] = $products;
@@ -51,5 +51,16 @@ class HomeController extends Controller
                 'isOke' => 'false'
             ]);
         }
+    }
+    public function productShop()
+    {
+        $products = DB::table('product')
+            ->join('category', 'product.id_category', '=', 'category.id')
+            ->select('product.*', 'category.name as category_name')
+            ->get();
+            // dd($products);
+        $groupedProducts = $products->groupBy('category_name');
+        // dd($groupedProducts);
+        return response()->json(['products' => $groupedProducts]);
     }
 }

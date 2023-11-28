@@ -25,8 +25,7 @@ class StatisticalController extends Controller
             ->get();
 
         $monthlySummary = $this->getMonthlySummary($summary);
-        $best_saler = Bill::select('carts_id')
-            ->get();
+
 
         $comment = DB::table('comments')
             ->join('users', 'users.id', '=', 'comments.id_user')
@@ -48,8 +47,8 @@ class StatisticalController extends Controller
         $previousMonth = date('m', strtotime('-1 month'));
 
         // Truy vấn dữ liệu từ bảng bill
-        $currentMonthTotal = Bill::where('order_status','Success')->whereMonth('created_at', $currentMonth)->sum('total_price');
-        $previousMonthTotal = Bill::where('order_status','Success')->whereMonth('created_at', $previousMonth)->sum('total_price');
+        $currentMonthTotal = Bill::where('order_status', 'Success')->whereMonth('created_at', $currentMonth)->sum('total_price');
+        $previousMonthTotal = Bill::where('order_status', 'Success')->whereMonth('created_at', $previousMonth)->sum('total_price');
 
         // Tính toán sự tăng/giảm
         $increaseDecrease = $currentMonthTotal - $previousMonthTotal;
@@ -73,7 +72,12 @@ class StatisticalController extends Controller
 
         // return response()->json($result);
         // dd($handlecomment);
+        $best_saler = Bill::where('order_status', 'Success')->select('carts_id')
+            ->get();
         $product = [];
+        $quantityByProductId = [];
+        $productInfo = [];
+        $result = [];
 
         foreach ($best_saler as $key => $value) {
             $cart = json_decode($value->carts_id, true);
@@ -101,7 +105,6 @@ class StatisticalController extends Controller
                 }
             }
         }
-        $result = [];
         foreach ($quantityByProductId as $productId => $quantity) {
             $result[] = [
                 'product_id' => $productId,
@@ -116,7 +119,7 @@ class StatisticalController extends Controller
             'product' => $result,
             'comment' => $comment,
             'handlecomment' => $handlecomment,
-            'statusAmout'=>$statusAmout
+            'statusAmout' => $statusAmout
 
         ]);
     }
