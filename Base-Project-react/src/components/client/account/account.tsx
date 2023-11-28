@@ -1,7 +1,7 @@
 import { useInforUserQuery } from "@/api/user"
 import { Spin } from "antd"
 import { Link } from "react-router-dom"
-
+import image from "../../../../img/user.png"
 const Account = () => {
     const token = localStorage.getItem("header")
     const { data, isLoading } = useInforUserQuery(token)
@@ -10,60 +10,79 @@ const Account = () => {
     return isLoading ?
         <Spin spinning={isLoading} className="pl-[50%]"></Spin>
         :
-        <div className="bg-white overflow-hidden shadow rounded-lg border">
-            <div className="flex justify-between px-4 py-5 sm:px-6">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">
-                    Thông tin người dùng
-                </h3>
-                <Link to="/account/update"><button
-                    className="border-blue-500 text-center text-[#03CBFD] rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-[#03CBFD] hover:text-white p-2 ml-9">Cập nhật thông tin</button></Link>
-            </div>
-            <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
-                <dl className="sm:divide-y sm:divide-gray-200">
-                    <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="text-sm font-medium text-gray-500">
-                            Tên
-                        </dt>
-                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            {data?.data.name}
-                        </dd>
-                    </div>
-                    <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="text-sm font-medium text-gray-500">
-                            Email
-                        </dt>
-                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            {data?.data.email}
-                        </dd>
-                    </div>
-                    <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="text-sm font-medium text-gray-500">
-                            Tuổi
-                        </dt>
-                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            {data?.data.age}
-                        </dd>
-                    </div>
-                    <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="text-sm font-medium text-gray-500">
-                            Địa chỉ
-                        </dt>
-                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            {data?.data.address}
-                        </dd>
-                    </div>
-                    <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt className="text-sm font-medium text-gray-500">
-                            Số điện thoại
-                        </dt>
-                        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            {data?.data.phone}
-                        </dd>
-                    </div>
-                </dl>
-            </div>
+        (<section style={{ backgroundColor: "#eee;" }}>
+            <div className="container py-5">
+                <div className="row">
+                    <div className="col-lg-4">
+                        <div className="card mb-4">
+                            <div className="card-body text-center d-flex flex-column align-items-center">
+                                {data?.data.image ? (
+                                    <img src={`http://localhost:8000${data?.data.image}`} alt="avatar" className="rounded-circle img-fluid" style={{ width: "150px" }} />
+                                ) : (
+                                    <img src={image} alt="avatar" className="rounded-circle img-fluid" style={{ width: "150px" }} />
+                                )}
+                                <h5 className="my-3">{data?.data.name}</h5>
 
-        </div>
+                                <div className="">
+                                    <Link to=""><button type="button" className="btn-cart-account">Giỏ hàng</button></Link>
+                                    <Link to=""><button type="button" className="btn-bill-account">Thanh toán</button></Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-lg-8">
+                        <div className="card mb-4">
+                            <div className="card-body">
+                                <div className="row">
+                                    <div className="col-sm-3">
+                                        <p className="mb-0">Tuổi</p>
+                                    </div>
+                                    <div className="col-sm-9">
+                                        <p className="text-muted mb-0">{data?.data.age}</p>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div className="row">
+                                    <div className="col-sm-3">
+                                        <p className="mb-0">Email</p>
+                                    </div>
+                                    <div className="col-sm-9">
+                                        <p className="text-muted mb-0">{data?.data.email}</p>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div className="row">
+                                    <div className="col-sm-3">
+                                        <p className="mb-0">Số điện thoại</p>
+                                    </div>
+                                    <div className="col-sm-9">
+                                        <p className="text-muted mb-0">{data?.data.phone}</p>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div className="row">
+                                    <div className="col-sm-3">
+                                        <p className="mb-0">Địa chỉ</p>
+                                    </div>
+                                    <div className="col-sm-9">
+                                        <p className="text-muted mb-0">{data?.data.address}</p>
+                                    </div>
+                                </div>
+                                <hr />
+                                <Link to={`/account/update`}><div className="row">
+                                    <button className="btn btn-success rounded-pill custom-btn">
+                                        Cập nhật thông tin
+                                    </button>
+                                </div></Link>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        )
 }
 
 export default Account
