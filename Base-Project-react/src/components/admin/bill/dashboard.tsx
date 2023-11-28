@@ -52,14 +52,21 @@ const BillDashboard: React.FC = () => {
                     onChange={(value) => handleStatusChange(record.id, value)}
                     disabled={orderStatus === 'Success' || orderStatus === 'Cancel'}
                 >
-                    {orderStatusOptions
-                        .filter(option => option !== 'Pending' && option !== 'Browser')
-                        .map((option) => (
-                            <Select.Option key={option} value={option}>
-                                {option}
-                            </Select.Option>
-                        ))}
+                    {orderStatusOptions.map((option) => (
+                        <Select.Option
+                            key={option}
+                            value={option}
+                            disabled={
+                                (orderStatus === 'Pending' && option === 'Pending') ||
+                                (orderStatus === 'Browser' && option === 'Browser') ||
+                                (orderStatus === 'Transport' && (option === 'Pending' || option === 'Browser'))
+                            }
+                        >
+                            {option}
+                        </Select.Option>
+                    ))}
                 </Select>
+
             ),
         },
         { title: 'Kiểu thanh toán', dataIndex: 'payments', key: 'payments' },
@@ -73,7 +80,7 @@ const BillDashboard: React.FC = () => {
                 <Space wrap>
                     <Link to={`/admin/historybills/${id}`}>
                         <Button type="primary" danger>
-                            Xem lịch sử
+                           Xem chi tiết đơn hàng
                         </Button>
                     </Link>
                 </Space>
