@@ -10797,3 +10797,48 @@ a.text-dark:focus {
     outline: 2px solid #2196f3 !important;
     outline-offset: 2px;
 }
+
+.custom-btn {
+    background-color: #16cc22;
+    color: white;
+    padding: 1%;
+    transition: background-color 0.3s ease;
+    margin-left: 1%;
+}
+
+.custom-btn:hover {
+    background-color: var(--red);
+    /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
+}
+
+.btn-cart-account {
+    background-color: white;
+    color: #00CCFF;
+    padding: 5%;
+    transition: background-color 0.3s ease;
+    border: #00ccff 1px solid;
+    width: 100%;
+    margin-bottom: 2%;
+}
+
+.btn-cart-account:hover {
+    background-color: #00CCFF;
+    color:white
+    /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
+}
+
+.btn-bill-account {
+    background-color:white;
+    color: #00CCFF;
+    padding: 5%;
+    transition: background-color 0.3s ease;
+    border: #00ccff 1px solid;
+    width: 100%;
+    margin-top: 2%;
+}
+
+.btn-bill-account:hover {
+    background-color: #00CCFF;
+    color:white
+    /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
+}
