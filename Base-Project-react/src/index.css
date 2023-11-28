@@ -10837,7 +10837,7 @@ a.text-dark:focus {
     margin-top: 2%;
 }
 
-.btn-bill-account:hover {
+.btn-bill-account:target {
     background-color: #00CCFF;
     color: white
         /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
