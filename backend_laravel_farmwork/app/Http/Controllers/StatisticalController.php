@@ -15,11 +15,12 @@ class StatisticalController extends Controller
 {
     public function summary()
     {
-        $summary = Bill::select(
-            DB::raw('YEAR(created_at) as year'),
-            DB::raw('MONTH(created_at) as month'),
-            DB::raw('SUM(total_price) as total_amount')
-        )
+        $summary = Bill::where('order_status', 'Success')
+            ->select(
+                DB::raw('YEAR(created_at) as year'),
+                DB::raw('MONTH(created_at) as month'),
+                DB::raw('SUM(total_price) as total_amount')
+            )
             ->groupBy('year', 'month')
             ->get();
 
@@ -41,6 +42,36 @@ class StatisticalController extends Controller
                 'count' => $count,
             ];
         });
+
+        // Lấy tháng hiện tại và tháng trước
+        $currentMonth = date('m');
+        $previousMonth = date('m', strtotime('-1 month'));
+
+        // Truy vấn dữ liệu từ bảng bill
+        $currentMonthTotal = Bill::where('order_status','Success')->whereMonth('created_at', $currentMonth)->sum('total_price');
+        $previousMonthTotal = Bill::where('order_status','Success')->whereMonth('created_at', $previousMonth)->sum('total_price');
+
+        // Tính toán sự tăng/giảm
+        $increaseDecrease = $currentMonthTotal - $previousMonthTotal;
+
+        // Kiểm tra xem có tăng hay giảm
+        if ($increaseDecrease > 0) {
+            $status = 'Tăng';
+        } elseif ($increaseDecrease < 0) {
+            $status = 'Giảm';
+        } else {
+            $status = 'Không thay đổi';
+        }
+
+        // Trả về kết quả
+        $statusAmout = [
+            'current_month_total' => $currentMonthTotal,
+            'previous_month_total' => $previousMonthTotal,
+            'increase_decrease' => $increaseDecrease,
+            'status' => $status,
+        ];
+
+        // return response()->json($result);
         // dd($handlecomment);
         $product = [];
 
@@ -84,7 +115,8 @@ class StatisticalController extends Controller
             'total_price' => $monthlySummary,
             'product' => $result,
             'comment' => $comment,
-            'handlecomment'=>$handlecomment
+            'handlecomment' => $handlecomment,
+            'statusAmout'=>$statusAmout
 
         ]);
     }
