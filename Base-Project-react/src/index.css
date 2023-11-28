@@ -10823,12 +10823,12 @@ a.text-dark:focus {
 
 .btn-cart-account:hover {
     background-color: #00CCFF;
-    color:white
-    /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
+    color: white
+        /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
 }
 
 .btn-bill-account {
-    background-color:white;
+    background-color: white;
     color: #00CCFF;
     padding: 5%;
     transition: background-color 0.3s ease;
@@ -10839,6 +10839,12 @@ a.text-dark:focus {
 
 .btn-bill-account:hover {
     background-color: #00CCFF;
-    color:white
-    /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
+    color: white
+        /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
 }
+
+div[class^="variant"]:focus {
+    /* CSS áp dụng khi phần tử được focus */
+    /* Thêm các thuộc tính CSS mà bạn muốn áp dụng */
+  }
+  
