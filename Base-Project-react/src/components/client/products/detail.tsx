@@ -18,8 +18,8 @@ export default function DetailProduct() {
     const { id } = useParams()
     const { register, handleSubmit } = useForm();
     const [addCart, { data: add, error }] = useAddCartMutation();
-    const [selectedColor, setSelectedColor] = useState(1);
-    const [selectedSize, setSelectedSize] = useState(2);
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
     const [loading, setLoading] = useState(false);
     //Thông báo
     const [api, contextHolder] = notification.useNotification();
@@ -32,20 +32,28 @@ export default function DetailProduct() {
     const selectC = (color: any) => {
         setSelectedColor(color);
     };
+
     const selectS = (size: any) => {
         setSelectedSize(size);
     };
+    const newArray = useMemo(() => {
+        return [selectedSize, selectedColor].filter(Boolean).map((item: any) => item.option_value_id);
+    }, [selectedSize, selectedColor]);
     const prodcuts = {
-        id, selectP: [selectedSize, selectedColor]
+        id, selectP: newArray
     }
     const { data: detaiProduct, isLoading } = useGetDetailQuery(prodcuts);
+
+
     const jsonArray = detaiProduct?.data.variant
         ? Object.entries(detaiProduct.data.variant).map(([key, value]) => ({ key, value }))
         : [];
+
     const newData = jsonArray.map(item => ({
         ...item,
         value: item.value.map(option => ({ ...option, inStock: true })),
     }));
+    console.log(newData);
 
     const onHandleSubmit = (dataUser: any) => {
         if (detaiProduct?.data.priceSku == null) {
@@ -61,6 +69,7 @@ export default function DetailProduct() {
             });
             setLoading(true)
         }
+
     }
     const dataCmt = {
         cmt: detaiProduct?.data.comment,
@@ -126,7 +135,7 @@ export default function DetailProduct() {
                                         {newData?.map((data, index) => (
                                             <div key={data.key} className='mb-10'>
                                                 <div className="flex items-center justify-between">
-                                                    <h3 className="text-sm font-medium text-gray-900">{data.key}</h3>
+                                                    <h3 className="text-sm font-medium uppercase text-gray-900">{data.key}</h3>
                                                 </div>
                                                 <RadioGroup
                                                     value={index === 1 ? selectedColor : selectedSize}
@@ -137,13 +146,21 @@ export default function DetailProduct() {
                                                     <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
                                                         {data.value.map((size) => (
                                                             <RadioGroup.Option
-                                                                key={size}
-                                                                value={size.option_value_id}
+                                                                key={size.option_value_id}
+                                                                value={size}
                                                                 disabled={!size.inStock}
-                                                                className='cursor-pointer text-gray-900 shadow-sm relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-[#00CCFF] sm:flex-1 sm:py-6 transition-colors ease-in-out duration-300'
+                                                                className={({ checked }) => {
+                                                                    return classNames(
+                                                                        `variant${size.value}${size.option_value_id} cursor-pointer text-gray-900 shadow-sm relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-red-500 focus:bg-[#00CCFF] sm:flex-1 sm:py-6 transition-colors ease-in-out duration-300`,
+                                                                        checked ? 'bg-yellow-500' : 'ring-2 ring-transparent'
+                                                                    );
+                                                                }}
                                                                 onClick={() => {
-                                                                    // Handle the click event and update the state or perform any other actions
-                                                                    // You can use the onClick handler to update the selectedColor or selectedSize state
+                                                                    if (index === 1) {
+                                                                        selectC(size);
+                                                                    } else {
+                                                                        selectS(size);
+                                                                    }
                                                                 }}
                                                             >
                                                                 {({ checked }) => (
@@ -164,11 +181,9 @@ export default function DetailProduct() {
                                                         ))}
                                                     </div>
                                                 </RadioGroup>
-
                                             </div>
                                         ))}
                                     </div>
-
                                     {/* Sizes */}
                                     <div className="mt-10">
                                     </div>
@@ -192,8 +207,11 @@ export default function DetailProduct() {
                                         <div className="space-y-6" dangerouslySetInnerHTML={{ __html: detaiProduct?.data.product[0]?.description }}></div>
                                     </div>
                                 </div>
+
                                 <div className="mt-10">
                                     <h3 className="text-base font-medium text-gray-900">Chất liệu</h3>
+
+
                                 </div>
                             </div>
                         </div>
@@ -205,6 +223,6 @@ export default function DetailProduct() {
                 <Comment />
                 <Showcomt data={dataCmt} />
             </div >
-        </Spin >
+        </Spin>
     )
-}   
+}
