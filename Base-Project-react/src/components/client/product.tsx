@@ -339,12 +339,12 @@ const Product = () => {
                             <section id="Projects"
                                 className="ml-[10%] w-[70%] mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
                                 {products?.product.map((product) =>
-                                    <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                                    <div className="w-72 bg-[#EDF1FF] shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                                         <Link to={`/product/detail/${product.id}`}>
                                             <img src={`http://localhost:8000${product.image}`}
                                                 alt="Product" className="h-80 w-72 object-cover rounded-t-xl" />
                                             <div className="px-4 py-3 w-72">
-                                                <span className="text-gray-400 mr-3 uppercase text-xs">
+                                                <span className="text-black mr-3 uppercase text-xs">
                                                     {categories?.categories
                                                         .filter((category) => category.id === product.id_category)
                                                         .map((filteredCategory) => filteredCategory.name)}

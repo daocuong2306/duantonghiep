@@ -45,7 +45,7 @@ const AccountUpdate = () => {
                     message.error(response?.error.data.msg)
                 }
 
-                message.success("Cập nhật sản phẩm thành công")
+                message.success("Cập nhật thông tin thành công")
                 url("/account")
 
 
@@ -183,7 +183,7 @@ const AccountUpdate = () => {
                                     </div>
                                     <div className="sm:col-span-2">
                                         <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900">Số điện thoại</label>
-                                        <input type="text" defaultValue={data?.data.address} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " maxLength={10}
+                                        <input type="number" defaultValue={data?.data.phone} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 " maxLength={10}
                                             {...register('phone')}
                                         />
                                     </div>
