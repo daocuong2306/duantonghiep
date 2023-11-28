@@ -57,9 +57,9 @@ export default function DetailProduct() {
     const onHandleSubmit = (dataUser: any) => {
         if (detaiProduct?.data.priceSku == null) {
             openNotification("vui lòng chọn kích cỡ và size", 'Bạn chưa chọn kích cỡ và size')
-        } else if (detaiProduct?.data.priceSku[0]?.sku_stoke==0) {
+        } else if (detaiProduct?.data.priceSku[0]?.sku_stoke == 0) {
             openNotification("Kích cỡ và size của bạn chọn đã hết hàng", 'Vui lòng chọn khiểu dáng khác')
-        } 
+        }
         else {
             addCart({
                 "product_id": id,
@@ -136,7 +136,11 @@ export default function DetailProduct() {
                                                 <div className="flex items-center justify-between">
                                                     <h3 className="text-sm font-medium text-gray-900">{data.key}</h3>
                                                 </div>
-                                                <RadioGroup value={index == 1 ? selectedColor : selectedSize} onChange={index == 1 ? selectC : selectS} className="mt-4">
+                                                <RadioGroup
+                                                    value={index === 1 ? selectedColor : selectedSize}
+                                                    onChange={index === 1 ? selectC : selectS}
+                                                    className="mt-4"
+                                                >
                                                     <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
                                                     <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
                                                         {data.value.map((size) => (
@@ -147,10 +151,13 @@ export default function DetailProduct() {
                                                                     disabled={!size.inStock}
                                                                     className={({ checked }) => {
                                                                         return classNames(
-                                                                            'cursor-pointer bg-white text-gray-900 shadow-sm',
-                                                                            'relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 sm:flex-1 sm:py-6',
-                                                                            checked ? 'ring-2 ring-indigo-500' : 'ring-2 ring-transparent'
+                                                                            'cursor-pointer text-gray-900 shadow-sm relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-red-500 focus:bg-[#00CCFF] sm:flex-1 sm:py-6 transition-colors ease-in-out duration-300',
+                                                                            checked ? 'bg-yellow-500' : 'ring-2 ring-transparent'
                                                                         );
+                                                                    }}
+                                                                    onClick={() => {
+                                                                        // Handle the click event and update the state or perform any other actions
+                                                                        // You can use the onClick handler to update the selectedColor or selectedSize state
                                                                     }}
                                                                 >
                                                                     {({ checked }) => (
@@ -195,6 +202,7 @@ export default function DetailProduct() {
                                             </div>
                                         ))}
                                     </div>
+
                                     {/* Sizes */}
                                     <div className="mt-10">
                                     </div>

@@ -72,6 +72,8 @@ const Product = () => {
     const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
     const { data: products, error, isLoading } = useGetProductsQuery("");
     const { data: categories } = useGetCategoriesQuery();
+    console.log(categories);
+
     const { control, handleSubmit, watch, register } = useForm()
     const { min }: number = watch(['min']);
     const { max }: number = watch(['max']);
@@ -278,9 +280,9 @@ const Product = () => {
                             Products
                         </h2>
 
-                        <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+                        <div className="flex">
                             {/* Filters */}
-                            <form className="hidden lg:block">
+                            <form className="hidden lg:block w-[20%]">
                                 <h3 className="sr-only">Categories</h3>
                                 <ul role="list" className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
                                     {subCategories.map((category) => (
@@ -334,86 +336,39 @@ const Product = () => {
                                 ))}
                             </form>
 
-                            <div className="lg:col-span-3">
-                                <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                                    {filteredProducts.length > 0 // Use filteredProducts here instead of products
-                                        ? filteredProducts.map((product: any) => {
-                                            return <li key={product.id}>
-                                                <Link to={`/details/${product.slug}`} className="group block overflow-hidden">
-                                                    <img
-                                                        src={`http://127.0.0.1:8000${product.image}`}
-                                                        alt=""
-                                                        className="w-full rounded-xl object-cover transition duration-500 group-hover:scale-105 group-hover:rounded-xl sm:h-[375px]"
-                                                    />
-                                                    <div className="relative bg-white pt-3">
-                                                        <h3
-                                                            className="text-[14px] text-gray-700 group-hover:underline group-hover:underline-offset-4"
-                                                        >
-                                                            {product.name}
-                                                        </h3>
-
-                                                        <p className="mt-2">
-
-                                                            <span className="tracking-wider text-gray-900 text-[16px] font-bold"> {product.price} VND </span>
-                                                        </p>
-
-                                                    </div>
-                                                </Link>
-                                                {/* <a
-                                                className="group relative inline-block text-sm font-medium text-white focus:outline-none focus:ring"
-                                            >
-                                                <span
-                                                    className="absolute inset-0 border border-red-600 group-active:border-red-500"
-                                                ></span>
-                                                <span
-                                                    className="block border border-red-600 bg-red-600 px-12 py-3 transition-transform active:border-red-500 active:bg-red-500 group-hover:-translate-x-1 group-hover:-translate-y-1"
-                                                    onClick={() => onHandleSubmit(product.id)}
-                                                >
-                                                    Add to cart
+                            <section id="Projects"
+                                className="ml-[10%] w-[70%] mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+                                {products?.product.map((product) =>
+                                    <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                                        <Link to={`/product/detail/${product.id}`}>
+                                            <img src={`http://localhost:8000${product.image}`}
+                                                alt="Product" className="h-80 w-72 object-cover rounded-t-xl" />
+                                            <div className="px-4 py-3 w-72">
+                                                <span className="text-gray-400 mr-3 uppercase text-xs">
+                                                    {categories?.categories
+                                                        .filter((category) => category.id === product.id_category)
+                                                        .map((filteredCategory) => filteredCategory.name)}
                                                 </span>
-                                            </a> */}
-                                            </li>
-                                        })
-                                        : products?.product.map((product: any) => {
-                                            return <li key={product.id}>
-                                                <Link to={`/product/detail/${product.id}`} className="group block overflow-hidden">
-                                                    <img
-                                                        src={`http://127.0.0.1:8000${product.image}`}
-                                                        alt=""
-                                                        className="w-full rounded-xl object-cover transition duration-500 group-hover:scale-105 group-hover:rounded-xl sm:h-[375px]"
-                                                    />
-                                                    <div className="relative bg-white pt-3">
-                                                        <h3
-                                                            className="text-[14px] text-gray-700 group-hover:underline group-hover:underline-offset-4"
-                                                        >
-                                                            {product.name}
-                                                        </h3>
 
-                                                        <p className="mt-2">
-                                                            <span className="sr-only"> Regular Price </span>
-
-                                                            <span className="tracking-wider text-gray-900 text-[16px] font-bold"> {product.price} VND </span>
-                                                        </p>
-
-                                                    </div>
-                                                </Link>
-                                                {/* <a
-                                                className="group relative inline-block text-sm font-medium text-white focus:outline-none focus:ring"
-                                            >
-                                                <span
-                                                    className="absolute inset-0 border border-red-600 group-active:border-red-500"
-                                                ></span>
-                                                <span
-                                                    className="block border border-red-600 bg-red-600 px-12 py-3 transition-transform active:border-red-500 active:bg-red-500 group-hover:-translate-x-1 group-hover:-translate-y-1"
-                                                    onClick={() => onHandleSubmit(product.id)}
-                                                >
-                                                    Add to cart
-                                                </span>
-                                            </a> */}
-                                            </li>
-                                        })}
-                                </ul>
-                            </div>
+                                                <p className="text-lg font-bold text-black truncate block capitalize">{product.name}</p>
+                                                <div className="flex items-center">
+                                                    <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price}</p>
+                                                    {/* <del>
+                                                        <p className="text-sm text-gray-600 cursor-auto ml-2">$199</p>
+                                                    </del> */}
+                                                    <div className="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                        fill="currentColor" className="bi bi-bag-plus" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                            d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
+                                                        <path
+                                                            d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                                                    </svg></div>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                )}
+                            </section>
                         </div>
                     </section>
                 </main>

@@ -39,7 +39,7 @@ const Header = () => {
                 <button onClick={() => logout()} className="text-dark hover:text-[#00CCFF]">Đăng xuất</button>
             </div> :
                 <div className="flex items-center space-x-4">
-                    <Link to="/account" className="text-dark hover:text-[#00CCFF]">Trang quản trị</Link>
+                    <Link to="/admin" className="text-dark hover:text-[#00CCFF]">Trang quản trị</Link>
                     <button onClick={() => logout()} className="text-dark hover:text-[#00CCFF]">Đăng xuất</button>
                 </div>
                 : <div className="flex items-center space-x-4">
