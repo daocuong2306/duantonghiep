@@ -160,6 +160,7 @@ export default function DetailProduct() {
                                                                         // You can use the onClick handler to update the selectedColor or selectedSize state
                                                                     }}
                                                                 >
+                                                                    
                                                                     {({ checked }) => (
                                                                         <>
                                                                             <RadioGroup.Label as="span">{size.value}</RadioGroup.Label>
