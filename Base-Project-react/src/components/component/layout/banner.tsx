@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useGetDataQuery } from "@/api/home";
 import { Link } from 'react-router-dom';
 
@@ -34,10 +34,10 @@ const Banner = (props: Props) => {
                     {data?.data.banner.map((banner, index) => (
                         <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
                             <img
-                                className="img-fluid"
+                                className="h-[50%] w-full object-cover"
                                 src={banner.image}
                                 alt={`Image ${index + 1}`}
-                                style={{ height: '550px' }}
+                                
                             />
                             <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div className="p-3">
