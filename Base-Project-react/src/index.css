@@ -10842,9 +10842,3 @@ a.text-dark:focus {
     color: white
         /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
 }
-
-div[class^="variant"]:focus {
-    /* CSS áp dụng khi phần tử được focus */
-    /* Thêm các thuộc tính CSS mà bạn muốn áp dụng */
-  }
-  
