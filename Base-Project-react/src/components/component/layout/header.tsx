@@ -3,11 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Input } from "@material-tailwind/react";
 import Image from '@/assets/image/395664742_238305892304631_1626048229353873057_n.png'
 const Header = () => {
-   
-   
-        const token=localStorage.getItem("header")
-        const role=localStorage.getItem("role")
-    
+
+
+    const token = localStorage.getItem("header")
+    const role = localStorage.getItem("role")
+
     const url = useNavigate()
     const logout = () => {
         localStorage.removeItem("header")
@@ -19,22 +19,11 @@ const Header = () => {
             <div className="flex items-center space-x-2">
                 <img src={Image} alt="" className="h-16 w-auto" />
 
-                {role && token ? role == "2" ? <div className="hidden lg:flex space-x-4">
+                <div className="hidden lg:flex space-x-4">
                     <Link to="/" className="text-dark hover:text-[#00CCFF]">Trang chủ</Link>
                     <Link to="/products" className="text-dark hover:text-[#00CCFF]">Sản phẩm</Link>
                     <Link to="" className="text-dark hover:text-[#00CCFF]">Thông tin</Link>
-                </div> :
-                    <div className="hidden lg:flex space-x-4">
-                        <Link to="/" className="text-dark hover:text-[#00CCFF]">Trang chủ</Link>
-                        <Link to="/admin" className="text-dark hover:text-[#00CCFF]">Trang quản trị</Link>
-
-                    </div>
-                    : <div className="hidden lg:flex space-x-4">
-                        <Link to="/" className="text-dark hover:text-[#00CCFF]">Trang chủ</Link>
-                        <Link to="/products" className="text-dark hover:text-[#00CCFF]">Sản phẩm</Link>
-                        <Link to="" className="text-dark hover:text-[#00CCFF]">Thông tin</Link>
-                    </div>
-                }
+                </div>
 
             </div>
 
@@ -50,7 +39,7 @@ const Header = () => {
                 <button onClick={() => logout()} className="text-dark hover:text-[#00CCFF]">Đăng xuất</button>
             </div> :
                 <div className="flex items-center space-x-4">
-                    <Link to="/account" className="text-dark hover:text-[#00CCFF]">Tài khoản</Link>
+                    <Link to="/account" className="text-dark hover:text-[#00CCFF]">Trang quản trị</Link>
                     <button onClick={() => logout()} className="text-dark hover:text-[#00CCFF]">Đăng xuất</button>
                 </div>
                 : <div className="flex items-center space-x-4">
