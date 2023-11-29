@@ -27,11 +27,9 @@ const Variant: React.FC = (product: any) => {
         setOpen(true)
         setShowSelect(true);
         const result = Object.values(values);
-
         selectVariants({
             "arrayValue": result
         })
-
         console.log(open);
     };
     return (

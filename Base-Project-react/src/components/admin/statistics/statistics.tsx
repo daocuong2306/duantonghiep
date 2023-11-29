@@ -60,12 +60,13 @@ const Statistics = (props: Props) => {
                 </div>
                 <div className="mx-auto p-4">
                     <ChartOne />
-                    <div className="mt-4 flex gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+                    <div className="mt-4 d-flex align-items-stretch gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
                         <TableOne />
                         <ChartThree />
                     </div>
-
                 </div>
+
+
             </Spin>
         </>
 

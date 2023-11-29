@@ -40,7 +40,15 @@ const variantApi = createApi({
                 url: `listvariant`,
                 params: { id },
             }),
-            providesTags: ['Category']
+            providesTags: ['variant']
+        }),
+        updateVariant: builder.mutation({
+            query: (account: any) => ({
+                url: `/updatevariant/${account.id}`,
+                method: "POST",
+                body: account.formData
+            }),
+            invalidatesTags: ['variant']
         }),
     })
 });
@@ -48,7 +56,8 @@ const variantApi = createApi({
 export const {
     useGetValueMutation,
     useAddValueMutation,
-    useGetValueIdQuery
+    useGetValueIdQuery,
+    useUpdateVariantMutation
 } = variantApi;
 export const variantReducer = variantApi.reducer;
 

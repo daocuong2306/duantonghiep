@@ -7,17 +7,15 @@ import BrandFive from '../images/brand/brand-05.svg';
 
 const TableOne = () => {
   const { data: statisData, isLoading } = useListStatisticalQuery()
-  console.log(statisData?.product);
   const products = statisData?.product;
   const sortedProducts = Array.isArray(products)
     ? [...products].sort((a, b) => b.quantity - a.quantity)
     : [];
-  console.log(sortedProducts);
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <h4 className="mb-6 text-xl font-semibold text-black">
-        Top Channels
+        Sản phẩm bản chạy nhất
       </h4>
 
       <div className="flex flex-col">

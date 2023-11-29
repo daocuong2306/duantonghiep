@@ -29,10 +29,9 @@ import PaymentOnline from "./components/client/payment/paymentOnline";
 import ConfirmPayment from "./components/client/payment/confirmPayment";
 import Bill from "./components/client/bill/Bill";
 import Account from "./components/client/account/account";
-import AccountUpdate from "./components/client/account/accountUpdate";
-import Checkbill from "./components/client/account/checkbill";
 import BillDashboard from "./components/admin/bill/dashboard";
 import HistoryBill from "./components/admin/bill/historyBill";
+import Checkbill from "./components/client/account/checkbill";
 
 
 
@@ -89,10 +88,6 @@ export const router = createBrowserRouter([
             {
                 path: "/account",
                 element: <Account />
-            },
-            {
-                path: "/account/update",
-                element: <AccountUpdate />
             },
             {
                 path: "/account/bill",
