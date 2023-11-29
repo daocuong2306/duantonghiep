@@ -112,9 +112,10 @@ const SelectVarint: React.FC = (check: boolean) => {
 
     return (
         <>
+        
             <Modal
                 visible={open} // Thay đổi "open" thành "visible"
-                title="Title"
+                title="Title âcsca"
                 onCancel={handleCancel}
                 footer={null}
                 width={800} // Đặt chiều ngang thành 800px hoặc giá trị tùy chỉnh của bạn

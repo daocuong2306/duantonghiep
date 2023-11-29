@@ -64,15 +64,19 @@ const ChartOne: React.FC<ChartOneProps> = () => {
   }, [monthlyData]);
 
   return (
-    <div className="col-12 p-0 m-0 rounded-sm border border-stroke bg-white pt-7.5 pb-5 shadow-default">
-      {isLoading ? null : (
-        <div>
-          <div id="chartOne">
-            <ReactApexChart options={options} series={chartData} type="area" height={350} />
+    <>
+      <h3>Thống kê theo năm</h3>
+
+      <div className="col-12 p-0 m-0 rounded-sm border border-stroke bg-white pt-7.5 pb-5 shadow-default">
+        {isLoading ? null : (
+          <div>
+            <div id="chartOne">
+              <ReactApexChart options={options} series={chartData} type="area" height={350} />
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 
