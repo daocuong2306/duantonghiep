@@ -10842,3 +10842,18 @@ a.text-dark:focus {
     color: white
         /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
 }
+
+.btn-filter {
+    background-color: white;
+    color: #28a745;
+    padding: 2% 5%;
+    border: #28a745 2px solid;
+    border-radius: 10px;
+    font-weight: 400;
+    font-size: large;
+}
+
+.btn-filter:hover {
+    background-color: #28a745;
+    color: white;
+}
