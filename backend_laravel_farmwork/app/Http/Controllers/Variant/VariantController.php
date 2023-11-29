@@ -175,13 +175,13 @@ class VariantController extends Controller
                 "sku" => 'required|unique:skus',
             ]);
             $sku = SKU::find($id);
-            $sku->update([
-                "price" => $request->price,
-                "stoke" => $request->stock,
-                "sku" => $request->sku
-            ]);
+            $sku->price=$request->price;
+            $sku->stoke=$request->stock;
+            $sku->sku=$request->sku;
+            $sku->save();
             return response()->json([
                 'MSG' => 'update successful',
+                'sku'=>$sku
             ]);
         }
     }
