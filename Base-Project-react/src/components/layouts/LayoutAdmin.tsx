@@ -70,7 +70,6 @@ const LayoutAdmin: React.FC = () => {
                 />
             </Sider>
             <Layout className="site-layout" style={{ marginLeft: 200 }}>
-                {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}
                 <MenuBar/>
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div style={{ padding: 24, background: colorBgContainer }}>

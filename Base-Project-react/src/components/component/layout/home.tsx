@@ -10,68 +10,65 @@ import ListCate from './listCate'
 import { useGetDataQuery } from '@/api/home'
 import { Menu, Spin } from 'antd'
 import MenuBar from './menu'
-
+import img1 from "../img/bst-new-arrivals-nam_jpg.jpg";
+import img2 from "../img/upsell_t1123_4__jpg.jpg";
+import banner from "../../../../img/maxresdefault.jpg"
 type Props = {}
 
 const Home = (props: Props) => {
     const { isLoading } = useGetDataQuery();
 
     return (
-        isLoading ? <Spin spinning={isLoading}></Spin> :
+        isLoading ? <Spin spinning={isLoading} className='pl-[50%]'></Spin> :
             <div className=''>
                 <body>
-                    <div className="container-fluid mb-5">
-                        <div className="row border-top px-xl-5">
-                            <div className="col-lg-3 d-none d-lg-block">
-
-                                <div className="navbar-nav w-100 overflow-hidden" >
-                                    <Category />
-                                </div>
-                            </div>
-                            <div className="col-lg-9">
-                               
-                                <Banner />
-                            </div>
-                        </div>
-                    </div>
+                    <Banner />
                     <Example />
                     <div className="container-fluid pt-5">
                         <div className="row px-xl-5 pb-3">
                             <ListCate />
                         </div>
                     </div>
-                    <div className="container-fluid offer pt-5">
+                    {/* <div className="container-fluid offer pt-5">
                         <div className="row px-xl-5">
                             <div className="col-md-6 pb-4">
-                                <div className="position-relative text-center text-md-right mb-2 py-5 px-5" style={{backgroundColor:"#00CCFF"}}>
-                                    <img src="https://themewagon.github.io/eshopper/img/offer-1.png" alt="" />
-                                    <div className="position-relative" >
-                                        <h5 className="text-uppercase mb-3" style={{color:"#FF6600"}}>Giảm giá 20% cho các sản phẩm Hạ - Thu</h5>
-                                        <h1 className="mb-4 font-weight-semi-bold">Áo Polo, T-shirt</h1>
-                                        <Link to="" className="btn btn-primary py-md-2 px-md-3" style={{}}>Mua ngay</Link>
+                                <div className="position-relative text-center text-md-right mb-2 py-5 px-5 offer-card">
+                                    <img src={img1} alt="" className="img-fluid" />
+                                    <div className="position-relative text-light">
+                                        <h5 className="text-uppercase mb-3 offer-title" style={{ color: "#FF6600" }}>
+                                            Giảm giá 20% cho các sản phẩm Hạ - Thu
+                                        </h5>
+                                        <h1 className="mb-4 font-weight-semi-bold offer-heading">Áo Polo, T-shirt</h1>
+                                        <Link to="" className="btn btn-primary py-md-2 px-md-3">
+                                            Mua ngay
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-6 pb-4">
-                                <div className="position-relative text-center text-md-left mb-2 py-5 px-5" style={{backgroundColor:"#00CCFF"}}>
-                                    <img src="https://themewagon.github.io/eshopper/img/offer-2.png" alt="" />
-                                    <div className="position-relative" >
-                                        <h5 className="text-uppercase mb-3" style={{color:"#FF6600"}}>Giảm giá 20% cho các sản phẩm Thu - Đông</h5>
-                                        <h1 className="mb-4 font-weight-semi-bold">Áo khoác, Hoodie</h1>
-                                        <Link to="" className="btn btn-primary py-md-2 px-md-3" >Mua ngay</Link>
+                                <div className="position-relative text-center text-md-left mb-2 py-5 px-5 offer-card">
+                                    <img src={img2} alt="" className="img-fluid" />
+                                    <div className="position-relative text-light">
+                                        <h5 className="text-uppercase mb-3 offer-title" style={{ color: "#FF6600" }}>
+                                            Giảm giá 20% cho các sản phẩm Thu - Đông
+                                        </h5>
+                                        <h1 className="mb-4 font-weight-semi-bold offer-heading">Áo khoác, Hoodie</h1>
+                                        <Link to="" className="btn btn-primary py-md-2 px-md-3">
+                                            Mua ngay
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div> */}
+                    <div>
+                        <img src={banner} alt="" className='h-screen w-screen' />
                     </div>
-
                     <div className="container-fluid pt-5">
                         <div className="text-center mb-4">
                             <h2 className="section-title px-5"><span className="px-2">Sản phẩm mới</span></h2>
                         </div>
-                        <div className="row px-xl-5 pb-3">
-                            <NewProducts />
-                        </div>
+                        <NewProducts />
                     </div>
                     <div className="container-fluid py-5">
                         <div className="row px-xl-5">

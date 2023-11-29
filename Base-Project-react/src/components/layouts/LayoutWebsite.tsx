@@ -7,7 +7,7 @@ import MenuBar from "../component/layout/menu";
 const LayoutWebsite = () => {
     return <div>
         <Header/>
-        <MenuBar/>
+       
         <Outlet />
         <Footer/>
     </div>;

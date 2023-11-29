@@ -17,6 +17,8 @@ const { Option } = Select;
 
 const Variant: React.FC = (product: any) => {
     const { data: options } = useGetOptionsQuery();
+    console.log(options);
+    
     const [open, setOpen] = useState(false);
     const [showSelect, setShowSelect] = useState(false);
     const [selectVariants, { data: variants, isLoading, error }] = useGetValueMutation();
@@ -25,11 +27,9 @@ const Variant: React.FC = (product: any) => {
         setOpen(true)
         setShowSelect(true);
         const result = Object.values(values);
-
         selectVariants({
             "arrayValue": result
         })
-
         console.log(open);
     };
     return (

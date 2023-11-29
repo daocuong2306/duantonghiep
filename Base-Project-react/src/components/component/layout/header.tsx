@@ -1,73 +1,51 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Input } from "@material-tailwind/react";
 import Image from '@/assets/image/395664742_238305892304631_1626048229353873057_n.png'
 const Header = () => {
+
+
     const token = localStorage.getItem("header")
+    const role = localStorage.getItem("role")
+
     const url = useNavigate()
-    const onLogout = (token: string) => {
-        localStorage.clear()
+    const logout = () => {
+        localStorage.removeItem("header")
+        localStorage.removeItem("role")
         url("/")
     }
     return (
-        <div className="container-fluid">
-            <div className="row bg-secondary py-2 px-xl-5">
-                <div className="col-lg-6 d-none d-lg-block">
-                    <div className="d-inline-flex align-items-center">
-                        <Link className="text-dark" to="">FAQs</Link>
-                        <span className="text-muted px-2">|</span>
-                        <Link className="text-dark" to="">Help</Link>
-                        <span className="text-muted px-2">|</span>
-                        <Link className="text-dark" to="">Support</Link>
-                    </div>
-                </div>
-                <div className="col-lg-6 text-center text-lg-right">
-                    <div className="d-inline-flex align-items-center">
-                        <Link className="text-dark px-2" to="">
-                            <i className="fab fa-facebook-f"></i>
-                        </Link>
-                        <Link className="text-dark px-2" to="">
-                            <i className="fab fa-twitter"></i>
-                        </Link>
-                        <Link className="text-dark px-2" to="">
-                            <i className="fab fa-linkedin-in"></i>
-                        </Link>
-                        <Link className="text-dark px-2" to="">
-                            <i className="fab fa-instagram"></i>
-                        </Link>
-                        <Link className="text-dark pl-2" to="">
-                            <i className="fab fa-youtube"></i>
-                        </Link>
-                    </div>
+        <div className="flex items-center justify-between bg-secondary py-2 px-xl-5 mb-3">
+            <div className="flex items-center space-x-2">
+                <img src={Image} alt="" className="h-16 w-auto" />
+
+
+
+            </div>
+
+            {/* Search Bar */}
+            <div className="flex items-center space-x-4 lg:w-1/3">
+                <div className="hidden lg:flex space-x-4">
+                    <Link to="/" className="text-dark hover:text-[#00CCFF]">Trang chủ</Link>
+                    <Link to="/products" className="text-dark hover:text-[#00CCFF]">Sản phẩm</Link>
+                    <Link to="" className="text-dark hover:text-[#00CCFF]">Thông tin</Link>
                 </div>
             </div>
-            <div className="row align-items-center py-1 px-xl-5">
-                <div className="col-lg-3 d-none d-lg-block">
-                    <Link to="" className="text-decoration-none">
-                        <img src={Image} alt="" style={{ height: "100px", width: "75%" }} />
-                    </Link>
+
+            {/* User Actions */}
+            {role && token ? role == "2" ? <div className="flex items-center space-x-4">
+                <Link to="/account" className="text-dark hover:text-[#00CCFF]"><i className="fas fa-user-alt"></i>   Tài khoản</Link>
+                <button onClick={() => logout()} className="text-dark hover:text-[#00CCFF]"><i className="fas fa-sign-out-alt"></i>   Đăng xuất</button>
+            </div> :
+                <div className="flex items-center space-x-4">
+                    <Link to="/admin" className="text-dark hover:text-[#00CCFF]"><i className="fas fa-tasks"></i>   Trang quản trị</Link>
+                    <button onClick={() => logout()} className="text-dark hover:text-[#00CCFF] hover:underline"><i className="fas fa-sign-out-alt"></i>   Đăng xuất</button>
                 </div>
-                <div className="col-lg-6 col-6 text-left">
-                    <form action="">
-                        <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Tìm kiếm sản phẩm" />
-                            <div className="input-group-append">
-                                <span className="input-group-text bg-transparent text-[#00CCFF]">
-                                    <i className="fa fa-search"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </form>
+                : <div className="flex items-center space-x-4">
+                    <Link to="/login" className="text-dark hover:text-[#00CCFF]"><i className="fas fa-sign-in-alt"></i>   Đăng nhập</Link>
+                    <Link to="/signup" className="text-dark hover:text-[#00CCFF]"><i className="fas fa-user-plus"></i>   Đăng ký</Link>
                 </div>
-                <div className="col-lg-3 col-6 text-right">
-                    <Link to="/account/bill" className="btn border">
-                        <i className="fas fa-heart text-[#00CCFF]"></i>
-                    </Link>
-                    <Link to="/cart" className="btn border">
-                        <i className="fas fa-shopping-cart text-[#00CCFF]"></i>
-                    </Link>
-                </div>
-            </div>
+            }
         </div>
     )
 }
