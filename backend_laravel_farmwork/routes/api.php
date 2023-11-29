@@ -166,6 +166,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('detail/getone/{id}', [DetailedProductController::class, 'getOneProduct']);
 // Home
 Route::get('home', [HomeController::class, 'home']);
+Route::get('productshop', [HomeController::class, 'productShop']);
 Route::post('sendWelcomeEmail', [EmailController::class, 'sendEmail']);
 
 //VNP
