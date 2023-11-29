@@ -24,7 +24,7 @@ class HomeController extends Controller
             ->limit(3)
             ->get();
         $categories = DB::table('category')->get();
-        $productNew = Product::orderBy('created_at', 'desc')->limit(3)->get();
+        $productNew = Product::orderBy('created_at', 'desc')->limit(4)->get();
 
         // if ($keyword != '') {
         //     $products = Product::where('name', 'like', "%$keyword%")
