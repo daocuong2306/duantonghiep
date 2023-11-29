@@ -34,16 +34,16 @@ const Header = () => {
 
             {/* User Actions */}
             {role && token ? role == "2" ? <div className="flex items-center space-x-4">
-                <Link to="/account" className="text-dark hover:text-[#00CCFF]">Tài khoản</Link>
-                <button onClick={() => logout()} className="text-dark hover:text-[#00CCFF]">Đăng xuất</button>
+                <Link to="/account" className="text-dark hover:text-[#00CCFF]"><i className="fas fa-user-alt"></i>   Tài khoản</Link>
+                <button onClick={() => logout()} className="text-dark hover:text-[#00CCFF]"><i className="fas fa-sign-out-alt"></i>   Đăng xuất</button>
             </div> :
                 <div className="flex items-center space-x-4">
-                    <Link to="/admin" className="text-dark hover:text-[#00CCFF]">Trang quản trị</Link>
-                    <button onClick={() => logout()} className="text-dark hover:text-[#00CCFF]">Đăng xuất</button>
+                    <Link to="/admin" className="text-dark hover:text-[#00CCFF]"><i className="fas fa-tasks"></i>   Trang quản trị</Link>
+                    <button onClick={() => logout()} className="text-dark hover:text-[#00CCFF] hover:underline"><i className="fas fa-sign-out-alt"></i>   Đăng xuất</button>
                 </div>
                 : <div className="flex items-center space-x-4">
-                    <Link to="/login" className="text-dark hover:text-[#00CCFF]">Đăng nhập</Link>
-                    <Link to="/signup" className="text-dark hover:text-[#00CCFF]">Đăng ký</Link>
+                    <Link to="/login" className="text-dark hover:text-[#00CCFF]"><i className="fas fa-sign-in-alt"></i>   Đăng nhập</Link>
+                    <Link to="/signup" className="text-dark hover:text-[#00CCFF]"><i className="fas fa-user-plus"></i>   Đăng ký</Link>
                 </div>
             }
         </div>
