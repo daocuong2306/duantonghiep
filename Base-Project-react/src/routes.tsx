@@ -32,6 +32,7 @@ import Account from "./components/client/account/account";
 import BillDashboard from "./components/admin/bill/dashboard";
 import HistoryBill from "./components/admin/bill/historyBill";
 import Checkbill from "./components/client/account/checkbill";
+import About from "./components/component/layout/about/about";
 
 
 
@@ -93,7 +94,10 @@ export const router = createBrowserRouter([
                 path: "/account/bill",
                 element: <Checkbill />
             },
-
+            {
+                path: "About",
+                element: <About />
+            },
         ]
     },
     {
