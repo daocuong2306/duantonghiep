@@ -15,7 +15,7 @@ const Header = () => {
         url("/")
     }
     return (
-        <div className="flex items-center justify-between bg-secondary py-2 px-xl-5 mb-3">
+        <div className="flex items-center justify-between py-2 px-xl-5 mb-3">
             <div className="flex items-center space-x-2">
                 <img src={Image} alt="" className="h-16 w-auto" />
 
@@ -26,24 +26,33 @@ const Header = () => {
             {/* Search Bar */}
             <div className="flex items-center space-x-4 lg:w-1/3">
                 <div className="hidden lg:flex space-x-4">
-                    <Link to="/" className="text-dark hover:text-[#00CCFF]">Trang chủ</Link>
-                    <Link to="/products" className="text-dark hover:text-[#00CCFF]">Sản phẩm</Link>
-                    <Link to="" className="text-dark hover:text-[#00CCFF]">Thông tin</Link>
+                    <Link to="/" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
+                        Trang chủ
+                    </Link>
+                    <Link to="/products" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
+                        Sản phẩm
+                        
+                    </Link>
+                    <Link to="" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
+                        Thông tin
+                        
+                    </Link>
                 </div>
             </div>
 
+
             {/* User Actions */}
             {role && token ? role == "2" ? <div className="flex items-center space-x-4">
-                <Link to="/account" className="text-dark hover:text-[#00CCFF]"><i className="fas fa-user-alt"></i>   Tài khoản</Link>
-                <button onClick={() => logout()} className="text-dark hover:text-[#00CCFF]"><i className="fas fa-sign-out-alt"></i>   Đăng xuất</button>
+                <Link to="/account" className="text-black hover:text-[#00CCFF]"><i className="fas fa-user-alt hover:text-[#00ccff]"></i>   Tài khoản</Link>
+                <button onClick={() => logout()} className="text-black hover:text-[#00CCFF]"><i className="fas fa-sign-out-alt hover:text-[#00ccff]"></i>   Đăng xuất</button>
             </div> :
                 <div className="flex items-center space-x-4">
-                    <Link to="/admin" className="text-dark hover:text-[#00CCFF]"><i className="fas fa-tasks"></i>   Trang quản trị</Link>
-                    <button onClick={() => logout()} className="text-dark hover:text-[#00CCFF] hover:underline"><i className="fas fa-sign-out-alt"></i>   Đăng xuất</button>
+                    <Link to="/admin" className="text-black hover:text-[#00CCFF]"><i className="fas fa-tasks hover:text-[#00ccff]"></i>   Trang quản trị</Link>
+                    <button onClick={() => logout()} className="text-black hover:text-[#00CCFF] hover:underline"><i className="fas fa-sign-out-alt hover:text-[#00ccff]"></i>   Đăng xuất</button>
                 </div>
                 : <div className="flex items-center space-x-4">
-                    <Link to="/login" className="text-dark hover:text-[#00CCFF]"><i className="fas fa-sign-in-alt"></i>   Đăng nhập</Link>
-                    <Link to="/signup" className="text-dark hover:text-[#00CCFF]"><i className="fas fa-user-plus"></i>   Đăng ký</Link>
+                    <Link to="/login" className="text-black hover:text-[#00CCFF]"><i className="fas fa-sign-in-alt hover:text-[#00ccff]"></i>   Đăng nhập</Link>
+                    <Link to="/signup" className="text-black hover:text-[#00CCFF]"><i className="fas fa-user-plus hover:text-[#00ccff]"></i>   Đăng ký</Link>
                 </div>
             }
         </div>

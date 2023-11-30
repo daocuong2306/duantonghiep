@@ -36,10 +36,21 @@ const Product = () => {
     };
     return (
         <Spin spinning={isLoading}>
+            <div className="flex items-center pl-[70%]">
+                <input
+                    type="text"
+                    className="border rounded-l py-2 px-4 outline-none"
+                    placeholder="Tìm kiếm..."
+                />
+                <button
+                    className="bg-blue-500 text-white hover:bg-blue-700 rounded-r py-2 px-4"
+                >
+                    Tìm kiếm
+                </button>
+            </div>
 
             <div className="bg-white">
                 <div>
-
                     <div className="relative z-40 lg:hidden" role="dialog" aria-modal="true">
 
                         <div className="fixed inset-0 bg-black bg-opacity-25"></div>
@@ -122,9 +133,9 @@ const Product = () => {
                         <section aria-labelledby="products-heading" className="pb-24 pt-6">
                             <h2 id="products-heading" className="sr-only">Products</h2>
 
-                            <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+                            <div className="flex gap-x-8 gap-y-10 lg:grid-cols-4">
 
-                                <form className="hidden lg:block">
+                                <form className="hidden lg:block w-[20%]">
                                     <div className="border-b border-gray-200 py-6">
                                         <h3 className="-my-3 flow-root">
                                             <button
@@ -215,29 +226,27 @@ const Product = () => {
                                     ))}
                                     <button className="btn-filter">Lọc</button>
                                 </form>
-
-
-                                <div className="grid grid-cols-3">
-                                    {products?.product.map((product) =>
-                                        <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-                                            <Link to={`/product/detail/${product.id}`}>
-                                                <img src={`http://localhost:8000${product.image}`}
-                                                    alt="Product" className="h-80 w-72 object-cover rounded-t-xl" />
+                                <div className="grid grid-cols-3 gap-4">
+                                    {products?.product.map((product) => (
+                                        <Link to={`/product/detail/${product.id}`} key={product.id}>
+                                            <div className="bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                                                <img
+                                                    src={`http://localhost:8000${product.image}`}
+                                                    alt="Product"
+                                                    className="h-[400px] w-[300px] rounded-lg object-cover rounded-t-xl"
+                                                />
                                                 <div className="px-4 py-3 w-72">
-                                                   
                                                     <p className="text-lg font-bold text-black truncate block capitalize">{product.name}</p>
                                                     <div className="flex items-center">
                                                         <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price}</p>
-                                                        {/* <del>
-                                                            <p className="text-sm text-gray-600 cursor-auto ml-2">$199</p>
-                                                        </del> */}
                                                         <div className="ml-auto text-[#00CCFF]">Xem thông tin chi tiết</div>
                                                     </div>
                                                 </div>
-                                            </Link>
-                                        </div>
-                                    )}
+                                            </div>
+                                        </Link>
+                                    ))}
                                 </div>
+
                             </div>
                         </section>
                     </main>
