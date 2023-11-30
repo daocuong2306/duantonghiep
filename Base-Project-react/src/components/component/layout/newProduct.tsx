@@ -6,15 +6,10 @@ const NewProducts = () => {
     const { data } = useGetDataQuery();
     console.log(data);
 
-    const [showMore, setShowMore] = useState(false);
-
-    // Display 4 products initially
-    const initialProducts = data?.data.productNew.slice(0, 3);
-
     return (
         <div className="container py-5">
             <div className="row pb-5 mb-4">
-                {initialProducts?.map((product) =>
+                {data?.data.productNew?.map((product) =>
                     <div className="col-lg-4 col-md-6 mb-4 mb-lg-0">
 
                         <div className="card rounded shadow-sm border-0">
