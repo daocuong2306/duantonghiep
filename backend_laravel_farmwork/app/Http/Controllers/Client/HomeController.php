@@ -24,7 +24,7 @@ class HomeController extends Controller
             ->limit(3)
             ->get();
         $categories = DB::table('category')->get();
-        $productNew = Product::orderBy('created_at', 'desc')->limit(4)->get();
+        $productNew = Product::orderBy('created_at', 'desc')->limit(8)->get();
 
         // if ($keyword != '') {
         //     $products = Product::where('name', 'like', "%$keyword%")
@@ -32,12 +32,19 @@ class HomeController extends Controller
         //         ->get();
         // } else {
         $products = DB::table('product')->get();
+        $productByCatrgory = DB::table('product')
+            ->join('category', 'product.id_category', '=', 'category.id')
+            ->select('product.*', 'category.name as category_name')
+            ->get();
+            // dd($products);
+        $groupedProducts = $productByCatrgory->groupBy('category_name');
         // }
         // $data['evaluate'] = $evaluate;
         $data['products'] = $products;
         $data['categories'] = $categories;
         $data['banner'] = $banner;
         $data['productNew'] = $productNew;
+        $data['groupedProducts']=$groupedProducts;
         if ($data) {
             return response()->json([
                 'status' => 200,
