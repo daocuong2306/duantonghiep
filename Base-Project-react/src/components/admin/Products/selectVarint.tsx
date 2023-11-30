@@ -81,6 +81,8 @@ const SelectVarint: React.FC = (check: boolean) => {
                 product_id: check?.id
             };
         });
+        console.log(formDataArray);
+
         addVariant({
             "variants": formDataArray
         })
@@ -99,6 +101,7 @@ const SelectVarint: React.FC = (check: boolean) => {
 
     if (!isLoading && !error && data?.msg) {
         openNotification(data?.msg);
+        url('/admin')
     }
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);

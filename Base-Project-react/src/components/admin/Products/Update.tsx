@@ -90,6 +90,8 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
 
     const outputArray = variants?.handleVariant ? Object.values(variants.handleVariant) : [];
     const variantData: DataType[] = outputArray;
+    console.log("variants", variants);
+
     // end variant
     //update Variant
     //img upload
@@ -320,14 +322,14 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
 
                         </div>
                         {/* variant */}
-                        {variantData.length > 0 ? <Table columns={columns} dataSource={variantData} /> : null}
-                        {
-                            !checkVariant ? null : <Form.Item wrapperCol={{ offset: 19, span: 16 }}>
+                        {variantData.length > 0 ? <div>
+                            <Table columns={columns} dataSource={variantData} />
+                            <Form.Item wrapperCol={{ offset: 19, span: 16 }}>
                                 <Button htmlType="submit">Gửi</Button>
                             </Form.Item>
-                        }
+                        </div> : null}
                     </Form>
-                    {variantData.length > 0 ? null : <Variant product={product} id={1} />}
+                    {variantData.length > 0 ? null : <Variant product={product?.product} id={1} />}
                 </Spin>
             </Drawer>
         </>

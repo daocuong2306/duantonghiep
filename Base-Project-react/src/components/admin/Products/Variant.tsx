@@ -32,6 +32,8 @@ const Variant: React.FC = (product: any) => {
         })
         console.log(open);
     };
+    console.log("id", product?.product.id);
+
     return (
         <>
             {showSelect && <SelectVarint check={open} data={variants} id={product?.product.id} />}
@@ -87,7 +89,7 @@ const Variant: React.FC = (product: any) => {
                                     Gửi
                                 </Button>
                                 <Button htmlType="reset">Cài lại</Button>
-                            </Space>    
+                            </Space>
                         </Form.Item>
                     </Col>
                 </Row>
