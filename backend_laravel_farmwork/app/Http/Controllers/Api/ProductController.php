@@ -176,7 +176,7 @@ class ProductController extends Controller
     {
              $rules = [
             'name' => 'required',
-            'price' => 'required|number',
+            'price' => 'required|numeric',
             'description' => 'required',
             'status' => 'required',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:2048',
