@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from './header'
-import Footer from './footer'
+import Footer from './footer/footer'
 import Category from './category'
 import Banner from './banner'
 import Example from './ListProduct'
@@ -13,6 +13,7 @@ import MenuBar from './menu'
 import img1 from "../img/bst-new-arrivals-nam_jpg.jpg";
 import img2 from "../img/upsell_t1123_4__jpg.jpg";
 import banner from "../../../../img/maxresdefault.jpg"
+import Comment from './commen'
 type Props = {}
 
 const Home = (props: Props) => {
@@ -70,8 +71,8 @@ const Home = (props: Props) => {
                         </div>
                         <NewProducts />
                     </div>
-                   
 
+                    <Comment />
                     <Link to="#" className="btn btn-primary back-to-top"><i className="fa fa-angle-double-up"></i></Link>
                 </body>
             </div>
