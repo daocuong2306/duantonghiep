@@ -72,19 +72,19 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     Route::post('admin/settingshop', [SettingController::class, 'setingshope']);
     Route::get('admin/editinforshop', [SettingController::class, 'InforShop']);
     // Categories
-    Route::get('categories', [CategoryController::class, 'index']);
+    // Route::get('categories', [CategoryController::class, 'index']);
     Route::post('categories/add', [CategoryController::class, 'store']);
     Route::get('categories/{id}', [CategoryController::class, 'show']);
     Route::post('categories/edit/{id}', [CategoryController::class, 'update']);
     Route::delete('categories/delete/{id}', [CategoryController::class, 'destroy']);
     //Products
-    Route::get('products', [ProductController::class, 'index']);
+    // Route::get('products', [ProductController::class, 'index']);
     Route::post('products/add', [ProductController::class, 'store']);
     Route::get('products/show/{id}', [ProductController::class, 'show']);
     Route::post('products/edit/{id}', [ProductController::class, 'update']);
     Route::delete('products/delete/{id}', [ProductController::class, 'destroy']);
     //Options
-    Route::get('options', [OptionController::class, 'index']);
+    // Route::get('options', [OptionController::class, 'index']);
     Route::post('options/add', [OptionController::class, 'store']);
     Route::get('options/{id}', [OptionController::class, 'show']);
     Route::post('options/edit/{id}', [OptionController::class, 'update']);
@@ -115,6 +115,14 @@ Route::group(['middleware' => ['auth:api', 'role']], function () {
     //Statistical
     Route::get('statistical/list', [StatisticalController::class, 'summary']);
 });
+//list ko cần check user
+//cattegory
+Route::get('categories', [CategoryController::class, 'index']);
+//product
+Route::get('products', [ProductController::class, 'index']);
+//options
+Route::get('options', [OptionController::class, 'index']);
+
 // ................ Cả Amin và User đều sử dụng => không check role chỉ check auth  ..............................
 Route::group(['middleware' => 'auth:api'], function () {
     //User
