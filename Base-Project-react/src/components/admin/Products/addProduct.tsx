@@ -160,11 +160,12 @@ const AddProduct = () => {
         }
     }, [products]);
     const optionId = categories?.categories.map((item: any) => ({ value: item.id, label: item.name }));
-
+    console.log(product);
+    
     return <div>
         {contextHolder}
 
-        {check ? <Variant product={product} /> : <div></div>}
+        {check ? <Variant product={product}  id={0}/> : <div></div>}
         <div className="grid grid-cols-5 gap-8">
             <div className="col-span-5 xl:col-span-3">
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

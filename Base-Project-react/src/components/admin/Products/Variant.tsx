@@ -18,7 +18,7 @@ const { Option } = Select;
 const Variant: React.FC = (product: any) => {
     const { data: options } = useGetOptionsQuery();
     console.log(options);
-    
+
     const [open, setOpen] = useState(false);
     const [showSelect, setShowSelect] = useState(false);
     const [selectVariants, { data: variants, isLoading, error }] = useGetValueMutation();
@@ -36,7 +36,7 @@ const Variant: React.FC = (product: any) => {
         <>
             {showSelect && <SelectVarint check={open} data={variants} id={product?.product.id} />}
 
-            <div className="p-4  flex items-center justify-between">
+            {product?.id == 0 ? <div className="p-4  flex items-center justify-between">
                 <div className="product-image-container flex items-center">
                     <div className="product-image-thumbnail rounded-full overflow-hidden">
                         <img
@@ -54,7 +54,7 @@ const Variant: React.FC = (product: any) => {
                         </p>
                     </div>
                 </div>
-            </div>
+            </div> : null}
             <Form
                 name="validate_other"
                 onFinish={onFinish}
@@ -84,10 +84,10 @@ const Variant: React.FC = (product: any) => {
                         <Form.Item wrapperCol={{ span: 15, offset: 14 }}>
                             <Space>
                                 <Button htmlType="submit">
-                                  Gửi
+                                    Gửi
                                 </Button>
                                 <Button htmlType="reset">Cài lại</Button>
-                            </Space>
+                            </Space>    
                         </Form.Item>
                     </Col>
                 </Row>

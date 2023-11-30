@@ -99,7 +99,6 @@ const SelectVarint: React.FC = (check: boolean) => {
 
     if (!isLoading && !error && data?.msg) {
         openNotification(data?.msg);
-        url('/admin/dashboard')
     }
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
@@ -112,7 +111,7 @@ const SelectVarint: React.FC = (check: boolean) => {
 
     return (
         <>
-        
+
             <Modal
                 visible={open} // Thay đổi "open" thành "visible"
                 title="Title âcsca"
@@ -134,7 +133,7 @@ const SelectVarint: React.FC = (check: boolean) => {
                     <Table columns={columns} dataSource={variantData} />
                     <Form.Item wrapperCol={{ offset: 19, span: 16 }}>
                         <Button htmlType="submit">
-                           Gửi
+                            Gửi
                         </Button>
                     </Form.Item>
                 </Form>
