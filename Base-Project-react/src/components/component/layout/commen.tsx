@@ -10,7 +10,7 @@ const Comment = (props: Props) => {
                     <h2
                         className="text-center text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl"
                     >
-                        Read trusted reviews from our customers
+                        Đánh giá của khách hàng
                     </h2>
 
                     <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8">
