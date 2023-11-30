@@ -176,10 +176,10 @@ class ProductController extends Controller
     {
              $rules = [
             'name' => 'required',
-            'price' => 'required',
+            'price' => 'required|number',
             'description' => 'required',
             'status' => 'required',
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:2048',
             'code' => 'required',
             'id_category' => 'required',
         ];
@@ -189,7 +189,6 @@ class ProductController extends Controller
             'price.required' => 'Vui lòng nhập giá sản phẩm.',
             'description.required' => 'Vui lòng nhập mô tả sản phẩm.',
             'status.required' => 'Vui lòng chọn trạng thái sản phẩm.',
-            'image.required' => 'Vui lòng chọn một hình ảnh.',
             'image.image' => 'Tệp tải lên phải là hình ảnh.',
             'image.mimes' => 'Hình ảnh phải có định dạng: jpg, png, jpeg hoặc gif.',
             'image.max' => 'Kích thước tối đa cho phép của hình ảnh là 2048 KB.',
