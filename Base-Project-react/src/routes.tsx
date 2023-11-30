@@ -95,7 +95,7 @@ export const router = createBrowserRouter([
                 element: <Checkbill />
             },
             {
-                path: "About",
+                path: "about",
                 element: <About />
             },
         ]
