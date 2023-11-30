@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Input } from "@material-tailwind/react";
 import Image from '@/assets/image/395664742_238305892304631_1626048229353873057_n.png'
 const Header = () => {
-
-    const [showMenu, setShowMenu] = useState(false);
+    
 
     const handleMenuToggle = () => {
         setShowMenu(!showMenu);
@@ -80,7 +79,7 @@ const Header = () => {
                                     <div className='py-2'>
                                         <button
                                             onClick={() => logout()}
-                                            className="text-black hover:text-[#00CCFF] hover:underline ml-[15%]"
+                                            className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]"
                                         >
                                             <i className="fas fa-sign-out-alt hover:text-[#00ccff]"></i> Đăng xuất
                                         </button>
@@ -93,7 +92,7 @@ const Header = () => {
                                             <i className="fas fa-sign-in-alt hover:text-[#00ccff]"></i> Đăng nhập
                                         </Link>
                                     </div>
-                                    <div className='py-2 text-center'>
+                                    <div className='py-2 ml-[13%]'>
                                         <Link to="/signup" className="text-black hover:text-[#00CCFF]">
                                             <i className="fas fa-user-plus hover:text-[#00ccff]"></i> Đăng ký
                                         </Link>
