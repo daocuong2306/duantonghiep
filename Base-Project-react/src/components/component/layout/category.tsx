@@ -7,21 +7,53 @@ type Props = {};
 const Category = (props: Props) => {
     const { data } = useGetDataQuery();
     console.log(data);
-    const [isOpen, setIsOpen] = useState(false);
-
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
 
     return (
-        <div className="dropdown" style={{paddingTop:"5%"}}>
-            <button className="btn" onClick={toggleDropdown} style={{backgroundColor:"#00CCFF",color:"white", padding:"3% 20%",border:"solid 1%"}}>Danh mục</button>
-            {isOpen && data?.data.categories.map((category) =>
-                <div style={{padding:"2%"}}>
-                    <Link to="" style={{color:"#00CCFF"}}>{category.name}</Link>
-                </div>
-            )}
+        <div className="container py-5">
+            <div className="row pb-5 mb-3">
+                {data?.data.productNew?.map((product, index) => (
+                    <div key={index} className="col-lg-3 col-md-6 mb-4">
+                        <div className="card rounded shadow-sm border-0">
+                            <div className="card-body p-4">
+                                <img
+                                    src={`http://localhost:8000${product.image}`}
+                                    alt=""
+                                    className="img-fluid d-block mx-auto mb-3 rounded-lg"
+                                    style={{ height: '300px', width: '300px', objectFit: 'cover' }}
+                                />
+                                <h5>
+                                    <Link to={`/product/detail/${product.id}`} className="text-dark">
+                                        {product.name}
+                                    </Link>
+                                </h5>
+                                <p className="small text-muted font-italic" >{product.price} VND</p>
+                                <ul className="list-inline small">
+                                    <li className="list-inline-item m-0">
+                                        <i className="fa fa-star text-success"></i>
+                                    </li>
+                                    <li className="list-inline-item m-0">
+                                        <i className="fa fa-star text-success"></i>
+                                    </li>
+                                    <li className="list-inline-item m-0">
+                                        <i className="fa fa-star text-success"></i>
+                                    </li>
+                                    <li className="list-inline-item m-0">
+                                        <i className="fa fa-star text-success"></i>
+                                    </li>
+                                    <li className="list-inline-item m-0">
+                                        <i className="fa fa-star-o text-success"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+
+
         </div>
+
     );
 }
 

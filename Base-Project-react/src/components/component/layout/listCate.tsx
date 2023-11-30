@@ -4,25 +4,52 @@ import { Link } from 'react-router-dom';
 
 const ListCate = () => {
     const { data } = useGetDataQuery();
-
+    console.log(data);
     return (
-        data?.data.categories.map((category) => (
-            <div className="col-lg-4 col-md-6 pb-1" key={category.id}>
-                <div className="cat-item d-flex flex-column border mb-4" style={{ borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                    <Link to="" className="cat-img position-relative overflow-hidden mb-3" style={{ borderRadius: '8px 8px 0 0' }}>
-                        <img
-                            className="img-fluid"
-                            src={`http://localhost:8000${category.image}`}
-                            alt=""
-                            style={{ width: '100%', height: 'auto', borderRadius: '8px 8px 0 0' }}
-                        />
-                    </Link>
-                    <h5 className="font-weight-semi-bold m-0" style={{ padding: '10px', textAlign: 'center', background: '#f8f9fa', borderRadius: '0 0 8px 8px' }}>
-                        {category.name}
-                    </h5>
-                </div>
+        <div className="container py-5">
+            <div className="text-center mb-4">
+                <h2 className="section-title px-5"><span className="px-2">Sản phẩm mới</span></h2>
             </div>
-        ))
+            <div className="row pb-5 mb-3">
+                {data?.data.productNew?.map((product, index) => (
+                    <div key={index} className="col-lg-3 col-md-6 mb-4">
+                        <div className="card rounded shadow-sm border-0">
+                            <div className="card-body p-4">
+                                <img
+                                    src={`http://localhost:8000${product.image}`}
+                                    alt=""
+                                    className="img-fluid d-block mx-auto mb-3 rounded-lg"
+                                    style={{ height: '300px', width: '300px', objectFit: 'cover' }}
+                                />
+                                <h5>
+                                    <Link to={`/product/detail/${product.id}`} className="text-dark">
+                                        {product.name}
+                                    </Link>
+                                </h5>
+                                <p className="small text-muted font-italic" >{product.price} VND</p>
+                                <ul className="list-inline small">
+                                    <li className="list-inline-item m-0">
+                                        <i className="fa fa-star text-success"></i>
+                                    </li>
+                                    <li className="list-inline-item m-0">
+                                        <i className="fa fa-star text-success"></i>
+                                    </li>
+                                    <li className="list-inline-item m-0">
+                                        <i className="fa fa-star text-success"></i>
+                                    </li>
+                                    <li className="list-inline-item m-0">
+                                        <i className="fa fa-star text-success"></i>
+                                    </li>
+                                    <li className="list-inline-item m-0">
+                                        <i className="fa fa-star-o text-success"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
     );
 };
 
