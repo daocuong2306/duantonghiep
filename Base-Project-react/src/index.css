@@ -10834,10 +10834,10 @@ a.text-dark:focus {
     transition: background-color 0.3s ease;
     border: #00ccff 1px solid;
     width: 100%;
-    margin-top: 2%;
+    margin-bottom: 2%;
 }
 
-.btn-bill-account:target {
+.btn-bill-account:hover {
     background-color: #00CCFF;
     color: white
         /* Thay #yourCustomColor bằng màu bạn muốn khi hover */
