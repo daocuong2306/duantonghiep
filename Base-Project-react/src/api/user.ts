@@ -78,7 +78,7 @@ const userApi = createApi({
         }),
         updateAccount:builder.mutation({
             query: (account: any) => ({
-                url: `/user/edituser`,
+                url: `user/edituser`,
                 method: "POST",
                 body: account.formData,
                 headers: {
