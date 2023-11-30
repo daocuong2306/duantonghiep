@@ -45,7 +45,7 @@ const productApi = createApi({
             query: (product: any) => ({
                 url: `/edit/${product.id}`,
                 method: "POST",
-                body: product
+                body: product.formData
             }),
             invalidatesTags: ['Product']
         }),
