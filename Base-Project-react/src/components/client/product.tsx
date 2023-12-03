@@ -4,8 +4,8 @@ import { useGetProductsQuery } from "../../api/product";
 import { ICategory } from "../../interface/category";
 import { IProduct } from "../../interface/product";
 import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { Fragment, useState } from 'react'
+import { Link, useParams } from "react-router-dom";
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
@@ -16,9 +16,23 @@ const Product = () => {
     const { data: products, isLoading } = useGetProductsQuery(find);
     const { data: categories } = useGetCategoriesQuery();
     const { data: options } = useGetOptionsQuery();
-    console.log(products);
-    const [isMenuOpen, setMenuOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 9;//số lượng sản phẩm hiển thị thay đổi ở đây
 
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [products]);
+
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = products?.product?.slice(indexOfFirstProduct, indexOfLastProduct);
+
+    const totalPages = Math.ceil(products?.product?.length / productsPerPage);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+    const [isMenuOpen, setMenuOpen] = useState(false);
     const toggleMenu = () => {
         setMenuOpen(!isMenuOpen);
     };
@@ -226,27 +240,44 @@ const Product = () => {
                                     ))}
                                     <button className="btn-filter">Lọc</button>
                                 </form>
-                                <div className="grid grid-cols-3 gap-4">
-                                    {products?.product.map((product) => (
-                                        <Link to={`/product/detail/${product.id}`} key={product.id}>
-                                            <div className="bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-                                                <img
-                                                    src={`http://localhost:8000${product.image}`}
-                                                    alt="Product"
-                                                    className="h-[400px] w-[300px] rounded-lg object-cover rounded-t-xl"
-                                                />
-                                                <div className="px-4 py-3 w-72">
-                                                    <p className="text-lg font-bold text-black truncate block capitalize">{product.name}</p>
-                                                    <div className="flex items-center">
-                                                        <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price}</p>
-                                                        <div className="ml-auto text-[#00CCFF]">Xem thông tin chi tiết</div>
+                                <div>
+                                    <div className="grid grid-cols-3 gap-4">
+                                        {currentProducts?.map((product) => (
+                                            <Link to={`/product/detail/${product.id}`} key={product.id}>
+                                                <div className="bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+                                                    <img
+                                                        src={`http://localhost:8000${product.image}`}
+                                                        alt="Product"
+                                                        className="h-[400px] w-[300px] rounded-lg object-cover rounded-t-xl"
+                                                    />
+                                                    <div className="px-4 py-3 w-72">
+                                                        <p className="text-lg font-bold text-black truncate block capitalize">{product.name}</p>
+                                                        <div className="flex items-center">
+                                                            <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price}</p>
+                                                            <div className="ml-auto text-[#00CCFF]">Xem thông tin chi tiết</div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                    <div className="flex justify-center mt-6 pt-4">
+                                        <ul className="flex">
+                                            {Array.from({ length: totalPages }, (_, index) => (
+                                                <li key={index} className="mx-2">
+                                                    <button
+                                                        onClick={() => handlePageChange(index + 1)}
+                                                        className={`${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-white text-gray-700'
+                                                            } px-3 py-1 rounded-md focus:outline-none pagination duration-300 ease-in-out hover:bg-blue-500 hover:text-white`}
+                                                    >
+                                                        {index + 1}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
 
+                                </div>
                             </div>
                         </section>
                     </main>
