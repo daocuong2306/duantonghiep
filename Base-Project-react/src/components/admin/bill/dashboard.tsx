@@ -18,7 +18,9 @@ const BillDashboard: React.FC = () => {
     const { data: dataBill } = useGetBillAdminQuery();
     const [updateBill, { data: updateData }] = useUpdateBillMutation();
     const [loading, setLoading] = useState(false);
-
+    const [orderStatus, setOrderStatus] = useState('');  // assume you have orderStatus state
+    const [option, setOption] = useState('');  // assume you have option state
+    const [isDisabled, setIsDisabled] = useState(false);
     const handleStatusChange = (orderId: React.Key, value: string) => {
         console.log(`Order ID ${orderId} status changed to ${value}`);
         const updatedData = {
@@ -32,8 +34,19 @@ const BillDashboard: React.FC = () => {
     };
 
     useEffect(() => {
-        setLoading(false);
+        console.log(updateData);
+        if (updateData?.message == "Hóa đơn được cập nhật thành công") {
+            setLoading(false);
+        }
     }, [updateData]);
+    useEffect(() => {
+        // Kiểm tra điều kiện và cập nhật isDisabled khi option hoặc orderStatus thay đổi
+        setIsDisabled(
+            (orderStatus === 'Pending' && option === 'Pending') ||
+            (orderStatus === 'Browser' && option === 'Browser') ||
+            (orderStatus === 'Transport' && (option === 'Pending' || option === 'Browser'))
+        );
+    }, [orderStatus, option]);
 
     const orderStatusOptions = ["Pending", "Browser", "Transport", "Cancel", "Success"];
     const checkStatus = {
@@ -61,9 +74,9 @@ const BillDashboard: React.FC = () => {
                             key={option}
                             value={option}
                             disabled={
-                                (orderStatus === 'Pending' && option === 'Pending') ||
-                                (orderStatus === 'Browser' && option === 'Browser') ||
-                                (orderStatus === 'Transport' && (option === 'Pending' || option === 'Browser'))
+                                (orderStatus == 'Pending' && option == 'Pending') ||
+                                (orderStatus == 'Browser' && option == 'Browser') ||
+                                (orderStatus == 'Transport' && (option == 'Pending' || option == 'Browser'))
                             }
                         >
                             {checkStatus[option]}
