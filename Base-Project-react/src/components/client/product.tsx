@@ -11,6 +11,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import { Spin } from "antd";
 import { useGetOptionsQuery } from "@/api/option";
+import Search from "./search";
 const Product = () => {
     const [find, setFind] = useState({});
     const { data: products, isLoading } = useGetProductsQuery(find);
@@ -50,18 +51,6 @@ const Product = () => {
     };
     return (
         <Spin spinning={isLoading}>
-            <div className="flex items-center pl-[70%]">
-                <input
-                    type="text"
-                    className="border rounded-l py-2 px-4 outline-none"
-                    placeholder="Tìm kiếm..."
-                />
-                <button
-                    className="bg-blue-500 text-white hover:bg-blue-700 rounded-r py-2 px-4"
-                >
-                    Tìm kiếm
-                </button>
-            </div>
 
             <div className="bg-white">
                 <div>
@@ -88,7 +77,6 @@ const Product = () => {
                     <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
                             <h1 className="text-4xl font-bold tracking-tight text-gray-900">Sản phẩm</h1>
-
                             <div className="flex items-center">
                                 <div className="relative inline-block text-left">
                                     <div>
