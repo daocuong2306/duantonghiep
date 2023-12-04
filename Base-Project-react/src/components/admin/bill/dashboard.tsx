@@ -37,8 +37,6 @@ const BillDashboard: React.FC = () => {
 
     const orderStatusOptions = ["Pending", "Browser", "Transport", "Cancel", "Success"];
 
-
-
     const columns = [
         { title: 'Tên', dataIndex: 'user_name', key: 'user_name' },
         { title: 'Địa chỉ', dataIndex: 'address', key: 'address' },

@@ -6,7 +6,7 @@ const Comment = (props: Props) => {
     return (
         <div className=''>
             <section className="bg-white">
-                <div className="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+                <div className=" py-5 md:px-20 md:mx-[190px] sm:mx-10 px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
                     <h2
                         className="text-center text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl"
                     >
@@ -238,8 +238,8 @@ const Comment = (props: Props) => {
                     </div>
                 </div>
             </section>
-            
-{/* 
+
+            {/* 
             <section className="relative bg-[url(https://lavendermedia.vn/wp-content/uploads/2019/04/word-image-11.png)] bg-cover bg-center bg-no-repeat">
                 <div className="p-8 md:p-12 lg:px-16 lg:py-24">
                     <div className="mx-auto max-w-lg text-center">

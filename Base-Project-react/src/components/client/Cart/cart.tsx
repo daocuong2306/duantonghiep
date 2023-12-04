@@ -57,11 +57,11 @@ const CartProduct = (props: Props) => {
             <div>
                 <div className="container-fluid bg-secondary mb-5">
                     <div className="d-flex flex-column align-items-center justify-content-center h-[300px]" >
-                        <h1 className="font-weight-semi-bold text-uppercase mb-3">Shopping Cart</h1>
+                        <h1 className="font-weight-semi-bold text-uppercase mb-3">Giỏ Hàng</h1>
                         <div className="d-inline-flex">
-                            <p className="m-0"><a href="">Home</a></p>
+                            <p className="m-0"><a href="">Trang chủ</a></p>
                             <p className="m-0 px-2">-</p>
-                            <p className="m-0">Shopping Cart</p>
+                            <p className="m-0">Giỏ Hàng</p>
                         </div>
                     </div>
                 </div>
@@ -86,7 +86,7 @@ const CartProduct = (props: Props) => {
                                         <tr key={cart.id}>
                                             <td className="align-middle d-flex justify-content-center align-items-center">
                                                 <img src={`http://127.0.0.1:8000${cart.image_product}`} className='w-[50px]' alt="" />
-                                                <p>Colorful Stylish Shirt</p>
+                                                <p>{cart.name_product}</p>
                                             </td>
                                             <td className="align-middle">{`${cart.option_value[0]} - ${cart.option_value[1]}`}</td>
                                             <td className="align-middle">${cart.sku_price}</td>
@@ -115,31 +115,27 @@ const CartProduct = (props: Props) => {
                             </table>
                         </div>
                         <div className="col-lg-4">
-                            <form className="mb-5" action="">
+                            {/* <form className="mb-5" action="">
                                 <div className="input-group">
                                     <input type="text" className="form-control p-4" placeholder="Coupon Code" />
                                     <div className="input-group-append">
-                                        <button className="btn btn-primary">Apply Coupon</button>
+                                        <button className="btn btn-primary">Thêm mã </button>
                                     </div>
                                 </div>
-                            </form>
+                            </form> */}
                             <div className="card border-secondary mb-5">
                                 <div className="card-header bg-secondary border-0">
-                                    <h4 className="font-weight-semi-bold m-0">Cart Summary</h4>
+                                    <h4 className="font-weight-semi-bold m-0">Thành tiền</h4>
                                 </div>
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between mb-3 pt-1">
-                                        <h6 className="font-weight-medium">Subtotal</h6>
+                                        <h6 className="font-weight-medium">Tổng tiền</h6>
                                         <h6 className="font-weight-medium">${dataCart?.total_amount}</h6>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <h6 className="font-weight-medium">Shipping</h6>
-                                        <h6 className="font-weight-medium">$10</h6>
                                     </div>
                                 </div>
                                 <div className="card-footer border-secondary bg-transparent">
                                     <div className="d-flex justify-content-between mt-2">
-                                        <h5 className="font-weight-bold">Total</h5>
+                                        <h5 className="font-weight-bold">Thanh toán</h5>
                                         <h5 className="font-weight-bold">${dataCart?.total_amount}</h5>
                                     </div>
                                     <Link to="/bill"><button className="btn btn-block btn-primary my-3 py-3">Thanh Toán</button></Link>

@@ -6,12 +6,12 @@ const ListCate = () => {
     const { data } = useGetDataQuery();
     console.log(data);
     return (
-        <div className="container py-5">
+        <div className=" py-5 md:px-20 md:mx-[190px] sm:mx-10">
             <div className="text-center mb-4">
                 <h2 className="section-title px-5"><span className="px-2">Sản phẩm</span></h2>
             </div>
             <div className="row pb-5 mb-3">
-                {data?.data.productNew?.map((product, index) => (
+                {data?.data.groupedProducts.Quần?.map((product, index) => (
                     <div key={index} className="col-lg-3 col-md-6 mb-4">
                         <div className="card rounded shadow-sm border-0">
                             <div className="card-body p-4">
