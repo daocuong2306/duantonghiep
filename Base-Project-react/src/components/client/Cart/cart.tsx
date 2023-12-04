@@ -138,7 +138,7 @@ const CartProduct = (props: Props) => {
                                         <h5 className="font-weight-bold">Thanh toán</h5>
                                         <h5 className="font-weight-bold">${dataCart?.total_amount}</h5>
                                     </div>
-                                    <Link to="/bill"><button className="btn btn-block btn-primary my-3 py-3">Thanh Toán</button></Link>
+                                    {dataCart?.total_amount == 0 ? "Bạn cần thêm sản phẩm để có thể thanh toán" :  <Link to="/bill"><button className="btn btn-block btn-primary my-3 py-3">Thanh Toán</button></Link>}
                                 </div>
                             </div>
                         </div>

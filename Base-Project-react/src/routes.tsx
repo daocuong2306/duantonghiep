@@ -52,6 +52,8 @@ if (roleA) {
 if (header == undefined) {
     localStorage.removeItem('header');
 }
+console.log(role);
+
 export const router = createBrowserRouter([
     {
         path: "/",

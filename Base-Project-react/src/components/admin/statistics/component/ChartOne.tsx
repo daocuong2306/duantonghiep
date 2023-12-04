@@ -19,13 +19,10 @@ const ChartOne: React.FC<ChartOneProps> = () => {
 
   let chartData = [
     {
-      name: 'Product One',
+      name: '2023',
       data: monthlyData,
     },
-    {
-      name: 'Product Two',
-      data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
-    },
+
   ];
 
   const options: ApexOptions = {
