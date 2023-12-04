@@ -32,7 +32,6 @@ const Variant: React.FC = (product: any) => {
         })
         console.log(open);
     };
-    console.log("id", product?.product.id);
 
     return (
         <>

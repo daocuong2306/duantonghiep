@@ -3,9 +3,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Input } from "@material-tailwind/react";
 import Image from '@/assets/image/395664742_238305892304631_1626048229353873057_n.png'
 const Header = () => {
-  
+
     const [showMenu, setShowMenu] = useState(false);
-    
+
     const handleMenuToggle = () => {
         setShowMenu(!showMenu);
     };
@@ -23,11 +23,7 @@ const Header = () => {
             <div className="flex items-center justify-between py-2 px-xl-5 mb-3">
                 <div className="flex items-center space-x-2">
                     <img src={Image} alt="" className="h-16 w-auto" />
-
-
-
                 </div>
-
                 {/* Search Bar */}
                 <div className="flex items-center space-x-4 lg:w-1/3">
                     <div className="hidden lg:flex space-x-4">
@@ -72,9 +68,9 @@ const Header = () => {
                                 </div>
                             ) : (
                                 <div className="">
-                                    <div className='py-2 text-center'>
-                                        <Link to="/admin" className="text-black hover:text-[#00CCFF]">
-                                            <i className="fas fa-tasks hover:text-[#00ccff]"></i> Trang quản trị
+                                    <div className='py-2 '>
+                                        <Link to="/admin" className="text-black hover:text-[#00CCFF]  ml-[6%]   ">
+                                            Trang quản trị
                                         </Link>
                                     </div>
                                     <div className='py-2'>
@@ -82,8 +78,18 @@ const Header = () => {
                                             onClick={() => logout()}
                                             className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]"
                                         >
-                                            <i className="fas fa-sign-out-alt hover:text-[#00ccff]"></i> Đăng xuất
+                                            Đăng xuất
                                         </button>
+                                    </div>
+                                    <div className='py-2'>
+                                        <Link to="/cart" className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]">
+                                            Giỏ Hàng
+                                        </Link>
+                                    </div>
+                                    <div className='py-2'>
+                                        <Link to="/account" className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]">
+                                            Tài khoản
+                                        </Link>
                                     </div>
                                 </div>
                             ) : (

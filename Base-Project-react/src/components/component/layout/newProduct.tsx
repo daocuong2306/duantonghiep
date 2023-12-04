@@ -7,7 +7,7 @@ const NewProducts = () => {
     console.log(data);
 
     return (
-        <div className="container py-5">
+        <div className="py-5 md:px-20 md:mx-[190px] sm:mx-10">
             <div className="row pb-5 mb-3">
                 {data?.data.productNew?.map((product, index) => (
                     <div key={index} className="col-lg-3 col-md-6 mb-4">

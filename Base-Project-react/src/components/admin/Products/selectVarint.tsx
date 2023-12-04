@@ -13,7 +13,6 @@ const SelectVarint: React.FC = (check: boolean) => {
         setOpen(false);
     };
     console.log(check);
-
     const columns: ColumnsType<DataType> = [
         {
             title: 'Name',
@@ -55,38 +54,28 @@ const SelectVarint: React.FC = (check: boolean) => {
                     <Input />
                 </Form.Item>
             ),
-        },
-        {
-            title: 'Sku',
-            dataIndex: 'key',
-            key: 'Sku',
-            render: (dataIndex) => (
-                <Form.Item
-                    name={`Sku${dataIndex}`} // Thay đổi tên trường Form
-                    rules={[{ required: true, message: 'Please input your Sku!' }]}
-                >
-                    <Input />
-                </Form.Item>
-            ),
-        },
+        }
     ];
 
     const onFinish = (values: any) => {
         const formDataArray = valueVariant?.variant.map((item) => {
+            const randomSuffix = Math.floor(Math.random() * 1000); // Adjust the range as needed
+            const sku = `${check?.id}${randomSuffix}`;
             return {
                 option_value: item.map((i) => i.id),
-                price: Number(values[`price${item.map((i) => i.id).join(',')}`]), // Sử dụng id để truy cập giá trị Form
-                stock: Number(values[`Stock${item.map((i) => i.id).join(',')}`]), // Sử dụng id để truy cập giá trị Form
-                sku: Number(values[`Sku${item.map((i) => i.id).join(',')}`]), // Sử dụng id để truy cập giá trị Form
-                product_id: check?.id
+                price: Number(values[`price${item.map((i) => i.id).join(',')}`]),
+                stock: Number(values[`Stock${item.map((i) => i.id).join(',')}`]),
+                sku: sku,
+                product_id: check?.id,
             };
         });
         console.log(formDataArray);
 
         addVariant({
-            "variants": formDataArray
-        })
+            variants: formDataArray,
+        });
     };
+
     //thông báo lỗi
     const [api, contextHolder] = notification.useNotification();
     const openNotification = (e: any) => {
@@ -101,7 +90,7 @@ const SelectVarint: React.FC = (check: boolean) => {
 
     if (!isLoading && !error && data?.msg) {
         openNotification(data?.msg);
-        url('/admin')
+        url('/admin/dashboard')
     }
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
@@ -133,7 +122,7 @@ const SelectVarint: React.FC = (check: boolean) => {
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
                 >
-                    <Table columns={columns} dataSource={variantData} />
+                    <Table columns={columns} dataSource={variantData} pagination={false} />
                     <Form.Item wrapperCol={{ offset: 19, span: 16 }}>
                         <Button htmlType="submit">
                             Gửi

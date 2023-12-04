@@ -37,13 +37,13 @@ const Bill = (props: Props) => {
     return (
         <div>
             <section >
-                <div className="container py-5">
+                <div className="container py-5 mt-[50px]">
                     <div className="card">
                         <div className="card-body">
                             <div className="row d-flex justify-content-center pb-5">
                                 <div className="col-md-7 col-xl-5 mb-4 mb-md-0">
                                     <div className="py-4 d-flex flex-row">
-                                        <h5><span className="far fa-check-square pe-2"></span><b>ELIGIBLE</b> |</h5>
+                                        <h5><span className="far fa-check-square pe-2"></span><b>Phương thức thanh toán</b> |</h5>
                                         <span className="ps-2">Pay</span>
                                     </div>
                                     <h4 className="text-success">{cartData?.total_amount}VND</h4>
@@ -128,12 +128,11 @@ const Bill = (props: Props) => {
                                 </div>
 
                                 <div className="col-md-5 col-xl-4 offset-xl-1">
-                                    <div className="py-4 d-flex justify-content-end">
-                                        <h6><a href="#!">Cancel and return to website</a></h6>
-                                    </div>
+
                                     <div className="rounded d-flex flex-column p-2" >
                                         <div className="p-2 me-3">
-                                            <h4>Order Recap</h4>
+                                            <h4>Thông tin đơn hàng</h4>
+                                            <hr />
                                         </div>
                                         {cartData.carts.map((cart: any) => {
                                             return <div>

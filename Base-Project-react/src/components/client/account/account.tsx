@@ -3,16 +3,19 @@ import { Link, useNavigate } from "react-router-dom"
 import image from "../../../../img/user.png"
 import React, { useRef, useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, Spin, UploadProps, message } from 'antd';
+import { Avatar, Button, Col, DatePicker, Drawer, Form, Input, List, Row, Select, Space, Spin, UploadProps, message } from 'antd';
 import Upload, { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 import { useForm } from "react-hook-form";
-import userImage from "../../../../img/user.png"
+import { useCancelBillMutation, useGetBillQuery } from "@/api/bill";
+
+
+
 const Account = () => {
     const token = localStorage.getItem("header")
     const { data, isLoading } = useInforUserQuery(token)
     console.log(data);
-    const url=useNavigate()
-   const [update, { isLoading: updateLoading }] = useUpdateAccountMutation()
+    const url = useNavigate()
+    const [update, { isLoading: updateLoading }] = useUpdateAccountMutation()
     const { control, handleSubmit, setValue, getValues, register } = useForm()
     const readerRef = useRef<any>(null);
     const onFinish = async (values: any) => {
@@ -39,15 +42,15 @@ const Account = () => {
                 // If a new image is selected, append it to the formData
                 formData.append('image', selectedFile);
             }
-            
+
             try {
                 const upInfor = { formData, token }
                 const response = await update(upInfor);
                 console.log(response);
-                if(response?.error){
+                if (response?.error) {
                     message.error(response?.error.data.msg)
                 }
-                else{
+                else {
                     message.success('Cập nhật thông tin thành công')
                 }
             }
@@ -121,12 +124,23 @@ const Account = () => {
         handleFileChange(event)
         handleChange(event)
     }
-
+    //check bill
+    const { data: dataBill } = useGetBillQuery();
+    const [cancelBill] = useCancelBillMutation();
+    const onCancelBill = (id: any) => {
+        const product = {
+            id,
+            count: {
+                "order_status": "Cancel"
+            }
+        };
+        cancelBill(product);
+    };
     return isLoading ?
         <Spin spinning={isLoading} className="pl-[50%]"></Spin>
         :
         (<section style={{ backgroundColor: "#eee;" }}>
-            <div className="container py-5">
+            <div className="container py-5 mt-[50px]">
                 <form onSubmit={handleSubmit(onFinish)}>
                     <div className="row">
                         <div className="col-lg-4">
@@ -134,19 +148,23 @@ const Account = () => {
                                 <div className="card-body text-center d-flex flex-column align-items-center">
                                     {!check ? (
                                         <>
+
+                                            <div className="w-20 h-20 overflow-hidden rounded-full">
+                                                {data?.data.image == null ?
+                                                    <img src={image} className="w-full h-full object-cover" />
+                                                    : <img src={`http://127.0.0.1:8000/${data?.data.image}`} className="w-full h-full object-cover" />
+                                                }
+                                            </div>
                                             <Button
                                                 onClick={() => {
                                                     setImageUrl(undefined);
                                                     setSelectedFile(null);
                                                     setCheck(true);
                                                 }}
-                                                className="delete-button"
+                                                className="delete-button mt-10"
                                             >
-                                                Xóa
-                                            </Button>
-                                            <div className="w-20 h-20 overflow-hidden rounded-full">
-                                                <img src={`http://127.0.0.1:8000/${data?.data.image}`} className="w-full h-full object-cover" />
-                                            </div>
+                                                Cập nhật ảnh
+                                            </Button>   
                                         </>
                                     ) : (
                                         <div className="w-full">
@@ -169,10 +187,6 @@ const Account = () => {
                                             </Upload>
                                         </div>
                                     )}
-                                    <div className="">
-                                        <Link to=""><button type="button" className="btn-cart-account">Giỏ hàng</button></Link>
-                                        <Link to=""><button type="button" className="btn-bill-account">Thanh toán</button></Link>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -254,6 +268,35 @@ const Account = () => {
                     </div>
                 </form>
             </div>
+            {/* check bill */}
+            <>
+                <h3 className="text-center">Đơn hàng đã đặt</h3>
+                <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl mt-[50px]">
+                    <List
+                        pagination={{}}
+                        dataSource={dataBill}
+                        renderItem={(item, index) => (
+                            <List.Item
+                                actions={[
+                                    <p key="list-loadmore-edit">Trạng thái</p>,
+                                    <p key="list-loadmore-more">{item.order_status}</p>,
+                                    item.order_status === "Pending" || item.order_status === "Browser" ? (
+                                        <p key="list-loadmore-cancel">
+                                            <button className='btn btn-danger' onClick={() => { onCancelBill(item.id) }}>Hủy đơn</button>
+                                        </p>
+                                    ) : null
+                                ]}
+                            >
+                                <List.Item.Meta
+                                    avatar={<Avatar src={`http://127.0.0.1:8000${item?.cart[0].image}`} />}
+                                    title={<Link to="">{item.address}</Link>}
+                                    description={`Hình thức thanh toán ${item.payments} | Giá tiền : ${item.total_price}`}
+                                />
+                            </List.Item>
+                        )}
+                    />
+                </div>
+            </>
         </section>
         )
 }

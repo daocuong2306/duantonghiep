@@ -144,7 +144,7 @@ export default function DetailProduct() {
                                                                     key={size}
                                                                     value={size.option_value_id}
                                                                     disabled={!size.inStock}
-                                                                    className='cursor-pointer text-gray-900 shadow-sm relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-red-500 focus:bg-[#00CCFF] sm:flex-1 sm:py-6 transition-colors ease-in-out duration-300'
+                                                                    className='cursor-pointer text-gray-900 shadow-sm relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase sm:flex-1 sm:py-6 transition-colors ease-in-out duration-300'
                                                                     onClick={() => {
                                                                         // Handle the click event and update the state or perform any other actions
                                                                         // You can use the onClick handler to update the selectedColor or selectedSize state
