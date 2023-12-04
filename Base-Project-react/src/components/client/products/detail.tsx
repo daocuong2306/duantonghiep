@@ -65,10 +65,9 @@ export default function DetailProduct() {
             setLoading(true)
         }
     }
-    const dataCmt = {
-        cmt: detaiProduct?.data.comment,
-        total: detaiProduct?.data.total_comment
-    }
+    console.log("aa", detaiProduct);
+
+
     console.log(add);
 
     useEffect(() => {
@@ -82,6 +81,13 @@ export default function DetailProduct() {
             }
         }
     }, [add]);
+    const priceValue = detaiProduct?.data.priceSku == null
+        ? detaiProduct?.data.product[0]?.price
+        : detaiProduct?.data.priceSku[0]?.sku_price;
+
+    const formattedPrice = typeof priceValue === 'number'
+        ? priceValue.toLocaleString()
+        : "N/A";
     return (
         <Spin spinning={loading}>
             <div className="bg-white mt-[50px]">
@@ -101,7 +107,7 @@ export default function DetailProduct() {
                             </div>
                             <div className="mt-4 lg:row-span-3 lg:mt-0">
                                 <h2 className="sr-only">Product information</h2>
-                                <p className="text-3xl tracking-tight text-gray-900">{detaiProduct?.data.priceSku == null ? detaiProduct?.data.product[0]?.price : detaiProduct?.data.priceSku[0]?.sku_price}</p>
+                                <p className="text-3xl tracking-tight text-gray-900">{formattedPrice} đ</p>
 
                                 Reviews
                                 <div className="mt-6">
@@ -212,27 +218,26 @@ export default function DetailProduct() {
                                     </button>
                                 </form>
                             </div>
-                            <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-                                {/* Description and details */}
-                                <div>
-                                    <h3 className="sr-only">Mô tả</h3>
 
-                                    <div className="space-y-6">
-                                        <div className="space-y-6" dangerouslySetInnerHTML={{ __html: detaiProduct?.data.product[0]?.description }}></div>
-                                    </div>
-                                </div>
-                                <div className="mt-10">
-                                    <h3 className="text-base font-medium text-gray-900">Chất liệu</h3>
+                        </div>
+
+                    </div>
+
+                    <div className="app container mx-auto p-4">
+                        <div className="py-10 lg:col-span-2 lg:col-start-1  lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+                            {/* Description and details */}
+                            <div>
+                                <h3 className="sr-only">Mô tả</h3>
+
+                                <div className="space-y-6">
+                                    <div className="space-y-6" dangerouslySetInnerHTML={{ __html: detaiProduct?.data.product[0]?.description }}></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-                    </div>
                 </div >
 
-                <Comment />
-                <Showcomt data={dataCmt} />
+                <Comment  />
             </div >
         </Spin >
     )

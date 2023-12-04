@@ -76,15 +76,12 @@ const Comment = (props: Props) => {
                                         </svg>
                                     </div>
 
-                                    <p className="mt-0.5 text-lg font-medium text-gray-900">Paul Starr</p>
+                                    <p className="mt-0.5 text-lg font-medium text-gray-900">Đào Cường</p>
                                 </div>
                             </div>
 
                             <p className="mt-4 text-gray-700">
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa sit
-                                rerum incidunt, a consequuntur recusandae ab saepe illo est quia
-                                obcaecati neque quibusdam eius accusamus error officiis atque
-                                voluptates magnam!
+                                Mình thấy đồ đạc của shop này khá basic, không quá kiểu cách hay bánh bèo. Nhưng được cái dễ mặc, dễ phối và phù hợp với các teen năng động. Mặc dù shop mới tham gia bán quần áo trên Shopee được gần 2 năm nhưng lượng hàng bán ra và lượng đánh giá nhận được lại cực kỳ khủng.
                             </p>
                         </blockquote>
 
@@ -150,15 +147,12 @@ const Comment = (props: Props) => {
                                         </svg>
                                     </div>
 
-                                    <p className="mt-0.5 text-lg font-medium text-gray-900">Paul Starr</p>
+                                    <p className="mt-0.5 text-lg font-medium text-gray-900">Công Tiến</p>
                                 </div>
                             </div>
 
                             <p className="mt-4 text-gray-700">
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa sit
-                                rerum incidunt, a consequuntur recusandae ab saepe illo est quia
-                                obcaecati neque quibusdam eius accusamus error officiis atque
-                                voluptates magnam!
+                                Nếu bạn là một cô nàng bánh bèo thích chưng diện, mình nghĩ bạn sẽ thích shop này. Ở đây, các nàng teen có thể tìm thấy trang phục đủ mọi phong cách, từ điệu đà, cá tính đến sexy. Cùng một em chân váy, mix với áo sơ mi nghiêm túc để đi học cũng được, mix với áo trễ vai điệu đà là thoải mái đi dạo phố.
                             </p>
                         </blockquote>
 
@@ -224,15 +218,12 @@ const Comment = (props: Props) => {
                                         </svg>
                                     </div>
 
-                                    <p className="mt-0.5 text-lg font-medium text-gray-900">Paul Starr</p>
+                                    <p className="mt-0.5 text-lg font-medium text-gray-900">Gia Khánh</p>
                                 </div>
                             </div>
 
                             <p className="mt-4 text-gray-700">
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa sit
-                                rerum incidunt, a consequuntur recusandae ab saepe illo est quia
-                                obcaecati neque quibusdam eius accusamus error officiis atque
-                                voluptates magnam!
+                                Thêm một địa chỉ nữa cho các teen tham khảo đây. Shop này mới bán quần áo trên Shopee được hơn 1 năm nhưng mình thấy giá cả và chất lượng đều ổn. Nhiều bộ đã được mix sẵn cho các nàng tham khảo. Đặc biệt, shop này còn hay sale khủng quanh năm nên mình rất hay mua được giá hời.
                             </p>
                         </blockquote>
                     </div>

@@ -8,7 +8,7 @@ const ListCate = () => {
     return (
         <div className=" py-5 md:px-20 md:mx-[190px] sm:mx-10">
             <div className="text-center mb-4">
-                <h2 className="section-title px-5"><span className="px-2">Sản phẩm</span></h2>
+                <h2 className="section-title px-5"><span className="px-2">Sản phẩm mới</span></h2>
             </div>
             <div className="row pb-5 mb-3">
                 {data?.data.groupedProducts.Quần?.map((product, index) => (

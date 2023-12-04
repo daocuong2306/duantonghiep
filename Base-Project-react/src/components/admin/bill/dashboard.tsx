@@ -15,12 +15,9 @@ interface Bill {
 }
 
 const BillDashboard: React.FC = () => {
-    const { data: dataBill } = useGetBillAdminQuery();
+    const { data: dataBill, refetch } = useGetBillAdminQuery();
     const [updateBill, { data: updateData }] = useUpdateBillMutation();
     const [loading, setLoading] = useState(false);
-    const [orderStatus, setOrderStatus] = useState('');  // assume you have orderStatus state
-    const [option, setOption] = useState('');  // assume you have option state
-    const [isDisabled, setIsDisabled] = useState(false);
     const handleStatusChange = (orderId: React.Key, value: string) => {
         console.log(`Order ID ${orderId} status changed to ${value}`);
         const updatedData = {
@@ -35,19 +32,15 @@ const BillDashboard: React.FC = () => {
 
     useEffect(() => {
         console.log(updateData);
-        if (updateData?.message == "Hóa đơn được cập nhật thành công") {
+        if (updateData?.message === "Hóa đơn được cập nhật thành công") {
+            // Refresh the useGetBillAdminQuery after successful update
             setLoading(false);
         }
     }, [updateData]);
     useEffect(() => {
-        // Kiểm tra điều kiện và cập nhật isDisabled khi option hoặc orderStatus thay đổi
-        setIsDisabled(
-            (orderStatus === 'Pending' && option === 'Pending') ||
-            (orderStatus === 'Browser' && option === 'Browser') ||
-            (orderStatus === 'Transport' && (option === 'Pending' || option === 'Browser'))
-        );
-    }, [orderStatus, option]);
-
+        // Refetch dataCart whenever the component mounts
+        refetch();
+    }, []);
     const orderStatusOptions = ["Pending", "Browser", "Transport", "Cancel", "Success"];
     const checkStatus = {
         "Pending": "Chờ duyệt",
