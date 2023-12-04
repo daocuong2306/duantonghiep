@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { Button, Input, Rate } from 'antd';
+import { Button, Input, Rate, Spin, notification } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAddCommentMutation } from '@/api/comment';
 
@@ -11,6 +11,7 @@ const Comment = () => {
     const [comment, setComment] = useState('');
     const [rating, setRating] = useState(0);
     const url = useNavigate()
+    const [loading, setLoading] = useState(false);
     const handleCommentChange = (e) => {
         setComment(e.target.value);
     };
@@ -30,36 +31,55 @@ const Comment = () => {
         }
         console.log(data.token);
         addComment(data);
+        setLoading(true);
     };
-    if (commentData) {
-
-        alert(commentData.error)
-    }
+    //thông báo
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (m, d) => {
+        api.open({
+            message: m,
+            description: d
+        });
+    };
+    useEffect(() => {
+        if (commentData) {
+            if (commentData?.message == "Bạn Phải Đăng nhập") {
+                openNotification('Bạn chưa đăng nhập', 'bạn phải đăng nhập để sử dụng chức năng này');
+                setLoading(false); // This will not trigger a re-render immediately
+            } else {
+                openNotification('Bạn đã bình luận thành công', "");
+                setLoading(false); // This will not trigger a re-render immediately
+            }
+        }
+    }, [commentData]);
     return (
-        <div className="app container mx-auto p-4">
-            <div id="comment-box" className="mb-4">
-                <h2 className="text-xl font-bold mb-2">Bình luận của bạn:</h2>
-                <Input.TextArea
-                    rows={4}
-                    placeholder="Nhập bình luận của bạn..."
-                    value={comment}
-                    onChange={handleCommentChange}
-                />
-            </div>
+        <Spin spinning={loading}>
+            {contextHolder}
+            <div className="app container mx-auto p-4">
+                <div id="comment-box" className="mb-4">
+                    <h2 className="text-xl font-bold mb-2">Bình luận của bạn:</h2>
+                    <Input.TextArea
+                        rows={4}
+                        placeholder="Nhập bình luận của bạn..."
+                        value={comment}
+                        onChange={handleCommentChange}
+                    />
+                </div>
 
-            <div id="rating-stars" className="flex items-center mb-4">
-                <h2 className="text-xl font-bold mr-2">Đánh giá:</h2>
-                <Rate value={rating} onChange={handleRatingChange} />
-            </div>
-            <Button
-                type="primary"
-                onClick={handleSubmit}
-                style={{ backgroundColor: "red" }}
-            >
-                Gửi
-            </Button>
+                <div id="rating-stars" className="flex items-center mb-4">
+                    <h2 className="text-xl font-bold mr-2">Đánh giá:</h2>
+                    <Rate value={rating} onChange={handleRatingChange} />
+                </div>
+                <Button
+                    type="primary"
+                    onClick={handleSubmit}
+                    style={{ backgroundColor: "red" }}
+                >
+                    Gửi
+                </Button>
 
-        </div>
+            </div>
+        </Spin >
     );
 };
 

@@ -36,7 +36,13 @@ const BillDashboard: React.FC = () => {
     }, [updateData]);
 
     const orderStatusOptions = ["Pending", "Browser", "Transport", "Cancel", "Success"];
-
+    const checkStatus = {
+        "Pending": "Chờ duyệt",
+        "Browser": "Đã duyệt",
+        "Transport": "Vận Chuyển",
+        "Cancel": "Hủy Đơn",
+        "Success": "Thành công"
+    }
     const columns = [
         { title: 'Tên', dataIndex: 'user_name', key: 'user_name' },
         { title: 'Địa chỉ', dataIndex: 'address', key: 'address' },
@@ -60,7 +66,7 @@ const BillDashboard: React.FC = () => {
                                 (orderStatus === 'Transport' && (option === 'Pending' || option === 'Browser'))
                             }
                         >
-                            {option}
+                            {checkStatus[option]}
                         </Select.Option>
                     ))}
                 </Select>
@@ -78,7 +84,7 @@ const BillDashboard: React.FC = () => {
                 <Space wrap>
                     <Link to={`/admin/historybills/${id}`}>
                         <Button type="primary" danger>
-                           Xem chi tiết đơn hàng
+                            Xem chi tiết đơn hàng
                         </Button>
                     </Link>
                 </Space>

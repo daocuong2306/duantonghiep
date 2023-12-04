@@ -69,15 +69,22 @@ export default function DetailProduct() {
         cmt: detaiProduct?.data.comment,
         total: detaiProduct?.data.total_comment
     }
+    console.log(add);
+
     useEffect(() => {
         if (add) {
-            openNotification('Thêm sản phẩm vào giỏ hàng thành công', 'Bạn đã thêm sản phẩm vào giỏ hàng thành công');
-            setLoading(false); // This will not trigger a re-render immediately
+            if (add?.message == "Bạn Phải Đăng nhập") {
+                openNotification('Bạn chưa đăng nhập', 'bạn phải đăng nhập để sử dụng chức năng này');
+                setLoading(false); // This will not trigger a re-render immediately
+            } else {
+                openNotification('Thêm sản phẩm vào giỏ hàng thành công', 'Bạn đã thêm sản phẩm vào giỏ hàng thành công');
+                setLoading(false); // This will not trigger a re-render immediately
+            }
         }
     }, [add]);
     return (
         <Spin spinning={loading}>
-            <div className="bg-white">
+            <div className="bg-white mt-[50px]">
                 {contextHolder}
                 <div className="pt-6">
                     {/* Image gallery */}
@@ -113,9 +120,6 @@ export default function DetailProduct() {
                                             ))}
                                         </div>
                                         <p className="sr-only">{reviews.average} out of 5 stars</p>
-                                        <a href={reviews.href} className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                                            {reviews.totalCount} reviews
-                                        </a>
                                     </div>
                                 </div>
 

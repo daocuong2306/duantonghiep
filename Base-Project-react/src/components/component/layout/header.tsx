@@ -32,7 +32,6 @@ const Header = () => {
                         </Link>
                         <Link to="/products" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
                             Sản phẩm
-
                         </Link>
                         <Link to="/about" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
                             Thông tin
@@ -52,18 +51,28 @@ const Header = () => {
                             {/* Các phần tử menu */}
                             {role && token ? role === "2" ? (
                                 <div className="">
-                                    <div className='py-2 text-center'>
-                                        <Link to="/account" className="text-black hover:text-[#00CCFF]">
-                                            <i className="fas fa-user-alt hover:text-[#00ccff]"></i> Tài khoản
+                                    <div className='py-2'>
+                                        <Link to="/account" className="text-black hover:text-[#00CCFF] ml-[6%]">
+                                            Tài khoản
                                         </Link>
                                     </div>
-                                    <div className=''>
+                                    <div className='py-2'>
                                         <button
                                             onClick={() => logout()}
-                                            className="text-black m-4 hover:text-[#00CCFF]"
+                                            className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]"
                                         >
-                                            <i className="fas fa-sign-out-alt hover:text-[#00ccff]"></i> Đăng xuất
+                                            Đăng xuất
                                         </button>
+                                    </div>
+                                    <div className='py-2'>
+                                        <Link to="/cart" className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]">
+                                            Giỏ Hàng
+                                        </Link>
+                                    </div>
+                                    <div className='py-2'>
+                                        <Link to="/account" className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]">
+                                            Tài khoản
+                                        </Link>
                                     </div>
                                 </div>
                             ) : (

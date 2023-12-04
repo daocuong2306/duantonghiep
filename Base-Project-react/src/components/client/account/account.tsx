@@ -128,14 +128,25 @@ const Account = () => {
     const { data: dataBill } = useGetBillQuery();
     const [cancelBill] = useCancelBillMutation();
     const onCancelBill = (id: any) => {
-        const product = {
-            id,
-            count: {
-                "order_status": "Cancel"
-            }
-        };
-        cancelBill(product);
+        const comfirmCancel = window.confirm("Bạn có muốn hủy đơn này");
+        if (comfirmCancel) {
+            const product = {
+                id,
+                count: {
+                    "order_status": "Cancel"
+                }
+            };
+            cancelBill(product);
+        }
     };
+    console.log("dataBill", dataBill);
+    const checkStatus = {
+        "Pending": "Chờ duyệt",
+        "Browser": "Đã duyệt",
+        "Transport": "Vận Chuyển",
+        "Cancel": "Hủy Đơn",
+        "Success": "Thành công"
+    }
     return isLoading ?
         <Spin spinning={isLoading} className="pl-[50%]"></Spin>
         :
@@ -164,7 +175,7 @@ const Account = () => {
                                                 className="delete-button mt-10"
                                             >
                                                 Cập nhật ảnh
-                                            </Button>   
+                                            </Button>
                                         </>
                                     ) : (
                                         <div className="w-full">
@@ -279,7 +290,7 @@ const Account = () => {
                             <List.Item
                                 actions={[
                                     <p key="list-loadmore-edit">Trạng thái</p>,
-                                    <p key="list-loadmore-more">{item.order_status}</p>,
+                                    <p key="list-loadmore-more">{checkStatus[item.order_status]}</p>,
                                     item.order_status === "Pending" || item.order_status === "Browser" ? (
                                         <p key="list-loadmore-cancel">
                                             <button className='btn btn-danger' onClick={() => { onCancelBill(item.id) }}>Hủy đơn</button>
