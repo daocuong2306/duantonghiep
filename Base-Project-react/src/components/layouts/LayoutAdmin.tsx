@@ -65,12 +65,17 @@ const LayoutAdmin: React.FC = () => {
                             key: "7",
                             icon: <AiFillFolder />,
                             label: <Link to="/admin/bills">Đơn hàng</Link>
+                        },
+                        {
+                            key: "8",
+                            icon: <AiFillFolder />,
+                            label: <Link to="/admin/Discount">Mã giảm giá</Link>
                         }
                     ]}
                 />
             </Sider>
             <Layout className="site-layout" style={{ marginLeft: 200 }}>
-                <MenuBar/>
+                <MenuBar />
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div style={{ padding: 24, background: colorBgContainer }}>
                         <Outlet />

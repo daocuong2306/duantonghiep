@@ -33,6 +33,8 @@ import BillDashboard from "./components/admin/bill/dashboard";
 import HistoryBill from "./components/admin/bill/historyBill";
 import Checkbill from "./components/client/account/checkbill";
 import About from "./components/component/layout/about/about";
+import Discount from "./components/admin/discount/add";
+import DiscountDashboard from "./components/admin/discount/list";
 
 
 
@@ -118,7 +120,6 @@ export const router = createBrowserRouter([
                 path: "dashboard",
                 element: (
                     <div>
-                        <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
                         < Dashboard />
                     </div>
                 ),
@@ -196,6 +197,15 @@ export const router = createBrowserRouter([
             {
                 path: "historybills/:id",
                 element: <HistoryBill />,
+            },
+            ,
+            {
+                path: "addDiscount",
+                element: <Discount />,
+            },
+            {
+                path: "Discount",
+                element: <DiscountDashboard />,
             }
         ],
     },

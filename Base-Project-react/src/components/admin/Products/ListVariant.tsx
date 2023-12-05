@@ -35,6 +35,8 @@ const ListVariant = () => {
     useEffect(() => {
         setIsEmpty(false);
     }, [data]);
+    console.log(product);
+    
     return (
         <div>
             <Spin spinning={productLoading}>
@@ -43,9 +45,9 @@ const ListVariant = () => {
                 ) : (
                     <div> <div className="p-4  flex items-center justify-between">
                         <div className="product-image-container flex items-center">
-                            <div className="product-image-thumbnail rounded-full overflow-hidden">
+                            <div className="product-image-thumbnail  overflow-hidden">
                                 <img
-                                    className="w-20 h-20"
+                                    className="w-full h-full"
                                     src={`http://127.0.0.1:8000${product?.product.image}`}
                                     alt=""
                                 />
@@ -55,21 +57,25 @@ const ListVariant = () => {
                                     {product?.product.name}
                                 </h1>
                                 <p className="text-lg text-gray-600 mb-2">
-                                    Giá: {product?.product.code}
+                                    Loại: {product?.product.category_name}
+                                </p>
+                                <p className="text-lg text-gray-600 mb-2">
+                                    Mã sản phẩm: {product?.product.code}
+                                </p>
+                                <p className="text-lg text-gray-600 mb-2">
+                                    Giá: {product?.product.price}
+                                </p>
+                                <p className="text-lg text-gray-600 mb-2">
+                                    Mô tả: <div dangerouslySetInnerHTML={{ __html: product?.product.description }} />
                                 </p>
                             </div>
                         </div>
-                        <button className="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">Xóa</button>
                     </div>
                         <div className="mt-8">
                             <div className="border border-gray-200 p-4 rounded-lg shadow-lg">
                                 <Table columns={columns} dataSource={data} />
                             </div>
                         </div></div>
-
-
-
-
                 )}
             </Spin>
         </div>
