@@ -21,7 +21,7 @@ const Home = (props: Props) => {
 
     return (
         isLoading ? <Spin spinning={isLoading} className='pl-[50%]'></Spin> :
-            <div className=''>
+            <div className='mt-[7.5%]'>
                 <body>
                     <Banner />
                     {/* <Example /> */}
