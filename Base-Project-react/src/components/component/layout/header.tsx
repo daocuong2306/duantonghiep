@@ -57,6 +57,12 @@ const Header = () => {
                                         </Link>
                                     </div>
                                     <div className='py-2'>
+                                        <Link to="/cart" className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]">
+                                            Giỏ Hàng
+                                        </Link>
+                                    </div>
+
+                                    <div className='py-2'>
                                         <button
                                             onClick={() => logout()}
                                             className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]"
@@ -64,16 +70,7 @@ const Header = () => {
                                             Đăng xuất
                                         </button>
                                     </div>
-                                    <div className='py-2'>
-                                        <Link to="/cart" className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]">
-                                            Giỏ Hàng
-                                        </Link>
-                                    </div>
-                                    <div className='py-2'>
-                                        <Link to="/account" className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]">
-                                            Tài khoản
-                                        </Link>
-                                    </div>
+
                                 </div>
                             ) : (
                                 <div className="">
@@ -82,14 +79,7 @@ const Header = () => {
                                             Trang quản trị
                                         </Link>
                                     </div>
-                                    <div className='py-2'>
-                                        <button
-                                            onClick={() => logout()}
-                                            className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]"
-                                        >
-                                            Đăng xuất
-                                        </button>
-                                    </div>
+
                                     <div className='py-2'>
                                         <Link to="/cart" className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]">
                                             Giỏ Hàng
@@ -99,6 +89,14 @@ const Header = () => {
                                         <Link to="/account" className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]">
                                             Tài khoản
                                         </Link>
+                                    </div>
+                                    <div className='py-2'>
+                                        <button
+                                            onClick={() => logout()}
+                                            className="text-black hover:text-[#00CCFF] hover:underline ml-[6%]"
+                                        >
+                                            Đăng xuất
+                                        </button>
                                     </div>
                                 </div>
                             ) : (
