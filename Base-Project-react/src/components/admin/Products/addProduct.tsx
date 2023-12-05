@@ -33,10 +33,10 @@ const beforeUpload = (file: RcFile) => {
 const AddProduct = () => {
     // Xử lý sự kiện khi người dùng chọn tệp
     const [selectedCate, setselectedCate] = useState(null);
-    const { data: categories,isLoading } = useGetCategoriesQuery();
+    const { data: categories, isLoading } = useGetCategoriesQuery();
     const url = useNavigate()
     const readerRef = useRef<any>(null);
-    const [addProduct, { data: products,isLoading:addLoading }] = useAddProductMutation();
+    const [addProduct, { data: products, isLoading: addLoading }] = useAddProductMutation();
     const { control, handleSubmit, setValue, getValues, register } = useForm();
     const [product, setProduct] = useState([]);
     //tìm và chọn select
@@ -161,11 +161,11 @@ const AddProduct = () => {
     }, [products]);
     const optionId = categories?.categories.map((item: any) => ({ value: item.id, label: item.name }));
     console.log(product);
-    
+
     return <div>
         {contextHolder}
 
-        {check ? <Variant product={product}  id={0}/> : <div></div>}
+
         <div className="grid grid-cols-5 gap-8">
             <div className="col-span-5 xl:col-span-3">
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -248,9 +248,9 @@ const AddProduct = () => {
                                     {...register('code')}
                                 />
                             </div>
-                            <div className="flex justify-end gap-4">
+                            {check ? "" : <div className="flex justify-end gap-4">
                                 <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2 text-center">Thêm sản phẩm</button>
-                            </div>
+                            </div>}
                         </form>
                     </div>
                 </div>
@@ -273,6 +273,7 @@ const AddProduct = () => {
                 </div>
             </div>
         </div>
+        {check ? <Variant product={product} id={0} /> : <div></div>}
     </div >
 }
 

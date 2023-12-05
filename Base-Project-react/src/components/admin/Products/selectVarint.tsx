@@ -15,7 +15,7 @@ const SelectVarint: React.FC = (check: boolean) => {
     console.log(check);
     const columns: ColumnsType<DataType> = [
         {
-            title: 'Name',
+            title: 'Kiểu dáng',
             dataIndex: 'name',
             key: 'name',
             render: (dataIndex) => (
@@ -30,7 +30,7 @@ const SelectVarint: React.FC = (check: boolean) => {
             ),
         },
         {
-            title: 'Price',
+            title: 'Giá',
             dataIndex: 'key',
             key: 'price',
             render: (dataIndex) => (
@@ -43,7 +43,7 @@ const SelectVarint: React.FC = (check: boolean) => {
             ),
         },
         {
-            title: 'Stock',
+            title: 'Sô lượng',
             dataIndex: 'key',
             key: 'Stock',
             render: (dataIndex) => (
@@ -106,7 +106,7 @@ const SelectVarint: React.FC = (check: boolean) => {
 
             <Modal
                 visible={open} // Thay đổi "open" thành "visible"
-                title="Title âcsca"
+                title="Thêm biến thể"
                 onCancel={handleCancel}
                 footer={null}
                 width={800} // Đặt chiều ngang thành 800px hoặc giá trị tùy chỉnh của bạn

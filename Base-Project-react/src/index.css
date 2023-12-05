@@ -10858,3 +10858,7 @@ a.text-dark:focus {
     color: white;
 }
 
+.select-category {
+    border: 1px solid #000;
+    margin: 10 0;
+}

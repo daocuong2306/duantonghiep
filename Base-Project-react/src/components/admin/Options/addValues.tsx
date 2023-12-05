@@ -45,7 +45,7 @@ const AddValueOptions: React.FC = () => {
                                     {fields.map((field) => (
                                         <Card
                                             size="small"
-                                            title={`Item ${field.name + 1}`}
+                                            title={`Giá trị ${field.name + 1}`}
                                             key={field.key}
                                             extra={
                                                 <CloseOutlined
@@ -60,13 +60,13 @@ const AddValueOptions: React.FC = () => {
                                         {options?.options.map(option => <Select.Option value={option.id}>{option.name}</Select.Option>)}
                                     </Select>
                                 </Form.Item> */}
-                                            <Form.Item label="Select" name={[field.name, 'name']}>
+                                            <Form.Item label="Chọn" name={[field.name, 'name']}>
                                                 <Select>
                                                     {options?.options.map(option => <Option value={option.optionId}>{option.name}</Option>)}
                                                 </Select>
                                             </Form.Item>
                                             {/* value option */}
-                                            < Form.Item label="List" >
+                                            < Form.Item label="Tên giá trị" >
                                                 <Form.List name={[field.name, 'list']}>
                                                     {(subFields, subOpt) => (
                                                         <div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
@@ -83,7 +83,7 @@ const AddValueOptions: React.FC = () => {
                                                                 </Space>
                                                             ))}
                                                             <Button type="dashed" onClick={() => subOpt.add()} block>
-                                                                + Thêm mục phụ
+                                                                +
                                                             </Button>
 
                                                         </div>

@@ -220,13 +220,13 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
     useEffect(() => {
         editor.current?.setContents(product?.product.description);
     }, [product]);
-
+    
     return (
         <>
             <Button onClick={showDrawer}>Sửa</Button>
 
             <Drawer
-                title="Update Product"
+                title="Sửa sản phẩm"
                 width={900}
                 onClose={onClose}
                 visible={open}
@@ -277,26 +277,26 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                             <div className='w-full'>
                                 <Form.Item
                                     name="name"
-                                    label="Name"
+                                    label="Tên sản phẩm"
                                     initialValue={product?.product.name}
                                 >
                                     <Input placeholder="Please enter a name" />
                                 </Form.Item>
                                 <Form.Item
                                     name="price"
-                                    label="Price"
+                                    label="Giá"
                                     initialValue={product?.product.price}
                                 >
                                     <Input placeholder="Please enter a price" />
                                 </Form.Item>
                                 <Form.Item
                                     name="category"
-                                    label="Category"
+                                    label="Danh mục"
                                     initialValue={categoryMapping[product?.product.category_name]}
                                 >
                                     <Select
                                         showSearch
-                                        placeholder="Select a category"
+                                        placeholder="Chọn danh mục"
                                         optionFilterProp="children"
                                         options={optionId?.map((option) => ({
                                             ...option,
@@ -306,17 +306,17 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                                 </Form.Item>
                                 <Form.Item
                                     name="code"
-                                    label="Code"
+                                    label="Mã sản phẩm"
                                     initialValue={product?.product.code}
                                 >
                                     <Input placeholder="Please enter a code" />
                                 </Form.Item>
                                 <Form.Item
                                     name="description"
-                                    label="Description"
+                                    label="Mô tả"
                                     initialValue={product?.product.description}
                                 >
-                                    <SunEditor getSunEditorInstance={getSunEditorInstance} />
+                                    <SunEditor getSunEditorInstance={getSunEditorInstance} defaultValue={product?.product.description}/>
                                 </Form.Item>
                             </div>
 

@@ -30,9 +30,12 @@ const Bill = (props: Props) => {
             console.log(1);
             return;
         } else {
-            addBill(formData);
+            const checkBill = window.confirm("Bạn chưa chọn kiểu thức thanh toán , nếu đồng ý đơn hàng của bạn sẽ mặc định là off")
+            if (checkBill) {
+                addBill(formData);
+                setLoading(true);
+            }
         }
-        setLoading(true);
     };
     const [api, contextHolder] = notification.useNotification();
     const openNotification = (m, d) => {

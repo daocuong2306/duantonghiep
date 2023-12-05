@@ -37,61 +37,34 @@ const Variant: React.FC = (product: any) => {
         <>
             {showSelect && <SelectVarint check={open} data={variants} id={product?.product.id} />}
 
-            {product?.id == 0 ? <div className="p-4  flex items-center justify-between">
-                <div className="product-image-container flex items-center">
-                    <div className="product-image-thumbnail rounded-full overflow-hidden">
-                        <img
-                            className="w-20 h-20"
-                            src={`http://127.0.0.1:8000${product?.product.image}`}
-                            alt=""
-                        />
-                    </div>
-                    <div className="product-details ml-4">
-                        <h1 className="text-2xl font-semibold text-gray-800 mb-2">
-                            {product?.product.name}
-                        </h1>
-                        <p className="text-lg text-gray-600 mb-2">
-                            Giá: {product?.product.code}
-                        </p>
-                    </div>
-                </div>
-            </div> : null}
+
             <Form
                 name="validate_other"
                 onFinish={onFinish}
                 max-width={1200}
                 layout="vertical"
             >
-                <Row gutter={16}>
-                    {options?.options.map((option) => {
-                        return <Col span={12}>
-                            <Form.Item
-                                name={option.name}
-                                label={option.name}
-                                rules={[{ required: true, message: `Hãy nhập ${option.name}`, type: 'array' }]}
-                            >
-                                <Select mode="multiple" placeholder="Hãy chọn giá trị mong muốn">
-                                    {option?.value.map((value) => <Option value={value.id}>{value.name}</Option>)}
-                                </Select>
-                            </Form.Item>
-                        </Col>
-                    })}
-                </Row>
-                <Row gutter={16}>
-                    <Col span={12}>
-
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item wrapperCol={{ span: 15, offset: 14 }}>
-                            <Space>
-                                <Button htmlType="submit">
-                                    Gửi
-                                </Button>
-                                <Button htmlType="reset">Cài lại</Button>
-                            </Space>
+                {options?.options.map((option) => {
+                    return <Col span={12}>
+                        <Form.Item
+                            name={option.name}
+                            label={option.name}
+                            rules={[{ required: true, message: `Hãy nhập ${option.name}`, type: 'array' }]}
+                        >
+                            <Select mode="multiple" placeholder="Hãy chọn giá trị mong muốn">
+                                {option?.value.map((value) => <Option value={value.id}>{value.name}</Option>)}
+                            </Select>
                         </Form.Item>
                     </Col>
-                </Row>
+                })}
+                <Form.Item wrapperCol={{ span: 15, offset: 14 }}>
+                    <Space>
+                        <Button htmlType="submit">
+                            Gửi
+                        </Button>
+                        <Button htmlType="reset">Cài lại</Button>
+                    </Space>
+                </Form.Item>
 
             </Form>
 

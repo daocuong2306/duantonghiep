@@ -38,7 +38,7 @@ const AddOptions: React.FC = () => {
                             {fields.map((field) => (
                                 <Card
                                     size="small"
-                                    title={`Item ${field.name + 1}`}
+                                    title={`Giá trị ${field.name + 1}`}
                                     key={field.key}
                                     extra={
                                         <CloseOutlined
@@ -48,7 +48,7 @@ const AddOptions: React.FC = () => {
                                         />
                                     }
                                 >
-                                    <Form.Item label="Name" name={[field.name, 'name']}>
+                                    <Form.Item label="Tên" name={[field.name, 'name']}>
                                         <Input />
                                     </Form.Item>
 

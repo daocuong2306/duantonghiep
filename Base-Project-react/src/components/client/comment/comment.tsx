@@ -58,7 +58,7 @@ const Comment = () => {
             if (commentData?.message == "Bạn Phải Đăng nhập") {
                 openNotification('Bạn chưa đăng nhập', 'bạn phải đăng nhập để sử dụng chức năng này');
                 setLoading(false); // This will not trigger a re-render immediately
-            } else if (commentData?.status == "fails") {
+            } else if (commentData?.error) {
                 openNotification('Bạn đã hết số lần bình luận', "Vui lòng mua thêm sản phẩm để có thể bình luận");
                 setLoading(false); // This will not trigger a re-render immediately
             } else {
