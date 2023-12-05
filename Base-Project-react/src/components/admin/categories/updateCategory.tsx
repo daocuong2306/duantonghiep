@@ -172,7 +172,8 @@ const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
 
                                 </Col>
                             </Row>
-                            <Space>
+                            
+                            <Space className='mt-[7%]'>
                                 <Button onClick={onClose}>Hủy bỏ</Button>
                                 <Button htmlType="submit">
                                     Gửi
