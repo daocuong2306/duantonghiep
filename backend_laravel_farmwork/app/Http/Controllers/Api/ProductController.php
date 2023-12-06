@@ -22,48 +22,34 @@ class ProductController extends Controller
     {
         $id = $request->query('id');
         $keyword = $request->query('keyword');
-        if ($id || $keyword) {
-            $products = Product::where(function ($query) use ($id, $keyword) {
-                if ($id) {
-                    $query->where('id_category', $id);
-                }
 
-                if ($keyword) {
-                    $query->where(function ($query) use ($keyword) {
-                        $query->where('name', 'like', "%$keyword%")
-                            ->orWhere('code', 'like', "%$keyword%");
-                    });
-                }
-            })
-                ->join('category', 'product.id_category', '=', 'category.id')
-                ->select('product.*', 'category.name as category_name')               
-                ->get();
+        $query = Product::join('category', 'product.id_category', '=', 'category.id')
+            ->select('product.*', 'category.name as category_name');
+
+        if ($id) {
+            $query->where('id_category', $id);
+        }
+
+        if ($keyword) {
+            $query->where(function ($query) use ($keyword) {
+                $query->where('product.name', 'like', "%$keyword%")
+                    ->orWhere('code', 'like', "%$keyword%");
+            });
+        }
+
+        $products = $query->get();
+
+        if ($products->count() > 0) {
             return response()->json([
                 'status' => 200,
                 'product' => $products,
-                'isOke' => 'true',
-                'message' => 'find by category and keywords'
+                'message' => 'Found by category and keyword'
             ], 200);
-        }
-
-        if (!$id && !$keyword) {
-            $products = DB::table('product')
-                ->join('category', 'product.id_category', '=', 'category.id')
-                ->select('product.*', 'category.name as category_name')
-                ->get();
-            if ($products->count() > 0) {
-                return response()->json([
-                    'status' => 200,
-                    'product' => $products,
-                    'message' => 'dont find',
-                ], 200);
-            } else {
-                return response()->json([
-                    'status' => 404,
-                    'message' => 'not found'
-
-                ], 404);
-            }
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Not found'
+            ], 404);
         }
     }
 
@@ -84,7 +70,7 @@ class ProductController extends Controller
             'code' => 'required|unique:product',
             'id_category' => 'required',
         ];
-    
+
         $messages = [
             'name.required' => 'Vui lòng nhập tên sản phẩm.',
             'name.unique' => 'Tên sản phẩm đã tồn tại.',
@@ -99,9 +85,9 @@ class ProductController extends Controller
             'code.unique' => 'Mã sản phẩm đã tồn tại.',
             'id_category.required' => 'Vui lòng chọn danh mục.',
         ];
-    
+
         $validator = Validator::make($request->all(), $rules, $messages);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
@@ -115,15 +101,15 @@ class ProductController extends Controller
             $products->status = $request->status;
             $products->code = $request->code;
             $products->id_category = $request->id_category;
-    
+
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
                 $imageUrl = Storage::url($imagePath);
                 $products->image = $imageUrl;
             }
-    
+
             $products->save();
-    
+
             if ($products) {
                 return response()->json([
                     'status' => 200,
@@ -150,7 +136,7 @@ class ProductController extends Controller
         $product = Product::join('category', 'product.id_category', '=', 'category.id')
             ->select('product.*', 'category.name as category_name')
             ->find($id);
-    
+
         if ($product) {
             return response()->json([
                 'status' => 200,
@@ -163,7 +149,7 @@ class ProductController extends Controller
             ], 404);
         }
     }
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -174,7 +160,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-             $rules = [
+        $rules = [
             'name' => 'required',
             'price' => 'required|numeric',
             'description' => 'required',
@@ -183,9 +169,9 @@ class ProductController extends Controller
             'code' => 'required',
             'id_category' => 'required',
         ];
-    
+
         $messages = [
-            'name.required' => 'Vui lòng nhập tên sản phẩm.', 
+            'name.required' => 'Vui lòng nhập tên sản phẩm.',
             'price.required' => 'Vui lòng nhập giá sản phẩm.',
             'description.required' => 'Vui lòng nhập mô tả sản phẩm.',
             'status.required' => 'Vui lòng chọn trạng thái sản phẩm.',
@@ -195,7 +181,7 @@ class ProductController extends Controller
             'code.required' => 'Vui lòng nhập mã sản phẩm.',
             'id_category.required' => 'Vui lòng chọn danh mục.',
         ];
-    
+
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
             return response()->json([
@@ -211,7 +197,7 @@ class ProductController extends Controller
             $products->code = $request->code;
             // $products->quantity = $request->quantity;
             $products->id_category = $request->id_category;
-       
+
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images');
                 $imageUrl = Storage::url($imagePath);
