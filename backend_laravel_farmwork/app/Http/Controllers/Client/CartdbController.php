@@ -44,6 +44,7 @@ class CartdbController extends Controller
                      $totalPrice = $cart->quantity * $cart->sku->price; // Tính tổng tiền cho sản phẩm hiện tại
                      $totalAmount += $totalPrice; // Cộng tổng tiền của sản phẩm vào tổng tiền của cả giỏ hàng
                      $totalQuantity += $cart->quantity; // Cộng tổng số lượng của sản phẩm vào tổng số lượng của cả giỏ hàng
+                     $checkDiscount='';
                     if($discount){
                         $checkDiscount=Discount::where('discount_code',$discount)->first();
                         // dd($checkDiscount->amount);
