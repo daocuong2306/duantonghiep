@@ -21,6 +21,7 @@ return new class extends Migration
             $table->json('carts_id');
             $table->string('payments');
             $table->string('order_status');
+            $table->integer('discount_id')->nullable();
             $table->integer('total_price')->nullable();
             $table->timestamps();
         });

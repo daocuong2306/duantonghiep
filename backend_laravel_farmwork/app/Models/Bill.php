@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Bill extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'address', 'phone', 'carts_id','payments','order_status'];
+    protected $fillable = ['user_id', 'address', 'phone', 'carts_id','payments','discount_id','order_status'];
     protected $cast = [
          'carts_id' => Json::class,
     ];
@@ -34,5 +34,9 @@ class Bill extends Model
     public function carts()
     {
         return $this->hasMany(Cart::class);
+    }
+    public function discounts()
+    {
+           return $this->belongsTo(Discount::class,'discount_id');
     }
 }
