@@ -2,15 +2,20 @@ import { useGetCartQuery, useRemoveCartMutation, useUpdateCartMutation } from '@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, notification, Alert, Spin, Switch } from 'antd';
+import { useForm } from 'react-hook-form';
+import { BsFillNodePlusFill } from 'react-icons/bs';
 type Props = {}
 const CartProduct = (props: Props) => {
-    const { data: dataCart, refetch } = useGetCartQuery()
+    const [discount, setDiscount] = useState('');
+    const { data: dataCart, refetch } = useGetCartQuery(discount)
     console.log(dataCart);
+
     const [updateCart, { data: updateData, error }] = useUpdateCartMutation()
     const [deleteCart, { data: deleteData }] = useRemoveCartMutation()
     const [loading, setLoading] = useState(false);
     console.log(updateData);
     const [api, contextHolder] = notification.useNotification();
+    const { control, handleSubmit, setValue, getValues, register } = useForm();
     const openNotification = (m, d) => {
         api.open({
             message: m,
@@ -38,6 +43,12 @@ const CartProduct = (props: Props) => {
         updateCart(data);
         setLoading(true)
     }
+    const upDiscount = () => {
+        const codeDiscount = getValues('codeDiscount');
+        setDiscount(codeDiscount)
+        localStorage.setItem('codeDiscount', JSON.stringify(codeDiscount))
+    }
+
     useEffect(() => {
         if (error) {
             openNotification("Số lượng của bạn đã vượt quá số lượng hàng còn trong kho", "");
@@ -115,14 +126,19 @@ const CartProduct = (props: Props) => {
                             </table>
                         </div>
                         <div className="col-lg-4">
-                            {/* <form className="mb-5" action="">
+                            <form className="mb-5" onSubmit={handleSubmit(upDiscount)}>
                                 <div className="input-group">
-                                    <input type="text" className="form-control p-4" placeholder="Coupon Code" />
+                                    <input
+                                        type="text"
+                                        id="codeDiscount"
+                                        className="form-control p-4"
+                                        placeholder="Coupon Code"
+                                        {...register('codeDiscount')} />
                                     <div className="input-group-append">
-                                        <button className="btn btn-primary">Thêm mã </button>
+                                        <button className="btn btn-primary" type="submit">Áp dụng mã giảm giá</button>
                                     </div>
                                 </div>
-                            </form> */}
+                            </form>
                             <div className="card border-secondary mb-5">
                                 <div className="card-header bg-secondary border-0">
                                     <h4 className="font-weight-semi-bold m-0">Thành tiền</h4>
@@ -136,9 +152,19 @@ const CartProduct = (props: Props) => {
                                 <div className="card-footer border-secondary bg-transparent">
                                     <div className="d-flex justify-content-between mt-2">
                                         <h5 className="font-weight-bold">Thanh toán</h5>
-                                        <h5 className="font-weight-bold">${dataCart?.total_amount}</h5>
+                                        <h5 className="font-weight-bold">{dataCart?.total_amount}đ</h5>
                                     </div>
-                                    {dataCart?.total_amount == 0 ? "Bạn cần thêm sản phẩm để có thể thanh toán" :  <Link to="/bill"><button className="btn btn-block btn-primary my-3 py-3">Thanh Toán</button></Link>}
+                                    {dataCart?.checkDiscount !== "" ?
+                                        <div className="d-flex justify-content-between mt-2">
+                                            <h5 className="">Giảm giá</h5>
+                                            <h5 className="font-weight-bold">{dataCart?.checkDiscount?.amount}%</h5>
+                                        </div> : null
+                                    }
+                                    <div className="d-flex justify-content-between mt-2">
+                                        <h5 className="">Tổng tiền</h5>
+                                        <h5 className="font-weight-bold">{dataCart?.total_amount}đ</h5>
+                                    </div>
+                                    {dataCart?.total_amount == 0 ? "Bạn cần thêm sản phẩm để có thể thanh toán" : <Link to="/bill"><button className="btn btn-block btn-primary my-3 py-3">Thanh Toán</button></Link>}
                                 </div>
                             </div>
                         </div>

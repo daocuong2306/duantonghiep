@@ -21,10 +21,10 @@ const statisticalApi = createApi({
     endpoints: (builder) => ({
       
         listStatistical: builder.query<any, void>({
-            query: () => ({
+            query: (date) => ({
                 url: `/list`,
                 method: "GET",
-               
+                params : {month : date}
             }),
             providesTags: ['statistical'],
         })

@@ -89,9 +89,9 @@ const DashboardUser: React.FC = () => {
                 return (
                     key.id == 1 ? <></> :
                         dataIndex == 0 ? <Button danger onClick={() => handBanUser(key.id)}>
-                            Khóa tài khoản
+                            Hạn chế tài khoản
                         </Button> : <Button primary onClick={() => handUnBanUser(key.id)}>
-                            Mở tài khoản
+                            Bỏ hạn chế tài khoản
                         </Button>
                 );
             },
