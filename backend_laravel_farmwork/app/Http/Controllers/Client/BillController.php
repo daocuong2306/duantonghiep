@@ -263,6 +263,7 @@ class BillController extends Controller
     $bill->discount_id = $request->discount_id;
     $bill->payments = $request->payments ?? 'OFF';
     $bill->order_status = $request->order_status ?? 'Pending';
+    $bill->total_price = $request->total_price;
     $bill->save();
 
     // Xử lý thông tin hóa đơn và giỏ hàng
@@ -290,12 +291,12 @@ class BillController extends Controller
         ];
     });
 
-    $total_price = $cartItems->sum(function ($cartItem) {
-        return $cartItem['price'] * $cartItem['quantity'];
-    });
+    // $total_price = $cartItems->sum(function ($cartItem) {
+    //     return $cartItem['price'] * $cartItem['quantity'];
+    // });
 
-    $bill->total_price = $total_price;
-    $bill->save();
+    // $bill->total_price = $total_price;
+    // $bill->save();
     $history = new HistoryStatusBill();
     $history->user_id = Auth::user()->id;
     $history->bill_id = $bill->id;
@@ -329,7 +330,7 @@ class BillController extends Controller
         'cart' => $cartItems,
         'discount_id' => $bill->discount_id,
         'discount' => $discountData,
-        'total_price' => $total_price
+        'total_price' => $bill->total_price
     ];
 
     return response()->json($formattedBill);
