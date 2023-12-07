@@ -26,6 +26,7 @@ class CartdbController extends Controller
         if (Auth::check()) {
             $user_id = Auth::user()->id;
             $discount = \request()->discount;
+            $checkDiscount = '';
             $carts = Cart::with(['variant', 'sku'])
                 ->where('user_id', $user_id)
                 ->get(['id', 'user_id', 'product_id', 'sku_id', 'quantity', 'price_cart', 'status']);
@@ -44,15 +45,8 @@ class CartdbController extends Controller
                     $totalPrice = $cart->quantity * $cart->sku->price; // Tính tổng tiền cho sản phẩm hiện tại
                     $totalAmount += $totalPrice; // Cộng tổng tiền của sản phẩm vào tổng tiền của cả giỏ hàng
                     $totalQuantity += $cart->quantity; // Cộng tổng số lượng của sản phẩm vào tổng số lượng của cả giỏ hàng
-                    $checkDiscount = '';
-                    if ($discount) {
-                        $checkDiscount = Discount::where('discount_code', $discount)->first();
-                        // dd($checkDiscount->amount);
-                        if ($checkDiscount->type == 1) {
-                            $totalPrice = $totalPrice * ($checkDiscount->amount / 100);
-                            // dd($totalPrice);
-                        }
-                    }
+
+
                     $formattedCarts[] = [
                         'id' => $cart->id,
                         'user_id' => $cart->user_id,
@@ -68,6 +62,16 @@ class CartdbController extends Controller
                         'total_price' => $totalPrice, // Thêm trường tổng tiền cho từng sản phẩm
                         'status' => $cart->status,
                     ];
+                }
+            }
+            // dd($discount);
+            if ($discount) {
+                $checkDiscount = Discount::where('discount_code', $discount)->first();
+                // dd($checkDiscount);
+                if ($checkDiscount && $checkDiscount->type == 1) {
+                    $totalAmount = $totalAmount -  ($totalAmount * ($checkDiscount->amount / 100));
+                    // dd($totalAmount);
+                    // dd($totalPrice);
                 }
             }
 
