@@ -29,60 +29,7 @@ class BillController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function index()
-    // {
-    //     if (Auth::check()) {
-    //         $user_id = Auth::user()->id;
-            
-    //         // Lấy thông tin người dùng từ id_user
-    //         $user = User::find($user_id);
-    //         $user_name = $user->name; // Tên người dùng
-            
-    //         $bills = Bill::with('cart')->where('user_id', $user_id)->get();
-          
-    //         $formattedBills = $bills->map(function ($bill) use ($user_name) {
-    //             $cartIds = json_decode($bill->carts_id);
-             
-    //             $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
-    //                 $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
-    //                 $optionValues = array_unique($optionValues);
-    //                 $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
-                    
-    
-                   
-    //                 return [
-    //                     'id_product' => $cart->product->id,
-    //                     'option_values' => $optionValuesData,
-    //                     'name' => $cart->product->name,
-    //                     'image' => $cart->product->image,
-    //                     'price' => $cart->price_cart,
-    //                     'quantity' => $cart->quantity,
-    //                     'status' => $cart->status,
-    //                 ];
-    //             });
-    //             $total_price = $cartItems->sum(function ($cartItem) {
-    //                 return $cartItem['price'] * $cartItem['quantity'];
-    //             });
-    //             $bill->total_price = $total_price;
-    //             $bill->save(); 
-                   
-    //             return [
-    //                 'id' => $bill->id,
-    //                 'user_id' => $bill->user_id,
-    //                 'user_name' => $user_name, // Thêm tên người dùng vào mảng kết quả
-    //                 'address' => $bill->address,
-    //                 'phone' => $bill->phone,                   
-    //                 'payments' => $bill->payments, 
-    //                 'order_status' =>$bill-> order_status,
-                   
-    //                 'cart' => $cartItems,
-    //                 'total_price' => $total_price
-    //             ];
-    //         });
-    
-    //         return response()->json($formattedBills);
-    //     }
-    // }
+
     public function index()
 {
     if (Auth::check()) {
@@ -116,12 +63,7 @@ class BillController extends Controller
                 ];
             });
 
-            $total_price = $cartItems->sum(function ($cartItem) {
-                return $cartItem['price'] * $cartItem['quantity'];
-            });
-
-            $bill->total_price = $total_price;
-            $bill->save();
+         
 
             // Lấy thông tin giảm giá từ bảng discounts
             $discount = Discount::find($bill->discount_id);
@@ -147,7 +89,7 @@ class BillController extends Controller
                 'cart' => $cartItems,
                 'discount_id' => $bill->discount_id,
                 'discount' => $discountData,
-                'total_price' => $total_price
+                'total_price' => $bill->total_price
             ];
         });
 
@@ -160,84 +102,7 @@ class BillController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     // Xác thực dữ liệu và xử lý lỗi (nếu có)
-    //     $validator = Validator::make($request->all(), [
-    //         'address' => 'required',
-    //         'phone' => 'required',
-    //         'carts_id' => 'required|array',
-    //         'carts_id.*' => 'required|integer',
-    //         'payments' => 'nullable|in:OFF,ON',
-    //         'order_status' => 'nullable|in:Pending,Browser,Pack,Transport,Cancel,Success'
-    //     ]);
-    
-    //     if ($validator->fails()) {
-    //         return response()->json(['errors' => $validator->errors()], 400);
-    //     }
-    
-    //     // Tạo mới hóa đơn
-    //     $bill = new Bill();
-    //     $bill->user_id = Auth::user()->id;
-    //     $bill->address = $request->address;
-    //     $bill->phone = $request->phone;
-    //     $bill->carts_id = json_encode($request->carts_id);
-    //     $bill->discount_id = $request->discount_id;
-    //     $bill->payments = $request->payments ?? 'OFF';
-    //     $bill->order_status = $request->order_status ?? 'Pending';
-    //     $bill->save();
-    
-    //     // Xử lý thông tin hóa đơn và giỏ hàng
-    //     $cartIds = json_decode($bill->carts_id);
-    //     $cartItems = Cart::whereIn('id', $cartIds)->get()->map(function ($cart) {
-    //         $cart->status = 'ORDER';
-    //         $cart->save();
-    //         $optionValues = Variant::where('sku_id', $cart->sku_id)->pluck('option_value_id')->toArray();
-    //         $optionValues = array_unique($optionValues);
-    //         $optionValuesData = OptionValue::whereIn('id', $optionValues)->pluck('value')->toArray();
-    //         $stoke = SKU::where('id', $cart->sku_id)->value('stoke');
-    //         if ($stoke >= $cart->quantity) {
-    //             SKU::where('id', $cart->sku_id)->decrement('stoke', $cart->quantity);
-    //         } else {
-    //             throw new Exception("Số lượng không khả dụng.");
-    //         }
-    //         return [
-    //             'id_product' => $cart->product->id,
-    //             'option_values' => $optionValuesData,
-    //             'name' => $cart->product->name,
-    //             'image' => $cart->product->image,
-    //             'price' => $cart->price_cart,
-    //             'quantity' => $cart->quantity,
-    //             'status' => $cart->status,
-    //         ];
-    //     });
-    
-    //     $total_price = $cartItems->sum(function ($cartItem) {
-    //         return $cartItem['price'] * $cartItem['quantity'];
-    //     });
-    
-    //     $bill->total_price = $total_price;
-    //     $bill->save();
-    //     $history = new HistoryStatusBill();
-    //     $history->user_id = Auth::user()->id;
-    //     $history->bill_id = $bill->id;
-    //     $history->infor_change = $bill->order_status;
-    //     $history->save();
-    //     // Trả về hóa đơn đã định dạng
-    //     $formattedBill = [
-    //         'id' => $bill->id,
-    //         'user_id' => $bill->user_id,
-    //         'address' => $bill->address,
-    //         'phone' => $bill->phone,
-    //         'payments' => $bill->payments,
-    //         'order_status' => $bill->order_status,
-    //         'cart' => $cartItems,
-            
-    //         'total_price' => $total_price
-    //     ];
-    
-    //     return response()->json($formattedBill);
-    // }
+ 
     public function store(Request $request)
 {
     // Xác thực dữ liệu và xử lý lỗi (nếu có)
@@ -291,12 +156,6 @@ class BillController extends Controller
         ];
     });
 
-    // $total_price = $cartItems->sum(function ($cartItem) {
-    //     return $cartItem['price'] * $cartItem['quantity'];
-    // });
-
-    // $bill->total_price = $total_price;
-    // $bill->save();
     $history = new HistoryStatusBill();
     $history->user_id = Auth::user()->id;
     $history->bill_id = $bill->id;
@@ -367,12 +226,6 @@ class BillController extends Controller
             ];
         });
     
-        $total_price = $cartItems->sum(function ($cartItem) {
-            return $cartItem['price'] * $cartItem['quantity'];
-        });
-    
-        $bill->total_price = $total_price;
-        $bill->save();
         $discount = Discount::find($bill->discount_id);
 
         $discountData = null;
@@ -394,7 +247,7 @@ class BillController extends Controller
             'cart' => $cartItems,
             'discount_id' => $bill->discount_id,
             'discount' => $discountData,
-            'total_price' => $total_price
+            'total_price' =>$bill->total_price
         ];
     
         return response()->json($formattedBill);
@@ -609,12 +462,7 @@ public function list_bills(Request $request)
             ];
         });
 
-        $total_price = $cartItems->sum(function ($cartItem) {
-            return $cartItem['price'] * $cartItem['quantity'];
-        });
-
-        $bill->total_price = $total_price;
-        $bill->save();
+       
         $discount = Discount::find($bill->discount_id);
 
         $discountData = null;
@@ -638,7 +486,7 @@ public function list_bills(Request $request)
             'cart' => $cartItems,
             'discount_id' => $bill->discount_id,
             'discount' => $discountData,
-            'total_price' => $total_price
+            'total_price' => $bill->total_price
         ];
     });
 
@@ -675,12 +523,7 @@ public function list_history($billId)
         ];
     });
 
-    $total_price = $cartItems->sum(function ($cartItem) {
-        return $cartItem['price'] * $cartItem['quantity'];
-    });
-
-    $bill->total_price = $total_price;
-    $bill->save();
+  
 
     $userIds = $history->pluck('user_id')->unique()->toArray();
 
@@ -693,6 +536,18 @@ public function list_history($billId)
 
     $user = User::find($bill->user_id);
 
+
+    $discount = Discount::find($bill->discount_id);
+
+    $discountData = null;
+    if ($discount) {
+        $discountData = [
+            'discount_code' => $discount->discount_code,
+            'type' => $discount->type,
+            'amount' => $discount->amount,
+            'expiry_date' => $discount->expiry_date,
+        ];
+    }
     $formattedBill = [
         'id' => $bill->id,
         'user_id' => $bill->user_id,
@@ -703,7 +558,9 @@ public function list_history($billId)
         'payments' => $bill->payments,
         'order_status' => $bill->order_status,
         'cart' => $cartItems,
-        'total_price' => $total_price
+          'discount_id' => $bill->discount_id,
+        'discount' => $discountData,
+        'total_price' =>  $bill->total_price
     ];
 
     return response()->json(['bill' => $formattedBill, 'history' => $formattedHistory]);
