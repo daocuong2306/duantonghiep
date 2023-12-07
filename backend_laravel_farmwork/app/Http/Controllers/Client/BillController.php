@@ -92,7 +92,10 @@ class BillController extends Controller
         $user = User::find($user_id);
         $user_name = $user->name; // Tên người dùng
 
-        $bills = Bill::with('cart')->where('user_id', $user_id)->get();
+        $bills = Bill::with('cart')
+        ->where('user_id', $user_id)
+        ->orderByDesc('created_at') // Sắp xếp theo thứ tự mới nhất
+        ->get();
 
         $formattedBills = $bills->map(function ($bill) use ($user_name) {
             $cartIds = json_decode($bill->carts_id);
