@@ -14,19 +14,37 @@ use Illuminate\Support\Facades\DB;
 class StatisticalController extends Controller
 {
     public function summary()
-    {
+    {   // $month =  months in year 
+        $month = \request()->month;
+        //Query group by 'year', 'month', 'date' 
         $summary = Bill::where('order_status', 'Success')
             ->select(
+                DB::raw('DATE(created_at) as date'),
                 DB::raw('YEAR(created_at) as year'),
                 DB::raw('MONTH(created_at) as month'),
                 DB::raw('SUM(total_price) as total_amount')
             )
-            ->groupBy('year', 'month')
+            ->groupBy('year', 'month', 'date')
             ->get();
+
+        $currentYear = date('Y');
+        $currentMonthSum = date('m', strtotime("$currentYear-$month-01"));
+        $daysInMonth = Carbon::create($currentYear, $currentMonthSum)->daysInMonth;
+        // days in month
+        $dailySummary = [];
+        for ($day = 1; $day <= $daysInMonth; $day++) {
+            $dailySummary[$day] = $summary->where('date', date('Y-m-d', strtotime("$currentYear-$currentMonthSum-$day")));
+            // }
+        }
+        // daily total_amount in month
+        $totalAmountPerDay = [];
+        foreach ($dailySummary as $day => $summaryData) {
+            $totalAmountPerDay[$day] = $summaryData->sum('total_amount');
+        }
 
         $monthlySummary = $this->getMonthlySummary($summary);
 
-
+        // Comment
         $comment = DB::table('comments')
             ->join('users', 'users.id', '=', 'comments.id_user')
             ->join('product', 'product.id', '=', 'comments.id_product')
@@ -69,16 +87,13 @@ class StatisticalController extends Controller
             'increase_decrease' => $increaseDecrease,
             'status' => $status,
         ];
-
-        // return response()->json($result);
-        // dd($handlecomment);
         $best_saler = Bill::where('order_status', 'Success')->select('carts_id')
             ->get();
+        // dd($best_saler);
         $product = [];
         $quantityByProductId = [];
         $productInfo = [];
         $result = [];
-
         foreach ($best_saler as $key => $value) {
             $cart = json_decode($value->carts_id, true);
             foreach ($cart as $item) {
@@ -112,11 +127,35 @@ class StatisticalController extends Controller
                 'product_info' => $productInfo[$productId]
             ];
         }
+        usort($result, function ($a, $b) {
+            return $b['quantity'] - $a['quantity'];
+        });
+
+        $top5Products = array_slice($result, 0, 5);
+        $statusTotal = [
+            'Pending' => 0,
+            'Success' => 0,
+            'Browser' => 0,
+            'Transport' => 0,
+            'Pack' => 0,
+            'Cancel' => 0,
+        ];
+        $bills = Bill::all();
+        // dd($bills); 
+        foreach ($bills as $value) {
+            $status = $value->order_status;
+
+            if (isset($statusTotal[$status])) {
+                $statusTotal[$status]++;
+            }
+        }
 
         // dd($monthlySummary);
         return response()->json([
+            "statusTotal"=>$statusTotal,
+            'totalAmountPerDay' => $totalAmountPerDay,
             'total_price' => $monthlySummary,
-            'product' => $result,
+            'product' => $top5Products,
             'comment' => $comment,
             'handlecomment' => $handlecomment,
             'statusAmout' => $statusAmout
