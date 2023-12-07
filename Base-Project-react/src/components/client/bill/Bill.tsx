@@ -8,7 +8,10 @@ import { useNavigate } from 'react-router-dom'
 type Props = {}
 
 const Bill = (props: Props) => {
-    const { data: cartData } = useGetCartQuery()
+    const code = JSON.parse(localStorage.getItem('codeDiscount'))
+    console.log("code", code);
+
+    const { data: cartData } = useGetCartQuery(code)
     const [addBill, { data: addData, error }] = useAddBillMutation()
     console.log(cartData);
     const aUrl = useNavigate()
@@ -16,12 +19,16 @@ const Bill = (props: Props) => {
     const { register, handleSubmit, watch, setValue } = useForm();
     const onSubmit = (data: any) => {
         const ids = cartData?.carts.map(item => item.id);
+        const discount = cartData?.checkDiscount.id
+        const price = cartData?.total_amount
         const formData = {
             "address": data.address,
             "phone": data.phoneNumber,
             "payments": data.paymentMethod,
             "carts_id": ids,
-            "order_status": "Pending"
+            "order_status": "Pending",
+            "discount_id": discount,
+            "total_price" : price
         }
 
         if (data.paymentMethod == "ON") {
@@ -29,6 +36,10 @@ const Bill = (props: Props) => {
             aUrl("/payment")
             console.log(1);
             return;
+        } else if (data.paymentMethod == "OFF") {
+            addBill(formData);
+            console.log("formData", formData);
+            setLoading(true);
         } else {
             const checkBill = window.confirm("Bạn chưa chọn kiểu thức thanh toán , nếu đồng ý đơn hàng của bạn sẽ mặc định là off")
             if (checkBill) {
@@ -160,7 +171,7 @@ const Bill = (props: Props) => {
                                                 <h4>Thông tin đơn hàng</h4>
                                                 <hr />
                                             </div>
-                                            {cartData.carts.map((cart: any) => {
+                                            {cartData?.carts.map((cart: any) => {
                                                 return <div>
                                                     <div className="p-2 d-flex">
                                                         <div className="col-8">Tên sản phẩm</div>
@@ -173,6 +184,11 @@ const Bill = (props: Props) => {
                                                     <div className="border-top px-2 mx-2"></div>
                                                 </div>
                                             })}
+                                            <div className="p-2 d-flex">
+                                                <div className="col-8">Giảm giá</div>
+                                                <div className="ms-auto">{cartData?.checkDiscount.amount}%</div>
+                                            </div>
+
                                             <div className="p-2 d-flex">
                                                 <div className="col-8">Tổng giá</div>
                                                 <div className="ms-auto">{cartData?.total_amount}VND</div>

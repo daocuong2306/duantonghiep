@@ -20,9 +20,10 @@ const cartApi = createApi({
     }),
     endpoints: (builder) => ({
         getCart: builder.query<any[], void>({
-            query: () => ({
+            query: (discounts) => ({
                 url: `/`,
                 method: "GET",
+                params: { discount: discounts }
             }),
             providesTags: ['cart']
         }),

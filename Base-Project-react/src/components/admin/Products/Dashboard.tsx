@@ -75,8 +75,8 @@ const Dashboard = () => {
 
     const options: SelectProps['options'] = optionsA;
 
-    const [dataKey, setDataKey] = useState(null)
-    const [dataCate, setDataCate] = useState(null)
+    const [dataKey, setDataKey] = useState("")
+    const [dataCate, setDataCate] = useState("")
     const handleChange = (value: string[]) => {
         setDataCate(value)
         console.log(`selected ${value}`);
@@ -86,6 +86,8 @@ const Dashboard = () => {
     }, [products]);
     const onSearch: SearchProps['onSearch'] = (value, _e, info) => {
         setDataKey(value)
+        console.log(dataCate , dataKey);
+        
         setFind({
             id: dataCate,
             keyword: dataKey
