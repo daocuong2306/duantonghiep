@@ -19,7 +19,8 @@ const MenuBar = () => {
             <div className="grid grid-cols-2 px-[5%]">
                 {role == "2" ? <div className="flex gap-[2%]">
                     <div className="py-[2%]"><Link to="/" className="text-[#40D6FF]">Trang chủ</Link></div>
-                    <div className="py-[2%]"><Link to="/products" className="text-[#40D6FF]">Sản phẩm</Link></div>
+                    <div className="py-[2%]"><Link to="/products" className="text-[#40D6FF]">Quần</Link></div>
+                    <div className="py-[2%]"><Link to="/products" className="text-[#40D6FF]">Áo</Link></div>
                     <div className="py-[2%]"><Link to="" className="text-[#40D6FF]">Thông tin</Link></div>
                 </div> : <div className="flex gap-[2%]">
                     <div className="py-[2%]"><Link to="/" className="text-[#40D6FF]">Trang chủ</Link></div>
@@ -35,7 +36,8 @@ const MenuBar = () => {
             <div className="grid grid-cols-2 px-[5%]">
                 <div className="flex gap-[2%]">
                     <div className="py-[2%]"><Link to="/" className="text-[#40D6FF]">Trang chủ</Link></div>
-                    <div className="py-[2%]"><Link to="/products" className="text-[#40D6FF]">Sản phẩm</Link></div>
+                    <div className="py-[2%]"><Link to="/products" className="text-[#40D6FF]">Quần</Link></div>
+                    <div className="py-[2%]"><Link to="/products" className="text-[#40D6FF]">Áo</Link></div>
                     <div className="py-[2%]"><Link to="" className="text-[#40D6FF]">Thông tin</Link></div>
                 </div>
                 <div className="flex gap-[2%] justify-end">

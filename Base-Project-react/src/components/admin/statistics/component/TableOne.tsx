@@ -43,7 +43,7 @@ const TableOne = () => {
             <div className="flex items-center gap-3 p-2.5 xl:p-5">
               <div className="flex-shrink-0">
                 {/* Use the actual product image */}
-                <img src={`http://127.0.0.1:8000${product.product_info.image}`} alt="Product" className="w-8 h-8 rounded-full" />
+                <img src={`https://briteshop.store${product.product_info.image}`} alt="Product" className="w-8 h-8 rounded-full" />
               </div>
               <p className="text-black sm:block">{product.product_info.name}</p>
             </div>

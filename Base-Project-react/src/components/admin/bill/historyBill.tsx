@@ -42,7 +42,7 @@ const HistoryBill = () => {
             key: 'image',
             render: (key) => <img
                 width="50px"
-                src={`http://127.0.0.1:8000${key}`}
+                src={`https://briteshop.store${key}`}
                 alt="User Avatar"
             />
         },
@@ -74,7 +74,7 @@ const HistoryBill = () => {
                                 {historyData?.bill.image_user != null ? <img
                                     className="rounded-circle mt-5"
                                     width="150px"
-                                    src={`http://127.0.0.1:8000${historyData?.bill.image_user}`}
+                                    src={`https://briteshop.store${historyData?.bill.image_user}`}
                                     alt="User Avatar"
                                 /> : <img
                                     className="rounded-circle mt-5"

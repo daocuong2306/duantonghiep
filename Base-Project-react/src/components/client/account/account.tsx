@@ -171,7 +171,7 @@ const Account = () => {
                                             <div className="w-20 h-20 overflow-hidden rounded-full">
                                                 {data?.data.image == null ?
                                                     <img src={image} className="w-full h-full object-cover" />
-                                                    : <img src={`http://127.0.0.1:8000/${data?.data.image}`} className="w-full h-full object-cover" />
+                                                    : <img src={`https://briteshop.store${data?.data.image}`} className="w-full h-full object-cover" />
                                                 }
                                             </div>
                                             <Button

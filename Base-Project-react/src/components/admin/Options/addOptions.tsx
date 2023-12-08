@@ -51,31 +51,6 @@ const AddOptions: React.FC = () => {
                                     <Input />
                                 </Form.Item>
 
-                                {/* value option */}
-                                {/* <Form.Item label="List">
-                                    <Form.List name={[field.name, 'list']}>
-                                        {(subFields, subOpt) => (
-                                            <div style={{ display: 'flex', flexDirection: 'column', rowGap: 16 }}>
-                                                {subFields.map((subField) => (
-                                                    <Space key={subField.key}>
-                                                        <Form.Item noStyle name={[subField.name, 'first']}>
-                                                            <Input placeholder="first" />
-                                                        </Form.Item>
-                                                        <CloseOutlined
-                                                            onClick={() => {
-                                                                subOpt.remove(subField.name);
-                                                            }}
-                                                        />
-                                                    </Space>
-                                                ))}
-                                                <Button type="dashed" onClick={() => subOpt.add()} block>
-                                                    + Add Sub Item
-                                                </Button>
-
-                                            </div>
-                                        )}
-                                    </Form.List>
-                                </Form.Item> */}
                             </Card>
                         ))}
 

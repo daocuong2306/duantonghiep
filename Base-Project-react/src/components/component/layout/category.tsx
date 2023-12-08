@@ -14,7 +14,7 @@ const Category = () => {
                         <div className="card rounded shadow-sm border-0">
                             <div className="card-body p-4">
                                 <img
-                                    src={`http://localhost:8000${product.image}`}
+                                    src={`https://briteshop.store${product.image}`}
                                     alt=""
                                     className="img-fluid d-block mx-auto mb-3 rounded-lg"
                                     style={{ height: '300px', width: '300px', objectFit: 'cover' }}

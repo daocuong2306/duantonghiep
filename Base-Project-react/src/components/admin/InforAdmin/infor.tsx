@@ -5,7 +5,7 @@ import { FaInternetExplorer, FaFacebookF,FaTwitter,FaInstagram } from 'react-ico
 import {  fetchBaseQuery } from '@reduxjs/toolkit/query'
 
 const InForAdmin = () => {
-    const api =fetchBaseQuery({ baseUrl: 'http://127.0.0.1:8000/api/admin/editinforshop' });
+    const api =fetchBaseQuery({ baseUrl: 'https://briteshop.store//api/admin/editinforshop' });
     console.log(api);
     
     return (

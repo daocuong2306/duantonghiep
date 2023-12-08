@@ -47,7 +47,7 @@ const ListVariant = () => {
                             <div className="product-image-thumbnail  overflow-hidden">
                                 <img
                                     className="w-full h-full"
-                                    src={`http://127.0.0.1:8000${product?.product.image}`}
+                                    src={`https://briteshop.store${product?.product.image}`}
                                     alt=""
                                 />
                             </div>

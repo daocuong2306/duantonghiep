@@ -96,7 +96,7 @@ export default function DetailProduct() {
                     <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
                         <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
                             <img
-                                src={`http://127.0.0.1:8000${detaiProduct?.data.product[0]?.image}`}
+                                src={`https://briteshop.store${detaiProduct?.data.product[0]?.image}`}
                                 className="h-full w-full object-cover object-center"
                             />
                         </div>
