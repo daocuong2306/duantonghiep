@@ -148,7 +148,7 @@ const UpdateCategory: React.FC = () => {
                                         >
                                             Xóa
                                         </Button>
-                                        <img src={`http://127.0.0.1:8000${category?.categories.image}`} className="w-full h-full" />
+                                        <img src={`https://briteshop.store${category?.categories.image}`} className="w-full h-full" />
 
                                     </>
                                         : <div className="w-full">

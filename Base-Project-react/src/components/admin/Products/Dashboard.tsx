@@ -33,7 +33,7 @@ const Dashboard = () => {
             dataIndex: 'image',
             key: 'image',
             render: (dataIndex) => (
-                <Image width={100} src={`http://127.0.0.1:8000${dataIndex}`} />
+                <Image width={100} src={`https://briteshop.store${dataIndex}`} />
             ),
         },
         { title: 'Mã sản phẩm', dataIndex: 'code', key: 'code' },

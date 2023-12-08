@@ -94,7 +94,7 @@ const CartProduct = () => {
                                     {dataCart?.carts?.map((cart: any) => (
                                         <tr key={cart.id}>
                                             <td className="align-middle d-flex justify-content-center align-items-center">
-                                                <img src={`http://127.0.0.1:8000${cart.image_product}`} className='w-[50px]' alt="" />
+                                                <img src={`https://briteshop.store${cart.image_product}`} className='w-[50px]' alt="" />
                                                 <p>{cart.name_product}</p>
                                             </td>
                                             <td className="align-middle">{`${cart.option_value[0]} - ${cart.option_value[1]}`}</td>
@@ -118,8 +118,6 @@ const CartProduct = () => {
                                             <td className="align-middle"><button className="btn btn-sm btn-primary" onClick={() => { buttonCart(cart.id, -1, 1) }}><i className="fa fa-times"></i></button></td>
                                         </tr>
                                     ))}
-
-
                                 </tbody>
                             </table>
                         </div>

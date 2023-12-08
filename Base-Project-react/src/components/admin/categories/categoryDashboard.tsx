@@ -19,7 +19,7 @@ const CategoryDashboard = () => {
             title: 'Ảnh', dataIndex: 'image', key: 'name', render: (dataIndex) => {
                 return <Image
                     width={100}
-                    src={`http://127.0.0.1:8000${dataIndex}`}
+                    src={`https://briteshop.store${dataIndex}`}
                 />
             }
         },

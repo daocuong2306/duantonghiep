@@ -260,7 +260,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                                         >
                                             Xóa
                                         </Button>
-                                        <img src={`http://127.0.0.1:8000${product?.product.image}`} className="w-150 h-full" />
+                                        <img src={`https://briteshop.store${product?.product.image}`} className="w-150 h-full" />
                                     </>
                                 ) : (
                                     <div className="w-full">

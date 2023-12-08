@@ -1,4 +1,4 @@
-import  {useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Image from '@/assets/image/395664742_238305892304631_1626048229353873057_n.png'
 const Header = () => {
@@ -30,7 +30,10 @@ const Header = () => {
                             Trang chủ
                         </Link>
                         <Link to="/products" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
-                            Sản phẩm
+                            Quần
+                        </Link>
+                        <Link to="/products" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
+                            Áo
                         </Link>
                         <Link to="/about" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
                             Thông tin

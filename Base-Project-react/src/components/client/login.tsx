@@ -38,6 +38,7 @@ const Login = () => {
     }
     if (!isLoading && !error) {
         localStorage.setItem("header", data?.access_token);
+        console.log(user);
         if (user?.role < 3) {
             localStorage.setItem("role", user?.role);
             localStorage.setItem("status", user?.status);
