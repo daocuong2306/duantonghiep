@@ -1,13 +1,11 @@
 import { useGetCartQuery, useRemoveCartMutation, useUpdateCartMutation } from '@/api/cart'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, notification, Alert, Spin, Switch } from 'antd';
+import { notification, Spin } from 'antd';
 import { useForm } from 'react-hook-form';
-import { BsFillNodePlusFill } from 'react-icons/bs';
-type Props = {}
-const CartProduct = (props: Props) => {
+const CartProduct = () => {
     const [discount, setDiscount] = useState('');
-    const { data: dataCart, refetch } = useGetCartQuery(discount)
+    const { data: dataCart, refetch }: { data?: any; refetch: () => void } = useGetCartQuery(discount) || {};
     console.log(dataCart);
 
     const [updateCart, { data: updateData, error }] = useUpdateCartMutation()
@@ -15,8 +13,8 @@ const CartProduct = (props: Props) => {
     const [loading, setLoading] = useState(false);
     console.log(updateData);
     const [api, contextHolder] = notification.useNotification();
-    const { control, handleSubmit, setValue, getValues, register } = useForm();
-    const openNotification = (m, d) => {
+    const { handleSubmit, getValues, register } = useForm();
+    const openNotification = (m: any, d: any) => {
         api.open({
             message: m,
             description: d
@@ -38,7 +36,7 @@ const CartProduct = (props: Props) => {
         }
         setLoading(false)
     };
-    const updateCartA = (id: any, count: any, quantity: any) => {
+    const updateCartA = (id: any, count: any) => {
         const data = { id, count };
         updateCart(data);
         setLoading(true)
@@ -110,7 +108,7 @@ const CartProduct = (props: Props) => {
                                                     </div>
                                                     <input type="text" className="form-control form-control-sm bg-secondary text-center" value={`${cart.quantity}`} />
                                                     <div className="input-group-btn">
-                                                        <button className="btn btn-sm btn-primary btn-plus" onClick={() => { updateCartA(cart.id, 1, cart.quantity) }}>
+                                                        <button className="btn btn-sm btn-primary btn-plus" onClick={() => { updateCartA(cart.id, 1) }}>
                                                             <i className="fa fa-plus"></i>
                                                         </button>
                                                     </div>

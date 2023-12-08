@@ -1,7 +1,6 @@
 import { useAddProductMutation } from "../../../api/product";
 import { useForm } from "react-hook-form";
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../../api/category";
 import { Select } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
@@ -33,11 +32,10 @@ const beforeUpload = (file: RcFile) => {
 const AddProduct = () => {
     // Xử lý sự kiện khi người dùng chọn tệp
     const [selectedCate, setselectedCate] = useState(null);
-    const { data: categories, isLoading } = useGetCategoriesQuery();
-    const url = useNavigate()
+    const { data: categories }: { data: any } = useGetCategoriesQuery() as { data: any };
     const readerRef = useRef<any>(null);
-    const [addProduct, { data: products, isLoading: addLoading }] = useAddProductMutation();
-    const { control, handleSubmit, setValue, getValues, register } = useForm();
+    const [addProduct, { data: products }] = useAddProductMutation();
+    const { handleSubmit, getValues, register } = useForm();
     const [product, setProduct] = useState([]);
     //tìm và chọn select
     const onChange = (value: any) => {
@@ -49,9 +47,9 @@ const AddProduct = () => {
         console.log('search:', value);
     };
     //text mô tả
-    const editor = useRef();
+    const editor: any = useRef();
 
-    const getSunEditorInstance = (sunEditor) => {
+    const getSunEditorInstance = (sunEditor: any) => {
         editor.current = sunEditor;
     };
     //img table
@@ -89,6 +87,8 @@ const AddProduct = () => {
             const reader = new FileReader();
             reader.onload = (e: any) => {
                 const fileData = e.target.result;
+                console.log(fileData);
+
             };
             readerRef.current = reader;
             reader.readAsDataURL(file);
@@ -113,22 +113,24 @@ const AddProduct = () => {
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
     // Notification
     const [api, contextHolder] = notification.useNotification();
-    const openNotification = (e) => {
+    const openNotification = (e: any) => {
         api.open({
             message: e,
         });
     };
-    const onHandleSubmit = async (data: any) => {
+    const onHandleSubmit = async () => {
         const code = getValues('code');
         const name = getValues('name');
         const price = parseInt(getValues('price'));
         let status = 0;
         const formData = new FormData();
         if (editor.current) {
-            const content = editor.current.getContents();
-            // Do something with the content (e.g., log it or use it as needed)
-            console.log("Editor Content:", content);
-            formData.append('description', content);
+            const content: any = editor.current.getContents();
+            if (content) {
+                // Do something with the content
+                console.log("Editor Content:", content);
+                formData.append('description', content);
+            }
         }
         // Append form fields to formData
         formData.append('name', name);
@@ -137,9 +139,11 @@ const AddProduct = () => {
         formData.append('price', String(price));
         formData.append('status', String(status));
         // Append the selected file to formData (if available)
-        formData.append('image', selectedFile);
+        if (selectedFile !== null) {
+            formData.append('image', selectedFile);
+        }
         try {
-            const response = await addProduct(formData);
+            const response: any = await addProduct(formData);
             console.log("error", response?.error.data.errors);
             if (response?.error.data.errors.image) {
                 openNotification("Bạn cần thêm ảnh cho sản phẩm")

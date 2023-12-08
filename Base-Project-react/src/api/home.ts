@@ -1,5 +1,5 @@
 
-import { ICategory } from '../interface/category';
+import urlApi from '@/urlApi/api';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -7,7 +7,7 @@ const homeApi = createApi({
     reducerPath: "home",
     tagTypes: ['Home'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/home",
+        baseUrl: `${urlApi}/home`,
         fetchFn: async (...args) => {
             await pause(500);
             return fetch(...args);
@@ -22,7 +22,7 @@ const homeApi = createApi({
 });
 
 export const {
-   useGetDataQuery
+    useGetDataQuery
 } = homeApi;
 export const homeReducer = homeApi.reducer;
 

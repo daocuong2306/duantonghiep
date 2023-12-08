@@ -1,36 +1,24 @@
-import { useGetUserQuery, useRegisterMutation } from "../../api/user"
-import { IUser } from "../../interface/user"
-import { useAppDispatch } from "../../store/hook"
+import { useRegisterMutation } from "../../api/user"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
-import { Button, notification, Spin } from 'antd';
-import React, { useState } from 'react';
-type signUpForm = {
-    id?: number;
-    name: null;
-    email: string;
-    image: null;
-    role: number;
-    phone: null;
-    address: null;
-    password: string;
-    confirmPassword: string
-}
+import { notification, Spin } from 'antd';
+import { useState } from 'react';
+
 const Signup = () => {
     const [registerUser, { data, isLoading, error }] = useRegisterMutation()
     const [loading, setLoading] = useState(false);
-    const dispatch = useAppDispatch()
     const url = useNavigate()
     const { register, handleSubmit } = useForm()
-    const onHandleSubmit = (dataUser: signUpForm) => {
-        registerUser({
-            "email": dataUser.email,
-            "password": dataUser.password,
-            "password_confirmation": dataUser.confirmPassword,
-            "name": dataUser.name
-        })
+    const onHandleSubmit = async (data: any) => {
+        // Your form submission logic here
+        await registerUser({
+            "email": data.email,
+            "password": data.password,
+            "password_confirmation": data.confirmPassword,
+            "name": data.name
+        });
         setLoading(true);
-    }
+    };
     ///Notification
     const [api, contextHolder] = notification.useNotification();
     const openNotification = (text: string) => {
@@ -68,7 +56,7 @@ const Signup = () => {
                             <div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0  -gray-700">
                                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                                     <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
-                                       Đăng kí tài khoản
+                                        Đăng kí tài khoản
                                     </h1>
                                     <form className="space-y-4 md:space-y-6" action="#" onSubmit={handleSubmit(onHandleSubmit)}>
 
@@ -106,7 +94,7 @@ const Signup = () => {
                                         </div>
                                         <button type="submit" className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Tạo tài khoản</button>
                                         <p className="text-sm font-light text-gray-500 ">
-                                           Bạn đã có tài khoản?   <Link to={`/login`}><span className="font-medium text-primary-600 hover:underline ">Đăng nhập</span></Link>
+                                            Bạn đã có tài khoản?   <Link to={`/login`}><span className="font-medium text-primary-600 hover:underline ">Đăng nhập</span></Link>
                                         </p>
                                     </form>
                                 </div>

@@ -1,19 +1,19 @@
 import { useAddDiscountMutation } from "@/api/discount";
-import { DatePicker } from "antd";
+import { DatePicker, DatePickerProps } from "antd";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 
 const Discount = () => {
     const [addDiscount] = useAddDiscountMutation()
-    const { control, handleSubmit, setValue, getValues, register } = useForm();
+    const { handleSubmit, getValues, register } = useForm();
     const [Date, setDate] = useState("")
-    const onChange: DatePickerProps['onChange'] = (date, dateString) => {
+    const onChange: DatePickerProps['onChange'] = (dateString: any) => {
         console.log(dateString);
         setDate(dateString)
     };
 
-    const onHandleSubmit = async (data: any) => {
+    const onHandleSubmit = async () => {
         const amount = getValues('amount');
         const discount_code = getValues('name');
         const formData = new FormData();
@@ -22,10 +22,10 @@ const Discount = () => {
         formData.append('discount_code', discount_code);
         formData.append('amount', amount);
         formData.append('expiry_date', Date);
-        formData.append('type', 1);
+        formData.append('type', `${1}`);
         // Append the selected file to formData (if available)
         try {
-            const response = await addDiscount(formData);
+            await addDiscount(formData);
         } catch (error) {
             console.error(error);
         }

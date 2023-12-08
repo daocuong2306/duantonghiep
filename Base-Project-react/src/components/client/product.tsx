@@ -1,22 +1,14 @@
-import { useGetUserQuery } from "@/api/user";
 import { useGetCategoriesQuery } from "../../api/category";
 import { useGetProductsQuery } from "../../api/product";
-import { ICategory } from "../../interface/category";
-import { IProduct } from "../../interface/product";
-import { Controller, useForm } from "react-hook-form";
-import { Link, useParams } from "react-router-dom";
-import { Fragment, useEffect, useState } from 'react'
-import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
+import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react'
 import { Spin } from "antd";
 import { useGetOptionsQuery } from "@/api/option";
-import Search from "./search";
 const Product = () => {
-    const [find, setFind] = useState({});
-    const { data: products, isLoading } = useGetProductsQuery(find);
-    const { data: categories } = useGetCategoriesQuery();
-    const { data: options } = useGetOptionsQuery();
+    const { data: products, isLoading }: { data: any, isLoading: any } = useGetProductsQuery({}) as { data: any, isLoading: any };
+
+    const { data: categories }: { data: any } = useGetCategoriesQuery() as { data: any };
+    const { data: options }: { data: any } = useGetOptionsQuery() as { data: any };
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 9;//số lượng sản phẩm hiển thị thay đổi ở đây
 
@@ -30,7 +22,7 @@ const Product = () => {
 
     const totalPages = Math.ceil(products?.product?.length / productsPerPage);
 
-    const handlePageChange = (page) => {
+    const handlePageChange = (page: any) => {
         setCurrentPage(page);
     };
     const [isMenuOpen, setMenuOpen] = useState(false);
@@ -42,13 +34,15 @@ const Product = () => {
     const toggleExpansion = () => {
         setExpanded(!isExpanded);
     };
-    const [expandedOptions, setExpandedOptions] = useState([]);
+    const [expandedOptions, setExpandedOptions] = useState<boolean[]>([]);
 
-    const toggleExpansionV = (index) => {
+    const toggleExpansionV = (index: number) => {
         const updatedOptions = [...expandedOptions];
         updatedOptions[index] = !updatedOptions[index];
         setExpandedOptions(updatedOptions);
     };
+
+
     return (
         <Spin spinning={isLoading}>
 
@@ -162,7 +156,7 @@ const Product = () => {
                                             </button>
                                         </h3>
 
-                                        {categories?.categories.map((category) =>
+                                        {categories?.categories.map((category: any) =>
                                             <div className={`pt-6 ${isExpanded ? '' : 'hidden'}`} id="filter-section-1">
                                                 <div className="space-y-4">
                                                     <div className="flex items-center">
@@ -181,7 +175,7 @@ const Product = () => {
                                             </div>
                                         )}
                                     </div>
-                                    {options?.options.map((option, index) => (
+                                    {options?.options.map((option: any, index: any) => (
                                         <div className="border-b border-gray-200 py-6" key={index}>
                                             <h3 className="-my-3 flow-root">
                                                 <button
@@ -206,7 +200,7 @@ const Product = () => {
                                                 </button>
                                             </h3>
 
-                                            {option?.value.map((optionValue, optionValueIndex) => (
+                                            {option?.value.map((optionValue: any, optionValueIndex: any) => (
                                                 <div className={`pt-6 ${expandedOptions[index] ? '' : 'hidden'}`} id={`filter-section-${index}`} key={optionValueIndex}>
                                                     <div className="space-y-4">
                                                         <div className="flex items-center">
@@ -230,7 +224,7 @@ const Product = () => {
                                 </form>
                                 <div>
                                     <div className="grid grid-cols-3 gap-4">
-                                        {currentProducts?.map((product) => (
+                                        {currentProducts?.map((product: any) => (
                                             <Link to={`/product/detail/${product.id}`} key={product.id}>
                                                 <div className="bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                                                     <img

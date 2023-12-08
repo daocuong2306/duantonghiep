@@ -1,11 +1,9 @@
-import { useAppDispatch } from "../../../store/hook";
-import { useForm, Controller } from "react-hook-form";
-import React, { useState, useRef } from 'react';
+import { useForm } from "react-hook-form";
+import  { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useAddCategoryMutation, useGetCategoriesQuery } from "../../../api/category";
-import { ICategory } from "../../../interface/category";
-import { Modal, Select, Spin, message } from "antd";
-import Upload, { RcFile, UploadFile, UploadProps } from "antd/es/upload";
+import { useAddCategoryMutation } from "../../../api/category";
+import {  Spin, message } from "antd";
+import Upload, { RcFile, UploadProps } from "antd/es/upload";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
     const reader = new FileReader();
@@ -25,21 +23,10 @@ const beforeUpload = (file: RcFile) => {
     return isJpgOrPng && isLt2M;
 };
 const AddCategory = () => {
-    const [selectedCate, setselectedCate] = useState(null);
-    const { data: categories } = useGetCategoriesQuery();
     const url = useNavigate()
     const readerRef = useRef<any>(null);
     const [addCategory, { isLoading }] = useAddCategoryMutation();
-    const { control, handleSubmit, setValue, getValues, register } = useForm();
-    //tìm và chọn select
-    const onChange = (value: any) => {
-        console.log(`selected ${value}`);
-        setselectedCate(value)
-    };
-
-    const onSearch = (value: any) => {
-        console.log('search:', value);
-    };
+    const {  handleSubmit,  getValues, register } = useForm();
     //img table
     new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -47,34 +34,12 @@ const AddCategory = () => {
         reader.onload = () => resolve(reader.result as string);
         reader.onerror = (error) => reject(error);
     });
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-    const [previewTitle, setPreviewTitle] = useState('');
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
-
-    const handleCancel = () => setPreviewOpen(false);
-
-    const handlePreview = async (file: UploadFile) => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj as RcFile);
-        }
-
-        setPreviewImage(file.url || (file.preview as string));
-        setPreviewOpen(true);
-        setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-    };
-    console.log(fileList);
-
-    const handleChangeTable: UploadProps['onChange'] = ({ fileList: newFileList }) =>
-        setFileList(newFileList);
-
     //end img table
     //img avatar product
-    const [loading, setLoading] = useState(false);
     const [loadingAvatar, setLoadingAvatar] = useState(false);
     const [imageUrl, setImageUrl] = useState<string>();
     const [selectedFile, setSelectedFile] = useState(null);
-    const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
+    const handleChange: UploadProps['onChange'] = (info: any) => {
         if (info.file.status === 'uploading') {
             getBase64(info.file.originFileObj as RcFile, (url) => {
                 setLoadingAvatar(true);
@@ -97,6 +62,8 @@ const AddCategory = () => {
             const reader = new FileReader();
             reader.onload = (e: any) => {
                 const fileData = e.target.result;
+                console.log(fileData);
+                
             };
             readerRef.current = reader;
             reader.readAsDataURL(file);
@@ -113,18 +80,12 @@ const AddCategory = () => {
             <div style={{ marginTop: 8 }}>Cập nhật</div>
         </div>
     );
-    const uploadButtonTable = (
-        <div>
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Cập nhật</div>
-        </div>
-    );
+ 
     //end img product 
     // Filter `option.label` match the user type `input`
-    const filterOption = (input: string, option?: { label: string; value: string }) =>
-        (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
-    const onHandleSubmit = async (data: any) => {
+
+    const onHandleSubmit = async () => {
         const name = getValues('name');
         const formData = new FormData();
 

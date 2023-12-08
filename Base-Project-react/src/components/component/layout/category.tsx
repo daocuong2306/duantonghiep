@@ -1,17 +1,15 @@
-import { useState } from 'react';
 import { useGetDataQuery } from '@/api/home';
 import { Link } from 'react-router-dom';
 
-type Props = {};
 
-const Category = (props: Props) => {
-    const { data } = useGetDataQuery();
+const Category = () => {
+    const { data }: { data?: any } = useGetDataQuery();
     console.log(data);
 
     return (
         <div className="container py-5">
             <div className="row pb-5 mb-3">
-                {data?.data.productNew?.map((product, index) => (
+                {data?.data.productNew?.map((product: any, index: any) => (
                     <div key={index} className="col-lg-3 col-md-6 mb-4">
                         <div className="card rounded shadow-sm border-0">
                             <div className="card-body p-4">

@@ -1,13 +1,11 @@
 import { useGetCategoriesQuery, useRemoveCategoryMutation } from "@/api/category"
-import { ICategory } from "@/interface/category"
 import { Button, Image, Space, Spin, Table, TableColumnsType } from "antd"
-import { FcFullTrash, FcSupport } from "react-icons/fc"
 import { Link } from "react-router-dom"
 import UpdateCategory from "./updateCategory"
 
 const CategoryDashboard = () => {
 
-    const { data: categories, isLoading: dataLoading } = useGetCategoriesQuery();
+    const { data: categories, isLoading: dataLoading }: { data: any, isLoading: boolean } = useGetCategoriesQuery() as {data : any , isLoading: boolean};
     const [deleteCate, { isLoading }] = useRemoveCategoryMutation()
     const deleteC = (id: number) => {
         const check = window.confirm("Are you sure you want to delete");
@@ -28,7 +26,7 @@ const CategoryDashboard = () => {
         {
             title: '', key: 'id', dataIndex: 'id', render: (dataIndex) => {
                 return <>
-                    <UpdateCategory id={dataIndex} />
+                    <UpdateCategory />
                     <Space wrap>
                         <Button type="primary" danger onClick={() => deleteC(dataIndex)}>
                             Xóa
@@ -44,7 +42,7 @@ const CategoryDashboard = () => {
             <Spin spinning={dataLoading} className="pl-[50%]">
                 <Spin spinning={isLoading} className="pl-[50%]">
                     <Space>
-                        <Link to='/admin/categories/add'> <Button primary>Thêm Danh Mục</Button></Link>
+                        <Link to='/admin/categories/add'> <Button >Thêm Danh Mục</Button></Link>
                     </Space>
 
                     <Table

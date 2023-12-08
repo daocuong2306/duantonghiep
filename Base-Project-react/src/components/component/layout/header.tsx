@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Input } from "@material-tailwind/react";
+import  {useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Image from '@/assets/image/395664742_238305892304631_1626048229353873057_n.png'
 const Header = () => {
 

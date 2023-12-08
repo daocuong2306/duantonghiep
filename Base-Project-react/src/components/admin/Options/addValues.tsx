@@ -1,11 +1,13 @@
 import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Input, Space, Typography, Select, Spin } from 'antd';
-import { useAddOptionMutation, useAddOptionValueMutation, useGetOptionsQuery } from '@/api/option';
+import { Button, Card, Form, Input, Space, Select, Spin } from 'antd';
+import { useAddOptionValueMutation, useGetOptionsQuery } from '@/api/option';
 import { useNavigate } from 'react-router-dom';
+const { Option } = Select;
+
 
 const AddValueOptions: React.FC = () => {
-    const { data: options, isLoading, error } = useGetOptionsQuery();
+    const { data: options, isLoading }: { data: any, isLoading: any } = useGetOptionsQuery() as { data: any, isLoading: any };
     const [form] = Form.useForm();
     console.log(form.getFieldsValue());
     const [addValueOptions, { isLoading: addLoading }] = useAddOptionValueMutation()
@@ -16,7 +18,7 @@ const AddValueOptions: React.FC = () => {
         for (let item of values.items) {
             const selectedValue = item.name; // Access the selected value
             console.log('Selected value:', selectedValue);
-            const list = item.list.map(subItem => subItem.first);
+            const list = item.list.map((subItem: any) => subItem.first);
             console.log(item.name, list);
             addValueOptions({
                 option_id: item.name,
@@ -55,14 +57,13 @@ const AddValueOptions: React.FC = () => {
                                                 />
                                             }
                                         >
-                                            {/* <Form.Item label="Select" name={[field.name, 'name']}>
-                                    <Select>
-                                        {options?.options.map(option => <Select.Option value={option.id}>{option.name}</Select.Option>)}
-                                    </Select>
-                                </Form.Item> */}
                                             <Form.Item label="Chọn" name={[field.name, 'name']}>
                                                 <Select>
-                                                    {options?.options.map(option => <Option value={option.optionId}>{option.name}</Option>)}
+                                                    {options?.options.map((option: any) => (
+                                                        <Option key={option.optionId} value={option.optionId}>
+                                                            {option.name}
+                                                        </Option>
+                                                    ))}
                                                 </Select>
                                             </Form.Item>
                                             {/* value option */}
@@ -96,7 +97,7 @@ const AddValueOptions: React.FC = () => {
                                     <Button type="dashed" onClick={() => add()} block>
                                         + thêm mục phụ
                                     </Button>
-                                    <Button primary htmlType="submit">
+                                    <Button htmlType="submit">
                                         Gửi
                                     </Button>
                                 </div>

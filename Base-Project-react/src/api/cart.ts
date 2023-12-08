@@ -1,4 +1,4 @@
-import { IUser, IUserLogin } from '../interface/user';
+import urlApi from '@/urlApi/api';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -6,7 +6,7 @@ const cartApi = createApi({
     reducerPath: "cart",
     tagTypes: ['cart'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api/cart",
+        baseUrl: `${urlApi}/cart`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)
@@ -19,7 +19,7 @@ const cartApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getCart: builder.query<any[], void>({
+        getCart: builder.query<any[], any>({
             query: (discounts) => ({
                 url: `/`,
                 method: "GET",

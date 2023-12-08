@@ -1,5 +1,5 @@
 
-import { createBrowserRouter, Outlet, Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import LayoutAdmin from "./components/layouts/LayoutAdmin";
 import Login from "./components/client/login";
 import Signup from "./components/client/signup";
@@ -11,7 +11,6 @@ import CategoryDashboard from "./components/admin/categories/categoryDashboard";
 import AddCategory from "./components/admin/categories/addCategory";
 import UpdateCategory from "./components/admin/categories/updateCategory";
 import InForAdmin from "./components/admin/InforAdmin/infor";
-import Statistical from "./components/admin/InforAdmin/statistical";
 import NotFound from "./components/component/layout/NotFound";
 import DashboardUser from "./components/admin/user/dashboard";
 import AddOptions from "./components/admin/Options/addOptions";
@@ -31,7 +30,6 @@ import Bill from "./components/client/bill/Bill";
 import Account from "./components/client/account/account";
 import BillDashboard from "./components/admin/bill/dashboard";
 import HistoryBill from "./components/admin/bill/historyBill";
-import Checkbill from "./components/client/account/checkbill";
 import About from "./components/component/layout/about/about";
 import Discount from "./components/admin/discount/add";
 import DiscountDashboard from "./components/admin/discount/list";
@@ -138,10 +136,6 @@ export const router = createBrowserRouter([
                 element: <InForAdmin />,
             },
             {
-                path: "statistical",
-                element: <Statistical />,
-            },
-            {
                 path: "categories",
                 element: <CategoryDashboard />
             },
@@ -157,10 +151,7 @@ export const router = createBrowserRouter([
                 path: 'user',
                 element: <DashboardUser />
             },
-            // {
-            //     path: 'test',
-            //     element: <MyComponent />
-            // },
+
             {
                 path: 'Options/add',
                 element: <AddOptions />
@@ -207,7 +198,7 @@ export const router = createBrowserRouter([
                 path: "Discount",
                 element: <DiscountDashboard />,
             }
-        ],
+        ] as any[]
     },
 
 ]);

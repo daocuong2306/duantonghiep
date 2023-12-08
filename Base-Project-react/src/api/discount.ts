@@ -1,4 +1,4 @@
-import { IUser, IUserLogin } from '../interface/user';
+import urlApi from '@/urlApi/api';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -6,7 +6,7 @@ const discountApi = createApi({
     reducerPath: "discount",
     tagTypes: ['discount'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api/discounts",
+        baseUrl: `${urlApi}/discounts`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)
@@ -20,7 +20,7 @@ const discountApi = createApi({
     }),
     endpoints: (builder) => ({
         getDiscount: builder.query<any[], void>({
-            query: (key: any) => ({
+            query: () => ({
                 url: `/`,
                 method: "GET",
             }),

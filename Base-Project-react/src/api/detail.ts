@@ -1,4 +1,4 @@
-import { IUser, IUserLogin } from '../interface/user';
+import urlApi from '@/urlApi/api';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -6,7 +6,7 @@ const detailApi = createApi({
     reducerPath: "detail",
     tagTypes: ['detail'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api/detail",
+        baseUrl: `${urlApi}/detail`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)
@@ -19,9 +19,9 @@ const detailApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getDetail: builder.query<any, { id: number | string, selectP: string[] }>({
-            query: (product) => {
-                const queryString = product.selectP.map(item => `searchOptionValueId[]=${item}`).join('&');
+        getDetail: builder.query<any, { id: any, selectP: any }>({
+            query: (product: any) => {
+                const queryString = product.selectP.map((item: any) => `searchOptionValueId[]=${item}`).join('&');
                 return {
                     url: `/getone/${product.id}?${queryString}`,
                     method: "GET",

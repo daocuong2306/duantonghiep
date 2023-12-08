@@ -6,10 +6,10 @@ import { useAddBillMutation } from '@/api/bill';
 type Props = {};
 
 const ConfirmPayment: React.FC<Props> = () => {
-    const [addBill, { loading }] = useAddBillMutation();
+    const [addBill] = useAddBillMutation();
     const urlParams = new URLSearchParams(window.location.search);
 
-    const vnp_ResponseCode = urlParams.get('vnp_ResponseCode');
+    const vnp_ResponseCode: any = urlParams.get('vnp_ResponseCode');
     const vnp_Amount = urlParams.get('vnp_Amount');
     const vnp_PayDate = urlParams.get('vnp_PayDate');
 
@@ -33,8 +33,11 @@ const ConfirmPayment: React.FC<Props> = () => {
         return withoutTrailingZeros;
     };
     const handleAddBill = () => {
-        const dataBill = JSON.parse(localStorage.getItem('dataBill'));
-        addBill(dataBill);
+        const dataBillString = localStorage.getItem('dataBill');
+        if (dataBillString !== null) {
+            const dataBill = JSON.parse(dataBillString);
+            addBill(dataBill);
+        }
     }
     useEffect(() => {
         if (vnp_ResponseCode == 0) {
@@ -52,7 +55,7 @@ const ConfirmPayment: React.FC<Props> = () => {
             subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
             extra={[
                 <Link to='/' key="continueShopping">
-                    <Button  key="console">
+                    <Button key="console">
                         Tiếp tục mua hàng
                     </Button>
                 </Link>,
@@ -64,7 +67,7 @@ const ConfirmPayment: React.FC<Props> = () => {
             title={`Bạn đã thanh toán thất bại đơn hàng giá ${formattedAmount}`}
             extra={
                 <Link to='/payment' key="goBackToPayment">
-                    <Button  key="console">
+                    <Button key="console">
                         Quay lại thanh toán
                     </Button>
                 </Link>

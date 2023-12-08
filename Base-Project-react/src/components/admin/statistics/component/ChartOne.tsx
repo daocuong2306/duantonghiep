@@ -5,11 +5,9 @@ import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 
-interface ChartOneProps {
-  data: any; // Adjust the type of your data accordingly
-}
 
-const ChartOne: React.FC<ChartOneProps> = () => {
+
+const ChartOne: React.FC = () => {
   const currentMonth = new Date().getMonth() + 1;
 
   const [day, setDay] = useState(currentMonth)
@@ -20,16 +18,6 @@ const ChartOne: React.FC<ChartOneProps> = () => {
   console.log(statisData);
 
   const cate = Object.keys(statisData?.totalAmountPerDay || {}).map(Number);
-  const maxTotalAmount = Math.max(...monthlyData);
-
-  let chartData = [
-    {
-      name: '2023',
-      data: monthlyData,
-    },
-
-  ];
-
   const options: ApexOptions = {
     xaxis: {
       type: 'category',
@@ -39,15 +27,18 @@ const ChartOne: React.FC<ChartOneProps> = () => {
 
   useEffect(() => {
     if (monthlyData.length > 0) {
-      chartData = [
+      const chartData = [
         {
           name: 'Product One',
           data: monthlyData,
         }
       ];
+      // Now you can use chartData as needed
+      console.log(chartData);
     }
   }, [monthlyData]);
-  const onChange = (date, dateString) => {
+
+  const onChange = (dateString: any) => {
     // Chuyển đổi dateString thành đối tượng Date
     const selectedDate = new Date(dateString);
 
@@ -61,9 +52,9 @@ const ChartOne: React.FC<ChartOneProps> = () => {
       <div className="col-12 p-0 m-0 rounded-sm border border-stroke bg-white pt-7.5 pb-5 shadow-default">
         {isLoading ? null : (
           <div>
-            <DatePicker onChange={onChange} picker="month" suffix="Chọn tháng"/>
+            <DatePicker onChange={onChange} picker="month" />
             <div id="chartOne">
-              <ReactApexChart options={options} series={chartData} type="area" height={350} />
+              <ReactApexChart options={options} type="area" height={350} />
             </div>
           </div>
         )}

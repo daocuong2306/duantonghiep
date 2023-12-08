@@ -1,9 +1,9 @@
 import { useInforUserQuery, useUpdateAccountMutation } from "@/api/user"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import image from "../../../../img/user.png"
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, DatePicker, Drawer, Form, Input, List, Row, Select, Space, Spin, UploadProps, message } from 'antd';
+import { Avatar, Button, List, Spin, UploadProps, message } from 'antd';
 import Upload, { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 import { useForm } from "react-hook-form";
 import { useCancelBillMutation, useGetBillQuery } from "@/api/bill";
@@ -14,11 +14,10 @@ const Account = () => {
     const token = localStorage.getItem("header")
     const { data, isLoading } = useInforUserQuery(token)
     console.log(data);
-    const url = useNavigate()
-    const [update, { isLoading: updateLoading }] = useUpdateAccountMutation()
-    const { control, handleSubmit, setValue, getValues, register } = useForm()
+    const [update] = useUpdateAccountMutation()
+    const { handleSubmit, getValues, register } = useForm()
     const readerRef = useRef<any>(null);
-    const onFinish = async (values: any) => {
+    const onFinish = async () => {
         const formData = new FormData();
 
         const name = getValues('name')
@@ -44,19 +43,26 @@ const Account = () => {
             }
 
             try {
-                const upInfor = { formData, token }
+                const upInfor = { formData, token };
                 const response = await update(upInfor);
                 console.log(response);
-                if (response?.error) {
-                    message.error(response?.error.data.msg)
+
+                if ('error' in response) {
+                    if ('data' in response.error) {
+                        const fetchError = response.error as any;
+                        message.error(fetchError.data.msg);
+                    } else {
+                        message.error('An error occurred');
+                    }
+                } else {
+                    message.success('Cập nhật thông tin thành công');
                 }
-                else {
-                    message.success('Cập nhật thông tin thành công')
-                }
+            } catch (error) {
+                // Handle other errors (e.g., network error, timeout)
+                console.error('An error occurred:', error);
             }
-            catch (err) {
-                message.error('Cập nhật thông tin thất bại');
-            }
+
+
         } else {
             message.error("Xác nhận mật khẩu không trùng khớp")
         }
@@ -108,6 +114,8 @@ const Account = () => {
             reader.onload = (e: any) => {
                 const fileData = e.target.result;
                 // Bạn có thể làm bất kỳ điều gì bạn muốn với fileData ở đây
+                console.log(fileData);
+
             };
             readerRef.current = reader;
             reader.readAsDataURL(file);
@@ -140,7 +148,7 @@ const Account = () => {
         }
     };
     console.log("dataBill", dataBill);
-    const checkStatus = {
+    const checkStatus: any = {
         "Pending": "Chờ duyệt",
         "Browser": "Đã duyệt",
         "Transport": "Vận Chuyển",
@@ -286,7 +294,7 @@ const Account = () => {
                     <List
                         pagination={{}}
                         dataSource={dataBill}
-                        renderItem={(item, index) => (
+                        renderItem={(item: any) => (
                             <List.Item
                                 actions={[
                                     <p key="list-loadmore-edit">Trạng thái</p>,

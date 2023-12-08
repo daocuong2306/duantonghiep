@@ -1,8 +1,8 @@
 
-import { useForm, Controller } from "react-hook-form";
-import React, { useState, useRef } from 'react';
+import { useForm} from "react-hook-form";
+import  { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Modal, Select, Spin, message } from "antd";
+import {  Spin, message } from "antd";
 import Upload, { RcFile, UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useAddBannerMutation } from "@/api/banner";
@@ -24,21 +24,12 @@ const beforeUpload = (file: RcFile) => {
     return isJpgOrPng && isLt2M;
 };
 const AddBanner = () => {
-    const [selectedCate, setselectedCate] = useState(null);
 
     const url = useNavigate()
     const readerRef = useRef<any>(null);
     const [addBanner, { isLoading }] = useAddBannerMutation();
-    const { control, handleSubmit, setValue, getValues, register } = useForm();
-    //tìm và chọn select
-    const onChange = (value: any) => {
-        console.log(`selected ${value}`);
-        setselectedCate(value)
-    };
+    const {  handleSubmit, getValues, register } = useForm();
 
-    const onSearch = (value: any) => {
-        console.log('search:', value);
-    };
     //img table
     new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -46,27 +37,7 @@ const AddBanner = () => {
         reader.onload = () => resolve(reader.result as string);
         reader.onerror = (error) => reject(error);
     });
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-    const [previewTitle, setPreviewTitle] = useState('');
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
-
-    const handleCancel = () => setPreviewOpen(false);
-
-    const handlePreview = async (file: UploadFile) => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj as RcFile);
-        }
-
-        setPreviewImage(file.url || (file.preview as string));
-        setPreviewOpen(true);
-        setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-    };
-    console.log(fileList);
-
-
     //img avatar product
-    const [loading, setLoading] = useState(false);
     const [loadingAvatar, setLoadingAvatar] = useState(false);
     const [imageUrl, setImageUrl] = useState<string>();
     const [selectedFile, setSelectedFile] = useState(null);
@@ -93,6 +64,8 @@ const AddBanner = () => {
             const reader = new FileReader();
             reader.onload = (e: any) => {
                 const fileData = e.target.result;
+                console.log(fileData);
+                
             };
             readerRef.current = reader;
             reader.readAsDataURL(file);
@@ -109,7 +82,7 @@ const AddBanner = () => {
             <div style={{ marginTop: 8 }}>Cập nhật</div>
         </div>
     );
-    const onHandleSubmit = async (data: any) => {
+    const onHandleSubmit = async () => {
         const content = getValues('content');
         const formData = new FormData();
 

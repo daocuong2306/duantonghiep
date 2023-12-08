@@ -1,8 +1,12 @@
 import { useGetListBannerQuery, useRemoveBannerMutation } from "@/api/banner";
 import { Button, Image, Space, Spin, Table, TableColumnsType } from "antd"
 import { Link } from "react-router-dom"
+
+
 const BannerDashboard = () => {
-    const { data: banners, isLoading } = useGetListBannerQuery();
+    const { data: banners, isLoading }: { data?: any; isLoading: boolean } = useGetListBannerQuery();
+
+
     console.log(banners);
     const [deleteBanner, { isLoading: deleteLoading }] = useRemoveBannerMutation()
     const deleteB = (id: number) => {
@@ -34,13 +38,14 @@ const BannerDashboard = () => {
             }
         },
     ];
-    const data: any[] = banners?.banner
+    const data: any[] = banners?.banner;
+
     return (
         <div>
             <Spin spinning={deleteLoading} className="pl-[50%]">
                 <Spin spinning={isLoading} className="pl-[50%]">
                     <Space>
-                        <Link to='/admin/banner/add'> <Button primary>Thêm Ảnh</Button></Link>
+                        <Link to='/admin/banner/add'> <Button >Thêm Ảnh</Button></Link>
                     </Space>
                     <Table
                         columns={columns}

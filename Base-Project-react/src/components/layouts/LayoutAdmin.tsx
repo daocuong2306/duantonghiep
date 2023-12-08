@@ -1,6 +1,4 @@
 import {
-    AiOutlineMenuFold,
-    AiOutlineMenuUnfold,
     AiOutlineUser,
     AiOutlineVideoCamera,
     AiFillFolder
@@ -9,7 +7,7 @@ import React from 'react';
 import { Layout, Menu, theme } from 'antd';
 import { Link, Outlet } from 'react-router-dom';
 import MenuBar from "../component/layout/menu";
-const { Header, Content, Sider } = Layout;
+const {  Content, Sider } = Layout;
 const LayoutAdmin: React.FC = () => {
     const {
         token: { colorBgContainer },

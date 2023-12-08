@@ -1,12 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space, Spin, UploadProps, message } from 'antd';
-import { Image } from 'antd';
-
+import { Button, Col, Drawer, Form, Input, Row, Space, Spin, UploadProps, message } from 'antd';
 import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from '@/api/category';
-import Variant from '../Products/Variant';
 import Upload, { RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
-const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
+import { useParams } from 'react-router-dom';
+
+
+
+const UpdateCategory: React.FC = () => {
+    const id = useParams();
     const [open, setOpen] = useState(false);
     const readerRef = useRef<any>(null);
     const [updateCategory, { isLoading: updateLoading }] = useUpdateCategoryMutation()
@@ -34,7 +36,7 @@ const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
 
         try {
             const idCate = { formData, id }
-            const response = await updateCategory(idCate);
+            await updateCategory(idCate);
             message.success('Cập nhật sản phẩm thành công');
 
             // Close the drawer or perform any other actions as needed
@@ -90,6 +92,8 @@ const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
             const reader = new FileReader();
             reader.onload = (e: any) => {
                 const fileData = e.target.result;
+                console.log(fileData);
+
             };
             readerRef.current = reader;
             reader.readAsDataURL(file);
@@ -109,7 +113,7 @@ const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
     //end add image 
 
 
-    const { data: category, isLoading } = useGetCategoryByIdQuery(id);
+    const { data: category, isLoading }: { data: any, isLoading: any } = useGetCategoryByIdQuery(id) as { data: any, isLoading: any };
 
     console.log(category);
 
@@ -172,7 +176,7 @@ const UpdateCategory: React.FC<{ id: string }> = ({ id }) => {
 
                                 </Col>
                             </Row>
-                            
+
                             <Space className='mt-[7%]'>
                                 <Button onClick={onClose}>Hủy bỏ</Button>
                                 <Button htmlType="submit">

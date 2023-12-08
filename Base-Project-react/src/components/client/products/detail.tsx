@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { RadioGroup } from '@headlessui/react'
 import { useGetDetailQuery } from '@/api/detail'
@@ -6,8 +6,7 @@ import { useParams } from 'react-router-dom'
 import { useAddCartMutation } from '@/api/cart'
 import { useForm } from "react-hook-form";
 import Comment from '../comment/comment'
-import Showcomt from '../comment/showcomt'
-import { Button, notification, Alert, Spin, Switch } from 'antd';
+import { notification, Spin } from 'antd';
 
 const reviews = { href: '#', average: 4, totalCount: 117 }
 function classNames(...classes: any) {
@@ -16,14 +15,14 @@ function classNames(...classes: any) {
 
 export default function DetailProduct() {
     const { id } = useParams()
-    const { register, handleSubmit } = useForm();
-    const [addCart, { data: add, error }] = useAddCartMutation();
+    const { handleSubmit } = useForm();
+    const [addCart, { data: add }] = useAddCartMutation();
     const [selectedColor, setSelectedColor] = useState(1);
     const [selectedSize, setSelectedSize] = useState(2);
     const [loading, setLoading] = useState(false);
     //Thông báo
     const [api, contextHolder] = notification.useNotification();
-    const openNotification = (m, d) => {
+    const openNotification = (m: any, d: any) => {
         api.open({
             message: m,
             description: d
@@ -38,19 +37,19 @@ export default function DetailProduct() {
     const prodcuts = {
         id, selectP: [selectedSize, selectedColor]
     }
-    const { data: detaiProduct, isLoading } = useGetDetailQuery(prodcuts);
+    const { data: detaiProduct } = useGetDetailQuery(prodcuts);
     console.log(detaiProduct);
 
     const jsonArray = detaiProduct?.data.variant
         ? Object.entries(detaiProduct.data.variant).map(([key, value]) => ({ key, value }))
         : [];
-    const newData = jsonArray.map(item => ({
+    const newData = jsonArray.map((item: any) => ({
         ...item,
-        value: item.value.map(option => ({ ...option, inStock: true })),
+        value: item.value.map((option: any) => ({ ...option, inStock: true })),
     }));
     console.log(newData);
 
-    const onHandleSubmit = (dataUser: any) => {
+    const onHandleSubmit = () => {
         if (detaiProduct?.data.priceSku == null) {
             openNotification("vui lòng chọn kích cỡ và size", 'Bạn chưa chọn kích cỡ và size')
         } else if (detaiProduct?.data.priceSku[0]?.sku_stoke == 0) {
@@ -148,7 +147,7 @@ export default function DetailProduct() {
                                                 >
                                                     <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
                                                     <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                                                        {data.value.map((size) => (
+                                                        {data.value.map((size: any) => (
                                                             size.inStock ? (
                                                                 <RadioGroup.Option
                                                                     key={size}
@@ -237,7 +236,7 @@ export default function DetailProduct() {
                     </div>
                 </div >
 
-                <Comment  />
+                <Comment />
             </div >
         </Spin >
     )

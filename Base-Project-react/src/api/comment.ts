@@ -1,5 +1,6 @@
 
 
+import urlApi from '@/urlApi/api';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -7,7 +8,7 @@ const commentApi = createApi({
     reducerPath: "comment",
     tagTypes: ['Comment'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/comment",
+        baseUrl: `${urlApi}/comment`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)

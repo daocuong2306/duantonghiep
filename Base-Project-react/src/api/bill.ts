@@ -1,4 +1,4 @@
-import { IUser, IUserLogin } from '../interface/user';
+import urlApi from '@/urlApi/api';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -6,7 +6,7 @@ const billApi = createApi({
     reducerPath: "bill",
     tagTypes: ['bill'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api/bill",
+        baseUrl: `${urlApi}/bill`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)
@@ -20,7 +20,7 @@ const billApi = createApi({
     }),
     endpoints: (builder) => ({
         getBill: builder.query<any[], void>({
-            query: (key: any) => ({
+            query: () => ({
                 url: `/`,
                 method: "GET",
             }),
