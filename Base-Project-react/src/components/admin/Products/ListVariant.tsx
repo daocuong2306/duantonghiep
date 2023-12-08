@@ -1,14 +1,13 @@
-import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import type { TableColumnsType } from 'antd';
-import { Button, Table, Space, Image, Spin } from 'antd';
+import { Table, Spin } from 'antd';
 import { useGetValueIdQuery } from '@/api/variant';
 import { useParams } from 'react-router-dom';
 import { useGetProductByIdQuery } from '@/api/product';
 
 const ListVariant = () => {
     let { id } = useParams();
-    const { data: variants, isLoading: valueLoading } = useGetValueIdQuery(id)
+    const { data: variants,  } = useGetValueIdQuery(id)
     const { data: product, isLoading: productLoading } = useGetProductByIdQuery(id)
     const columns: TableColumnsType<any> = [
         {
@@ -36,7 +35,7 @@ const ListVariant = () => {
         setIsEmpty(false);
     }, [data]);
     console.log(product);
-    
+
     return (
         <div>
             <Spin spinning={productLoading}>

@@ -2,16 +2,17 @@ import { useGetUserQuery, useLoginMutation } from "../../api/user";
 import { IUserLogin } from "../../interface/user";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, notification, Alert, Spin, Switch } from 'antd';
-import React, { useState } from 'react';
+import { notification, Spin } from 'antd';
+import { SubmitHandler } from 'react-hook-form';
+import { useState } from 'react';
 const Login = () => {
     //loading spin
     const [loading, setLoading] = useState(false);
     const { register, handleSubmit } = useForm();
-    const [login, { data, isLoading, error, status }] = useLoginMutation();
+    const [login, { data, isLoading, error }] = useLoginMutation();
     const { data: user } = useGetUserQuery(data?.access_token);
     const url = useNavigate();
-    const onHandleSubmit = (dataUser: IUserLogin) => {
+    const onHandleSubmit: SubmitHandler<any> = (dataUser: IUserLogin) => {
         login({
             "email": dataUser.email,
             "password": dataUser.password

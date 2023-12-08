@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Modal, Table, Input, Form, notification } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
 import { useAddValueMutation } from '@/api/variant';
-import { Link, useNavigate } from "react-router-dom";
-const SelectVarint: React.FC = (check: boolean) => {
-    const [loading, setLoading] = useState(false);
-    const [open, setOpen] = useState(check.check || false);
+import { useNavigate } from "react-router-dom";
+const SelectVarint: React.FC<any> = (check: any) => {
+    const [open, setOpen] = useState((typeof check === 'object' && check.check) || false);
     const valueVariant = check.data;
     const [addVariant, { data, isLoading, error }] = useAddValueMutation();
     const url = useNavigate();
@@ -13,14 +11,14 @@ const SelectVarint: React.FC = (check: boolean) => {
         setOpen(false);
     };
     console.log(check);
-    const columns: ColumnsType<DataType> = [
+    const columns: any = [
         {
             title: 'Kiểu dáng',
             dataIndex: 'name',
             key: 'name',
-            render: (dataIndex) => (
+            render: (dataIndex: any) => (
                 <span>
-                    {dataIndex.map((value, index) => (
+                    {dataIndex.map((value: any, index: any) => (
                         <React.Fragment key={index}>
                             {value}
                             {index < dataIndex.length - 1 && ' - '}
@@ -33,7 +31,7 @@ const SelectVarint: React.FC = (check: boolean) => {
             title: 'Giá',
             dataIndex: 'key',
             key: 'price',
-            render: (dataIndex) => (
+            render: (dataIndex: any) => (
                 <Form.Item
                     name={`price${dataIndex}`} // Thay đổi tên trường Form
                     rules={[{ required: true, message: 'Please input your Price!' }]}
@@ -46,7 +44,7 @@ const SelectVarint: React.FC = (check: boolean) => {
             title: 'Sô lượng',
             dataIndex: 'key',
             key: 'Stock',
-            render: (dataIndex) => (
+            render: (dataIndex: any) => (
                 <Form.Item
                     name={`Stock${dataIndex}`} // Thay đổi tên trường Form
                     rules={[{ required: true, message: 'Please input your Stock!' }]}
@@ -58,13 +56,13 @@ const SelectVarint: React.FC = (check: boolean) => {
     ];
 
     const onFinish = (values: any) => {
-        const formDataArray = valueVariant?.variant.map((item) => {
+        const formDataArray = valueVariant?.variant.map((item: any) => {
             const randomSuffix = Math.floor(Math.random() * 1000); // Adjust the range as needed
             const sku = `${check?.id}${randomSuffix}`;
             return {
-                option_value: item.map((i) => i.id),
-                price: Number(values[`price${item.map((i) => i.id).join(',')}`]),
-                stock: Number(values[`Stock${item.map((i) => i.id).join(',')}`]),
+                option_value: item.map((i: any) => i.id),
+                price: Number(values[`price${item.map((i: any) => i.id).join(',')}`]),
+                stock: Number(values[`Stock${item.map((i: any) => i.id).join(',')}`]),
                 sku: sku,
                 product_id: check?.id,
             };
@@ -84,9 +82,21 @@ const SelectVarint: React.FC = (check: boolean) => {
         });
     };
     if (error) {
-        console.log(error?.data.errors);
-        openNotification(error?.data.errors.sku[0]);
+        if ('error' in error) {
+            // 'error' is of type 'FetchBaseQueryError'
+            console.log('FetchBaseQueryError:', error.error);
+        } else if ('status' in error) {
+            // 'error' is of type '{ status: number; data: unknown; }'
+            console.log('Custom Error:', error.status, error.data);
+        } else {
+            // 'error' is of type 'SerializedError'
+            console.log('Serialized Error:', error.message);
+            // Handle or log the error as needed
+        }
     }
+
+
+
 
     if (!isLoading && !error && data?.msg) {
         openNotification(data?.msg);
@@ -96,9 +106,9 @@ const SelectVarint: React.FC = (check: boolean) => {
         console.log('Failed:', errorInfo);
     };
 
-    const variantData: DataType[] = valueVariant?.variant.map((item) => ({
-        key: item.map((i) => i.id),
-        name: item.map((i) => i.value)
+    const variantData: any[] = valueVariant?.variant.map((item: any) => ({
+        key: item.map((i: any) => i.id),
+        name: item.map((i: any) => i.value)
     }));
 
     return (

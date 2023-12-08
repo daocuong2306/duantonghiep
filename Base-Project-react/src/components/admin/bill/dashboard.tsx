@@ -13,8 +13,8 @@ interface Bill {
     total_price: number;
     phone: string;
 }
-
 const BillDashboard: React.FC = () => {
+
     const { data: dataBill, refetch } = useGetBillAdminQuery();
     const [updateBill, { data: updateData }] = useUpdateBillMutation();
     const [loading, setLoading] = useState(false);
@@ -42,13 +42,14 @@ const BillDashboard: React.FC = () => {
         refetch();
     }, []);
     const orderStatusOptions = ["Pending", "Browser", "Transport", "Cancel", "Success"];
-    const checkStatus = {
+    const checkStatus: any = {
         "Pending": "Chờ duyệt",
         "Browser": "Đã duyệt",
         "Transport": "Vận Chuyển",
         "Cancel": "Hủy Đơn",
         "Success": "Thành công"
     }
+
     const columns = [
         { title: 'Tên', dataIndex: 'user_name', key: 'user_name' },
         { title: 'Địa chỉ', dataIndex: 'address', key: 'address' },

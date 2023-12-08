@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import Image from '@/assets/image/395664742_238305892304631_1626048229353873057_n.png';
 

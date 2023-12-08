@@ -1,5 +1,5 @@
 
-import { ICategory } from '../interface/category';
+import urlApi from '@/urlApi/api';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -7,7 +7,7 @@ const bannerApi = createApi({
     reducerPath: "banner",
     tagTypes: ['Banner'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/banner",
+        baseUrl: `${urlApi}/banner`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)
@@ -20,15 +20,15 @@ const bannerApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getListBanner: builder.query<[{image:any,content:string}], void>({
+        getListBanner: builder.query<[{ image: any, content: string }], void>({
             query: () => `/list`,
             providesTags: ['Banner']
         }),
         addBanner: builder.mutation({
-            query: (banner: {image:any,content:string}) => ({
+            query: (banner: any) => ({
                 url: `/add`,
                 method: "POST",
-                body:banner
+                body: banner
             }),
             invalidatesTags: ['Banner']
         }),
@@ -43,9 +43,9 @@ const bannerApi = createApi({
 });
 
 export const {
-   useAddBannerMutation,
-   useGetListBannerQuery,
-   useRemoveBannerMutation
+    useAddBannerMutation,
+    useGetListBannerQuery,
+    useRemoveBannerMutation
 } = bannerApi;
 export const bannerReducer = bannerApi.reducer;
 

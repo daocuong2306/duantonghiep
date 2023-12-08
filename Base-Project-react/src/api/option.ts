@@ -1,4 +1,4 @@
-import { IProduct } from '../interface/product';
+import urlApi from '@/urlApi/api';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -6,7 +6,7 @@ const optionsApi = createApi({
     reducerPath: "options",
     tagTypes: ['Options'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api",
+        baseUrl: `${urlApi}`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)
@@ -19,7 +19,7 @@ const optionsApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getOptions: builder.query<IProduct[], void>({
+        getOptions: builder.query<any[], void>({
             query: () => ({
                 url: `/options`,
                 method: "GET"
@@ -27,7 +27,7 @@ const optionsApi = createApi({
             providesTags: ['Options']
         }),
         addOption: builder.mutation({
-            query: (options: IProduct) => ({
+            query: (options: any) => ({
                 url: `/options/add`,
                 method: "POST",
                 body: options
@@ -50,7 +50,7 @@ const optionsApi = createApi({
             invalidatesTags: ['Options']
         }),
         addOptionValue: builder.mutation({
-            query: (OValues: IProduct) => ({
+            query: (OValues: any) => ({
                 url: `/optionvalues/add`,
                 method: "POST",
                 body: OValues

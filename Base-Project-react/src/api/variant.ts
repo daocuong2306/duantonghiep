@@ -1,4 +1,4 @@
-import { IUser, IUserLogin } from '../interface/user';
+import urlApi from '@/urlApi/api';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -6,7 +6,7 @@ const variantApi = createApi({
     reducerPath: "variant",
     tagTypes: ['variant'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api/variants",
+        baseUrl: `${urlApi}/variants`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)
@@ -20,7 +20,7 @@ const variantApi = createApi({
     }),
     endpoints: (builder) => ({
         getValue: builder.mutation({
-            query: (product: IUser) => ({
+            query: (product: any) => ({
                 url: `/getvalue`,
                 method: "POST",
                 body: product
@@ -28,14 +28,14 @@ const variantApi = createApi({
             invalidatesTags: ['variant']
         }),
         addValue: builder.mutation({
-            query: (product: IUser) => ({
+            query: (product: any) => ({
                 url: `/addvariant`,
                 method: "POST",
                 body: product
             }),
             invalidatesTags: ['variant']
         }),
-        getValueId: builder.query<any>({
+        getValueId: builder.query({
             query: (id) => ({
                 url: `listvariant`,
                 params: { id },

@@ -1,20 +1,11 @@
 import ChartOne from './component/ChartOne'
 import { useListStatisticalQuery } from '@/api/statistics'
 import { Spin } from 'antd'
-import ChartThree from './component/ChartThree'
 import TableOne from './component/TableOne'
 
-type Props = {}
 
-const Statistics = (props: Props) => {
-    const { data: statisData, isLoading } = useListStatisticalQuery()
-    const checkStatus = {
-        "Pending": "Chờ duyệt",
-        "Browser": "Đã duyệt",
-        "Transport": "Vận Chuyển",
-        "Cancel": "Hủy Đơn",
-        "Success": "Thành công"
-    }
+const Statistics = () => {
+    const { data: statisData, isLoading } = useListStatisticalQuery(null);
     return (
         <>
             <Spin spinning={isLoading}>
@@ -53,7 +44,7 @@ const Statistics = (props: Props) => {
                                                     <p className="mt-3 mb-0 text-muted text-sm">
                                                         <span className="text-nowrap">Cần sử lí</span>
                                                     </p>
-                                                   
+
                                                 </div>
                                             </div>
                                         </div>

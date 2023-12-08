@@ -1,4 +1,4 @@
-import { IProduct } from '../interface/product';
+import urlApi from '@/urlApi/api';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -6,11 +6,11 @@ const productApi = createApi({
     reducerPath: "product",
     tagTypes: ['Product'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api/products",
+        baseUrl: `${urlApi}/products`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
-            console.log("tonken" , token);
-            
+            console.log("tonken", token);
+
             headers.set("authorization", `Bearer ${token}`)
             // modify header theo từng request
             return headers;
@@ -21,7 +21,7 @@ const productApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getProducts: builder.query<IProduct[], void>({
+        getProducts: builder.query<any[], any>({
             query: (key: any) => ({
                 url: `/`,
                 method: "GET",
@@ -29,12 +29,12 @@ const productApi = createApi({
             }),
             providesTags: ['Product']
         }),
-        getProductById: builder.query<IProduct, number | string>({
-            query: (id) => `show/${id}`,
+        getProductById: builder.query<any, any | string>({
+            query: (id: any) => `show/${id}`,
             providesTags: ['Product']
         }),
         addProduct: builder.mutation({
-            query: (product: IProduct) => ({
+            query: (product: any) => ({
                 url: `/add`,
                 method: "POST",
                 body: product

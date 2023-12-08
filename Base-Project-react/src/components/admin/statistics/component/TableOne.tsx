@@ -1,12 +1,8 @@
 import { useListStatisticalQuery } from '@/api/statistics';
-import BrandOne from '../images/brand/brand-01.svg';
-import BrandTwo from '../images/brand/brand-02.svg';
-import BrandThree from '../images/brand/brand-03.svg';
-import BrandFour from '../images/brand/brand-04.svg';
-import BrandFive from '../images/brand/brand-05.svg';
+
 
 const TableOne = () => {
-  const { data: statisData, isLoading } = useListStatisticalQuery()
+  const { data: statisData } = useListStatisticalQuery(null)
   const products = statisData?.product;
   const sortedProducts = Array.isArray(products)
     ? [...products].sort((a, b) => b.quantity - a.quantity)

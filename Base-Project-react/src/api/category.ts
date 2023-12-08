@@ -1,6 +1,5 @@
 
-import { BsBodyText } from 'react-icons/bs';
-import { ICategory } from '../interface/category';
+import urlApi from '@/urlApi/api';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -8,7 +7,7 @@ const categoryApi = createApi({
     reducerPath: "category",
     tagTypes: ['Category'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/categories",
+        baseUrl: `${urlApi}/categories`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)
@@ -21,12 +20,12 @@ const categoryApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getCategories: builder.query<ICategory[], void>({
+        getCategories: builder.query<any[], void>({
             query: () => `/`,
             providesTags: ['Category']
         }),
-        getCategoryById: builder.query<ICategory, number | string>({
-            query: (id) => `/${id}`,
+        getCategoryById: builder.query<any, any>({
+            query: (id: any) => `/${id}`,
             providesTags: ['Category']
         }),
         addCategory: builder.mutation({

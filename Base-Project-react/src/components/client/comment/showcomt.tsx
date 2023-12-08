@@ -1,10 +1,6 @@
-import React, { useState } from 'react'
-import { Button, Input, Rate } from 'antd';
-type Props = {}
+import {  Rate } from 'antd';
 
-const Showcomt = ({ data }: Props) => {
-    const [latestCmt, setLatestCmt] = useState()
-    console.log("props", data);
+const Showcomt = ({ data }: any) => {
     return (
         <div>
             <section className="bg-white">

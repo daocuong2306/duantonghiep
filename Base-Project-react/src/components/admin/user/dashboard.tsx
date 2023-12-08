@@ -1,10 +1,7 @@
 import { useBanUserMutation, useListUserQuery, useUnBanUserMutation } from '@/api/user';
-import { Space, Switch, Table, Image, Button, notification, Spin } from 'antd';
-import { blue } from '@ant-design/colors';
+import { Table, Image, Button, notification, Spin } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import type { TableRowSelection } from 'antd/es/table/interface';
-import React, { useState } from 'react';
-import { render } from 'react-dom';
+import React from 'react';
 
 interface DataType {
     key: React.ReactNode;
@@ -19,18 +16,7 @@ interface DataType {
 //unbanuser
 
 
-// rowSelection objects indicates the need for row selection
-const rowSelection: TableRowSelection<DataType> = {
-    onChange: (selectedRowKeys, selectedRows) => {
-        console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    onSelect: (record, selected, selectedRows) => {
-        console.log("haha", record, selected, selectedRows);
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-        console.log(selected, selectedRows, changeRows);
-    },
-};
+
 
 const DashboardUser: React.FC = () => {
     const columns: ColumnsType<DataType> = [
@@ -39,7 +25,7 @@ const DashboardUser: React.FC = () => {
             dataIndex: 'image',
             key: 'image',
             width: '10%',
-            render: (image) => <Image height={90} width={100} src='https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp' />,
+            render: () => <Image height={90} width={100} src='https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp' />,
         },
         {
             title: 'Tên',
@@ -85,12 +71,12 @@ const DashboardUser: React.FC = () => {
             dataIndex: 'status',
             key: 'id',
             width: '10%',
-            render: (dataIndex, key) => {
+            render: (dataIndex: any, key: any) => {
                 return (
                     key.id == 1 ? <></> :
                         dataIndex == 0 ? <Button danger onClick={() => handBanUser(key.id)}>
                             Hạn chế tài khoản
-                        </Button> : <Button primary onClick={() => handUnBanUser(key.id)}>
+                        </Button> : <Button onClick={() => handUnBanUser(key.id)}>
                             Bỏ hạn chế tài khoản
                         </Button>
                 );

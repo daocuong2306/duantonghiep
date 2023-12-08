@@ -1,8 +1,6 @@
-import React from 'react'
 
-type Props = {}
 
-const Comment = (props: Props) => {
+const Comment = () => {
     return (
         <div className=''>
             <section className="bg-white">

@@ -2,16 +2,16 @@ import { useGetProductsQuery, useRemoveProductMutation } from '../../../api/prod
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import type { TableColumnsType } from 'antd';
-import { Button, Table, Space, Image, Spin, Select, Input } from 'antd';
+import { Button, Table, Space, Image, Spin, Select, SelectProps } from 'antd';
 import Update from './Update';
 import Search from 'antd/es/input/Search';
 import { useGetCategoriesQuery } from '@/api/category';
 
 const Dashboard = () => {
     const [find, setFind] = useState({});
-    const { data: products } = useGetProductsQuery(find);
-    const [deleteProduct, { data: dele, isLoading }] = useRemoveProductMutation();
-    const { data: cateData } = useGetCategoriesQuery()
+    const { data: products }: { data: any } = useGetProductsQuery(find) as { data: any };
+    const [deleteProduct] = useRemoveProductMutation();
+    const { data: cateData }: { data: any } = useGetCategoriesQuery() as { data: any }
     const [loading, setLoading] = useState(false)
     const deleteP = (id: number) => {
         const check = window.confirm('Are you sure you want to delete?');
@@ -61,14 +61,14 @@ const Dashboard = () => {
         },
     ];
 
-    const newData = products?.product.map((item) => ({
+    const newData = products?.product.map((item: any) => ({
         ...item,
         key: item.id,
     }));
     const data: any[] = newData;
     //selech 
     console.log(cateData);
-    const optionsA = cateData?.categories.map(item => ({
+    const optionsA = cateData?.categories.map((item: any) => ({
         label: item.name,
         value: item.id
     })) || [];
@@ -77,31 +77,34 @@ const Dashboard = () => {
 
     const [dataKey, setDataKey] = useState("")
     const [dataCate, setDataCate] = useState("")
-    const handleChange = (value: string[]) => {
+    const handleChange = (value: any) => {
         setDataCate(value)
         console.log(`selected ${value}`);
     };
     useEffect(() => {
         setLoading(false);
     }, [products]);
-    const onSearch: SearchProps['onSearch'] = (value, _e, info) => {
-        setDataKey(value)
-        console.log(dataCate , dataKey);
-        
+
+    const onSearch: any = (value: any, event: any) => {
+        setDataKey(value);
+        console.log(dataCate, dataKey);
+
         setFind({
             id: dataCate,
             keyword: dataKey
-        })
-        console.log(info?.source, value);
+        });
+
+        console.log(event?.source, value);
         setLoading(true);
-    }
+    };
+
 
     return (
         <div>
             <Spin spinning={loading}>
                 <div className='d-flex justify-content-between w-full px-10 py-2'>
                     <Link to="/admin/product/add">
-                        <Button primary>Thêm Sản Phẩm</Button>
+                        <Button >Thêm Sản Phẩm</Button>
                     </Link>
                     <div className='d-flex align-items-center justify-content-between mb-4'>
                         <Select

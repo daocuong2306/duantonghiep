@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button, Drawer, Form, Input, Table, Col, Row, Select, Upload, Image, Spin } from 'antd';
+import { Button, Drawer, Form, Input, Table, Select, Upload, Spin } from 'antd';
 import { useGetValueIdQuery, useUpdateVariantMutation } from '@/api/variant';
 import { useGetProductByIdQuery, useUpdateProductMutation } from '@/api/product';
 import SunEditor from 'suneditor-react';
 import { useGetCategoriesQuery } from '@/api/category';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 import Variant from './Variant';
+import { message } from 'antd';
+
 const Update: React.FC<{ id: string }> = ({ id }) => {
     const [open, setOpen] = useState(false);
-    const [checkVariant, setCheckVariant] = useState(false);
     const showDrawer = () => {
         setOpen(true);
     };
@@ -20,15 +20,15 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
     const { data: product, isLoading } = useGetProductByIdQuery(id);
     const [updateProduct, { data: dataUpdateProduct }] = useUpdateProductMutation()
     //call category
-    const { data: categories } = useGetCategoriesQuery();
-    const categoryMapping = {};
-    categories?.categories.forEach((category) => {
+    const { data: categories }: { data: any } = useGetCategoriesQuery() as { data: any };
+    const categoryMapping: any = {};
+    categories?.categories.forEach((category: any) => {
         categoryMapping[category.name] = category.id;
     });
     const optionId = categories?.categories.map((item: any) => ({ value: item.id, label: item.name }));
     // Call variant
     const { data: variants } = useGetValueIdQuery(id);
-    const [updateVariant, { data: dataUpdate }] = useUpdateVariantMutation();
+    const [updateVariant] = useUpdateVariantMutation();
 
     // Column variant
     const columns = [
@@ -36,9 +36,9 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             title: 'Name',
             dataIndex: 'option_value',
             key: 'option_value',
-            render: (dataIndex) => (
+            render: (dataIndex: any) => (
                 <span>
-                    {dataIndex.map((value, index) => (
+                    {dataIndex.map((value: any, index: any) => (
                         <React.Fragment key={index}>
                             {value}
                             {index < dataIndex.length - 1 && ' - '}
@@ -51,7 +51,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             title: 'Giá của từng mẫu',
             dataIndex: 'skus_price',
             key: 'sku_id',
-            render: (dataIndex, record) => (
+            render: (dataIndex: any, record: any) => (
                 <Form.Item
                     name={`price${record.sku_id}`} // Thay đổi tên trường Form
                     initialValue={dataIndex}
@@ -64,7 +64,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             title: 'Số lượng',
             dataIndex: 'stock',
             key: 'sku_id',
-            render: (dataIndex, record) => (
+            render: (dataIndex: any, record: any) => (
                 <Form.Item
                     name={`Stock${record.sku_id}`} // Thay đổi tên trường Form
                     initialValue={dataIndex}
@@ -77,7 +77,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             title: 'Mã sản phẩm',
             dataIndex: 'sku_id',
             key: 'sku_id',
-            render: (dataIndex, record) => (
+            render: (dataIndex: any, record: any) => (
                 <Form.Item
                     name={`sku${record.sku_id}`} // Thay đổi tên trường Form
                     initialValue={dataIndex}
@@ -89,7 +89,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
     ];
 
     const outputArray = variants?.handleVariant ? Object.values(variants.handleVariant) : [];
-    const variantData: DataType[] = outputArray;
+    const variantData: any[] = outputArray;
     console.log("variants", variants);
 
     // end variant
@@ -100,7 +100,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
     const [loadingAvatar, setLoadingAvatar] = useState(false);
     const readerRef = useRef<any>(null);
     const [imageUrl, setImageUrl] = useState<string>();
-    const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+    const getBase64 = (img: any, callback: (url: string) => void) => {
         const reader = new FileReader();
         reader.addEventListener('load', () => callback(reader.result as string));
         reader.readAsDataURL(img);
@@ -112,14 +112,16 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             const reader = new FileReader();
             reader.onload = (e: any) => {
                 const fileData = e.target.result;
+                console.log(fileData);
+
             };
             readerRef.current = reader;
             reader.readAsDataURL(file);
         }
     };
-    const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
+    const handleChange: any['onChange'] = (info: any) => {
         if (info.file.status === 'uploading') {
-            getBase64(info.file.originFileObj as RcFile, (url) => {
+            getBase64(info.file.originFileObj as any, (url) => {
                 setLoadingAvatar(true);
                 setImageUrl(url);
             });
@@ -127,13 +129,13 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
         }
         if (info.file.status === 'done') {
             // Get this url from response in real world.
-            getBase64(info.file.originFileObj as RcFile, (url) => {
+            getBase64(info.file.originFileObj as any, (url) => {
                 setLoadingAvatar(false);
                 setImageUrl(url);
             });
         }
     };
-    const beforeUpload = (file: RcFile) => {
+    const beforeUpload = (file: any) => {
         const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
         if (!isJpgOrPng) {
             message.error('You can only upload JPG/PNG file!');
@@ -156,7 +158,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
     );
     //end upload image
     // onfinish
-    const onFinishForm = async (values) => {
+    const onFinishForm = async (values: any) => {
         //update variant
         const variants = []
         for (let i = 1; values[`sku${i}`] !== undefined; i++) {
@@ -199,7 +201,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                 id,
                 formData
             }
-            const response = await updateProduct(productData);
+            await updateProduct(productData);
 
         }
         catch (err) {
@@ -213,14 +215,16 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
         }
     }, [dataUpdateProduct]);
     //text
-    const editor = useRef();
+    const editor: any = useRef();
     const getSunEditorInstance = (sunEditor: any) => {
         editor.current = sunEditor;
     };
     useEffect(() => {
-        editor.current?.setContents(product?.product.description);
+        if (editor.current && product?.product.description) {
+            editor.current.setContents(product.product.description);
+        }
     }, [product]);
-    
+
     return (
         <>
             <Button onClick={showDrawer}>Sửa</Button>
@@ -298,7 +302,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                                         showSearch
                                         placeholder="Chọn danh mục"
                                         optionFilterProp="children"
-                                        options={optionId?.map((option) => ({
+                                        options={optionId?.map((option: any) => ({
                                             ...option,
                                             value: categoryMapping[option.label],
                                         }))}
@@ -316,7 +320,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                                     label="Mô tả"
                                     initialValue={product?.product.description}
                                 >
-                                    <SunEditor getSunEditorInstance={getSunEditorInstance} defaultValue={product?.product.description}/>
+                                    <SunEditor getSunEditorInstance={getSunEditorInstance} defaultValue={product?.product.description} />
                                 </Form.Item>
                             </div>
 

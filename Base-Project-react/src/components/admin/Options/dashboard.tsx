@@ -12,12 +12,12 @@ interface DataType {
 }
 
 const DashboardOptions: React.FC = () => {
-    const { data: options, isLoading } = useGetOptionsQuery();
+    const { data: options, isLoading }: { data: any, isLoading: any } = useGetOptionsQuery() as { data: any, isLoading: any };
     const [removeOption, { isLoading: deleteLoading }] = useRemoveOptionMutation()
     const deleteO = (id: number) => {
         removeOption(id)
     }
-    const expandedRowRender = (e) => {
+    const expandedRowRender = (e: any) => {
         console.log(e);
         const columns: TableColumnsType<any> = [
             { title: 'Tên', dataIndex: 'name', key: 'name' },
@@ -49,7 +49,7 @@ const DashboardOptions: React.FC = () => {
             },
         }
     ];
-    const newData = options?.options.map(item => ({
+    const newData = options?.options.map((item: any) => ({
         ...item,
         key: item.optionId
     }));
@@ -60,8 +60,8 @@ const DashboardOptions: React.FC = () => {
             <Spin spinning={isLoading} className="pl-[50%]">
                 <Spin spinning={deleteLoading} className="pl-[50%]">
                     <Space>
-                        <Link to="add">  <Button primary>Thêm biến thể</Button></Link>
-                        <Link to='OptionsValue/add'> <Button primary>Thêm giá trị</Button></Link>
+                        <Link to="add">  <Button >Thêm biến thể</Button></Link>
+                        <Link to='OptionsValue/add'> <Button >Thêm giá trị</Button></Link>
                     </Space>
                     <Table
                         columns={columns}

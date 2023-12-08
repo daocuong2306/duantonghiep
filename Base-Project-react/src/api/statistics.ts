@@ -1,4 +1,4 @@
-import { IUser, IUserLogin } from '../interface/user';
+import urlApi from '@/urlApi/api';
 import { pause } from '../utils/pause';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -6,7 +6,7 @@ const statisticalApi = createApi({
     reducerPath: "statistical",
     tagTypes: ['statistical'],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api/statistical",
+        baseUrl: `${urlApi}/statistical`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)
@@ -19,12 +19,12 @@ const statisticalApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-      
-        listStatistical: builder.query<any, void>({
-            query: (date) => ({
+
+        listStatistical: builder.query<any, any>({
+            query: (date: any) => ({
                 url: `/list`,
                 method: "GET",
-                params : {month : date}
+                params: { month: date }
             }),
             providesTags: ['statistical'],
         })

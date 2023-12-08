@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Drawer, Form, Input, Table } from 'antd';
-import { useGetValueIdQuery, useUpdateVariantMutation } from '@/api/variant';
+import { useGetValueIdQuery } from '@/api/variant';
 
 const Update: React.FC<{ id: string }> = ({ id }) => {
     const [open, setOpen] = useState(false);
     const [form] = Form.useForm();
     const { data: variants } = useGetValueIdQuery(id);
-    const [updateVariant] = useUpdateVariantMutation();
     const [currentRow, setCurrentRow] = useState(null);
 
     const showDrawer = () => {
@@ -17,7 +16,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
         setOpen(false);
     };
 
-    const handleEdit = (dataIndex) => {
+    const handleEdit = (dataIndex: any) => {
         setCurrentRow(dataIndex);
     };
 
@@ -34,9 +33,9 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             title: 'Name',
             dataIndex: 'option_value',
             key: 'option_value',
-            render: (dataIndex) => (
+            render: (dataIndex: any) => (
                 <span>
-                    {dataIndex.map((value, index) => (
+                    {dataIndex.map((value: any, index: any) => (
                         <React.Fragment key={index}>
                             {value}
                             {index < dataIndex.length - 1 && ' - '}
@@ -49,7 +48,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             title: 'Giá của từng mẫu',
             dataIndex: 'skus_price',
             key: 'sku_id',
-            render: (dataIndex, record) => (
+            render: (dataIndex: any, record: any) => (
                 <Form.Item
                     name={`price${record.sku_id}`} // Thay đổi tên trường Form
                     initialValue={dataIndex}
@@ -62,7 +61,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             title: 'Số lượng',
             dataIndex: 'stock',
             key: 'sku_id',
-            render: (dataIndex, record) => (
+            render: (dataIndex: any, record: any) => (
                 <Form.Item
                     name={`Stock${record.sku_id}`} // Thay đổi tên trường Form
                     initialValue={dataIndex}
@@ -75,7 +74,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             title: 'Mã sản phẩm',
             dataIndex: 'sku_id',
             key: 'sku_id',
-            render: (dataIndex, record) => (
+            render: (dataIndex: any, record: any) => (
                 <Form.Item
                     name={`sku${record.sku_id}`} // Thay đổi tên trường Form
                     initialValue={dataIndex}
@@ -88,14 +87,14 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             title: 'Chức năng',
             dataIndex: 'sku_id',
             key: 'sku_id',
-            render: (dataIndex) => (
+            render: (dataIndex: any) => (
                 <Button onClick={() => handleEdit(dataIndex)}>Sửa</Button>
             ),
         },
     ];
 
     const outputArray = variants?.handleVariant ? Object.values(variants.handleVariant) : [];
-    const variantData: DataType[] = outputArray;
+    const variantData: any = outputArray;
 
     return (
         <>

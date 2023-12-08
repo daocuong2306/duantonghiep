@@ -1,24 +1,34 @@
-import { useAddBillMutation, useGetBillQuery, useUpdateBillMutation } from '@/api/bill'
+import { useAddBillMutation } from '@/api/bill'
 import { useGetCartQuery } from '@/api/cart'
 import { Spin, notification } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
-type Props = {}
 
-const Bill = (props: Props) => {
-    const code = JSON.parse(localStorage.getItem('codeDiscount'))
+const Bill = () => {
+    const storedValue = localStorage.getItem('codeDiscount');
+    let code;
+    if (storedValue !== null) {
+        code = JSON.parse(storedValue);
+    } else {
+        // Handle the case when the item is not found in local storage
+        // For example, you can provide a default value or show an error message
+        code = 'defaultDiscountCode'; // replace this with your default value
+    }
     console.log("code", code);
 
-    const { data: cartData } = useGetCartQuery(code)
+    const { data: cartData }: { data: any } = useGetCartQuery(code) as {
+        data: any;
+    };
+
     const [addBill, { data: addData, error }] = useAddBillMutation()
     console.log(cartData);
     const aUrl = useNavigate()
     const [loading, setLoading] = useState(false);
-    const { register, handleSubmit, watch, setValue } = useForm();
+    const { register, handleSubmit } = useForm();
     const onSubmit = (data: any) => {
-        const ids = cartData?.carts.map(item => item.id);
+        const ids = cartData?.carts.map((item: any) => item.id);
         const discount = cartData?.checkDiscount.id
         const price = cartData?.total_amount
         const formData = {
@@ -28,7 +38,7 @@ const Bill = (props: Props) => {
             "carts_id": ids,
             "order_status": "Pending",
             "discount_id": discount,
-            "total_price" : price
+            "total_price": price
         }
 
         if (data.paymentMethod == "ON") {
@@ -49,7 +59,7 @@ const Bill = (props: Props) => {
         }
     };
     const [api, contextHolder] = notification.useNotification();
-    const openNotification = (m, d) => {
+    const openNotification = (m: any, d: any) => {
         api.open({
             message: m,
             description: d
@@ -67,7 +77,7 @@ const Bill = (props: Props) => {
         aUrl('/account')
     }
     // if(addData == "")
-    const status = localStorage.getItem("status");
+    const status: any = localStorage.getItem("status");
 
     return (
         <Spin spinning={loading}>

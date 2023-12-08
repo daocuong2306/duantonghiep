@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button, Input, Rate, Spin, notification } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useAddCommentMutation } from '@/api/comment';
 import { useGetDetailQuery } from '@/api/detail';
 
@@ -11,19 +11,18 @@ const Comment = () => {
     const { id } = useParams()
     const [comment, setComment] = useState('');
     const [rating, setRating] = useState(0);
-    const url = useNavigate()
     const [loading, setLoading] = useState(false);
-    const handleCommentChange = (e) => {
+    const handleCommentChange = (e: any) => {
         setComment(e.target.value);
     };
-    const handleRatingChange = (value) => {
+    const handleRatingChange = (value: any) => {
         setRating(value);
     };
     //cmt
     const prodcuts = {
         id, selectP: [null, null]
     }
-    const { data: detaiProduct, isLoading } = useGetDetailQuery(prodcuts);
+    const { data: detaiProduct } = useGetDetailQuery(prodcuts);
     const data = {
         cmt: detaiProduct?.data.comment,
         total: detaiProduct?.data.total_comment
@@ -45,7 +44,7 @@ const Comment = () => {
     };
     //thông báo
     const [api, contextHolder] = notification.useNotification();
-    const openNotification = (m, d) => {
+    const openNotification = (m: any, d: any) => {
         api.open({
             message: m,
             description: d

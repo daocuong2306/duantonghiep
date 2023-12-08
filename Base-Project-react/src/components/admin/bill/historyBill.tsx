@@ -1,7 +1,7 @@
 import React from 'react';
 import type { TableColumnsType } from 'antd';
-import { Button, Table, Space, Spin, Select } from 'antd';
-import { Link, useParams } from 'react-router-dom';
+import { Table } from 'antd';
+import { useParams } from 'react-router-dom';
 import { useGetHistoryBillQuery } from '@/api/history';
 interface DataType {
     key: React.Key;
@@ -11,11 +11,11 @@ interface DataType {
     description: string;
 }
 
-const HistoryBill = (props: Props) => {
+const HistoryBill = () => {
     const { id } = useParams()
     const { data: historyData } = useGetHistoryBillQuery(id)
     console.log(historyData);
-    const checkStatus = {
+    const checkStatus: any = {
         "Pending": "Chờ duyệt",
         "Browser": "Đã duyệt",
         "Transport": "Vận Chuyển",
@@ -51,11 +51,11 @@ const HistoryBill = (props: Props) => {
         { title: 'Kiểu dáng', dataIndex: 'option_values', key: 'option_values' }
     ];
 
-    const newDataCart = historyData?.bill.cart.map(item => ({
+    const newDataCart = historyData?.bill.cart.map((item: any) => ({
         ...item,
         key: item.id
     }));
-    const newDataHistory = historyData?.history.map(item => ({
+    const newDataHistory = historyData?.history.map((item: any) => ({
         ...item,
         key: item.id
     }));
