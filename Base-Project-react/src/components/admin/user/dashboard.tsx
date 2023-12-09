@@ -2,6 +2,8 @@ import { useBanUserMutation, useListUserQuery, useUnBanUserMutation } from '@/ap
 import { Table, Image, Button, notification, Spin } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import React from 'react';
+import image from '../../../../img/user.png'
+
 
 interface DataType {
     key: React.ReactNode;
@@ -25,7 +27,7 @@ const DashboardUser: React.FC = () => {
             dataIndex: 'image',
             key: 'image',
             width: '10%',
-            render: () => <Image height={90} width={100} src='https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp' />,
+            render: (dataIndex: any) => dataIndex == null ? <Image height={90} width={100} src={image} /> : <Image height={90} width={100} src={`https://briteshop.store${image}`} />
         },
         {
             title: 'Tên',

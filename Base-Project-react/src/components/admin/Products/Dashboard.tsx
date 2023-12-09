@@ -108,7 +108,7 @@ const Dashboard = () => {
                     </Link>
                     <div className='d-flex align-items-center justify-content-between mb-4'>
                         <Select
-                            style={{ width: '300px', height: '40px' }}
+                            style={{ width: '200px', height: '20px' }}
                             placeholder="Lựa chọn danh mục"
                             onChange={handleChange}
                             options={options}
@@ -116,10 +116,10 @@ const Dashboard = () => {
                         <Search
                             placeholder="Tìm kiếm sản phẩm"
                             allowClear
-                            enterButton="Search"
+                            enterButton={<Button >Tìm</Button>}
                             size="large"
                             onSearch={onSearch}
-                            style={{ width: '300px', height: '40px', marginLeft: '16px' }}
+                            style={{ width: '300px', marginLeft: '16px', height: '30px' }}
                         />
                     </div>
                 </div>

@@ -60,8 +60,8 @@ const DashboardOptions: React.FC = () => {
             <Spin spinning={isLoading} className="pl-[50%]">
                 <Spin spinning={deleteLoading} className="pl-[50%]">
                     <Space>
-                        <Link to="add">  <Button >Thêm biến thể</Button></Link>
-                        <Link to='OptionsValue/add'> <Button >Thêm giá trị</Button></Link>
+                        <Link to="add">  <Button >Thêm thuộc tính</Button></Link>
+                        <Link to='OptionsValue/add'> <Button >Thêm giá trị thuộc tính</Button></Link>
                     </Space>
                     <Table
                         columns={columns}

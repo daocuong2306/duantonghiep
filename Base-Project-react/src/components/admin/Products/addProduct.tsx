@@ -158,7 +158,7 @@ const AddProduct = () => {
     };
     console.log(products);
     useEffect(() => {
-        if (products?.message === "Thêm sản phẩm thành công.") {
+        if (products?.message == "Thêm sản phẩm thành công.") {
             setProduct(products?.product)
             setCheck(true);
         }

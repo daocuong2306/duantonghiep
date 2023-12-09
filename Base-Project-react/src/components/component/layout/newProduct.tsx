@@ -8,7 +8,7 @@ const NewProducts = () => {
     return (
         <div className="py-5 md:px-20 md:mx-[190px] sm:mx-10">
             <div className="row pb-5 mb-3">
-                {data?.data.productNew?.map((product: any, index: any) => (
+                {data?.data.product_best_sale?.map((product: any, index: any) => (
                     <div key={index} className="col-lg-3 col-md-6 mb-4">
                         <div className="card rounded shadow-sm border-0">
                             <div className="card-body p-4">

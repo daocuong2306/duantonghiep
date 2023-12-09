@@ -6,7 +6,7 @@ const adminBillApi = createApi({
     reducerPath: "billAdmin",
     tagTypes: ['billAdmin'],
     baseQuery: fetchBaseQuery({
-        baseUrl: `${urlApi}/bill`,
+        baseUrl: `${urlApi}/bills`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
             headers.set("authorization", `Bearer ${token}`)

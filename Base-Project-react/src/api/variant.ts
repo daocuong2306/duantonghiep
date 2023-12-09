@@ -50,6 +50,12 @@ const variantApi = createApi({
             }),
             invalidatesTags: ['variant']
         }),
+        removeVariant: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `/deletevariant/${id}`,
+            }),
+            invalidatesTags: ['variant']
+        })
     })
 });
 
@@ -57,7 +63,8 @@ export const {
     useGetValueMutation,
     useAddValueMutation,
     useGetValueIdQuery,
-    useUpdateVariantMutation
+    useUpdateVariantMutation,
+    useRemoveVariantMutation
 } = variantApi;
 export const variantReducer = variantApi.reducer;
 
