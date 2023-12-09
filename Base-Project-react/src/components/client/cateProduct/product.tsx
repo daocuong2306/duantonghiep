@@ -5,7 +5,11 @@ import { Spin } from "antd";
 const Product = () => {
     const { category } = useParams()
     console.log(category);
-    const { data: products, isLoading }: { data: any, isLoading: any } = useGetProductsQuery(category) as { data: any, isLoading: any };
+    const dataKey = {
+        id : category,
+        keyword : ""
+    }
+    const { data: products, isLoading }: { data: any, isLoading: any } = useGetProductsQuery(dataKey) as { data: any, isLoading: any };
 
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 9;//số lượng sản phẩm hiển thị thay đổi ở đây
@@ -14,10 +18,8 @@ const Product = () => {
         setCurrentPage(1);
     }, [products]);
 
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = products?.product?.slice(indexOfFirstProduct, indexOfLastProduct);
-
+    console.log(products);
+    
     const totalPages = Math.ceil(products?.product?.length / productsPerPage);
 
     const handlePageChange = (page: any) => {
@@ -96,7 +98,7 @@ const Product = () => {
                             <div className="flex gap-x-8 gap-y-10 lg:grid-cols-4">
                                 <div>
                                     <div className="grid grid-cols-3 gap-4">
-                                        {currentProducts?.map((product: any) => (
+                                        {products?.product?.map((product: any) => (
                                             <Link to={`/product/detail/${product.id}`} key={product.id}>
                                                 <div className="bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
                                                     <img
