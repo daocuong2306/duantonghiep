@@ -81,12 +81,11 @@ export default function DetailProduct() {
         }
     }, [add]);
     const priceValue = detaiProduct?.data.priceSku == null
-        ? detaiProduct?.data.product[0]?.price
-        : detaiProduct?.data.priceSku[0]?.sku_price;
+        ? detaiProduct?.data.product?.[0]?.price
+        : detaiProduct?.data.priceSku?.[0]?.sku_price;
 
-    const formattedPrice = typeof priceValue === 'number'
-        ? priceValue.toLocaleString()
-        : "N/A";
+    const formattedPrice = priceValue?.toLocaleString() || 'N/A';
+
     return (
         <Spin spinning={loading}>
             <div className="bg-white mt-[50px]">

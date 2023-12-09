@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Drawer, Form, Input, Table, Select, Upload, Spin } from 'antd';
-import { useGetValueIdQuery, useUpdateVariantMutation } from '@/api/variant';
+import { useGetValueIdQuery, useRemoveVariantMutation, useUpdateVariantMutation } from '@/api/variant';
 import { useGetProductByIdQuery, useUpdateProductMutation } from '@/api/product';
 import SunEditor from 'suneditor-react';
 import { useGetCategoriesQuery } from '@/api/category';
@@ -29,7 +29,22 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
     // Call variant
     const { data: variants } = useGetValueIdQuery(id);
     const [updateVariant] = useUpdateVariantMutation();
+    const [deleteVariant, { data: dataRemove }] = useRemoveVariantMutation();
+    const [loading, setLoading] = useState(false);
+    const deleteO = (id: number) => {
+        const confim = window.confirm("Bạn có muốn xóa biến thể ?");
+        if (confim) {
+            deleteVariant(id)
+            setLoading(true);
+        }
+    }
+    console.log(dataRemove);
 
+    useEffect(() => {
+        if (dataRemove) {
+            setLoading(false);
+        }
+    }, [dataRemove]);
     // Column variant
     const columns = [
         {
@@ -84,6 +99,16 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                 >
                     <Input disabled />
                 </Form.Item>
+            ),
+        },
+        {
+            title: 'Chức năng',
+            dataIndex: 'sku_id',
+            key: 'sku_id',
+            render: (dataIndex: any) => (
+                <Button type="primary" danger onClick={() => deleteO(dataIndex)}>
+                    Xóa
+                </Button>
             ),
         }
     ];
@@ -237,103 +262,105 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                 bodyStyle={{ paddingBottom: 80 }}
             >
                 <Spin spinning={isLoading}>
-                    <Form
-                        layout="vertical"
-                        labelCol={{ span: 10 }}
-                        wrapperCol={{ span: 20 }}
-                        style={{ maxWidth: 900 }}
-                        initialValues={{ remember: true }}
-                        onFinish={onFinishForm}
-                        autoComplete="off"
-                    >
-                        <div className='d-flex justify-content-between gap-10 mb-20'>
-                            <div>
-                                {!check ? (
-                                    <>
-                                        <Button
-                                            onClick={() => {
-                                                setImageUrl(undefined);
-                                                setSelectedFile(null);
-                                                setCheck(true);
-                                            }}
-                                            className="delete-button"
-                                        >
-                                            Xóa
-                                        </Button>
-                                        <img src={`https://briteshop.store${product?.product.image}`} className="w-150 h-full" />
-                                    </>
-                                ) : (
-                                    <div className="w-full">
-                                        <Upload
-                                            name="avatar"
-                                            listType="picture-card"
-                                            className="avatar-uploader"
-                                            showUploadList={false}
-                                            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                                            beforeUpload={beforeUpload}
-                                            onChange={twoFunctions}
-                                        >
-                                            {imageUrl ? <img src={imageUrl} alt="avatar" className="w-full h-full" /> : uploadButton}
-                                        </Upload>
-                                    </div>
-                                )}
-                            </div>
-                            <div className='w-full'>
-                                <Form.Item
-                                    name="name"
-                                    label="Tên sản phẩm"
-                                    initialValue={product?.product.name}
-                                >
-                                    <Input placeholder="Please enter a name" />
-                                </Form.Item>
-                                <Form.Item
-                                    name="price"
-                                    label="Giá"
-                                    initialValue={product?.product.price}
-                                >
-                                    <Input placeholder="Please enter a price" />
-                                </Form.Item>
-                                <Form.Item
-                                    name="category"
-                                    label="Danh mục"
-                                    initialValue={categoryMapping[product?.product.category_name]}
-                                >
-                                    <Select
-                                        showSearch
-                                        placeholder="Chọn danh mục"
-                                        optionFilterProp="children"
-                                        options={optionId?.map((option: any) => ({
-                                            ...option,
-                                            value: categoryMapping[option.label],
-                                        }))}
-                                    />
-                                </Form.Item>
-                                <Form.Item
-                                    name="code"
-                                    label="Mã sản phẩm"
-                                    initialValue={product?.product.code}
-                                >
-                                    <Input placeholder="Please enter a code" />
-                                </Form.Item>
-                                <Form.Item
-                                    name="description"
-                                    label="Mô tả"
-                                    initialValue={product?.product.description}
-                                >
-                                    <SunEditor getSunEditorInstance={getSunEditorInstance} defaultValue={product?.product.description} />
-                                </Form.Item>
-                            </div>
+                    <Spin spinning={loading}>
+                        <Form
+                            layout="vertical"
+                            labelCol={{ span: 10 }}
+                            wrapperCol={{ span: 20 }}
+                            style={{ maxWidth: 900 }}
+                            initialValues={{ remember: true }}
+                            onFinish={onFinishForm}
+                            autoComplete="off"
+                        >
+                            <div className='d-flex justify-content-between gap-10 mb-20'>
+                                <div>
+                                    {!check ? (
+                                        <>
+                                            <Button
+                                                onClick={() => {
+                                                    setImageUrl(undefined);
+                                                    setSelectedFile(null);
+                                                    setCheck(true);
+                                                }}
+                                                className="delete-button"
+                                            >
+                                                Xóa
+                                            </Button>
+                                            <img src={`https://briteshop.store${product?.product.image}`} className="w-150 h-full" />
+                                        </>
+                                    ) : (
+                                        <div className="w-full">
+                                            <Upload
+                                                name="avatar"
+                                                listType="picture-card"
+                                                className="avatar-uploader"
+                                                showUploadList={false}
+                                                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                                                beforeUpload={beforeUpload}
+                                                onChange={twoFunctions}
+                                            >
+                                                {imageUrl ? <img src={imageUrl} alt="avatar" className="w-full h-full" /> : uploadButton}
+                                            </Upload>
+                                        </div>
+                                    )}
+                                </div>
+                                <div className='w-full'>
+                                    <Form.Item
+                                        name="name"
+                                        label="Tên sản phẩm"
+                                        initialValue={product?.product.name}
+                                    >
+                                        <Input placeholder="Please enter a name" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="price"
+                                        label="Giá"
+                                        initialValue={product?.product.price}
+                                    >
+                                        <Input placeholder="Please enter a price" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="category"
+                                        label="Danh mục"
+                                        initialValue={categoryMapping[product?.product.category_name]}
+                                    >
+                                        <Select
+                                            showSearch
+                                            placeholder="Chọn danh mục"
+                                            optionFilterProp="children"
+                                            options={optionId?.map((option: any) => ({
+                                                ...option,
+                                                value: categoryMapping[option.label],
+                                            }))}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="code"
+                                        label="Mã sản phẩm"
+                                        initialValue={product?.product.code}
+                                    >
+                                        <Input placeholder="Please enter a code" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="description"
+                                        label="Mô tả"
+                                        initialValue={product?.product.description}
+                                    >
+                                        <SunEditor getSunEditorInstance={getSunEditorInstance} defaultValue={product?.product.description} />
+                                    </Form.Item>
+                                </div>
 
-                        </div>
-                        {/* variant */}
-                        {variantData.length > 0 ? <div>
-                            <Table columns={columns} dataSource={variantData} />
-                            <Form.Item wrapperCol={{ offset: 19, span: 16 }}>
-                                <Button htmlType="submit">Gửi</Button>
-                            </Form.Item>
-                        </div> : null}
-                    </Form>
-                    {variantData.length > 0 ? null : <Variant product={product?.product} id={1} />}
+                            </div>
+                            {/* variant */}
+                            {variantData.length > 0 ? <div>
+                                <Table columns={columns} dataSource={variantData} />
+                                <Form.Item wrapperCol={{ offset: 19, span: 16 }}>
+                                    <Button htmlType="submit">Gửi</Button>
+                                </Form.Item>
+                            </div> : null}
+                        </Form>
+                        {variantData.length > 0 ? null : <Variant product={product?.product} id={1} />}
+                    </Spin>
                 </Spin>
             </Drawer>
         </>

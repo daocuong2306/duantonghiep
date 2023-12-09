@@ -1,5 +1,6 @@
 import { useAddBillMutation } from '@/api/bill'
 import { useGetCartQuery } from '@/api/cart'
+import { usePaymentOnlineMutation } from '@/api/payment'
 import { Spin, notification } from 'antd'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -21,7 +22,20 @@ const Bill = () => {
     const { data: cartData }: { data: any } = useGetCartQuery(code) as {
         data: any;
     };
-
+    //Thanh toan Onl 
+    const [paymentP, { data, isSuccess }] = usePaymentOnlineMutation()
+    // Alternatively, if 'arg' is optional, you can provide undefined as the argument
+    const { data: dataCart }: { data?: any } = useGetCartQuery(undefined) || {};
+    const url = useNavigate()
+    const onHandleSubmit = () => {
+        paymentP({ amount: dataCart?.total_amount, language: "vn", bankCode: "" });
+        setLoading(true)
+    };
+    const link = data ? data.URL : null
+    if (isSuccess) {
+        url(`//${link}`)
+    }
+    ////////////////
     const [addBill, { data: addData, error }] = useAddBillMutation()
     console.log(cartData);
     const aUrl = useNavigate()
@@ -29,8 +43,9 @@ const Bill = () => {
     const { register, handleSubmit } = useForm();
     const onSubmit = (data: any) => {
         const ids = cartData?.carts.map((item: any) => item.id);
-        const discount = cartData?.checkDiscount.id
+        const discount = cartData?.checkDiscount?.id
         const price = cartData?.total_amount
+
         const formData = {
             "address": data.address,
             "phone": data.phoneNumber,
@@ -43,8 +58,7 @@ const Bill = () => {
 
         if (data.paymentMethod == "ON") {
             localStorage.setItem("dataBill", JSON.stringify(formData));
-            aUrl("/payment")
-            console.log(1);
+            onHandleSubmit()
             return;
         } else if (data.paymentMethod == "OFF") {
             addBill(formData);
@@ -196,7 +210,7 @@ const Bill = () => {
                                             })}
                                             <div className="p-2 d-flex">
                                                 <div className="col-8">Giảm giá</div>
-                                                <div className="ms-auto">{cartData?.checkDiscount.amount}%</div>
+                                                <div className="ms-auto">{cartData?.checkDiscount?.amount}%</div>
                                             </div>
 
                                             <div className="p-2 d-flex">

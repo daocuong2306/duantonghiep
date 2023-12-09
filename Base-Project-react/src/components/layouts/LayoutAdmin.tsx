@@ -52,7 +52,7 @@ const LayoutAdmin: React.FC = () => {
                         {
                             key: "5",
                             icon: <AiFillFolder />,
-                            label: <Link to="/admin/Options">Biến thể</Link>
+                            label: <Link to="/admin/Options">Thuộc tính</Link>
                         },
                         {
                             key: "6",

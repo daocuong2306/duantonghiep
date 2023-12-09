@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Image from '@/assets/image/395664742_238305892304631_1626048229353873057_n.png'
+import { useGetCategoriesQuery } from '@/api/category';
 const Header = () => {
 
     const [showMenu, setShowMenu] = useState(false);
+    const { data: category }: { data: any } = useGetCategoriesQuery() as { data: any };
+    console.log(category);
 
     const handleMenuToggle = () => {
         setShowMenu(!showMenu);
@@ -29,12 +32,14 @@ const Header = () => {
                         <Link to="/" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
                             Trang chủ
                         </Link>
-                        <Link to="/products" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
-                            Quần
-                        </Link>
-                        <Link to="/products" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
-                            Áo
-                        </Link>
+                        {
+                            category?.categories.map((category: any) => {
+                                return <Link to={`/category/${category.id}`} className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
+                                    {category.name}
+                                </Link>
+                            })
+                        }
+
                         <Link to="/about" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
                             Thông tin
                         </Link>

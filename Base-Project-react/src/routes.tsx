@@ -4,7 +4,7 @@ import LayoutAdmin from "./components/layouts/LayoutAdmin";
 import Login from "./components/client/login";
 import Signup from "./components/client/signup";
 import LayoutWebsite from "./components/layouts/LayoutWebsite";
-import Product from "./components/client/product";
+import Product from "./components/client/cateProduct/product";
 import Dashboard from "./components/admin/Products/Dashboard";
 import AddProduct from "./components/admin/Products/addProduct";
 import CategoryDashboard from "./components/admin/categories/categoryDashboard";
@@ -24,7 +24,6 @@ import ListVariant from "./components/admin/Products/ListVariant";
 import Home from "./components/component/layout/home";
 import CartProduct from "./components/client/Cart/cart";
 import Statistics from "./components/admin/statistics/statistics";
-import PaymentOnline from "./components/client/payment/paymentOnline";
 import ConfirmPayment from "./components/client/payment/confirmPayment";
 import Bill from "./components/client/bill/Bill";
 import Account from "./components/client/account/account";
@@ -60,7 +59,7 @@ export const router = createBrowserRouter([
         element: <LayoutWebsite />,
         children: [
             {
-                path: 'products',
+                path: 'category/:category',
                 element: <Product />
             },
             {
@@ -74,10 +73,6 @@ export const router = createBrowserRouter([
             {
                 path: 'cart',
                 element: <CartProduct />
-            },
-            {
-                path: 'payment',
-                element: <PaymentOnline />
             },
 
             {
