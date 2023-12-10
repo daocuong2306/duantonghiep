@@ -1,8 +1,8 @@
 
-import { useForm} from "react-hook-form";
-import  { useState, useRef } from 'react';
+import { useForm } from "react-hook-form";
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import {  Spin, message } from "antd";
+import { Spin, message, notification } from "antd";
 import Upload, { RcFile, UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useAddBannerMutation } from "@/api/banner";
@@ -27,8 +27,8 @@ const AddBanner = () => {
 
     const url = useNavigate()
     const readerRef = useRef<any>(null);
-    const [addBanner, { isLoading }] = useAddBannerMutation();
-    const {  handleSubmit, getValues, register } = useForm();
+    const [addBanner, { data: dataAdd, isLoading, error }] = useAddBannerMutation();
+    const { handleSubmit, getValues, register } = useForm();
 
     //img table
     new Promise((resolve, reject) => {
@@ -65,12 +65,11 @@ const AddBanner = () => {
             reader.onload = (e: any) => {
                 const fileData = e.target.result;
                 console.log(fileData);
-                
+
             };
             readerRef.current = reader;
             reader.readAsDataURL(file);
         }
-        console.log(selectedFile);
     };
     const twoFunctions = (event: any) => {
         handleFileChange(event)
@@ -85,31 +84,37 @@ const AddBanner = () => {
     const onHandleSubmit = async () => {
         const content = getValues('content');
         const formData = new FormData();
-
-        // Append form fields to formData
         formData.append('content', content);
-
-        // Append the selected file to formData (if available)
         if (selectedFile) {
             formData.append('image', selectedFile);
         }
         try {
-            const response = await addBanner(formData);
-
-            // Handle the response here if needed
-
-            console.log(response);
-
-            // Redirect to another page after successful form submission
-            // url("/admin/categories");
+            await addBanner(formData);
         } catch (error) {
-            // Handle any errors that occurred during form submission
             console.error(error);
         }
-        url("/admin/banner")
     };
+    const [loading, setLoading] = useState(false);
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (e: any) => {
+        api.open({
+            message: e,
+        });
+    };
+    const errors: any = error
+    useEffect(() => {
+        if (errors?.data?.errors) {
+            setLoading(false);
+            openNotification("Bạn chưa nhập ảnh hoặc tên của banner đã tồn tại");
+        }
+    }, [error]);
+    console.log(loading);
+    if (dataAdd?.message == "Successfull") {
+        url("/admin/banner")
+    }
     return <div>
         <Spin spinning={isLoading} className="pl-[50%]">
+            {contextHolder}
             <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Thêm ảnh</h2>
             <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-2 ml-200 mr-200 ">
                 <div className="col-span-1">

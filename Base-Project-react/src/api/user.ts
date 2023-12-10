@@ -77,7 +77,7 @@ const userApi = createApi({
             }),
             providesTags: ['user'],
         }),
-        updateAccount:builder.mutation({
+        updateAccount: builder.mutation({
             query: (account: any) => ({
                 url: `user/edituser`,
                 method: "POST",
@@ -87,7 +87,7 @@ const userApi = createApi({
                 },
             }),
             invalidatesTags: ['user']
-        }),
+        })
     })
 });
 

@@ -128,7 +128,7 @@ const CartProduct = () => {
                                         type="text"
                                         id="codeDiscount"
                                         className="form-control p-4"
-                                        placeholder="Coupon Code"
+                                        placeholder="Mã giảm giá"
                                         {...register('codeDiscount')} />
                                     <div className="input-group-append">
                                         <button className="btn btn-primary" type="submit">Áp dụng mã giảm giá</button>

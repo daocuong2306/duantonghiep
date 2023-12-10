@@ -1,10 +1,13 @@
 import { useForm } from "react-hook-form";
-import  { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useAddCategoryMutation } from "../../../api/category";
-import {  Spin, message } from "antd";
+import { Spin, message } from "antd";
 import Upload, { RcFile, UploadProps } from "antd/es/upload";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { notification } from 'antd';
+
+
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result as string));
@@ -25,8 +28,9 @@ const beforeUpload = (file: RcFile) => {
 const AddCategory = () => {
     const url = useNavigate()
     const readerRef = useRef<any>(null);
-    const [addCategory, { isLoading }] = useAddCategoryMutation();
-    const {  handleSubmit,  getValues, register } = useForm();
+    const [addCategory, { data: dataAdd, error }] = useAddCategoryMutation();
+    const { handleSubmit, getValues, register } = useForm();
+    const [loading, setLoading] = useState(false);
     //img table
     new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -63,7 +67,7 @@ const AddCategory = () => {
             reader.onload = (e: any) => {
                 const fileData = e.target.result;
                 console.log(fileData);
-                
+
             };
             readerRef.current = reader;
             reader.readAsDataURL(file);
@@ -80,7 +84,7 @@ const AddCategory = () => {
             <div style={{ marginTop: 8 }}>Cập nhật</div>
         </div>
     );
- 
+
     //end img product 
     // Filter `option.label` match the user type `input`
 
@@ -88,31 +92,38 @@ const AddCategory = () => {
     const onHandleSubmit = async () => {
         const name = getValues('name');
         const formData = new FormData();
-
-        // Append form fields to formData
         formData.append('name', name);
-
-        // Append the selected file to formData (if available)
         if (selectedFile) {
             formData.append('image', selectedFile);
         }
+        setLoading(true)
         try {
-            const response = await addCategory(formData);
-
-            // Handle the response here if needed
-
-            console.log(response);
-
-            // Redirect to another page after successful form submission
-            // url("/admin/categories");
+            await addCategory(formData);
         } catch (error) {
-            // Handle any errors that occurred during form submission
             console.error(error);
         }
-        url("/admin/categories")
     };
+    console.log(dataAdd, error);
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (e: any) => {
+        api.open({
+            message: e,
+        });
+    };
+    const errors: any = error
+    useEffect(() => {
+        if (errors?.data?.errors) {
+            setLoading(false);
+            openNotification("Bạn chưa nhập ảnh hoặc tên của danh mục đã tồn tại");
+        }
+    }, [error]);
+    console.log(loading);
+    if (dataAdd?.message == "Successfull") {
+        url("/admin/categories")
+    }
     return <div>
-        <Spin spinning={isLoading} className="pl-[50%]">
+        <Spin spinning={loading} className="pl-[50%]">
+            {contextHolder}
             <h2 className="text-5xl font-black text-gray-900 text-center mb-10">Thêm danh mục</h2>
             <div className="grid grid-flow-row-dense grid-cols-2 grid-rows-2 ml-200 mr-200 ">
                 <div className="col-span-1">

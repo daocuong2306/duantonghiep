@@ -1,20 +1,29 @@
 import { useGetListBannerQuery, useRemoveBannerMutation } from "@/api/banner";
-import { Button, Image, Space, Spin, Table, TableColumnsType } from "antd"
+import { Button, Image, Space, Spin, Table, TableColumnsType, notification } from "antd"
 import { Link } from "react-router-dom"
 
 
 const BannerDashboard = () => {
     const { data: banners, isLoading }: { data?: any; isLoading: boolean } = useGetListBannerQuery();
 
-
-    console.log(banners);
-    const [deleteBanner, { isLoading: deleteLoading }] = useRemoveBannerMutation()
+    const [deleteBanner, { data: dataR, isLoading: deleteLoading }] = useRemoveBannerMutation()
     const deleteB = (id: number) => {
-        const check = window.confirm("Are you sure you want to delete");
+        const check = window.confirm("Bạn có muốn xóa ảnh này không ?");
         if (check) {
             deleteBanner(id);
-
         }
+    }
+    console.log(dataR);
+    const dataD: any = dataR
+
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (e: any) => {
+        api.open({
+            message: e,
+        });
+    };
+    if (dataD?.message == "Delete Successfull") {
+        openNotification("xóa sản phẩm thành công")
     }
     const columns: TableColumnsType<any> = [
         { title: 'Nội dung', dataIndex: 'content', key: 'content' },
@@ -44,6 +53,7 @@ const BannerDashboard = () => {
         <div>
             <Spin spinning={deleteLoading} className="pl-[50%]">
                 <Spin spinning={isLoading} className="pl-[50%]">
+                    {contextHolder}
                     <Space>
                         <Link to='/admin/banner/add'> <Button >Thêm Ảnh</Button></Link>
                     </Space>

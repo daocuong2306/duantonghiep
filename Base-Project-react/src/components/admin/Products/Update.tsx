@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Button, Drawer, Form, Input, Table, Select, Upload, Spin } from 'antd';
+import { Button, Drawer, Form, Input, Table, Select, Upload, Spin, InputNumber, notification } from 'antd';
 import { useGetValueIdQuery, useRemoveVariantMutation, useUpdateVariantMutation } from '@/api/variant';
 import { useGetProductByIdQuery, useUpdateProductMutation } from '@/api/product';
 import SunEditor from 'suneditor-react';
@@ -183,6 +183,12 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
     );
     //end upload image
     // onfinish
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (e: any) => {
+        api.open({
+            message: e,
+        });
+    };
     const onFinishForm = async (values: any) => {
         //update variant
         const variants = []
@@ -226,11 +232,16 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                 id,
                 formData
             }
-            await updateProduct(productData);
-
+            const response: any = await updateProduct(productData);
+            if (response?.error.data.errors.image) {
+                openNotification("Bạn cần thêm ảnh cho sản phẩm")
+            } else if (response?.error.data.errors.code) {
+                openNotification("Vui lòng nhập hoặc nhập lại mã sản phẩm")
+            } else if (response?.error.data.errors.name) {
+                openNotification("Vui lòng nhập hoặc nhập lại tên sản phẩm")
+            }
         }
         catch (err) {
-
         }
     };
 
@@ -263,6 +274,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             >
                 <Spin spinning={isLoading}>
                     <Spin spinning={loading}>
+                        {contextHolder}
                         <Form
                             layout="vertical"
                             labelCol={{ span: 10 }}
@@ -316,8 +328,18 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                                         name="price"
                                         label="Giá"
                                         initialValue={product?.product.price}
+                                        rules={[
+                                            {
+                                                type: 'number',
+                                                message: 'Vui lòng nhập số!',
+                                            },
+                                            {
+                                                required: true,
+                                                message: 'Vui lòng nhập giá!',
+                                            },
+                                        ]}
                                     >
-                                        <Input placeholder="Please enter a price" />
+                                        <InputNumber placeholder="Please enter a price" style={{ width: '100%' }} />
                                     </Form.Item>
                                     <Form.Item
                                         name="category"

@@ -49,6 +49,13 @@ const optionsApi = createApi({
             }),
             invalidatesTags: ['Options']
         }),
+        removeValue: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `/optionvalues/delete/${id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ['Options']
+        }),
         addOptionValue: builder.mutation({
             query: (OValues: any) => ({
                 url: `/optionvalues/add`,
@@ -65,7 +72,8 @@ export const {
     useGetOptionsQuery,
     useRemoveOptionMutation,
     useUpdateOptionMutation,
-    useAddOptionValueMutation
+    useAddOptionValueMutation,
+    useRemoveValueMutation
 } = optionsApi;
 export const optionsReducer = optionsApi.reducer;
 
