@@ -25,10 +25,7 @@ const Product = () => {
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
     };
-    const [isMenuOpen, setMenuOpen] = useState(false);
-    const toggleMenu = () => {
-        setMenuOpen(!isMenuOpen);
-    };
+
 
     return (
         <Spin spinning={isLoading}>

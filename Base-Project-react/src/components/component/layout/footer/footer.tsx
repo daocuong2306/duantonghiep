@@ -12,17 +12,14 @@ const Footer = () => {
             </Link>
           </div>
           <div className="text-left">
-            <p>
-              Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum dolore amet erat.
-            </p>
             <p className="mb-2">
-              <i className="fa fa-map-marker-alt text-[#00CCFF] mr-3"></i>123 Street, New York, USA
+              <i className="fa fa-map-marker-alt text-[#00CCFF] mr-3"></i>37 Trần Quốc Hoàn
             </p>
             <p className="mb-2">
               <i className="fa fa-envelope text-[#00CCFF] mr-3"></i>info@example.com
             </p>
             <p className="mb-0">
-              <i className="fa fa-phone-alt text-[#00CCFF] mr-3"></i>+012 345 67890
+              <i className="fa fa-phone-alt text-[#00CCFF] mr-3"></i>0964495899
             </p>
           </div>
         </div>

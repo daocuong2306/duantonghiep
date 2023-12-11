@@ -60,7 +60,12 @@ const Comment = () => {
             } else if (commentData?.errors) {
                 openNotification('Bạn đã hết số lần bình luận', "Vui lòng mua thêm sản phẩm để có thể bình luận");
                 setLoading(false); // This will not trigger a re-render immediately
-            } else {
+            } else if (commentData?.error) {
+                openNotification('Bạn đã hết số lần bình luận', "Vui lòng mua thêm sản phẩm để có thể bình luận");
+                setLoading(false); // This will not trigger a re-render immediately
+            }
+
+            else {
                 openNotification('Bình luận thành công', "");
                 setLoading(false); // This will not trigger a re-render immediately
             }

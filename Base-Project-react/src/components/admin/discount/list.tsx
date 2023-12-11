@@ -7,7 +7,7 @@ const DiscountDashboard = () => {
     const { data: dataDiscount }: { data: any } = useGetDiscountQuery() as { data: any }
     const [deleteCate] = useRemoveCategoryMutation()
     const deleteC = (id: number) => {
-        const check = window.confirm("Are you sure you want to delete");
+        const check = window.confirm("Bạn có muốn xóa mã giảm giá này không ?");
         if (check) {
             deleteCate(id);
         }
