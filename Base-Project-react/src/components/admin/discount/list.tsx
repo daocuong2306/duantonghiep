@@ -1,15 +1,14 @@
-import { useRemoveCategoryMutation } from "@/api/category"
-import { useGetDiscountQuery } from "@/api/discount"
+import { useGetDiscountQuery, useRemoveDiscountMutation } from "@/api/discount"
 import { Button, Space, Spin, Table, TableColumnsType } from "antd"
 import { Link } from "react-router-dom"
 
 const DiscountDashboard = () => {
     const { data: dataDiscount }: { data: any } = useGetDiscountQuery() as { data: any }
-    const [deleteCate] = useRemoveCategoryMutation()
+    const [deleteDiscount] = useRemoveDiscountMutation()
     const deleteC = (id: number) => {
         const check = window.confirm("Bạn có muốn xóa mã giảm giá này không ?");
         if (check) {
-            deleteCate(id);
+            deleteDiscount(id);
         }
     }
     console.log(dataDiscount);

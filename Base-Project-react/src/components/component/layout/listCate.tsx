@@ -1,6 +1,4 @@
 // ListCate.jsx
-
-import React from 'react';
 import { useGetDataQuery } from '@/api/home';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -23,18 +21,25 @@ const PaginationControls = ({ totalPages, currentPage, handlePageChange }: { tot
 
 const ListCate = () => {
     const { data }: { data?: any } = useGetDataQuery();
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPageQuan, setCurrentPageQuan] = useState(1);
+    const [currentPageAo, setCurrentPageAo] = useState(1);
     const itemsPerPage = 4;
+    const handlePageChangeQuan = (newPage: any) => {
+        setCurrentPageQuan(newPage);
+    };
+    const handlePageChangeAo = (newPage: any) => {
+        setCurrentPageAo(newPage);
+    };
 
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
+    const startIndexQuan = (currentPageQuan - 1) * itemsPerPage;
+    const endIndexQuan = startIndexQuan + itemsPerPage;
+
+    const startIndexAo = (currentPageAo - 1) * itemsPerPage;
+    const endIndexAo = startIndexAo + itemsPerPage;
+
 
     const totalPagesQuan = Math.ceil((data?.data.groupedProducts.Quần?.length || 0) / itemsPerPage);
     const totalPagesAo = Math.ceil((data?.data.groupedProducts.Áo?.length || 0) / itemsPerPage);
-
-    const handlePageChange = (newPage: any) => {
-        setCurrentPage(newPage);
-    };
 
     return (
         <>
@@ -46,7 +51,7 @@ const ListCate = () => {
                     </h2>
                 </div>
                 <div className="row pb-5 mb-3">
-                    {data?.data.groupedProducts.Quần?.slice(startIndex, endIndex).map((product: any, index: any) => (
+                    {data?.data.groupedProducts.Quần?.slice(startIndexQuan, endIndexQuan).map((product: any, index: any) => (
                         <div key={index} className="col-lg-3 col-md-6 mb-4">
                             <div className="card rounded shadow-sm border-0">
                                 <div className="card-body p-4">
@@ -86,7 +91,7 @@ const ListCate = () => {
                 </div>
 
                 {/* Pagination controls */}
-                <PaginationControls totalPages={totalPagesQuan} currentPage={currentPage} handlePageChange={handlePageChange} />
+                <PaginationControls totalPages={totalPagesQuan} currentPage={currentPageQuan} handlePageChange={handlePageChangeQuan} />
             </div>
 
             {/* Áo Section */}
@@ -97,7 +102,7 @@ const ListCate = () => {
                     </h2>
                 </div>
                 <div className="row pb-5 mb-3">
-                    {data?.data.groupedProducts.Áo?.slice(startIndex, endIndex).map((product: any, index: any) => (
+                    {data?.data.groupedProducts.Áo?.slice(startIndexAo, endIndexAo).map((product: any, index: any) => (
                         <div key={index} className="col-lg-3 col-md-6 mb-4">
                             <div className="card rounded shadow-sm border-0">
                                 <div className="card-body p-4">
@@ -137,7 +142,7 @@ const ListCate = () => {
                 </div>
 
                 {/* Pagination controls */}
-                <PaginationControls totalPages={totalPagesAo} currentPage={currentPage} handlePageChange={handlePageChange} />
+                <PaginationControls totalPages={totalPagesAo} currentPage={currentPageAo} handlePageChange={handlePageChangeAo} />
             </div>
         </>
     );

@@ -13,21 +13,21 @@ const NewProducts = () => {
                         <div className="card rounded shadow-sm border-0">
                             <div className="card-body p-4">
                                 <img
-                                    src={`https://briteshop.store${product.image}`}
+                                    src={`https://briteshop.store${product.product_info.image}`}
                                     alt=""
                                     className="img-fluid d-block mx-auto mb-3 rounded-lg"
                                     style={{ height: '300px', width: '300px', objectFit: 'cover' }}
                                 />
                                 <h5>
-                                    <Link to={`/product/detail/${product.id}`} className="text-dark">
-                                        {product.name}
+                                    <Link to={`/product/detail/${product.product_info.id}`} className="text-dark">
+                                        {product.product_info.name}
                                     </Link>
                                 </h5>
-                                <p className="small text-muted font-italic">{product.price} VND</p>
+                                <p className="small text-muted font-italic">{product.product_info.price} VND</p>
                                 <ul className="list-inline small">
                                     {[1, 2, 3, 4, 5].map((star) => (
                                         <li key={star} className="list-inline-item m-0">
-                                            <i className={`fa fa-star${star <= product.rating ? '' : '-o'} text-success`}></i>
+                                            <i className={`fa fa-star${star <= product.product_info.rating ? '' : '-o'} text-success`}></i>
                                         </li>
                                     ))}
                                 </ul>

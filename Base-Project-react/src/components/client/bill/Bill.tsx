@@ -67,8 +67,12 @@ const Bill = () => {
         } else {
             const checkBill = window.confirm("Bạn chưa chọn kiểu thức thanh toán , nếu đồng ý đơn hàng của bạn sẽ mặc định là off")
             if (checkBill) {
-                addBill(formData);
-                setLoading(true);
+                if (status == 0) {
+                    addBill(formData);
+                    setLoading(true);
+                } else {
+                    openNotification("Bạn đã bị hạn chế mua hàng", "Vui lòng chọn hình thức ON");
+                }
             }
         }
     };
@@ -118,14 +122,12 @@ const Bill = () => {
                                         <hr />
                                         <div className="pt-2">
                                             <div className="d-flex pb-2">
-
                                             </div>
                                             <p>
                                                 Đây là ước tính cho phần đơn đặt hàng của bạn (không được bao gồm bởi
                                                 bảo hiểm) đến hạn ngày hôm nay . Sau khi bảo hiểm hoàn tất việc hoàn trả đánh giá của họ
                                                 và / hoặc số dư sẽ tự động điều chỉnh.
                                             </p>
-
                                             <form className="pb-3" onSubmit={handleSubmit(onSubmit)}>
                                                 <div className="d-flex flex-row pb-3">
                                                     <input
@@ -133,7 +135,8 @@ const Bill = () => {
                                                         className="form-control ml-4"
                                                         placeholder="Số điện thoại"
                                                         aria-label="STD"
-                                                        {...register('phoneNumber')}
+                                                        required
+                                                        {...register('phoneNumber', { required: true })}
                                                     />
                                                 </div>
                                                 <div className="d-flex flex-row pb-3">
@@ -142,7 +145,8 @@ const Bill = () => {
                                                         className="form-control ml-4"
                                                         placeholder="Địa chỉ"
                                                         aria-label="Địa chỉ"
-                                                        {...register('address')}
+                                                        required
+                                                        {...register('address', { required: true })}
                                                     />
                                                 </div>
                                                 <div className="d-flex flex-row pb-3">

@@ -25,7 +25,8 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
     categories?.categories.forEach((category: any) => {
         categoryMapping[category.name] = category.id;
     });
-    const optionId = categories?.categories.map((item: any) => ({ value: item.id, label: item.name }));
+    const optionId = categories?.categories.map((item: any) => ({ key: item.id, value: item.id, label: item.name }));
+
     // Call variant
     const { data: variants } = useGetValueIdQuery(id);
     const [updateVariant] = useUpdateVariantMutation();
@@ -38,8 +39,6 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             setLoading(true);
         }
     }
-    console.log(dataRemove);
-
     useEffect(() => {
         if (dataRemove) {
             setLoading(false);
@@ -115,8 +114,6 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
 
     const outputArray = variants?.handleVariant ? Object.values(variants.handleVariant) : [];
     const variantData: any[] = outputArray;
-    console.log("variants", variants);
-
     // end variant
     //update Variant
     //img upload
@@ -190,15 +187,21 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
         });
     };
     const onFinishForm = async (values: any) => {
+        console.log(1);
+        const firstSkuId = variantData[0].sku_id;
+        const lastSkuId = variantData[variantData.length - 1].sku_id;
         //update variant
         const variants = []
-        for (let i = 1; values[`sku${i}`] !== undefined; i++) {
+        for (let i = firstSkuId; i <= lastSkuId; i++) {
             const sku = values[`sku${i}`];
             const price = values[`price${i}`];
             const stock = values[`Stock${i}`];
-
-            variants.push({ sku, price, stock });
+            if (sku !== undefined && price !== undefined && stock !== undefined) {
+                variants.push({ sku, price, stock });
+            }
         }
+        console.log(values[`sku${1}`]);
+
         for (let item of variants) {
             const data = {
                 id: item.sku,
@@ -210,7 +213,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
             }
             updateVariant(data)
         }
-        //update product
+        // update product
         const formData = new FormData();
         if (editor.current) {
             const content = editor.current.getContents();
@@ -352,6 +355,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                                             optionFilterProp="children"
                                             options={optionId?.map((option: any) => ({
                                                 ...option,
+                                                key: option.id, // Giả sử `id` là một trường duy nhất
                                                 value: categoryMapping[option.label],
                                             }))}
                                         />
@@ -377,7 +381,9 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                             {variantData.length > 0 ? <div>
                                 <Table columns={columns} dataSource={variantData} />
                                 <Form.Item wrapperCol={{ offset: 19, span: 16 }}>
-                                    <Button htmlType="submit">Gửi</Button>
+                                    <Button type="primary" htmlType="submit">
+                                        Gửi
+                                    </Button>
                                 </Form.Item>
                             </div> : null}
                         </Form>

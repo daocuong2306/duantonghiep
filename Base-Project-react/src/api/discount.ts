@@ -33,13 +33,21 @@ const discountApi = createApi({
                 body: product
             }),
             invalidatesTags: ['discount']
+        }),
+        removeDiscount: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `/delete/${id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ['discount']
         })
     })
 });
 
 export const {
     useGetDiscountQuery,
-    useAddDiscountMutation
+    useAddDiscountMutation,
+    useRemoveDiscountMutation
 } = discountApi;
 export const discountReducer = discountApi.reducer;
 
