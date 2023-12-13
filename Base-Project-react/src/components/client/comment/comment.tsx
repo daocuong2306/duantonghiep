@@ -1,88 +1,103 @@
+import { Form, Input, Button, Rate, Spin, notification } from 'antd';
 import { useEffect, useState } from 'react';
-
-import { Button, Input, Rate, Spin, notification } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useAddCommentMutation } from '@/api/comment';
 import { useGetDetailQuery } from '@/api/detail';
 
-
 const Comment = () => {
-    const [addComment, { data: commentData }] = useAddCommentMutation()
-    const { id } = useParams()
-    const [comment, setComment] = useState('');
-    const [rating, setRating] = useState(0);
+    const [form] = Form.useForm();
+    const [addComment, { data: commentData }] = useAddCommentMutation();
+    const { id } = useParams();
     const [loading, setLoading] = useState(false);
-    const handleCommentChange = (e: any) => {
-        setComment(e.target.value);
-    };
-    const handleRatingChange = (value: any) => {
-        setRating(value);
-    };
-    //cmt
     const prodcuts = {
         id, selectP: [null, null]
     }
+    const handleCommentChange = (e: any) => {
+        form.setFieldsValue({ comment: e.target.value });
+    };
+
+    const handleRatingChange = (value: any) => {
+        form.setFieldsValue({ rating: value });
+    };
     const { data: detaiProduct } = useGetDetailQuery(prodcuts);
     const data = {
         cmt: detaiProduct?.data.comment,
         total: detaiProduct?.data.total_comment
     }
-    console.log("props", data);
     const handleSubmit = () => {
-        const token = localStorage.getItem("header")
-        const data = {
-            token: token,
-            value: {
-                comments: comment,
-                evaluate: rating,
-                id_product: String(id)
-            }
-        }
-        console.log(data.token);
-        addComment(data);
-        setLoading(true);
+        form
+            .validateFields()
+            .then(() => {
+                const token = localStorage.getItem("header");
+                const formData = form.getFieldsValue();
+                const data = {
+                    token: token,
+                    value: {
+                        comments: formData.comment,
+                        evaluate: formData.rating,
+                        id_product: String(id),
+                    },
+                };
+                addComment(data);
+                setLoading(true);
+            })
+            .catch((error) => {
+                console.error("Validation failed", error);
+            });
     };
-    //thông báo
+
     const [api, contextHolder] = notification.useNotification();
     const openNotification = (m: any, d: any) => {
         api.open({
             message: m,
-            description: d
+            description: d,
         });
     };
-    console.log(commentData);
 
     useEffect(() => {
         if (commentData) {
-            if (commentData?.message == "Bạn Phải Đăng nhập") {
-                openNotification('Bạn chưa đăng nhập', 'bạn phải đăng nhập để sử dụng chức năng này');
-                setLoading(false); // This will not trigger a re-render immediately
-            } else if (commentData?.errors) {
-                openNotification('Bạn đã hết số lần bình luận', "Vui lòng mua thêm sản phẩm để có thể bình luận");
-                setLoading(false); // This will not trigger a re-render immediately
+            if (commentData?.message === "Bạn Phải Đăng nhập") {
+                openNotification("Bạn chưa đăng nhập", "bạn phải đăng nhập để sử dụng chức năng này");
+                setLoading(false);
+            } else if (commentData?.message === "The comments field is required.'") {
+                openNotification("Bạn cần điền nội dung của bình luận", "");
+                setLoading(false);
+            } else if (commentData?.errors || commentData?.error) {
+                openNotification("Bạn đã hết số lần bình luận", "Vui lòng mua thêm sản phẩm để có thể bình luận");
+                setLoading(false);
             } else {
-                openNotification('Bình luận thành công', "");
-                setLoading(false); // This will not trigger a re-render immediately
+                openNotification("Bình luận thành công", "");
+                setLoading(false);
             }
         }
     }, [commentData]);
+
     return (
         <Spin spinning={loading}>
             {contextHolder}
             <div className="app container mx-auto p-4">
                 <div id="comment-box" className="mb-4">
                     <h2 className="text-xl font-bold mb-2">Bình luận của bạn:</h2>
-                    <Input.TextArea
-                        rows={4}
-                        placeholder="Nhập bình luận của bạn..."
-                        value={comment}
-                        onChange={handleCommentChange}
-                    />
+                    <Form form={form}>
+                        <Form.Item
+                            name="comment"
+                            rules={[{ required: true, message: 'Vui lòng nhập bình luận của bạn.' }]}
+                        >
+                            <Input.TextArea
+                                rows={4}
+                                placeholder="Nhập bình luận của bạn..."
+                                onChange={handleCommentChange}
+                            />
+                        </Form.Item>
+                    </Form>
                 </div>
 
                 <div id="rating-stars" className="flex items-center mb-4">
                     <h2 className="text-xl font-bold mr-2">Đánh giá:</h2>
-                    <Rate value={rating} onChange={handleRatingChange} />
+                    <Rate
+                        value={form.getFieldValue('rating')}
+                        onChange={handleRatingChange}
+                    />
                 </div>
                 <Button
                     type="primary"
@@ -91,8 +106,8 @@ const Comment = () => {
                 >
                     Gửi
                 </Button>
-
             </div>
+
             <div>
                 <section className="bg-white">
                     <div className="app container mx-auto p-4">
@@ -124,8 +139,10 @@ const Comment = () => {
                     </div>
                 </section >
             </div >
-        </Spin >
+        </Spin>
     );
 };
 
 export default Comment;
+
+

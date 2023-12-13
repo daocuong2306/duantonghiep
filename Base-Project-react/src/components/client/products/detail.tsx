@@ -93,12 +93,13 @@ export default function DetailProduct() {
                 <div className="pt-6">
                     {/* Image gallery */}
                     <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
-                        <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
+                        <div className="aspect-h-4 aspect-w-3 overflow-hidden rounded-lg lg:block">
                             <img
                                 src={`https://briteshop.store${detaiProduct?.data.product[0]?.image}`}
-                                className="h-full w-full object-cover object-center"
+                                className="h-full lg:w-full object-cover object-center"
                             />
                         </div>
+
                         <div className=" pl-[2%] aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
                             <div className="pt-[5%] lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                                 <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">{detaiProduct?.data.product[0]?.name}</h1>

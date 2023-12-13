@@ -27,7 +27,7 @@ const DashboardUser: React.FC = () => {
             dataIndex: 'image',
             key: 'image',
             width: '10%',
-            render: (dataIndex: any) => dataIndex == null ? <Image height={90} width={100} src={image} /> : <Image height={90} width={100} src={`https://briteshop.store${image}`} />
+            render: (dataIndex: any) => dataIndex == null ? <Image height={90} width={100} src={image} /> : <Image height={90} width={100} src={`https://briteshop.store${dataIndex}`} />
         },
         {
             title: 'Tên',

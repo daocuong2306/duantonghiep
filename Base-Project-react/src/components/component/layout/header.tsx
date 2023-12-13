@@ -24,7 +24,7 @@ const Header = () => {
         <div className="header-container fixed w-full top-0 bg-white z-50">
             <div className="flex items-center justify-between py-2 px-xl-5 mb-3">
                 <div className="flex items-center space-x-2">
-                    <img src={Image} alt="" className="h-16 w-auto" />
+                    <Link to="/">  <img src={Image} alt="" className="h-16 w-auto" /></Link>
                 </div>
                 {/* Search Bar */}
                 <div className="flex items-center space-x-4 lg:w-1/3">

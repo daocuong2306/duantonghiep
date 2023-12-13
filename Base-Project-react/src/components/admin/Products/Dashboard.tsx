@@ -67,7 +67,6 @@ const Dashboard = () => {
     }));
     const data: any[] = newData;
     //selech 
-    console.log(cateData);
     const optionsA = cateData?.categories.map((item: any) => ({
         label: item.name,
         value: item.id

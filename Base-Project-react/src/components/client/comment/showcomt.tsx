@@ -1,4 +1,4 @@
-import {  Rate } from 'antd';
+import { Rate } from 'antd';
 
 const Showcomt = ({ data }: any) => {
     return (
@@ -15,7 +15,7 @@ const Showcomt = ({ data }: any) => {
                                     <p className="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold">
                                         <img
                                             className="mr-2 w-6 h-6 rounded-full"
-                                            src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                            src={`https://briteshop.store${value.avatar_user}`}
                                             alt="Jese Leos"
                                         />
                                         {value.name_user}

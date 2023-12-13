@@ -6,8 +6,8 @@ const Product = () => {
     const { category } = useParams()
     console.log(category);
     const dataKey = {
-        id : category,
-        keyword : ""
+        id: category,
+        keyword: ""
     }
     const { data: products, isLoading }: { data: any, isLoading: any } = useGetProductsQuery(dataKey) as { data: any, isLoading: any };
 
@@ -19,16 +19,13 @@ const Product = () => {
     }, [products]);
 
     console.log(products);
-    
+
     const totalPages = Math.ceil(products?.product?.length / productsPerPage);
 
     const handlePageChange = (page: any) => {
         setCurrentPage(page);
     };
-    const [isMenuOpen, setMenuOpen] = useState(false);
-    const toggleMenu = () => {
-        setMenuOpen(!isMenuOpen);
-    };
+
 
     return (
         <Spin spinning={isLoading}>
@@ -38,63 +35,8 @@ const Product = () => {
                     <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
                             <h1 className="text-4xl font-bold tracking-tight text-gray-900">Sản phẩm</h1>
-                            <div className="flex items-center">
-                                <div className="relative inline-block text-left">
-                                    <div>
-                                        <button
-                                            type="button"
-                                            className="group inline-flex justify-center text-sm font-medium text-gray-700 py-[1%] hover:text-gray-900"
-                                            id="menu-button"
-                                            aria-expanded={isMenuOpen}
-                                            aria-haspopup="true"
-                                            onClick={toggleMenu}
-                                        >
-                                            Lựa chọn
-                                            <svg
-                                                className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                                                viewBox="0 0 20 20"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                                    clipRule="evenodd"
-                                                />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    {isMenuOpen && (
-                                        <div
-                                            className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none"
-                                            role="menu"
-                                            aria-orientation="vertical"
-                                            aria-labelledby="menu-button"
-                                            tabIndex={-1}
-                                        >
-                                            <div className="py-1" role="none">
-                                                <div className="flex justify-center items-center">
-                                                    <button className="text-center hover:underline hover:text-red-500">Phổ biến nhất</button>
-                                                </div>
-                                                <div className="flex justify-center items-center">
-                                                    <button className="text-center hover:underline hover:text-red-500">Mới nhất</button>
-                                                </div>
-                                                <div className="flex justify-center items-center">
-                                                    <button className="text-center hover:underline hover:text-red-500">Giá: từ nhỏ đến lớn</button>
-                                                </div>
-                                                <div className="flex justify-center items-center">
-                                                    <button className="text-center hover:underline hover:text-red-500">Giá: từ lớn đến nhỏ</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
                         </div>
-
                         <section aria-labelledby="products-heading" className="pb-24 pt-6">
-                            <h2 id="products-heading" className="sr-only">Products</h2>
-
                             <div className="flex gap-x-8 gap-y-10 lg:grid-cols-4">
                                 <div>
                                     <div className="grid grid-cols-3 gap-4">

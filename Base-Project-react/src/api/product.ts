@@ -9,8 +9,6 @@ const productApi = createApi({
         baseUrl: `${urlApi}/products`,
         prepareHeaders: (headers) => {
             const token = localStorage.getItem("header");
-            console.log("tonken", token);
-
             headers.set("authorization", `Bearer ${token}`)
             // modify header theo từng request
             return headers;
@@ -41,6 +39,7 @@ const productApi = createApi({
             }),
             invalidatesTags: ['Product']
         }),
+
         updateProduct: builder.mutation({
             query: (product: any) => ({
                 url: `/edit/${product.id}`,

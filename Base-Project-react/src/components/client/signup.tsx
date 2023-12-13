@@ -2,7 +2,7 @@ import { useRegisterMutation } from "../../api/user"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
 import { notification, Spin } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Signup = () => {
     const [registerUser, { data, isLoading, error }] = useRegisterMutation()
@@ -11,13 +11,19 @@ const Signup = () => {
     const { register, handleSubmit } = useForm()
     const onHandleSubmit = async (data: any) => {
         // Your form submission logic here
-        await registerUser({
-            "email": data.email,
-            "password": data.password,
-            "password_confirmation": data.confirmPassword,
-            "name": data.name
-        });
-        setLoading(true);
+        try {
+            setLoading(true);
+            await registerUser({
+                "email": data.email,
+                "password": data.password,
+                "password_confirmation": data.confirmPassword,
+                "name": data.name
+            });
+        } catch (err) {
+            // Error handling
+        } finally {
+            setLoading(false);
+        }
     };
     ///Notification
     const [api, contextHolder] = notification.useNotification();
@@ -26,26 +32,22 @@ const Signup = () => {
             message: text,
         });
     };
-    if (error) {
-        openNotification("Email đã tồn tại")
-        setTimeout(() => {
-            setLoading(false);
-            window.location.reload();
-        },
-            2000);
-    }
+    const er: any = error
+    useEffect(() => {
+        console.log(error, data);
+        if (er?.data.errors_code == 4) {
+            openNotification("Mật khẩu chưa khớp vui lòng nhập lại")
+        } else {
+            openNotification("Email đã tồn tại vui lòng chọn email khác")
+        }
+    }, [error]);
     if (!isLoading && !error) {
-        console.log(data);
         if (data?.status) {
-            openNotification("Đăng kí thành công")
-            setTimeout(() => {
-                setLoading(false);
-                url('/login');
-            },
-                2000);
-
+            url('/login');
         }
     }
+    console.log(loading);
+
     return (
         <div>
             <Spin spinning={loading}>

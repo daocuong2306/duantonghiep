@@ -14,14 +14,14 @@ const paymentApi = createApi({
             return headers;
         },
         fetchFn: async (...args) => {
-            await pause(500);
+            await pause(2000);
             return fetch(...args);
         }
     }),
     endpoints: (builder) => ({
         paymentOnline: builder.mutation({
             query: (product: any) => ({
-                url: `/`,
+                url: ``,
                 method: "POST",
                 body: product
             }),

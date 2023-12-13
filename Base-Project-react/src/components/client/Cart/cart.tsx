@@ -98,7 +98,7 @@ const CartProduct = () => {
                                                 <p>{cart.name_product}</p>
                                             </td>
                                             <td className="align-middle">{`${cart.option_value[0]} - ${cart.option_value[1]}`}</td>
-                                            <td className="align-middle">${cart.sku_price}</td>
+                                            <td className="align-middle">{cart.sku_price}đ</td>
                                             <td className="align-middle">
                                                 <div className="input-group quantity mx-auto w-[100px]">
                                                     <div className="input-group-btn">
@@ -114,7 +114,7 @@ const CartProduct = () => {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="align-middle">${cart.total_price}</td>
+                                            <td className="align-middle">{cart.total_price}đ</td>
                                             <td className="align-middle"><button className="btn btn-sm btn-primary" onClick={() => { buttonCart(cart.id, -1, 1) }}><i className="fa fa-times"></i></button></td>
                                         </tr>
                                     ))}
@@ -128,7 +128,7 @@ const CartProduct = () => {
                                         type="text"
                                         id="codeDiscount"
                                         className="form-control p-4"
-                                        placeholder="Coupon Code"
+                                        placeholder="Mã giảm giá"
                                         {...register('codeDiscount')} />
                                     <div className="input-group-append">
                                         <button className="btn btn-primary" type="submit">Áp dụng mã giảm giá</button>
@@ -142,7 +142,7 @@ const CartProduct = () => {
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between mb-3 pt-1">
                                         <h6 className="font-weight-medium">Tổng tiền</h6>
-                                        <h6 className="font-weight-medium">${dataCart?.total_amount}</h6>
+                                        <h6 className="font-weight-medium">{dataCart?.total_amount}đ</h6>
                                     </div>
                                 </div>
                                 <div className="card-footer border-secondary bg-transparent">
