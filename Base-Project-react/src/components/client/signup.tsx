@@ -37,8 +37,9 @@ const Signup = () => {
         console.log(error, data);
         if (er?.data.errors_code == 4) {
             openNotification("Mật khẩu chưa khớp vui lòng nhập lại")
-        } else {
+        } else if (er?.data.errors_code == 2) {
             openNotification("Email đã tồn tại vui lòng chọn email khác")
+            console.log(1);
         }
     }, [error]);
     if (!isLoading && !error) {

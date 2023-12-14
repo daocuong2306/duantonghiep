@@ -23,7 +23,7 @@ const BannerDashboard = () => {
         });
     };
     if (dataD?.message == "Delete Successfull") {
-        openNotification("xóa sản phẩm thành công")
+        openNotification("xóa sản banner thành công");
     }
     const columns: TableColumnsType<any> = [
         { title: 'Nội dung', dataIndex: 'content', key: 'content' },

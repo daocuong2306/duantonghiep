@@ -9,6 +9,7 @@ const Comment = () => {
     const [addComment, { data: commentData }] = useAddCommentMutation();
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
+    const [rating, setRating] = useState();
     const prodcuts = {
         id, selectP: [null, null]
     }
@@ -17,7 +18,7 @@ const Comment = () => {
     };
 
     const handleRatingChange = (value: any) => {
-        form.setFieldsValue({ rating: value });
+        setRating(value);
     };
     const { data: detaiProduct } = useGetDetailQuery(prodcuts);
     const data = {
@@ -34,7 +35,7 @@ const Comment = () => {
                     token: token,
                     value: {
                         comments: formData.comment,
-                        evaluate: formData.rating,
+                        evaluate: rating,
                         id_product: String(id),
                     },
                 };

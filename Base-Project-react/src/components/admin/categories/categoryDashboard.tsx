@@ -5,7 +5,7 @@ import UpdateCategory from "./updateCategory"
 
 const CategoryDashboard = () => {
 
-    const { data: categories, isLoading: dataLoading }: { data: any, isLoading: boolean } = useGetCategoriesQuery() as {data : any , isLoading: boolean};
+    const { data: categories, isLoading: dataLoading }: { data: any, isLoading: boolean } = useGetCategoriesQuery() as { data: any, isLoading: boolean };
     const [deleteCate, { isLoading }] = useRemoveCategoryMutation()
     const deleteC = (id: number) => {
         const check = window.confirm("Are you sure you want to delete");
@@ -26,7 +26,7 @@ const CategoryDashboard = () => {
         {
             title: '', key: 'id', dataIndex: 'id', render: (dataIndex) => {
                 return <>
-                    <UpdateCategory />
+                    <UpdateCategory id={dataIndex} />
                     <Space wrap>
                         <Button type="primary" danger onClick={() => deleteC(dataIndex)}>
                             Xóa

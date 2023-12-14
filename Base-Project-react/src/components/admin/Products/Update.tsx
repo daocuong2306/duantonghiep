@@ -381,7 +381,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                             {variantData.length > 0 ? <div>
                                 <Table columns={columns} dataSource={variantData} />
                                 <Form.Item wrapperCol={{ offset: 19, span: 16 }}>
-                                    <Button type="primary" htmlType="submit">
+                                    <Button htmlType="submit">
                                         Gửi
                                     </Button>
                                 </Form.Item>

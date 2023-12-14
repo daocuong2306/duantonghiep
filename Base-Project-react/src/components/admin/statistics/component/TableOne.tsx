@@ -39,7 +39,7 @@ const TableOne = () => {
         </div>
 
         {sortedProducts?.map((product: any) => (
-          <div className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5">
+          <div className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5" key={product.product_info.id}>
             <div className="flex items-center gap-3 p-2.5 xl:p-5">
               <div className="flex-shrink-0">
                 {/* Use the actual product image */}

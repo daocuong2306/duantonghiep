@@ -3,12 +3,9 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Col, Drawer, Form, Input, Row, Space, Spin, UploadProps, message } from 'antd';
 import { useGetCategoryByIdQuery, useUpdateCategoryMutation } from '@/api/category';
 import Upload, { RcFile, UploadChangeParam, UploadFile } from 'antd/es/upload';
-import { useParams } from 'react-router-dom';
 
 
-
-const UpdateCategory: React.FC = () => {
-    const id = useParams();
+const UpdateCategory: React.FC<any> = ({ id }: any) => {
     const [open, setOpen] = useState(false);
     const readerRef = useRef<any>(null);
     const [updateCategory, { isLoading: updateLoading }] = useUpdateCategoryMutation()
@@ -111,8 +108,6 @@ const UpdateCategory: React.FC = () => {
         handleChange(event)
     }
     //end add image 
-
-
     const { data: category, isLoading }: { data: any, isLoading: any } = useGetCategoryByIdQuery(id) as { data: any, isLoading: any };
 
     console.log(category);
