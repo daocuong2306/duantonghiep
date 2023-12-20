@@ -25,10 +25,9 @@ const Bill = () => {
     //Thanh toan Onl 
     const [paymentP, { data, isSuccess }] = usePaymentOnlineMutation()
     // Alternatively, if 'arg' is optional, you can provide undefined as the argument
-    const { data: dataCart }: { data?: any } = useGetCartQuery(undefined) || {};
     const url = useNavigate()
     const onHandleSubmit = () => {
-        paymentP({ amount: dataCart?.total_amount, language: "vn", bankCode: "" });
+        paymentP({ amount: cartData?.total_amount, language: "vn", bankCode: "" });
         setLoading(true)
     };
     const link = data ? data.URL : null
@@ -83,14 +82,12 @@ const Bill = () => {
             description: d
         });
     };
-    console.log(error);
     useEffect(() => {
         if (error) {
             openNotification("Bạn vui lòng nhập Số điện thoại và địa chỉ nhận hàng", "");
             setLoading(false);
         }
     }, [error]);
-    console.log(addData);
     if (addData) {
         aUrl('/account')
     }
@@ -111,7 +108,9 @@ const Bill = () => {
                                             <h5><span className="far fa-check-square pe-2"></span><b>Phương thức thanh toán</b> |</h5>
                                             <span className="ps-2">Pay</span>
                                         </div>
-                                        <h4 className="text-success">{cartData?.total_amount}VND</h4>
+                                        <h4 className="text-success">
+                                            {parseFloat(cartData?.total_amount).toLocaleString('en-US')} đ
+                                        </h4>
                                         <h4>Trách nhiệm và bảo hành</h4>
                                         <div className="d-flex pt-2">
 
@@ -207,7 +206,10 @@ const Bill = () => {
                                                     </div>
                                                     <div className="p-2 d-flex">
                                                         <div className="col-8">Giá sản phẩm</div>
-                                                        <div className="ms-auto">{cart.price_cart}x {cart.quantity}</div>
+                                                        <div className="ms-auto">
+
+
+                                                            {cart.price_cart}x {cart.quantity}</div>
                                                     </div>
                                                     <div className="border-top px-2 mx-2"></div>
                                                 </div>
@@ -219,7 +221,9 @@ const Bill = () => {
 
                                             <div className="p-2 d-flex">
                                                 <div className="col-8">Tổng giá</div>
-                                                <div className="ms-auto">{cartData?.total_amount}VND</div>
+                                                <div className="ms-auto">
+                                                    {parseFloat(cartData?.total_amount).toLocaleString('en-US')} đ
+                                                </div>
                                             </div>
 
                                             {/* <div className="p-2 d-flex">
@@ -237,7 +241,10 @@ const Bill = () => {
                                             <div className="border-top px-2 mx-2"></div>
                                             <div className="p-2 d-flex pt-3">
                                                 <div className="col-8"><b>Tổng</b></div>
-                                                <div className="ms-auto"><b className="text-success">{cartData?.total_amount}VND</b></div>
+                                                <div className="ms-auto"><b className="text-success">
+
+                                                    {parseFloat(cartData?.total_amount).toLocaleString('en-US')} đ
+                                                </b></div>
                                             </div>
                                         </div>
                                     </div>

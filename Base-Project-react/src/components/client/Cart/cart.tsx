@@ -98,7 +98,9 @@ const CartProduct = () => {
                                                 <p>{cart.name_product}</p>
                                             </td>
                                             <td className="align-middle">{`${cart.option_value[0]} - ${cart.option_value[1]}`}</td>
-                                            <td className="align-middle">{cart.sku_price}đ</td>
+                                            <td className="align-middle">
+                                                {parseFloat(cart.sku_price).toLocaleString('en-US')} đ
+                                            </td>
                                             <td className="align-middle">
                                                 <div className="input-group quantity mx-auto w-[100px]">
                                                     <div className="input-group-btn">
@@ -114,7 +116,9 @@ const CartProduct = () => {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="align-middle">{cart.total_price}đ</td>
+                                            <td className="align-middle">
+                                                {parseFloat(cart.total_price).toLocaleString('en-US')} đ
+                                            </td>
                                             <td className="align-middle"><button className="btn btn-sm btn-primary" onClick={() => { buttonCart(cart.id, -1, 1) }}><i className="fa fa-times"></i></button></td>
                                         </tr>
                                     ))}
@@ -142,13 +146,17 @@ const CartProduct = () => {
                                 <div className="card-body">
                                     <div className="d-flex justify-content-between mb-3 pt-1">
                                         <h6 className="font-weight-medium">Tổng tiền</h6>
-                                        <h6 className="font-weight-medium">{dataCart?.total_amount}đ</h6>
+                                        <h6 className="font-weight-medium">
+                                            {parseFloat(dataCart?.total_amount).toLocaleString('en-US')} đ
+                                        </h6>
                                     </div>
                                 </div>
                                 <div className="card-footer border-secondary bg-transparent">
                                     <div className="d-flex justify-content-between mt-2">
                                         <h5 className="font-weight-bold">Thanh toán</h5>
-                                        <h5 className="font-weight-bold">{dataCart?.total_amount}đ</h5>
+                                        <h5 className="font-weight-bold">
+                                            {parseFloat(dataCart?.total_amount).toLocaleString('en-US')} đ
+                                        </h5>
                                     </div>
                                     {dataCart?.checkDiscount !== "" ?
                                         <div className="d-flex justify-content-between mt-2">
@@ -158,7 +166,9 @@ const CartProduct = () => {
                                     }
                                     <div className="d-flex justify-content-between mt-2">
                                         <h5 className="">Tổng tiền</h5>
-                                        <h5 className="font-weight-bold">{dataCart?.total_amount}đ</h5>
+                                        <h5 className="font-weight-bold">
+                                            {parseFloat(dataCart?.total_amount).toLocaleString('en-US')} đ
+                                        </h5>
                                     </div>
                                     {dataCart?.total_amount == 0 ? "Bạn cần thêm sản phẩm để có thể thanh toán" : <Link to="/bill"><button className="btn btn-block btn-primary my-3 py-3">Thanh Toán</button></Link>}
                                 </div>

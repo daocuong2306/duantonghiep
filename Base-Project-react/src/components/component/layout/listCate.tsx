@@ -38,8 +38,8 @@ const ListCate = () => {
     const endIndexAo = startIndexAo + itemsPerPage;
 
 
-    const totalPagesQuan = Math.ceil((data?.data.groupedProducts.Quần?.length || 0) / itemsPerPage);
-    const totalPagesAo = Math.ceil((data?.data.groupedProducts.Áo?.length || 0) / itemsPerPage);
+    const totalPagesQuan = Math.ceil((data?.data?.groupedProducts?.Quần?.length || 0) / itemsPerPage);
+    const totalPagesAo = Math.ceil((data?.data?.groupedProducts?.Áo?.length || 0) / itemsPerPage);
 
     return (
         <>
@@ -51,7 +51,7 @@ const ListCate = () => {
                     </h2>
                 </div>
                 <div className="row pb-5 mb-3">
-                    {data?.data.groupedProducts.Quần?.slice(startIndexQuan, endIndexQuan).map((product: any, index: any) => (
+                    {data?.data?.groupedProducts?.Quần?.slice(startIndexQuan, endIndexQuan).map((product: any, index: any) => (
                         <div key={index} className="col-lg-3 col-md-6 mb-4">
                             <div className="card rounded shadow-sm border-0">
                                 <div className="card-body p-4">
@@ -63,10 +63,10 @@ const ListCate = () => {
                                     />
                                     <h5>
                                         <Link to={`/product/detail/${product?.id}`} className="text-dark">
-                                            {product.name}
+                                            {product?.name}
                                         </Link>
                                     </h5>
-                                    <p className="small text-muted font-italic" >{product.price} VND</p>
+                                    <p className="small text-muted font-italic" > {parseFloat(product?.price).toLocaleString('en-US')} đ</p>
                                     <ul className="list-inline small">
                                         <li className="list-inline-item m-0">
                                             <i className="fa fa-star text-success"></i>
@@ -102,7 +102,7 @@ const ListCate = () => {
                     </h2>
                 </div>
                 <div className="row pb-5 mb-3">
-                    {data?.data.groupedProducts.Áo?.slice(startIndexAo, endIndexAo).map((product: any, index: any) => (
+                    {data?.data?.groupedProducts?.Áo?.slice(startIndexAo, endIndexAo).map((product: any, index: any) => (
                         <div key={index} className="col-lg-3 col-md-6 mb-4">
                             <div className="card rounded shadow-sm border-0">
                                 <div className="card-body p-4">
@@ -114,10 +114,10 @@ const ListCate = () => {
                                     />
                                     <h5>
                                         <Link to={`/product/detail/${product?.id}`} className="text-dark">
-                                            {product.name}
+                                            {product?.name}
                                         </Link>
                                     </h5>
-                                    <p className="small text-muted font-italic" >{product.price} VND</p>
+                                    <p className="small text-muted font-italic" >{parseFloat(product?.price).toLocaleString('en-US')} đ</p>
                                     <ul className="list-inline small">
                                         <li className="list-inline-item m-0">
                                             <i className="fa fa-star text-success"></i>

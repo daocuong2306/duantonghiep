@@ -30,20 +30,14 @@ const Footer = () => {
             <div className="col-md-3 mb-3">
               <h5 className="font-weight-bold text-[#00ccff] mb-4">Truy cập nhanh</h5>
               <div className="flex flex-col justify-start">
-                <Link className="text-black mb-2 hover:text-[#00ccff]" to="/">
+                <Link to={'/'} className="text-black mb-2 hover:text-[#00ccff]" >
                   <i className="fa fa-angle-right mr-2"></i>Trang chủ
                 </Link>
-                <Link className="text-black mb-2 hover:text-[#00ccff]" to="/products">
-                  <i className="fa fa-angle-right mr-2"></i>Sản phẩm
-                </Link>
-                <Link className="text-black mb-2 hover:text-[#00ccff]" to="">
+                <Link to={'/about'} className="text-black mb-2 hover:text-[#00ccff]" >
                   <i className="fa fa-angle-right mr-2"></i>Thông tin
                 </Link>
-                <Link className="text-black mb-2 hover:text-[#00ccff]" to="">
+                <Link to={'/cart'} className="text-black mb-2 hover:text-[#00ccff]">
                   <i className="fa fa-angle-right mr-2"></i>Giỏ hàng
-                </Link>
-                <Link className="text-black mb-2 hover:text-[#00ccff]" to="">
-                  <i className="fa fa-angle-right mr-2"></i>Liên hệ
                 </Link>
               </div>
             </div>

@@ -21,13 +21,13 @@ const Header = () => {
         url("/")
     }
     return (
-        <div className="header-container fixed w-full top-0 bg-white z-50">
+        <div className="header-container fixed w-full top-0 bg-[#fffffff0] z-50">
             <div className="flex items-center justify-between py-2 px-xl-5 mb-3">
                 <div className="flex items-center space-x-2">
                     <Link to="/">  <img src={Image} alt="" className="h-16 w-auto" /></Link>
                 </div>
                 {/* Search Bar */}
-                <div className="flex items-center space-x-4 lg:w-1/3">
+                <div className="flex items-center justify-center space-x-4 lg:w-1/3">
                     <div className="hidden lg:flex space-x-4">
                         <Link to="/" className="text-black hover:text-[#00CCFF] hover:no-underline hover:border-b-2 hover:border-[#00ccff] focus:text-[#00CCFF] relative py-3">
                             Trang chủ

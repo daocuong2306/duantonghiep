@@ -301,7 +301,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                                             >
                                                 Xóa
                                             </Button>
-                                            <img src={`https://briteshop.store${product?.product.image}`} className="w-150 h-full" />
+                                            <img src={`https://briteshop.store${product?.product?.image}`} className="w-150 h-full" />
                                         </>
                                     ) : (
                                         <div className="w-full">
@@ -323,14 +323,14 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                                     <Form.Item
                                         name="name"
                                         label="Tên sản phẩm"
-                                        initialValue={product?.product.name}
+                                        initialValue={product?.product?.name}
                                     >
                                         <Input placeholder="Please enter a name" />
                                     </Form.Item>
                                     <Form.Item
                                         name="price"
                                         label="Giá"
-                                        initialValue={product?.product.price}
+                                        initialValue={product?.product?.price}
                                         rules={[
                                             {
                                                 type: 'number',
@@ -347,7 +347,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                                     <Form.Item
                                         name="category"
                                         label="Danh mục"
-                                        initialValue={categoryMapping[product?.product.category_name]}
+                                        initialValue={categoryMapping[product?.product?.category_name]}
                                     >
                                         <Select
                                             showSearch
@@ -363,16 +363,16 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                                     <Form.Item
                                         name="code"
                                         label="Mã sản phẩm"
-                                        initialValue={product?.product.code}
+                                        initialValue={product?.product?.code}
                                     >
                                         <Input placeholder="Please enter a code" />
                                     </Form.Item>
                                     <Form.Item
                                         name="description"
                                         label="Mô tả"
-                                        initialValue={product?.product.description}
+                                        initialValue={product?.product?.description}
                                     >
-                                        <SunEditor getSunEditorInstance={getSunEditorInstance} defaultValue={product?.product.description} />
+                                        <SunEditor getSunEditorInstance={getSunEditorInstance} defaultValue={product?.product?.description} />
                                     </Form.Item>
                                 </div>
 
@@ -381,7 +381,7 @@ const Update: React.FC<{ id: string }> = ({ id }) => {
                             {variantData.length > 0 ? <div>
                                 <Table columns={columns} dataSource={variantData} />
                                 <Form.Item wrapperCol={{ offset: 19, span: 16 }}>
-                                    <Button type="primary" htmlType="submit">
+                                    <Button htmlType="submit">
                                         Gửi
                                     </Button>
                                 </Form.Item>

@@ -35,20 +35,13 @@ const Banner = () => {
         <div>
             <div id="header-carousel" className="carousel slide" data-ride="carousel" data-interval="3000">
                 <div className="carousel-inner">
-                    {data?.data.banner.map((banner: any, index: any) => (
+                    {data?.data?.banner?.map((banner: any, index: any) => (
                         <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
                             <img
                                 className="h-[50%] w-full object-cover"
                                 src={banner.image}
                                 alt={`Image ${index + 1}`}
-
                             />
-                            <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                                <div className="p-3">
-                                    <h4 className="text-light text-uppercase font-weight-medium mb-3">Chào mừng bạn đến với của hàng của chúng tôi</h4>
-                                    <h3 className="display-4 text-white font-weight-semi-bold mb-4">Lựa chọn các sản phẩm yêu thích</h3>
-                                </div>
-                            </div>
                         </div>
                     ))}
                 </div>

@@ -37,9 +37,9 @@ const Product = () => {
                             <h1 className="text-4xl font-bold tracking-tight text-gray-900">Sản phẩm</h1>
                         </div>
                         <section aria-labelledby="products-heading" className="pb-24 pt-6">
-                            <div className="flex gap-x-8 gap-y-10 lg:grid-cols-4">
+                            <div className="flex gap-x-8 gap-y-10 lg:grid-cols-3">
                                 <div>
-                                    <div className="grid grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-4 gap-4">
                                         {products?.product?.map((product: any) => (
                                             <Link to={`/product/detail/${product.id}`} key={product.id}>
                                                 <div className="bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
@@ -51,7 +51,7 @@ const Product = () => {
                                                     <div className="px-4 py-3 w-72">
                                                         <p className="text-lg font-bold text-black truncate block capitalize">{product.name}</p>
                                                         <div className="flex items-center">
-                                                            <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price}</p>
+                                                            <p className="text-lg font-semibold text-black cursor-auto my-3">  {parseFloat(product.price).toLocaleString('en-US')} đ </p>
                                                             <div className="ml-auto text-[#00CCFF]">Xem thông tin chi tiết</div>
                                                         </div>
                                                     </div>

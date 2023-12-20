@@ -81,7 +81,11 @@ const BillDashboard: React.FC = () => {
             ),
         },
         { title: 'Kiểu thanh toán', dataIndex: 'payments', key: 'payments' },
-        { title: 'Tổng giá', dataIndex: 'total_price', key: 'total_price' },
+        {
+            title: 'Tổng giá', dataIndex: 'total_price', key: 'total_price', render: (dataIndex: any) => {
+                return <>{parseFloat(dataIndex).toLocaleString('en-US')}đ</>
+            }
+        },
         { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
         {
             title: 'Hành động',

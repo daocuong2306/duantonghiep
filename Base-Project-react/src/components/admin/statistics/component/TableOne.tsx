@@ -39,20 +39,22 @@ const TableOne = () => {
         </div>
 
         {sortedProducts?.map((product: any) => (
-          <div className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5">
+          <div className="grid grid-cols-3 border-b border-stroke dark:border-strokedark sm:grid-cols-5" key={product.product_info.id}>
             <div className="flex items-center gap-3 p-2.5 xl:p-5">
               <div className="flex-shrink-0">
                 {/* Use the actual product image */}
-                <img src={`https://briteshop.store${product.product_info.image}`} alt="Product" className="w-8 h-8 rounded-full" />
+                <img src={`https://briteshop.store${product?.product_info?.image}`} alt="Product" className="w-8 h-8 rounded-full" />
               </div>
-              <p className="text-black sm:block">{product.product_info.name}</p>
+              <p className="text-black sm:block">{product?.product_info?.name}</p>
             </div>
             <div className="flex items-center justify-center p-2.5 xl:p-5">
-              <p className="text-black">{product.product_info.price}đ</p>
+              <p className="text-black">
+                {parseFloat(product?.product_info?.price).toLocaleString('en-US')} đ
+              </p>
             </div>
 
             <div className="flex items-center justify-center p-2.5 xl:p-5">
-              <p className="text-meta-3">{product.product_info.code}</p>
+              <p className="text-meta-3">{product?.product_info?.code}</p>
             </div>
 
             <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
