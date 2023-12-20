@@ -1,9 +1,8 @@
 import { useInforUserQuery, useUpdateAccountMutation } from "@/api/user"
-import { Link } from "react-router-dom"
 import image from "../../../../img/user.png"
 import { useRef, useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Avatar, Button, List, Spin, UploadProps, message } from 'antd';
+import { Button, Spin, UploadProps, message, TableColumnsType, Image, Table } from 'antd';
 import Upload, { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 import { useForm } from "react-hook-form";
 import { useCancelBillMutation, useGetBillQuery } from "@/api/bill";
@@ -13,7 +12,6 @@ import { useCancelBillMutation, useGetBillQuery } from "@/api/bill";
 const Account = () => {
     const token = localStorage.getItem("header")
     const { data, isLoading } = useInforUserQuery(token)
-    console.log(data);
     const [update] = useUpdateAccountMutation()
     const { handleSubmit, getValues, register } = useForm()
     const readerRef = useRef<any>(null);
@@ -147,7 +145,67 @@ const Account = () => {
             cancelBill(product);
         }
     };
-    console.log("dataBill", dataBill);
+
+    const expandedRowRender = (order: any) => {
+        console.log(order.cart);
+        const cartColumns: TableColumnsType<any> = [
+            { title: 'Tên sản phẩm', dataIndex: 'name', key: 'id' },
+            {
+                title: 'Ảnh',
+                dataIndex: 'image',
+                key: 'image',
+                render: (dataIndex) => <Image width={100} src={`${dataIndex}`} />,
+            },
+            {
+                title: 'Giá tiền', dataIndex: 'price', key: 'price', render: (dataIndex) => {
+                    return <>{parseFloat(dataIndex).toLocaleString('en-US')} đ</>
+                }
+            },
+            { title: 'Số lượng', dataIndex: 'quantity', key: 'quantity' },
+            { title: 'Biến thể', dataIndex: 'option_values', key: 'option_values' },
+        ];
+
+        return <Table columns={cartColumns} dataSource={order.cart} pagination={false} />;
+    };
+
+    const columns: TableColumnsType<any> = [
+        { title: 'Địa chỉ', dataIndex: 'address', key: 'id' },
+        {
+            title: 'Số điện thoại',
+            dataIndex: 'phone',
+            key: 'phone',
+        },
+        {
+            title: 'Giá tiền', dataIndex: 'total_price', key: 'total_price',
+            render: (dataIndex) => {
+                return <>{parseFloat(dataIndex).toLocaleString('en-US')} đ</>
+            }
+        },
+        {
+            title: 'Trạng thái',
+            dataIndex: 'order_status',
+            key: 'order_status',
+            render: (dataIndex: any) => checkStatus[dataIndex],
+        },
+        {
+            title: 'Hành động',
+            dataIndex: 'id',
+            key: 'order_status',
+            render: (id: any, record: any) => {
+                const { order_status } = record;
+                return order_status == 'Pending' || order_status == 'Browser' ? (
+                    <p key="list-loadmore-cancel">
+                        <button className='btn btn-danger' onClick={() => onCancelBill(id)}>Hủy đơn</button>
+                    </p>
+                ) : null;
+            },
+        }
+    ];
+    const newData = dataBill?.map((item: any) => ({
+        ...item,
+        key: item.id
+    }));
+    //popup
     const checkStatus: any = {
         "Pending": "Chờ duyệt",
         "Browser": "Đã duyệt",
@@ -291,28 +349,10 @@ const Account = () => {
             <>
                 <h3 className="text-center">Đơn hàng đã đặt</h3>
                 <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl mt-[50px]">
-                    <List
-                        pagination={{}}
-                        dataSource={dataBill}
-                        renderItem={(item: any) => (
-                            <List.Item
-                                actions={[
-                                    <p key="list-loadmore-edit">Trạng thái</p>,
-                                    <p key="list-loadmore-more">{checkStatus[item.order_status]}</p>,
-                                    item.order_status === "Pending" || item.order_status === "Browser" ? (
-                                        <p key="list-loadmore-cancel">
-                                            <button className='btn btn-danger' onClick={() => { onCancelBill(item.id) }}>Hủy đơn</button>
-                                        </p>
-                                    ) : null
-                                ]}
-                            >
-                                <List.Item.Meta
-                                    avatar={<Avatar src={`http://127.0.0.1:8000${item?.cart[0].image}`} />}
-                                    title={<Link to="">{item.address}</Link>}
-                                    description={`Hình thức thanh toán ${item.payments} | Giá tiền : ${item.total_price}`}
-                                />
-                            </List.Item>
-                        )}
+                    <Table
+                        columns={columns}
+                        expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
+                        dataSource={newData}
                     />
                 </div>
             </>

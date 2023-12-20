@@ -22,11 +22,13 @@ const Statistics = () => {
                                                     <div className="row">
                                                         <div className="col">
                                                             <h5 className="card-title text-uppercase text-muted mb-0">Doanh thu</h5>
-                                                            <span className="h2 font-weight-bold mb-0">{statisData?.statusAmout.current_month_total}VND</span>
+                                                            <span className="h2 font-weight-bold mb-0">
+                                                                {parseFloat(statisData?.statusAmout.current_month_total).toLocaleString('en-US')} đ
+                                                            </span>
                                                         </div>
                                                     </div>
                                                     <p className="mt-3 mb-0 text-muted text-sm">
-                                                        <span className="text-success mr-2">{statisData?.statusAmout.status == "Tăng" ? <i className="fa fa-arrow-up"></i> : <i className="fas fa-arrow-down"></i>} {statisData?.statusAmout.increase_decrease}VND</span>
+                                                        <span className="text-success mr-2">{statisData?.statusAmout.status == "Tăng" ? <i className="fa fa-arrow-up"></i> : <i className="fas fa-arrow-down"></i>}   {parseFloat(statisData?.statusAmout.increase_decrease).toLocaleString('en-US')} đ </span>
                                                         <span className="text-nowrap">So với tháng trước</span>
                                                     </p>
                                                 </div>

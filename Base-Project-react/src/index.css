@@ -10861,3 +10861,7 @@ a.text-dark:focus {
     border: 1px solid #000;
     margin: 10 0;
 }
+
+* {
+    font-family: 'Poltawski Nowy', serif ;
+}

@@ -24,7 +24,9 @@ const Category = () => {
                                         {product.name}
                                     </Link>
                                 </h5>
-                                <p className="small text-muted font-italic" >{product.price} VND</p>
+                                <p className="small text-muted font-italic" >
+                                    {parseFloat(product.price).toLocaleString('en-US')} đ
+                                </p>
                                 <ul className="list-inline small">
                                     <li className="list-inline-item m-0">
                                         <i className="fa fa-star text-success"></i>

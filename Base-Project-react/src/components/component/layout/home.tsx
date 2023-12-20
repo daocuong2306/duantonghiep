@@ -4,7 +4,7 @@ import NewProducts from './newProduct'
 import ListCate from './listCate'
 import { useGetDataQuery } from '@/api/home'
 import { Spin } from 'antd'
-import banner from "../../../../img/maxresdefault.jpg"
+import banner from "../../../../img/banner.png"
 import Comment from './commen'
 
 const Home = () => {

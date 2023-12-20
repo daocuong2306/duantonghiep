@@ -102,7 +102,7 @@ const Discount = () => {
                                         className="mb-3 block text-sm font-medium text-black "
                                         htmlFor="Username"
                                     >
-                                        Mã sản phẩm
+                                        Hạn sử dụng
                                     </label>
                                     <DatePicker
                                         onChange={onChange}

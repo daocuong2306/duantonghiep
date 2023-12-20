@@ -51,7 +51,7 @@ const Product = () => {
                                                     <div className="px-4 py-3 w-72">
                                                         <p className="text-lg font-bold text-black truncate block capitalize">{product.name}</p>
                                                         <div className="flex items-center">
-                                                            <p className="text-lg font-semibold text-black cursor-auto my-3">{product.price}</p>
+                                                            <p className="text-lg font-semibold text-black cursor-auto my-3">  {parseFloat(product.price).toLocaleString('en-US')} đ </p>
                                                             <div className="ml-auto text-[#00CCFF]">Xem thông tin chi tiết</div>
                                                         </div>
                                                     </div>

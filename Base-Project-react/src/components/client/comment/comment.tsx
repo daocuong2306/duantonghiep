@@ -10,6 +10,7 @@ const Comment = () => {
     const { id } = useParams();
     const [loading, setLoading] = useState(false);
     const [rating, setRating] = useState();
+    const [reloadData, setReloadData] = useState(false);
     const prodcuts = {
         id, selectP: [null, null]
     }
@@ -20,11 +21,14 @@ const Comment = () => {
     const handleRatingChange = (value: any) => {
         setRating(value);
     };
-    const { data: detaiProduct } = useGetDetailQuery(prodcuts);
-    const data = {
-        cmt: detaiProduct?.data.comment,
-        total: detaiProduct?.data.total_comment
-    }
+    const { data: detaiProduct, refetch } = useGetDetailQuery(prodcuts);
+    console.log("123", detaiProduct);
+
+    useEffect(() => {
+        refetch();
+    }, [reloadData]);
+
+    // This will log the updated data
     const handleSubmit = () => {
         form
             .validateFields()
@@ -41,12 +45,14 @@ const Comment = () => {
                 };
                 addComment(data);
                 setLoading(true);
+
+                // Set the state to trigger refetch
+                setReloadData(prevState => !prevState);
             })
             .catch((error) => {
                 console.error("Validation failed", error);
             });
     };
-
     const [api, contextHolder] = notification.useNotification();
     const openNotification = (m: any, d: any) => {
         api.open({
@@ -72,6 +78,7 @@ const Comment = () => {
             }
         }
     }, [commentData]);
+
 
     return (
         <Spin spinning={loading}>
@@ -113,18 +120,18 @@ const Comment = () => {
                 <section className="bg-white">
                     <div className="app container mx-auto p-4">
                         <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-lg lg:text-2xl font-bold text-gray-900 ">Số lượng bình luận ({data?.total})</h2>
+                            <h2 className="text-lg lg:text-2xl font-bold text-gray-900 ">Số lượng bình luận ({detaiProduct?.data?.total_comment})</h2>
                         </div>
-                        {data?.cmt?.slice().reverse()?.map((value: any) => (
-                            <article className="p-6 mb-3 ml-6 lg:ml-12 text-base bg-white rounded-lg">
+                        {detaiProduct?.data?.comment?.slice().reverse()?.map((value: any, key: any) => (
+                            <article className="p-6 mb-3 ml-6 lg:ml-12 text-base bg-white rounded-lg" key={key}>
                                 <footer className="flex justify-between items-center mb-2">
                                     <div className="flex items-center">
                                         <p className="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold">
-                                            <img
+                                            {value.avatar_user != null ? <img src={`https://briteshop.store${value.avatar_user}`} className="mr-2 w-6 h-6 rounded-full" /> : <img
                                                 className="mr-2 w-6 h-6 rounded-full"
                                                 src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
                                                 alt="Jese Leos"
-                                            />
+                                            />}
                                             {value.name_user}
                                         </p>
                                         <p className="text-sm text-gray-600">

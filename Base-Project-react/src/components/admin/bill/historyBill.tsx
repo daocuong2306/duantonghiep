@@ -14,7 +14,6 @@ interface DataType {
 const HistoryBill = () => {
     const { id } = useParams()
     const { data: historyData } = useGetHistoryBillQuery(id)
-    console.log(historyData);
     const checkStatus: any = {
         "Pending": "Chờ duyệt",
         "Browser": "Đã duyệt",
@@ -46,7 +45,11 @@ const HistoryBill = () => {
                 alt="User Avatar"
             />
         },
-        { title: 'Giá tiền', dataIndex: 'price', key: 'price' },
+        {
+            title: 'Giá tiền', dataIndex: 'price', key: 'price', render: (dataIndex: any) => {
+                return <>{parseFloat(dataIndex).toLocaleString('en-US')}đ</>
+            }
+        },
         { title: 'Số lượng', dataIndex: 'quantity', key: 'quantity' },
         { title: 'Kiểu dáng', dataIndex: 'option_values', key: 'option_values' }
     ];
@@ -61,7 +64,7 @@ const HistoryBill = () => {
     }));
     const dataHistory: DataType[] = newDataHistory;
     const dataCart: DataType[] = newDataCart
-    console.log(historyData?.name_user);
+    console.log(historyData);
 
 
     return (
@@ -91,7 +94,8 @@ const HistoryBill = () => {
                             <div className="p-3 py-5">
                                 <h3 className="text-center">Thông tin đơn hàng</h3>
                                 <Table columns={columnsCart} dataSource={dataCart} />
-                                Tổng giá : {historyData?.bill.total_price}
+                                <h5>Mã giảm giá : {historyData?.bill.discount != null ? <span>{historyData?.bill.discount.amount}%</span> : <p>không áp dụng mã giảm giá</p>}</h5>
+                                <h5> Tổng giá : {parseFloat(historyData?.bill?.total_price).toLocaleString('en-US')} đ </h5>
                             </div>
                         </div>
                         <div className="col-md-4">
